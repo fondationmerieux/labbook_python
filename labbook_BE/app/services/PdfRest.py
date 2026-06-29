@@ -31,8 +31,8 @@ class PdfBillList(Resource):
             try:
                 details = {"reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "PdfBillList", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfBillList ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfBillList ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         l_datas = Report.getBillingStatus(args['date_beg'], args['date_end'], 0)
@@ -42,8 +42,8 @@ class PdfBillList(Resource):
             try:
                 details = {"reason": "NOT_FOUND", "date_beg": args.get("date_beg"), "date_end": args.get("date_end")}
                 Audit.insertAudit(audit_user, "PdfBillList", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfBillList ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfBillList ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         for data in l_datas:
@@ -58,16 +58,16 @@ class PdfBillList(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "filename": args.get("filename"), "tpl_file": args.get("tpl_file")}
                 Audit.insertAudit(audit_user, "PdfBillList", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfBillList ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfBillList ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfBillList')
         try:
             details = {"filename": args.get("filename"), "tpl_file": args.get("tpl_file")}
             Audit.insertAudit(audit_user, "PdfBillList", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfBillList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfBillList ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -84,8 +84,8 @@ class PdfInvoice(Resource):
             try:
                 details = {"reason": "TEMPLATE_NOT_FOUND", "id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
                 Audit.insertAudit(audit_user, "PdfInvoice", "RECORD", int(id_rec), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfInvoice ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfInvoice ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         ret = Pdf.getPdfInvoice(id_rec, template, filename)
@@ -95,16 +95,16 @@ class PdfInvoice(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
                 Audit.insertAudit(audit_user, "PdfInvoice", "RECORD", int(id_rec), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfInvoice ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfInvoice ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfInvoice')
         try:
             details = {"id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
             Audit.insertAudit(audit_user, "PdfInvoice", "RECORD", int(id_rec), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfInvoice ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfInvoice ERROR audit success')
         return compose_ret(0, Constants.cst_content_type_json)
 
 
@@ -132,8 +132,8 @@ class PdfReport(Resource):
                 try:
                     details = {"reason": "INSERT_FILE_FAILED", "id_rec": int(id_rec), "id_user": int(id_user), "template": str(template)}
                     Audit.insertAudit(audit_user, "PdfReport", "RECORD", int(id_rec), "ERROR", details, "R")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PdfReport ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PdfReport ERROR audit')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             # Get uuid filename
@@ -151,16 +151,16 @@ class PdfReport(Resource):
                     try:
                         details = {"reason": "PDF_FAILED_REEDIT", "id_rec": int(id_rec), "template": str(template), "id_file": int(fileReport.get('id_data', 0))}
                         Audit.insertAudit(audit_user, "PdfReport", "RECORD", int(id_rec), "ERROR", details, "R")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : PdfReport ERROR audit err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : PdfReport ERROR audit')
                     return compose_ret('', Constants.cst_content_type_json, 500)
             else:
                 self.log.error(Logs.fileline() + ' : PdfReport failed id_rec=%s', str(id_rec))
                 try:
                     details = {"reason": "FILE_NOT_FOUND", "id_rec": int(id_rec), "template": str(template)}
                     Audit.insertAudit(audit_user, "PdfReport", "RECORD", int(id_rec), "ERROR", details, "R")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PdfReport ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PdfReport ERROR audit')
                 return compose_ret('', Constants.cst_content_type_json, 500)
         else:
             ret = Pdf.getPdfReport(id_rec, template, filename, reedit)
@@ -170,16 +170,16 @@ class PdfReport(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "id_rec": int(id_rec), "template": str(template), "filename": str(filename), "reedit": str(reedit)}
                 Audit.insertAudit(audit_user, "PdfReport", "RECORD", int(id_rec), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReport ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReport')
         try:
             details = {"id_rec": int(id_rec), "template": str(template), "filename": str(filename), "reedit": str(reedit)}
             Audit.insertAudit(audit_user, "PdfReport", "RECORD", int(id_rec), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfReport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfReport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -196,8 +196,8 @@ class PdfReportGeneric(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "missing": ["html", "filename"]}
                 Audit.insertAudit(audit_user, "PdfReportGeneric", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGeneric ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGeneric ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Pdf.getPdfReportGeneric(args['html'], args['filename'])
@@ -207,16 +207,16 @@ class PdfReportGeneric(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "filename": str(args.get("filename"))}
                 Audit.insertAudit(audit_user, "PdfReportGeneric", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGeneric ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGeneric ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGeneric')
         try:
             details = {"filename": str(args.get("filename"))}
             Audit.insertAudit(audit_user, "PdfReportGeneric", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfReportGeneric ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfReportGeneric ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -233,8 +233,8 @@ class PdfReportGrouped(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "missing": ["l_id_rec_vld", "filename"]}
                 Audit.insertAudit(audit_user, "PdfReportGrouped", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGrouped ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGrouped ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 400)
 
         ret = Pdf.getPdfReportGrouped(args['filename'], args['l_id_rec_vld'])
@@ -245,16 +245,16 @@ class PdfReportGrouped(Resource):
                 details = {"reason": "PDF_FAILED", "filename": str(args.get("filename")),
                            "count": len(args.get("l_id_rec_vld") or [])}
                 Audit.insertAudit(audit_user, "PdfReportGrouped", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGrouped ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGrouped ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGrouped')
         try:
             details = {"filename": str(args.get("filename")), "count": len(args.get("l_id_rec_vld") or [])}
             Audit.insertAudit(audit_user, "PdfReportGrouped", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfReportGrouped ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfReportGrouped ERROR audit success')
         return compose_ret(0, Constants.cst_content_type_json)
 
 
@@ -271,8 +271,8 @@ class PdfReportGlobal(Resource):
             try:
                 details = {"reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "PdfReportGlobal", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGlobal ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 400)
 
         ret = Pdf.getPdfReportGlobal(args['filename'], args['exclu'], args['date_beg'], args['date_end'])
@@ -282,24 +282,24 @@ class PdfReportGlobal(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "ret": 500, "filename": str(args.get("filename"))}
                 Audit.insertAudit(audit_user, "PdfReportGlobal", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGlobal ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
         elif ret == 404:
             self.log.error(Logs.fileline() + ' : PdfReportGlobal failed')
             try:
                 details = {"reason": "NOT_FOUND", "ret": 404, "date_beg": args.get("date_beg"), "date_end": args.get("date_end")}
                 Audit.insertAudit(audit_user, "PdfReportGlobal", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGlobal ERROR audit')
             return compose_ret(0, Constants.cst_content_type_json, 404)
         elif ret == 409:
             self.log.error(Logs.fileline() + ' : PdfReportGlobal failed partially')
             try:
                 details = {"reason": "PARTIAL", "ret": 409, "filename": str(args.get("filename"))}
                 Audit.insertAudit(audit_user, "PdfReportGlobal", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportGlobal ERROR audit')
             return compose_ret(0, Constants.cst_content_type_json, 409)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGlobal')
@@ -307,8 +307,8 @@ class PdfReportGlobal(Resource):
             details = {"filename": str(args.get("filename")), "exclu": str(args.get("exclu")),
                        "date_beg": args.get("date_beg"), "date_end": args.get("date_end")}
             Audit.insertAudit(audit_user, "PdfReportGlobal", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfReportGlobal ERROR audit success')
         return compose_ret(0, Constants.cst_content_type_json)
 
 
@@ -325,8 +325,8 @@ class PdfSticker(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "template": str(template)}
                 Audit.insertAudit(audit_user, "PdfSticker", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfSticker ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfSticker ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 400)
 
         ret = Pdf.getPdfSticker(args['id'], args['type_id'], template)
@@ -336,16 +336,16 @@ class PdfSticker(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "id": args.get("id"), "type_id": args.get("type_id"), "template": str(template)}
                 Audit.insertAudit(audit_user, "PdfSticker", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfSticker ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfSticker ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfSticker')
         try:
             details = {"id": args.get("id"), "type_id": args.get("type_id"), "template": str(template)}
             Audit.insertAudit(audit_user, "PdfSticker", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfSticker ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfSticker ERROR audit success')
         return compose_ret(0, Constants.cst_content_type_json)
 
 
@@ -362,8 +362,8 @@ class PdfTemplate(Resource):
             try:
                 details = {"reason": "GET_TEMPLATE_FAILED", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "PdfTemplate", "TEMPLATE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfTemplate ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfTemplate ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         if tpl['tpl_type'] == 'RES':
@@ -379,8 +379,8 @@ class PdfTemplate(Resource):
             try:
                 details = {"reason": "UNKNOWN_TYPE", "id_item": int(id_item), "tpl_type": str(tpl.get('tpl_type'))}
                 Audit.insertAudit(audit_user, "PdfTemplate", "TEMPLATE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfTemplate ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfTemplate ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         if not ret:
@@ -389,8 +389,8 @@ class PdfTemplate(Resource):
                 details = {"reason": "PRINT_FAILED", "id_item": int(id_item), "tpl_ser": int(tpl.get('tpl_ser', 0)),
                            "tpl_type": str(tpl.get('tpl_type')), "tpl_file": str(tpl.get('tpl_file'))}
                 Audit.insertAudit(audit_user, "PdfTemplate", "TEMPLATE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfTemplate ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfTemplate ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfTemplate')
@@ -398,8 +398,8 @@ class PdfTemplate(Resource):
             details = {"id_item": int(id_item), "tpl_ser": int(tpl.get('tpl_ser', 0)),
                        "tpl_type": str(tpl.get('tpl_type')), "tpl_file": str(tpl.get('tpl_file'))}
             Audit.insertAudit(audit_user, "PdfTemplate", "TEMPLATE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfTemplate ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfTemplate ERROR audit success')
         return compose_ret(0, Constants.cst_content_type_json)
 
 
@@ -416,8 +416,8 @@ class PdfOutsourced(Resource):
             try:
                 details = {"reason": "TEMPLATE_NOT_FOUND", "id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
                 Audit.insertAudit(audit_user, "PdfOutsourced", "RECORD", int(id_rec), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfOutsourced ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfOutsourced ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Pdf.getPdfOutsourced(id_rec, template, filename)
@@ -427,16 +427,16 @@ class PdfOutsourced(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
                 Audit.insertAudit(audit_user, "PdfOutsourced", "RECORD", int(id_rec), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfOutsourced ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfOutsourced ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfOutsourced')
         try:
             details = {"id_rec": int(id_rec), "template": str(template), "filename": str(filename)}
             Audit.insertAudit(audit_user, "PdfOutsourced", "RECORD", int(id_rec), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfOutsourced ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfOutsourced ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -453,8 +453,8 @@ class PdfReportToday(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "missing": ["date_beg", "date_end", "service_int", "filename"]}
                 Audit.insertAudit(audit_user, "PdfReportToday", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportToday ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportToday ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         l_data = Report.getTodayList(args['date_beg'], args['date_end'], args['service_int'])
@@ -465,8 +465,8 @@ class PdfReportToday(Resource):
                 details = {"reason": "NOT_FOUND", "date_beg": args.get("date_beg"), "date_end": args.get("date_end"),
                            "service_int": args.get("service_int")}
                 Audit.insertAudit(audit_user, "PdfReportToday", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportToday ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportToday ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         ret = Pdf.getPdfReportToday(l_data, args['date_beg'], args['date_end'], args['service_int'], args['filename'])
@@ -476,8 +476,8 @@ class PdfReportToday(Resource):
             try:
                 details = {"reason": "PDF_FAILED", "filename": args.get("filename")}
                 Audit.insertAudit(audit_user, "PdfReportToday", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfReportToday ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfReportToday ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PdfReportToday')
@@ -485,8 +485,8 @@ class PdfReportToday(Resource):
             details = {"filename": args.get("filename"), "date_beg": args.get("date_beg"), "date_end": args.get("date_end"),
                        "service_int": args.get("service_int"), "count": len(l_data) if l_data else 0}
             Audit.insertAudit(audit_user, "PdfReportToday", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfReportToday ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfReportToday ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -504,8 +504,8 @@ class PdfActivityReport(Resource):
             try:
                 details = {"reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "PdfActivityReport", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfActivityReport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfActivityReport ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         date_beg = args['date_beg']
@@ -573,8 +573,8 @@ class PdfActivityReport(Resource):
                 details = {"reason": "PDF_FAILED", "date_beg": date_beg, "date_end": date_end, "type_ana": type_ana,
                            "tpl_file": tpl_file, "filename": filename}
                 Audit.insertAudit(audit_user, "PdfActivityReport", "PDF", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PdfActivityReport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PdfActivityReport ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : PdfActivityReport ok')
@@ -582,8 +582,8 @@ class PdfActivityReport(Resource):
             details = {"date_beg": date_beg, "date_end": date_end, "type_ana": type_ana, "tpl_file": tpl_file,
                        "filename": filename, "count_type": len(stat_type), "count_age": len(stat_age)}
             Audit.insertAudit(audit_user, "PdfActivityReport", "PDF", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PdfActivityReport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PdfActivityReport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -607,6 +607,6 @@ class PrintByScript(Resource):
         try:
             details = {"script_name": str(script_name), "ret": int(ret)}
             Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, status, details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PrintByScript ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)

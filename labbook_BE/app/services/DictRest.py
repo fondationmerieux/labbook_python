@@ -33,8 +33,8 @@ class DictDescr(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "dict_name": str(dict_name)}
                 Audit.insertAudit(audit_user, "DictDescr", "DICT", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictDescr ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictDescr ERROR')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Dict.updateDescr(dict_name=dict_name, dico_descr=args['dico_descr'])
@@ -44,16 +44,16 @@ class DictDescr(Resource):
             try:
                 details = {"result": "ERROR", "reason": "UPDATE_FAILED", "dict_name": str(dict_name)}
                 Audit.insertAudit(audit_user, "DictDescr", "DICT", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictDescr ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictDescr ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DictDescr dict_name=' + str(dict_name))
         try:
             details = {"result": "SUCCESS", "dict_name": str(dict_name)}
             Audit.insertAudit(audit_user, "DictDescr", "DICT", None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictDescr ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictDescr ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -87,8 +87,8 @@ class DictDet(Resource):
         try:
             details = {"dict_name": str(dict_name), "count": len(l_dicts) if isinstance(l_dicts, list) else 0}
             Audit.insertAudit(audit_user, "DictDet", "DICT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictDet ERROR audit success')
         return compose_ret(l_dicts, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -101,8 +101,8 @@ class DictDet(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "dict_name": str(dict_name), "missing": ["list_val"]}
                 Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictDet ERROR')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # check if dict_name already exist
@@ -138,8 +138,8 @@ class DictDet(Resource):
                     try:
                         details = {"reason": "UPDATE_FAILED", "dict_name": str(dict_name)}
                         Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, event_type)
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : DictDet ERROR')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
             # delete missing values compared to dict
@@ -157,8 +157,8 @@ class DictDet(Resource):
                         try:
                             details = {"reason": "DELETE_FAILED", "dict_name": str(dict_name), "id_data": int(db_val['id_data'])}
                             Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, "D")
-                        except Exception as err:
-                            self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+                        except Exception:
+                            self.log.exception(Logs.fileline() + ' : DictDet ERROR')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
         # insert new dict
@@ -182,16 +182,16 @@ class DictDet(Resource):
                     try:
                         details = {"reason": "INSERT_FAILED", "dict_name": str(dict_name)}
                         Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, "C")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : DictDet ERROR')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet dict_name=' + str(dict_name))
         try:
             details = {"dict_name": str(dict_name)}
             Audit.insertAudit(audit_user, "DictDet", "DICT", None, "SUCCESS", details, event_type)
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -204,8 +204,8 @@ class DictDet(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "dict_name": str(dict_name), "missing": ["id_owner"]}
                 Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictDet ERROR')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Dict.deleteDict(dict_name)
@@ -215,16 +215,16 @@ class DictDet(Resource):
             try:
                 details = {"reason": "DELETE_FAILED", "dict_name": str(dict_name)}
                 Audit.insertAudit(audit_user, "DictDet", "DICT", None, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictDet ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictDet ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DictDet delete dict_name=' + str(dict_name))
         try:
             details = {"dict_name": str(dict_name)}
             Audit.insertAudit(audit_user, "DictDet", "DICT", None, "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -258,8 +258,8 @@ class DictDetById(Resource):
         try:
             details = {"id_dict": int(id_dict), "count": len(l_dicts) if isinstance(l_dicts, list) else 0}
             Audit.insertAudit(audit_user, "DictDetById", "DICT", int(id_dict), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictDetById ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictDetById ERROR audit success')
         return compose_ret(l_dicts, Constants.cst_content_type_json)
 
 
@@ -295,8 +295,8 @@ class DictList(Resource):
         try:
             details = {"count": len(l_dicts) if l_dicts else 0}
             Audit.insertAudit(audit_user, "DictList", "DICT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictList ERROR audit success')
         return compose_ret(l_dicts, Constants.cst_content_type_json)
 
 
@@ -316,8 +316,8 @@ class DictExport(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "missing": ["id_user", "dico_name"]}
                 Audit.insertAudit(audit_user, "DictExport", "DICT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictExport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictExport ERROR')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         Various.useLangDB()
@@ -389,8 +389,8 @@ class DictExport(Resource):
             try:
                 details = {"reason": "NOT_FOUND", "dico_name": str(dico_name)}
                 Audit.insertAudit(audit_user, "DictExport", "DICT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictExport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictExport ERROR')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -412,20 +412,20 @@ class DictExport(Resource):
                 writer.writerows(l_data)
 
         except Exception as err:
-            self.log.error(Logs.fileline() + ' :ERROR post DictExport failed, err=%s', err)
+            self.log.exception(Logs.fileline() + ' : ERROR post DictExport failed')
             try:
                 details = {"reason": "EXCEPTION", "err": str(err), "dico_name": args.get("dico_name")}
                 Audit.insertAudit(audit_user, "DictExport", "DICT", None, "ERROR", details, "R")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : DictExport ERROR audit err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictExport ERROR audit')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE DictExport')
         try:
             details = {"dico_name": str(dico_name), "filename": filename, "count": len(l_data) - 1}
             Audit.insertAudit(audit_user, "DictExport", "DICT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -441,8 +441,8 @@ class DictImport(Resource):
             try:
                 details = {"reason": "ARGS_MISSING", "filename": str(filename), "id_user": int(id_user)}
                 Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictImport ERROR')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Read CSV user
@@ -461,8 +461,8 @@ class DictImport(Resource):
             try:
                 details = {"reason": "FILE_EMPTY", "filename": str(filename), "id_user": int(id_user)}
                 Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictImport ERROR')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         head_line = l_rows[0]
@@ -477,8 +477,8 @@ class DictImport(Resource):
             try:
                 details = {"reason": "WRONG_VERSION", "filename": str(filename), "id_user": int(id_user), "version": str(l_rows[0][0])}
                 Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DictImport ERROR')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         # check name of column
@@ -493,8 +493,8 @@ class DictImport(Resource):
                 try:
                     details = {"reason": "WRONG_COLUMNS", "filename": str(filename), "id_user": int(id_user), "bad_head": str(head)}
                     Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : DictImport ERROR')
                 return compose_ret('', Constants.cst_content_type_json, 409)
             i = i + 1
 
@@ -532,8 +532,8 @@ class DictImport(Resource):
                             details = {"reason": "INSERT_FAILED", "filename": str(filename), "id_user": int(id_user),
                                        "dico_name": str(dico_name), "csv_line": int(i)}
                             Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-                        except Exception as err:
-                            self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+                        except Exception:
+                            self.log.exception(Logs.fileline() + ' : DictImport ERROR')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                 # update dict
@@ -553,8 +553,8 @@ class DictImport(Resource):
                             details = {"reason": "UPDATE_FAILED", "filename": str(filename), "id_user": int(id_user),
                                        "id_data": int(id_data), "dico_name": str(dico_name), "csv_line": int(i)}
                             Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-                        except Exception as err:
-                            self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+                        except Exception:
+                            self.log.exception(Logs.fileline() + ' : DictImport ERROR')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
                 # update dict descr
@@ -567,8 +567,8 @@ class DictImport(Resource):
                         details = {"reason": "UPDATE_DESCR_FAILED", "filename": str(filename), "id_user": int(id_user),
                                    "dico_name": str(dico_name), "csv_line": int(i)}
                         Audit.insertAudit(audit_user, "DictImport", "DICT", None, "ERROR", details, "R")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : DictImport ERROR audit err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : DictImport ERROR')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DictImport')
@@ -576,6 +576,6 @@ class DictImport(Resource):
         try:
             details = {"filename": str(filename), "id_user": int(id_user), "count": len(l_rows)}
             Audit.insertAudit(audit_user, "DictImport", "DICT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DictImport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DictImport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json, 200)

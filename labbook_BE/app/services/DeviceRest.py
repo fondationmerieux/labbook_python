@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import logging
-import gettext
 
 from datetime import datetime
 from flask import request
@@ -34,16 +33,16 @@ class ConnectSetting(Resource):
             try:
                 details = {"result": "ERROR", "reason": "GET_FAILED"}
                 Audit.insertAudit(audit_user, "ConnectSetting", "DEVICE", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConnectSetting ERROR audit get err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConnectSetting ERROR audit get')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ConnectSetting')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ConnectSetting", "DEVICE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConnectSetting ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConnectSetting ERROR audit success')
         return compose_ret(setting, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -56,8 +55,8 @@ class ConnectSetting(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "missing": ["id_user", "url"]}
                 Audit.insertAudit(audit_user, "ConnectSetting", "DEVICE", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConnectSetting ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConnectSetting ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Analyzer.updateConnectSetting(id_user=args['id_user'], url=args['url'])
@@ -67,16 +66,16 @@ class ConnectSetting(Resource):
             try:
                 details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_user": args.get('id_user'), "url": args.get('url')}
                 Audit.insertAudit(audit_user, "ConnectSetting", "DEVICE", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConnectSetting ERROR audit update err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConnectSetting ERROR audit update')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ConnectSetting')
         try:
             details = {"result": "SUCCESS", "id_user": args.get('id_user'), "url": args.get('url')}
             Audit.insertAudit(audit_user, "ConnectSetting", "DEVICE", None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConnectSetting ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConnectSetting ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -95,8 +94,8 @@ class AnalyzerList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_analyzers) if l_analyzers else 0}
             Audit.insertAudit(audit_user, "AnalyzerList", "DEVICE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerList ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerList ERROR audit')
         return compose_ret(l_analyzers, Constants.cst_content_type_json)
 
 
@@ -113,8 +112,8 @@ class AnalyzerDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_analyzer": id_analyzer}
                 Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -126,8 +125,8 @@ class AnalyzerDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_analyzer": id_analyzer}
             Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -141,8 +140,8 @@ class AnalyzerDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_analyzer": id_analyzer}
                 Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -162,8 +161,8 @@ class AnalyzerDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_analyzer": id_analyzer, "id_user": args.get('id_user')}
                     Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit update err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit update')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -181,8 +180,8 @@ class AnalyzerDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED", "id_analyzer": id_analyzer, "id_user": args.get('id_user')}
                     Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit insert err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_analyzer = ret
@@ -191,8 +190,8 @@ class AnalyzerDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_analyzer": id_analyzer, "id_user": args.get('id_user')}
             Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit success')
         return compose_ret(id_analyzer, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -210,16 +209,16 @@ class AnalyzerDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "DELETE_FAILED", "id_analyzer": id_analyzer, "id_user": args.get('id_user') if args else None}
                 Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit delete err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit delete')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalyzerDet delete id_analyzer=' + str(id_analyzer))
         try:
             details = {"result": "SUCCESS", "id_analyzer": id_analyzer, "id_user": args.get('id_user') if args else None}
             Audit.insertAudit(audit_user, "AnalyzerDet", "DEVICE", id_analyzer, "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -238,8 +237,8 @@ class AnalyzerFile(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_analyzers) if l_analyzers else 0}
             Audit.insertAudit(audit_user, "AnalyzerFile", "DEVICE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerFile ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerFile ERROR audit')
         return compose_ret(l_analyzers, Constants.cst_content_type_json)
 
 
@@ -317,7 +316,7 @@ class AnalyzerLab27(Resource):
             return compose_ret(msg_rsp, Constants.cst_content_type_hl7)
 
         except Exception as e:
-            self.log.error(Logs.fileline() + f' : ERROR - HL7 parsing exception: {str(e)}')
+            self.log.exception(Logs.fileline() + f' : ERROR - HL7 parsing exception: {str(e)}')
             msg_ack = Analyzer.generate_ack_response(None, "AE", "HL7 parsing failed")
             Analyzer.updateLab27_ACK(id_task=id_msg, stat="AE", msg=msg_ack)
             return compose_ret(msg_ack, Constants.cst_content_type_hl7, 400)
@@ -381,7 +380,7 @@ class AnalyzerLab29(Resource):
             try:
                 message_type = hl7_msg.MSH.msh_9.value
             except AttributeError:
-                self.log.error(Logs.fileline() + ' : ERROR - MSH-9 missing or incorrect format')
+                self.log.exception(Logs.fileline() + ' : ERROR - MSH-9 missing or incorrect format')
                 msg_ack = Analyzer.generate_ack_response(hl7_msg, "AE", "MSH-9 missing or incorrect format")
                 Analyzer.updateLab29_ACK(id_task=id_msg, id_samp=0, stat="AE", msg=msg_ack)
                 return compose_ret(msg_ack, Constants.cst_content_type_hl7, 400)
@@ -478,13 +477,13 @@ class AnalyzerLab29(Resource):
                             self.log.info(Logs.fileline() + f" : SKIPPED non-final result: {obs_id} (status={obs_status})")
 
                     except Exception as e:
-                        self.log.error(Logs.fileline() + f" : ERROR while parsing OBX: {str(e)}")
+                        self.log.exception(Logs.fileline() + f" : ERROR while parsing OBX: {str(e)}")
 
             # Return HL7 ACK^R22 as a response
             return compose_ret(msg_ack, Constants.cst_content_type_hl7)
 
         except Exception as e:
-            self.log.error(Logs.fileline() + f' : ERROR - HL7 parsing exception: {str(e)}')
+            self.log.exception(Logs.fileline() + f' : ERROR - HL7 parsing exception: {str(e)}')
             msg_ack = Analyzer.generate_ack_response(None, "AE", "HL7 parsing failed")
             Analyzer.updateLab29_ACK(id_task=id_msg, id_samp=0, stat="AE", msg=msg_ack)
             return compose_ret(msg_ack, Constants.cst_content_type_hl7, 400)
@@ -505,8 +504,8 @@ class AnalyzerMsgList(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND"}
                 Audit.insertAudit(audit_user, "AnalyzerMsgList", "DEVICE", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : AnalyzerMsgList ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : AnalyzerMsgList ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         for msg in l_msg:
@@ -522,8 +521,8 @@ class AnalyzerMsgList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_msg)}
             Audit.insertAudit(audit_user, "AnalyzerMsgList", "DEVICE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerMsgList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerMsgList ERROR audit success')
         return compose_ret({"data": l_msg}, Constants.cst_content_type_json)
 
 
@@ -540,14 +539,14 @@ class AnalyzerMsgDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "DELETE_FAILED", "id_msg": id_msg}
                 Audit.insertAudit(audit_user, "AnalyzerMsgDet", "DEVICE", id_msg, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : AnalyzerMsgDet ERROR audit delete err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : AnalyzerMsgDet ERROR audit delete')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE AnalyzerMsgDet delete id_msg=' + str(id_msg))
         try:
             details = {"result": "SUCCESS", "id_msg": id_msg}
             Audit.insertAudit(audit_user, "AnalyzerMsgDet", "DEVICE", id_msg, "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AnalyzerMsgDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AnalyzerMsgDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)

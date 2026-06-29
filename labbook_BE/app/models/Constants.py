@@ -3,6 +3,7 @@ class Constants:
     cst_content_type_plain = "text/plain"
     cst_content_type_json  = "application/json"
     cst_content_type_hl7   = "application/hl7-v2"
+    cst_content_type_pdf   = "application/pdf"
 
     cst_isodate    = '%Y-%m-%d'
     cst_dt_ext_HM  = '%Y-%m-%dT%H:%M'

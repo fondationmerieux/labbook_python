@@ -29,7 +29,7 @@ class PatientList(Resource):
         # self.log.info(Logs.fileline() + ' : TRACE l_patients=' + str(l_patients))
 
         if not l_patients:
-            self.log.error(Logs.fileline() + ' : TRACE PatientList not found')
+            self.log.warning(Logs.fileline() + ' : TRACE PatientList not found')
 
         for patient in l_patients:
             # Replace None by empty string
@@ -41,8 +41,8 @@ class PatientList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_patients) if l_patients else 0}
             Audit.insertAudit(audit_user, "PatientList", "PATIENT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientList ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientList ERROR audit')
         return compose_ret(l_patients, Constants.cst_content_type_json)
 
 
@@ -60,7 +60,7 @@ class PatientListFromExt(Resource):
         # self.log.info(Logs.fileline() + ' : TRACE l_patients=' + str(l_patients))
 
         if not l_patients:
-            self.log.error(Logs.fileline() + ' : TRACE PatientListFromExt not found')
+            self.log.warning(Logs.fileline() + ' : TRACE PatientListFromExt not found')
 
         sex_map = {1: 'M', 2: 'F', 3: 'U'}
 
@@ -85,8 +85,8 @@ class PatientListFromExt(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_patients) if l_patients else 0}
             Audit.insertAudit(audit_user, "PatientListFromExt", "PATIENT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientListFromExt ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientListFromExt ERROR audit')
         return compose_ret(l_patients, Constants.cst_content_type_json)
 
 
@@ -105,8 +105,8 @@ class PatientListExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "missing": ["code", "code_lab", "lastname", "firstname"]}
                 Audit.insertAudit(audit_user, "PatientListExport", "PATIENT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientListExport ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientListExport ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         args['limit'] = 50000  # for overpassed default limit
@@ -134,8 +134,8 @@ class PatientListExport(Resource):
                 details = {"result": "ERROR", "reason": "NO_DATA", "code": args.get("code"), "code_lab": args.get("code_lab"),
                            "lastname": args.get("lastname"), "firstname": args.get("firstname")}
                 Audit.insertAudit(audit_user, "PatientListExport", "PATIENT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientListExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientListExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -152,20 +152,20 @@ class PatientListExport(Resource):
                     writer.writerow(line)
 
         except Exception as err:
-            self.log.error(Logs.fileline() + ' : post PatientListExport failed, err=%s', err)
+            self.log.exception(Logs.fileline() + ' : post PatientListExport failed')
             try:
                 details = {"result": "ERROR", "reason": "WRITE_CSV_FAILED", "error": str(err)}
                 Audit.insertAudit(audit_user, "PatientListExport", "PATIENT", None, "ERROR", details, "R")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : PatientListExport ERROR audit write csv err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientListExport ERROR audit write csv')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PatientListExport')
         try:
             details = {"result": "SUCCESS", "filename": filename}
             Audit.insertAudit(audit_user, "PatientListExport", "PATIENT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientListExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientListExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -180,12 +180,12 @@ class PatientSearch(Resource):
         l_pats = Patient.getPatientSearch(args['term'])
 
         if not l_pats:
-            self.log.error(Logs.fileline() + ' : WARNING PatientSearch NOT FOUND')
+            self.log.warning(Logs.fileline() + ' : WARNING PatientSearch NOT FOUND')
             try:
                 details = {"result": "SUCCESS", "count": 0, "term": args.get('term') if args else None}
                 Audit.insertAudit(audit_user, "PatientSearch", "PATIENT", None, "SUCCESS", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientSearch ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientSearch ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 200)  # 200 if not select2 trigger an exception
 
         Various.useLangPDF()
@@ -202,8 +202,8 @@ class PatientSearch(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_pats), "term": args.get('term') if args else None}
             Audit.insertAudit(audit_user, "PatientSearch", "PATIENT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientSearch ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientSearch ERROR audit')
         return compose_ret(l_pats, Constants.cst_content_type_json)
 
 
@@ -220,16 +220,16 @@ class PatientCode(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_GENERATED"}
                 Audit.insertAudit(audit_user, "PatientCode", "PATIENT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCode ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCode ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         self.log.info(Logs.fileline() + ' : TRACE GeneratePatientCode : ' + code)
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "PatientCode", "PATIENT", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientCode ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientCode ERROR audit')
         return compose_ret(code, Constants.cst_content_type_json)
 
 
@@ -246,25 +246,25 @@ class PatientCodeLab(Resource):
             try:
                 details = {"result": "ERROR", "reason": "SQL_ERROR", "pat_code_lab": pat_code_lab}
                 Audit.insertAudit(audit_user, "PatientCodeLab", "PATIENT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCodeLab ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCodeLab ERROR audit')
             return compose_ret(-1, Constants.cst_content_type_json, 500)
 
         if ret:
-            self.log.error(Logs.fileline() + ' : ' + 'PatientCodeLab WARNING code already exist')
+            self.log.warning(Logs.fileline() + ' : ' + 'PatientCodeLab WARNING code already exist')
             try:
                 details = {"result": "SUCCESS", "exists": 1, "pat_code_lab": pat_code_lab}
                 Audit.insertAudit(audit_user, "PatientCodeLab", "PATIENT", None, "SUCCESS", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCodeLab ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCodeLab ERROR audit')
             return compose_ret(1, Constants.cst_content_type_json, 200)
         else:
             self.log.info(Logs.fileline() + ' : PatientCodeLab code ok :' + str(pat_code_lab))
             try:
                 details = {"result": "SUCCESS", "exists": 0, "pat_code_lab": pat_code_lab}
                 Audit.insertAudit(audit_user, "PatientCodeLab", "PATIENT", None, "SUCCESS", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCodeLab ERROR audit err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCodeLab ERROR audit')
             return compose_ret(0, Constants.cst_content_type_json, 200)
 
 
@@ -280,8 +280,8 @@ class PatientCombine(Resource):
             try:
                 details = {"result": "ERROR", "reason": "WRONG_ID", "id_pat1": id_pat1, "id_pat2": id_pat2}
                 Audit.insertAudit(audit_user, "PatientCombine", "PATIENT", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCombine ERROR audit wrong id err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCombine ERROR audit wrong id')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Patient.combinePatients(id_pat1, id_pat2)
@@ -291,16 +291,16 @@ class PatientCombine(Resource):
             try:
                 details = {"result": "ERROR", "reason": "COMBINE_FAILED", "id_pat1": id_pat1, "id_pat2": id_pat2}
                 Audit.insertAudit(audit_user, "PatientCombine", "PATIENT", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientCombine ERROR audit failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientCombine ERROR audit failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PatientCombine id_pat1=' + str(id_pat1) + ' | id_pat2=' + str(id_pat2))
         try:
             details = {"result": "SUCCESS", "id_pat1": id_pat1, "id_pat2": id_pat2}
             Audit.insertAudit(audit_user, "PatientCombine", "PATIENT", None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientCombine ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientCombine ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -317,8 +317,8 @@ class PatientDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         if patient['pat_birth']:
@@ -333,8 +333,8 @@ class PatientDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_pat": id_pat}
             Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit success')
         return compose_ret(patient, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -347,8 +347,8 @@ class PatientDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ID_USER_MISSING", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientDet ERROR audit id_user missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit id_user missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         self.log.info(Logs.fileline() + ' : TRACE PatientDet DEBUG args = ' + str(args))
@@ -394,8 +394,8 @@ class PatientDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "NOT_FOUND", "id_pat": id_pat}
                     Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             # AmiCare account creation (only if asked)
@@ -447,8 +447,8 @@ class PatientDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_pat": id_pat}
                     Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -470,8 +470,8 @@ class PatientDet(Resource):
                                 try:
                                     details = {"result": "ERROR", "reason": "DESACT_FORM_ITEM_FAILED", "id_pat": id_pat}
                                     Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                                except Exception as err:
-                                    self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                                except Exception:
+                                    self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
 
                             ret = Patient.insertFormItem(id_pat, key, value, args['id_user'])
@@ -481,8 +481,8 @@ class PatientDet(Resource):
                                 try:
                                     details = {"result": "ERROR", "reason": "INSERT_FORM_ITEM_FAILED", "id_pat": id_pat}
                                     Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                                except Exception as err:
-                                    self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                                except Exception:
+                                    self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                                 return compose_ret('', Constants.cst_content_type_json, 500)
                     else:
                         ret = Patient.insertFormItem(id_pat, key, value, args['id_user'])
@@ -492,8 +492,8 @@ class PatientDet(Resource):
                             try:
                                 details = {"result": "ERROR", "reason": "INSERT_FORM_ITEM_FAILED", "id_pat": id_pat}
                                 Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                            except Exception as err:
-                                self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                            except Exception:
+                                self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new patient
@@ -542,8 +542,8 @@ class PatientDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED", "id_pat": id_pat}
                     Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             res = {}
@@ -563,16 +563,16 @@ class PatientDet(Resource):
                         try:
                             details = {"result": "ERROR", "reason": "INSERT_FORM_ITEM_FAILED", "id_pat": id_pat}
                             Audit.insertAudit(audit_user, "PatientDet", "PATIENT", id_pat if id_pat else None, "ERROR", details, "U")
-                        except Exception as err:
-                            self.log.error(Logs.fileline() + ' : PatientDet ERROR audit err=' + str(err))
+                        except Exception:
+                            self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit')
                         return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE PatientDet id_pat=' + str(id_pat))
         try:
             details = {"result": "SUCCESS", "id_pat": res.get('id_pat') if isinstance(res, dict) else None}
             Audit.insertAudit(audit_user, "PatientDet", "PATIENT", res.get('id_pat') if isinstance(res, dict) else None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientDet ERROR audit success')
         return compose_ret(res, Constants.cst_content_type_json)
 
     def create_amicare_account(self, args, id_pat):
@@ -608,8 +608,8 @@ class PatientDet(Resource):
                     Patient.update_amicare_id(id_pat, amicare_id)
 
             self.log.info(Logs.fileline() + ' : AMICARE status=' + str(response.status_code))
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : AMICARE err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : AMICARE')
 
 
 class PatientFormItem(Resource):
@@ -633,8 +633,8 @@ class PatientFormItem(Resource):
         try:
             details = {"result": "SUCCESS", "id_pat": id_pat, "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "PatientFormItem", "PATIENT", id_pat, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientFormItem ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientFormItem ERROR audit')
         return compose_ret(l_vals, Constants.cst_content_type_json, 200)
 
 
@@ -652,8 +652,8 @@ class PatientHistFormItem(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit not found')
             return compose_ret([], Constants.cst_content_type_json, 200)
 
         events = {}
@@ -702,8 +702,8 @@ class PatientHistFormItem(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_vals) if l_vals else 0, "id_pat": id_pat}
             Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit')
         return compose_ret(l_vals, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -720,8 +720,8 @@ class PatientHistFormItem(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ID_PAT_INVALID", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit id_pat invalid err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit id_pat invalid')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         if not id_user or not block_id or not isinstance(fields, dict) or not fields:
@@ -729,8 +729,8 @@ class PatientHistFormItem(Resource):
             try:
                 details = {"result": "ERROR", "reason": "INVALID_PAYLOAD", "id_pat": id_pat, "id_user": id_user, "block_id": block_id}
                 Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit invalid payload err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit invalid payload')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         evt = Patient.insertHistFormItem(id_pat, id_user, block_id, fields)
@@ -739,8 +739,8 @@ class PatientHistFormItem(Resource):
         try:
             details = {"result": "SUCCESS", "id_pat": id_pat, "id_user": id_user, "block_id": block_id, "evt": evt}
             Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit success')
         return compose_ret({'evt': evt}, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -752,8 +752,8 @@ class PatientHistFormItem(Resource):
             try:
                 details = {"result": "ERROR", "reason": "EVT_ID_MISSING", "id_pat": id_pat, "evt_id": evt_id}
                 Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete missing evt_id err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete missing evt_id')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         deleted = Patient.deleteHistFormEvent(id_pat, evt_id)
@@ -762,16 +762,16 @@ class PatientHistFormItem(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_pat": id_pat, "evt_id": evt_id}
                 Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         self.log.info(Logs.fileline() + ' : PatientHistFormItem DELETE id_pat=' + str(id_pat) + ' evt_id=' + str(evt_id))
         try:
             details = {"result": "SUCCESS", "id_pat": id_pat, "evt_id": evt_id}
             Audit.insertAudit(audit_user, "PatientHistFormItem", "PATIENT", id_pat, "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientHistFormItem ERROR audit delete success')
         return compose_ret({'deleted': deleted}, Constants.cst_content_type_json, 200)
 
 
@@ -792,8 +792,8 @@ class PatientHistoric(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientHistoric", "PATIENT", id_pat, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PatientHistoric ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PatientHistoric ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         if patient.get('pat_birth'):
@@ -845,6 +845,6 @@ class PatientHistoric(Resource):
             else:
                 details = {"result": "SUCCESS", "id_pat": id_pat}
                 Audit.insertAudit(audit_user, "PatientHistoric", "PATIENT", id_pat, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PatientHistoric ERROR audit err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PatientHistoric ERROR audit')
         return compose_ret(l_datas, Constants.cst_content_type_json, 200)

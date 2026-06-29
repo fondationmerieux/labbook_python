@@ -46,8 +46,8 @@ class DoctorList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_doctors) if l_doctors else 0}
             Audit.insertAudit(audit_user, "DoctorList", "DOCTOR", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorList ERROR audit success')
         return compose_ret(l_doctors, Constants.cst_content_type_json)
 
 
@@ -68,8 +68,8 @@ class DoctorSearch(Resource):
         try:
             details = {"result": "SUCCESS", "term": args.get('term'), "count": len(l_doctors) if l_doctors else 0}
             Audit.insertAudit(audit_user, "DoctorSearch", "DOCTOR", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorSearch ERROR audit success')
         return compose_ret(l_doctors, Constants.cst_content_type_json)
 
 
@@ -86,8 +86,8 @@ class DoctorDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_doctor": int(id_doctor)}
                 Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         Various.useLangDB()
@@ -103,8 +103,8 @@ class DoctorDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_doctor": id_doctor}
             Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit success')
         return compose_ret(doctor, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -120,8 +120,8 @@ class DoctorDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_doctor": id_doctor}
                 Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "ERROR", details, "U" if int(id_doctor) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         if 'doc_agreement' not in args:
@@ -153,8 +153,8 @@ class DoctorDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_doctor": id_doctor}
                     Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new doctor
@@ -182,8 +182,8 @@ class DoctorDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED", "id_doctor": id_doctor}
                     Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_doctor = ret
@@ -193,8 +193,8 @@ class DoctorDet(Resource):
             event_type = "U" if int(id_doctor) > 0 else "C"
             details = {"result": "SUCCESS", "id_doctor": int(id_doctor)}
             Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", int(id_doctor), "SUCCESS", details, event_type)
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -207,16 +207,16 @@ class DoctorDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "DELETE_FAILED", "id_doctor": id_doctor}
                 Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorDet delete id_item=' + str(id_doctor))
         try:
             details = {"result": "SUCCESS", "id_doctor": id_doctor}
             Audit.insertAudit(audit_user, "DoctorDet", "DOCTOR", id_doctor, "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -275,8 +275,8 @@ class DoctorExport(Resource):
             try:
                 details = {"result": "NOT_FOUND"}
                 Audit.insertAudit(audit_user, "DoctorExport", "DOCTOR", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : DoctorExport ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DoctorExport ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -293,18 +293,18 @@ class DoctorExport(Resource):
                     writer.writerow(line)
 
         except Exception as err:
-            self.log.error(Logs.fileline() + ' : post DoctorExport failed, err=%s', err)
+            self.log.exception(Logs.fileline() + ' : post DoctorExport failed')
             try:
                 details = {"result": "ERROR", "reason": "EXCEPTION", "error": str(err)}
                 Audit.insertAudit(audit_user, "DoctorExport", "DOCTOR", None, "ERROR", details, "R")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : DoctorExport ERROR audit exception err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : DoctorExport ERROR audit exception')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorExport')
         try:
             details = {"result": "SUCCESS", "count": len(l_data) - 1}
             Audit.insertAudit(audit_user, "DoctorExport", "DOCTOR", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : DoctorExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : DoctorExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)

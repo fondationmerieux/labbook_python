@@ -1549,7 +1549,7 @@ class Setting:
 
             headers_json = {
                 "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json"
+                "Content-Type": Constants.cst_content_type_json
             }
 
             if not has_attachment:
@@ -1612,7 +1612,7 @@ class Setting:
 
                 # Upload media to Meta (multipart/form-data)
                 with open(tmp_path, 'rb') as fh:
-                    files = {"file": (filename, fh, "application/pdf")}
+                    files = {"file": (filename, fh, Constants.cst_content_type_pdf)}
                     data = {"messaging_product": "whatsapp", "type": "document"}
                     headers_media = {"Authorization": f"Bearer {token}"}
                     media_resp = requests.post(media_url, headers=headers_media, data=data, files=files, timeout=30)
@@ -2146,8 +2146,8 @@ class Setting:
                     url,
                     auth=(username, password),
                     files={
-                        "file1": ("cr_%s.pdf" % rec_num, f, "application/pdf"),
-                        "index": (None, json.dumps(payload), "application/json")
+                        "file1": ("cr_%s.pdf" % rec_num, f, Constants.cst_content_type_pdf),
+                        "index": (None, json.dumps(payload), Constants.cst_content_type_json)
                     },
                     timeout=10
                 )
@@ -2321,7 +2321,7 @@ class Setting:
                     "TextPart": text_body or "",
                     "HTMLPart": html_body or "",
                     "Attachments": [{
-                        "ContentType": "application/pdf",
+                        "ContentType": Constants.cst_content_type_pdf,
                         "Filename": (filename or os.path.basename(attach_path)),
                         "Base64Content": b64
                     }]
@@ -2365,14 +2365,14 @@ class Setting:
             msg_url   = Constants.cst_msg_whatsapp.format(pnid=phone_number_id)
             media_url = Constants.cst_media_whatsapp.format(pnid=phone_number_id)
 
-            headers_json  = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+            headers_json  = {"Authorization": f"Bearer {token}", "Content-Type": Constants.cst_content_type_json}
             headers_media = {"Authorization": f"Bearer {token}"}
 
             media_id = None
             if attach_path:
                 # Upload document first
                 with open(attach_path, 'rb') as fh:
-                    files = {"file": (os.path.basename(attach_path), fh, "application/pdf")}
+                    files = {"file": (os.path.basename(attach_path), fh, Constants.cst_content_type_pdf)}
                     data  = {"messaging_product": "whatsapp", "type": "document"}
                     r_up = requests.post(media_url, headers=headers_media, data=data, files=files, timeout=30)
 

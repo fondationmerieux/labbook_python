@@ -29,8 +29,8 @@ class QualityLastMeeting(Resource):
             try:
                 details = {"result": "ERROR", "action": "VIEW"}
                 Audit.insertAudit(audit_user, "QualityLastMeeting", "QUALITY", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : QualityLastMeeting ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : QualityLastMeeting ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -51,8 +51,8 @@ class QualityLastMeeting(Resource):
         try:
             details = {"result": "SUCCESS", "action": "VIEW"}
             Audit.insertAudit(audit_user, "QualityLastMeeting", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : QualityLastMeeting ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : QualityLastMeeting ERROR audit success')
         return compose_ret(meeting, Constants.cst_content_type_json, 200)
 
 
@@ -74,8 +74,8 @@ class QualityNbNonCompl(Resource):
         try:
             details = {"result": "SUCCESS", "action": "QUERY", "period": str(period)}
             Audit.insertAudit(audit_user, "QualityNbNonCompl", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : QualityNbNonCompl ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : QualityNbNonCompl ERROR audit success')
         return compose_ret(nb_noncompliance, Constants.cst_content_type_json)
 
 
@@ -92,8 +92,8 @@ class ConformityList(Resource):
             try:
                 details = {"result": "ERROR", "action": "QUERY", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ConformityList", "QUALITY", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityList ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityList ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         l_items = Quality.getConformityList(args['date_beg'], args['date_end'])
@@ -121,8 +121,8 @@ class ConformityList(Resource):
             details = {"result": "SUCCESS", "action": "QUERY",
                        "date_beg": str(args.get('date_beg')), "date_end": str(args.get('date_end'))}
             Audit.insertAudit(audit_user, "ConformityList", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConformityList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConformityList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -139,8 +139,8 @@ class ConformityDet(Resource):
             try:
                 details = {"result": "ERROR", "action": "VIEW", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -164,8 +164,8 @@ class ConformityDet(Resource):
         try:
             details = {"result": "SUCCESS", "action": "VIEW", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -219,8 +219,8 @@ class ConformityDet(Resource):
                            "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "ERROR", details,
                                   "U" if int(id_item) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -342,8 +342,8 @@ class ConformityDet(Resource):
                 try:
                     details = {"result": "ERROR", "action": "UPDATE", "reason": "UPDATE_FAILED", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -463,8 +463,8 @@ class ConformityDet(Resource):
                 try:
                     details = {"result": "ERROR", "action": "INSERT", "reason": "INSERT_FAILED", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -475,8 +475,8 @@ class ConformityDet(Resource):
                        "action": "UPDATE" if int(orig_id_item) > 0 else "INSERT",
                        "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "SUCCESS", details, "U" if int(orig_id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -489,16 +489,16 @@ class ConformityDet(Resource):
             try:
                 details = {"result": "ERROR", "action": "DELETE", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ConformityDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "action": "DELETE", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ConformityDet", "QUALITY", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConformityDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -518,8 +518,8 @@ class ConformityExport(Resource):
             try:
                 details = {"result": "ERROR", "action": "EXECUTE", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ConformityExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityExport ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityExport ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         dict_data = Quality.getConformityList(args['date_beg'], args['date_end'])
@@ -553,8 +553,8 @@ class ConformityExport(Resource):
                 details = {"result": "ERROR", "action": "EXECUTE",
                            "date_beg": str(args.get('date_beg')), "date_end": str(args.get('date_end'))}
                 Audit.insertAudit(audit_user, "ConformityExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ConformityExport ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityExport ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -570,14 +570,14 @@ class ConformityExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportConformity failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportConformity failed')
             try:
                 details = {"result": "ERROR", "action": "EXECUTE",
                            "date_beg": str(args.get('date_beg')), "date_end": str(args.get('date_end'))}
                 Audit.insertAudit(audit_user, "ConformityExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ConformityExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ConformityExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportConformity')
@@ -585,8 +585,8 @@ class ConformityExport(Resource):
             details = {"result": "SUCCESS", "action": "EXECUTE",
                        "date_beg": str(args.get('date_beg')), "date_end": str(args.get('date_end'))}
             Audit.insertAudit(audit_user, "ConformityExport", "QUALITY", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ConformityExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ConformityExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -601,8 +601,8 @@ class ControlList(Resource):
             try:
                 details = {"result": "ERROR", "action": "QUERY", "type_ctrl": str(type_ctrl)}
                 Audit.insertAudit(audit_user, "ControlList", "QUALITY", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlList ERROR audit wrong type err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlList ERROR audit wrong type')
             return compose_ret('', Constants.cst_content_type_json, 409)
 
         l_items = Quality.getControlList(type_ctrl)
@@ -620,8 +620,8 @@ class ControlList(Resource):
         try:
             details = {"result": "SUCCESS", "action": "QUERY", "type_ctrl": str(type_ctrl)}
             Audit.insertAudit(audit_user, "ControlList", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -638,8 +638,8 @@ class ControlDet(Resource):
             try:
                 details = {"result": "ERROR", "action": "VIEW", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ControlDet", "QUALITY", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -651,8 +651,8 @@ class ControlDet(Resource):
         try:
             details = {"result": "SUCCESS", "action": "VIEW", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlDet", "QUALITY", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -668,9 +668,9 @@ class ControlDet(Resource):
                            "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ControlDet", "QUALITY", int(id_item) if int(id_item) > 0 else None, "ERROR",
                                   details, "U" if int(id_item) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlDet ERROR audit args missing err=' + str(err))
-            self.log.error(Logs.fileline() + ' : ControlDet ERROR args missing')
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit insert failed')
+            self.log.exception(Logs.fileline() + ' : ControlDet ERROR args missing')
 
             return compose_ret('', Constants.cst_content_type_json, 400)
 
@@ -689,8 +689,8 @@ class ControlDet(Resource):
                 try:
                     details = {"result": "ERROR", "action": "UPDATE", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ControlDet", "QUALITY", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlDet ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -706,8 +706,8 @@ class ControlDet(Resource):
                 try:
                     details = {"result": "ERROR", "action": "INSERT"}
                     Audit.insertAudit(audit_user, "ControlDet", "QUALITY", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlDet ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -719,8 +719,8 @@ class ControlDet(Resource):
                        "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlDet", "QUALITY", int(id_item), "SUCCESS", details,
                               "U" if int(orig_id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
 
@@ -752,8 +752,8 @@ class ControlIntExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "ControlIntExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlIntExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -769,21 +769,21 @@ class ControlIntExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ControlIntExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ControlIntExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ControlIntExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ControlIntExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ControlIntExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ControlIntExport", "QUALITY", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlIntExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlIntExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -811,8 +811,8 @@ class ControlIntResList(Resource):
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ControlIntResList", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlIntResList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlIntResList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -829,8 +829,8 @@ class ControlIntRes(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NOT_FOUND", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -857,8 +857,8 @@ class ControlIntRes(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -875,8 +875,8 @@ class ControlIntRes(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", None, "ERROR", details,
                                   "U" if int(id_item) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -896,8 +896,8 @@ class ControlIntRes(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -915,8 +915,8 @@ class ControlIntRes(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                     Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -926,8 +926,8 @@ class ControlIntRes(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlIntRes", "QUALITY", int(id_item), "SUCCESS", details,
                               "U" if int(orig_id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlIntRes ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlIntRes ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
 
@@ -945,8 +945,8 @@ class ControlIntResExport(Resource):
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlIntResExport ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit not found')
             return False
 
         ctq_type = controlDet['ctq_type_val']
@@ -982,8 +982,8 @@ class ControlIntResExport(Resource):
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlIntResExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -999,21 +999,21 @@ class ControlIntResExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ControlIntResExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ControlIntResExport failed')
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ControlIntResExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ControlIntResExport id_ctrl=' + str(id_ctrl))
         try:
             details = {"result": "SUCCESS", "id_ctrl": int(id_ctrl)}
             Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlIntResExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1045,8 +1045,8 @@ class ControlExtExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "ControlExtExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlExtExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -1062,21 +1062,21 @@ class ControlExtExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ControlExtExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ControlExtExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ControlExtExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ControlExtExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ControlExtExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ControlExtExport", "QUALITY", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlExtExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlExtExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1117,8 +1117,8 @@ class ControlExtResList(Resource):
         try:
             details = {"result": "SUCCESS", "id_ctrl": int(id_ctrl)}
             Audit.insertAudit(audit_user, "ControlExtResList", "QUALITY", int(id_ctrl), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlExtResList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlExtResList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -1135,8 +1135,8 @@ class ControlExtRes(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -1151,8 +1151,8 @@ class ControlExtRes(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -1169,8 +1169,8 @@ class ControlExtRes(Resource):
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", None, "ERROR", details,
                                   "U" if int(id_item) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -1190,8 +1190,8 @@ class ControlExtRes(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -1210,8 +1210,8 @@ class ControlExtRes(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                     Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -1221,8 +1221,8 @@ class ControlExtRes(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ControlExtRes", "QUALITY", int(id_item), "SUCCESS", details,
                               "U" if int(orig_id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlExtRes ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlExtRes ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
 
@@ -1240,8 +1240,8 @@ class ControlExtResExport(Resource):
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlExtResExport ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit not found')
             return False
 
         ctq_type = controlDet['ctq_type_val']
@@ -1278,8 +1278,8 @@ class ControlExtResExport(Resource):
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ControlExtResExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -1295,21 +1295,21 @@ class ControlExtResExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ControlExtResExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ControlExtResExport failed')
             try:
                 details = {"result": "ERROR", "id_ctrl": int(id_ctrl)}
                 Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ControlExtResExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ControlExtResExport id_ctrl=' + str(id_ctrl))
         try:
             details = {"result": "SUCCESS", "id_ctrl": int(id_ctrl)}
             Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ControlExtResExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1348,8 +1348,8 @@ class EquipmentList(Resource):
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "EquipmentList", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -1370,8 +1370,8 @@ class EquipmentSearch(Resource):
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "EquipmentSearch", "QUALITY", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentSearch ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -1388,8 +1388,8 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit not found err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -1417,8 +1417,8 @@ class EquipmentDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -1436,8 +1436,8 @@ class EquipmentDet(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item) if int(id_item) > 0 else None,
                                   "ERROR", details, "U" if int(id_item) > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -1472,8 +1472,8 @@ class EquipmentDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "UPDATE_FAILED", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit update failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit update failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -1507,8 +1507,8 @@ class EquipmentDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                     Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit insert failed err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit insert failed')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -1518,8 +1518,8 @@ class EquipmentDet(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "SUCCESS", details,
                               "U" if int(id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -1532,8 +1532,8 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Quality.deleteEqpPreventive(id_item, True)
@@ -1543,8 +1543,8 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete preventive failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete preventive failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Quality.deleteEqpContract(id_item, True)
@@ -1554,8 +1554,8 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete contract failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete contract failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Quality.deleteEqpFailure(id_item, True)
@@ -1565,8 +1565,8 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete failure failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete failure failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         ret = Quality.deleteEqpMetrology(id_item, True)
@@ -1576,16 +1576,16 @@ class EquipmentDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete metrology failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete metrology failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EquipmentDet", "QUALITY", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1608,8 +1608,8 @@ class EquipmentComm(Resource):
         try:
             details = {"result": "SUCCESS", "type": str(type), "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EquipmentComm", "QUALITY", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentComm ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentComm ERROR audit success')
         return compose_ret(comm, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -1622,8 +1622,8 @@ class EquipmentComm(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "type": str(type), "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EquipmentComm", "QUALITY", int(id_eqp), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentComm ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentComm ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.updateEquipmentComm(type, id_eqp, args['comm'])
@@ -1633,16 +1633,16 @@ class EquipmentComm(Resource):
             try:
                 details = {"result": "ERROR", "reason": "UPDATE_FAILED", "type": str(type), "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EquipmentComm", "QUALITY", int(id_eqp), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentComm ERROR audit update failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentComm ERROR audit update failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EquipmentComm id_eqp=' + str(id_eqp))
         try:
             details = {"result": "SUCCESS", "type": str(type), "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EquipmentComm", "QUALITY", int(id_eqp), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentComm ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentComm ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1667,8 +1667,8 @@ class EqpDoc(Resource):
         try:
             details = {"result": "SUCCESS", "type": str(type), "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -1681,8 +1681,8 @@ class EqpDoc(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         l_exist_MANU = []
@@ -1697,8 +1697,8 @@ class EqpDoc(Resource):
                     try:
                         details = {"result": "ERROR", "reason": "INSERT_FAILED", "id_eqp": int(id_eqp)}
                         Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "ERROR", details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit insert failed err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit insert failed')
                     return compose_ret('', Constants.cst_content_type_json, 500)
                 else:
                     l_exist_MANU.append(ret)
@@ -1714,8 +1714,8 @@ class EqpDoc(Resource):
                     try:
                         details = {"result": "ERROR", "reason": "INSERT_FAILED", "id_eqp": int(id_eqp)}
                         Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "ERROR", details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit insert failed err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit insert failed')
                     return compose_ret('', Constants.cst_content_type_json, 500)
                 else:
                     l_exist_PROC.append(ret)
@@ -1735,8 +1735,8 @@ class EqpDoc(Resource):
                     try:
                         details = {"result": "ERROR", "reason": "DELETE_FAILED", "id_eqp": int(id_eqp)}
                         Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "ERROR", details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit delete failed err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit delete failed')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         for PROC in l_PROC:
@@ -1748,16 +1748,16 @@ class EqpDoc(Resource):
                     try:
                         details = {"result": "ERROR", "reason": "DELETE_FAILED", "id_eqp": int(id_eqp)}
                         Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "ERROR", details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit delete failed err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit delete failed')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpDoc id_eqp=' + str(id_eqp))
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpDoc", "QUALITY", int(id_eqp), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpDoc ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpDoc ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1809,8 +1809,8 @@ class EquipmentExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "EquipmentExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EquipmentExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -1826,21 +1826,21 @@ class EquipmentExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportEquipment failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportEquipment failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "EquipmentExport", "QUALITY", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : EquipmentExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EquipmentExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportEquipment')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "EquipmentExport", "QUALITY", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EquipmentExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EquipmentExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1871,8 +1871,8 @@ class EqpFailureList(Resource):
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpFailureList", "QUALITY", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpFailureList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpFailureList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -1913,8 +1913,8 @@ class EqpFailureExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpFailureExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpFailureExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpFailureExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -1930,21 +1930,21 @@ class EqpFailureExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post EqpFailureExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post EqpFailureExport failed')
             try:
                 details = {"result": "ERROR", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpFailureExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : EqpFailureExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpFailureExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE EqpFailureExport')
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpFailureExport", "QUALITY", int(id_eqp), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpFailureExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpFailureExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -1963,8 +1963,8 @@ class EqpFailureDet(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpFailureDet", "QUALITY", int(id_item) if int(id_item) > 0 else None,
                                   "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpFailureDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertEqpFailure(id_user=args['id_user'],
@@ -1980,8 +1980,8 @@ class EqpFailureDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                 Audit.insertAudit(audit_user, "EqpFailureDet", "QUALITY", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR audit insert failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpFailureDet ERROR audit insert failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -1990,8 +1990,8 @@ class EqpFailureDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpFailureDet", "QUALITY", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpFailureDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2004,16 +2004,16 @@ class EqpFailureDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpFailureDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpFailureDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpFailureDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpFailureDet", "QUALITY", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpFailureDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2044,8 +2044,8 @@ class EqpMetrologyList(Resource):
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpMetrologyList", "QUALITY", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpMetrologyList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpMetrologyList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2079,8 +2079,8 @@ class EqpMetrologyExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpMetrologyExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpMetrologyExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpMetrologyExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -2096,21 +2096,21 @@ class EqpMetrologyExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post EqpMetrologyExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post EqpMetrologyExport failed')
             try:
                 details = {"result": "ERROR", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpMetrologyExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : EqpMetrologyExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpMetrologyExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyExport')
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpMetrologyExport", "QUALITY", int(id_eqp), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpMetrologyExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpMetrologyExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2129,8 +2129,8 @@ class EqpMetrologyDet(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item) if int(id_item) > 0 else None,
                                   "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertEqpMetrology(id_user=args['id_user'],
@@ -2144,8 +2144,8 @@ class EqpMetrologyDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                 Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR audit insert failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit insert failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -2154,8 +2154,8 @@ class EqpMetrologyDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2168,16 +2168,16 @@ class EqpMetrologyDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item), "SUCCESS", "ERROR", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2208,8 +2208,8 @@ class EqpPreventList(Resource):
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpPreventList", "QUALITY", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpPreventList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpPreventList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2241,8 +2241,8 @@ class EqpPreventExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpPreventExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpPreventExport ERROR audit no data err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpPreventExport ERROR audit no data')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -2258,21 +2258,21 @@ class EqpPreventExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post EqpPreventExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post EqpPreventExport failed')
             try:
                 details = {"result": "ERROR", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpPreventExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : EqpPreventExport ERROR audit export failed err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpPreventExport ERROR audit export failed')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE EqpPreventExport')
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpPreventExport", "QUALITY", int(id_eqp), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpPreventExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpPreventExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2291,8 +2291,8 @@ class EqpPreventiveDet(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpPreventiveDet", "QUALITY", int(id_item) if int(id_item) > 0 else None,
                                   "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR audit args missing err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpPreventiveDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertEqpPreventive(id_user=args['id_user'],
@@ -2306,8 +2306,8 @@ class EqpPreventiveDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "INSERT_FAILED"}
                 Audit.insertAudit(audit_user,  "EqpPreventiveDet", "QUALITY", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR audit insert failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpPreventiveDet ERROR audit insert failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -2316,8 +2316,8 @@ class EqpPreventiveDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpPreventiveDet", "QUALITY", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpPreventiveDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2330,16 +2330,16 @@ class EqpPreventiveDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpPreventiveDet", "QUALITY", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR audit delete failed err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpPreventiveDet ERROR audit delete failed')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpPreventiveDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpPreventiveDet", "QUALITY", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpPreventiveDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2373,8 +2373,8 @@ class EqpContractList(Resource):
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp), "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "EqpContractList", "EQP", int(id_eqp), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpContractList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpContractList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2407,8 +2407,8 @@ class EqpContractExport(Resource):
             try:
                 details = {"result": "ERROR", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpContractExport", "EQP", int(id_eqp), "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpContractExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpContractExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -2424,21 +2424,21 @@ class EqpContractExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post EqpContractExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post EqpContractExport failed')
             try:
                 details = {"result": "ERROR", "id_eqp": int(id_eqp)}
                 Audit.insertAudit(audit_user, "EqpContractExport", "EQP", int(id_eqp), "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : EqpContractExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpContractExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE EqpContractExport')
         try:
             details = {"result": "SUCCESS", "id_eqp": int(id_eqp)}
             Audit.insertAudit(audit_user, "EqpContractExport", "EQP", int(id_eqp), "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpContractExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpContractExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2456,8 +2456,8 @@ class EqpContractDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "EqpContractDet", "EQP", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpContractDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpContractDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertEqpContract(id_user=args['id_user'],
@@ -2472,8 +2472,8 @@ class EqpContractDet(Resource):
             try:
                 details = {"result": "ERROR", "id_eqp": int(args['id_eqp'])}
                 Audit.insertAudit(audit_user, "EqpContractDet", "EQP", int(args['id_eqp']), "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpContractDet ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpContractDet ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -2482,8 +2482,8 @@ class EqpContractDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item), "id_eqp": int(args['id_eqp'])}
             Audit.insertAudit(audit_user, "EqpContractDet", "EQP", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpContractDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpContractDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2496,16 +2496,16 @@ class EqpContractDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "EqpContractDet", "EQP", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : EqpContractDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : EqpContractDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpContractDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "EqpContractDet", "EQP", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : EqpContractDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : EqpContractDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2561,8 +2561,8 @@ class ManualList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "ManualList", "MANU", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2579,8 +2579,8 @@ class ManualDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ManualDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -2601,8 +2601,8 @@ class ManualDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -2617,8 +2617,8 @@ class ManualDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ManualDet", "MANU", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ManualDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -2641,8 +2641,8 @@ class ManualDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ManualDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -2664,8 +2664,8 @@ class ManualDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "ManualDet", "MANU", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ManualDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -2675,8 +2675,8 @@ class ManualDet(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "SUCCESS", details,
                               "U" if id_item and int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2689,16 +2689,16 @@ class ManualDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ManualDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ManualDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ManualDet", "MANU", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2746,8 +2746,8 @@ class ManualExport(Resource):
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ManualExport", "MANU", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ManualExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ManualExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -2763,21 +2763,21 @@ class ManualExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportManual failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportManual failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ManualExport", "MANU", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ManualExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ManualExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportManual')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ManualExport", "MANU", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2798,8 +2798,8 @@ class ManualSearch(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "ManualSearch", "MANU", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ManualSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ManualSearch ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2844,8 +2844,8 @@ class MeetingList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "MeetingList", "MEET", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MeetingList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MeetingList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -2862,8 +2862,8 @@ class MeetingDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -2878,8 +2878,8 @@ class MeetingDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -2893,8 +2893,8 @@ class MeetingDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "MeetingDet", "MEET", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -2911,8 +2911,8 @@ class MeetingDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -2928,8 +2928,8 @@ class MeetingDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "MeetingDet", "MEET", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -2938,8 +2938,8 @@ class MeetingDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -2952,16 +2952,16 @@ class MeetingDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE MeetingDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MeetingDet", "MEET", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MeetingDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MeetingDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -2995,8 +2995,8 @@ class MeetingExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "MeetingExport", "MEET", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MeetingExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MeetingExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -3012,21 +3012,21 @@ class MeetingExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportMeeting failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportMeeting failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "MeetingExport", "MEET", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : MeetingExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MeetingExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportMeeting')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "MeetingExport", "MEET", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MeetingExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MeetingExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3077,8 +3077,8 @@ class ProcedureList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "ProcedureList", "PROC", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -3095,8 +3095,8 @@ class ProcedureDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -3117,8 +3117,8 @@ class ProcedureDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -3133,8 +3133,8 @@ class ProcedureDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "ProcedureDet", "PROC", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -3156,8 +3156,8 @@ class ProcedureDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -3178,8 +3178,8 @@ class ProcedureDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "ProcedureDet", "PROC", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -3188,8 +3188,8 @@ class ProcedureDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -3202,16 +3202,16 @@ class ProcedureDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ProcedureDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "ProcedureDet", "PROC", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3253,8 +3253,8 @@ class ProcedureExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "ProcedureExport", "PROC", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ProcedureExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ProcedureExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -3270,21 +3270,21 @@ class ProcedureExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportProcedure failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportProcedure failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "ProcedureExport", "PROC", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : ProcedureExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ProcedureExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportProcedure')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "ProcedureExport", "PROC", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3305,8 +3305,8 @@ class ProcedureSearch(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "ProcedureSearch", "PROC", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : ProcedureSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : ProcedureSearch ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -3351,8 +3351,8 @@ class StaffExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "StaffExport", "STAFF", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StaffExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StaffExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -3368,21 +3368,21 @@ class StaffExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportStaff failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportStaff failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StaffExport", "STAFF", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : StaffExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StaffExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportStaff')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StaffExport", "STAFF", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StaffExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StaffExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3399,8 +3399,8 @@ class StockCancelIO(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StockCancelIO", "STOCK", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockCancelIO ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockCancelIO ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.cancelStockIO(id_stock=args['id_stock'], type_move=args['type_move'], id_user=args['id_user'])
@@ -3410,16 +3410,16 @@ class StockCancelIO(Resource):
             try:
                 details = {"result": "ERROR", "id_stock": int(args['id_stock'])}
                 Audit.insertAudit(audit_user, "StockCancelIO", "STOCK", int(args['id_stock']), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockCancelIO ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockCancelIO ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockCancelIO')
         try:
             details = {"result": "SUCCESS", "id_stock": int(args['id_stock'])}
             Audit.insertAudit(audit_user, "StockCancelIO", "STOCK", int(args['id_stock']), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockCancelIO ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockCancelIO ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3480,8 +3480,8 @@ class StockList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_stocks) if l_stocks else 0}
             Audit.insertAudit(audit_user, "StockList", "STOCK", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockList ERROR audit success')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
@@ -3535,8 +3535,8 @@ class StockListDet(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item), "id_local": int(id_local),
                        "count": len(l_stocks) if l_stocks else 0}
             Audit.insertAudit(audit_user, "StockListDet", "STOCK", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockListDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockListDet ERROR audit success')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
@@ -3553,8 +3553,8 @@ class StockProductHist(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item), "id_local": int(id_local)}
                 Audit.insertAudit(audit_user, "StockProductHist", "STOCK", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockProductHist ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductHist ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         l_stocks = Quality.getStockProductHist(id_item, args['date_beg'], args['date_end'], id_local)
@@ -3614,8 +3614,8 @@ class StockProductHist(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item), "id_local": int(id_local),
                        "count": len(l_stocks) if l_stocks else 0}
             Audit.insertAudit(audit_user, "StockProductHist", "STOCK", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductHist ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductHist ERROR audit success')
         return compose_ret(l_stocks, Constants.cst_content_type_json)
 
 
@@ -3646,8 +3646,8 @@ class StockProductList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_products) if l_products else 0}
             Audit.insertAudit(audit_user, "StockProductList", "STOCK", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductList ERROR audit success')
         return compose_ret(l_products, Constants.cst_content_type_json)
 
 
@@ -3668,8 +3668,8 @@ class StockProductSearch(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StockProductSearch", "STOCK", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductSearch ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -3686,8 +3686,8 @@ class StockProductDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -3699,8 +3699,8 @@ class StockProductDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit success')
         return compose_ret(stock, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -3715,8 +3715,8 @@ class StockProductDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StockProductDet", "STOCK", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update stock product
@@ -3736,8 +3736,8 @@ class StockProductDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new stock product
@@ -3756,8 +3756,8 @@ class StockProductDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "StockProductDet", "STOCK", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -3766,8 +3766,8 @@ class StockProductDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -3780,16 +3780,16 @@ class StockProductDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StockProductDet", "STOCK", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3824,8 +3824,8 @@ class StockSupplyList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_supplys) if l_supplys else 0}
             Audit.insertAudit(audit_user, "StockSupplyList", "STOCK", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockSupplyList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockSupplyList ERROR audit success')
         return compose_ret(l_supplys, Constants.cst_content_type_json)
 
 
@@ -3844,8 +3844,8 @@ class StockSupplyDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StockSupplyDet", "STOCK", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSupplyDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertStockSupply(prs_prd=args['prs_prd'],
@@ -3863,8 +3863,8 @@ class StockSupplyDet(Resource):
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StockSupplyDet", "STOCK", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSupplyDet ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -3873,8 +3873,8 @@ class StockSupplyDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item), "prs_prd": int(args['prs_prd'])}
             Audit.insertAudit(audit_user, "StockSupplyDet", "STOCK", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockSupplyDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3891,8 +3891,8 @@ class StockSupplyMove(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StockSupplyMove", "STOCK", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSupplyMove ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         for supply in args['list_supply']:
@@ -3912,8 +3912,8 @@ class StockSupplyMove(Resource):
                         details = {"result": "ERROR"}
                         Audit.insertAudit(audit_user, "StockSupplyMove", "STOCK", None, "ERROR",
                                           details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR audit 500 err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : StockSupplyMove ERROR audit 500')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
                 prev_sup = Quality.getStockSupply(prev_prs_ser)
@@ -3947,8 +3947,8 @@ class StockSupplyMove(Resource):
                             Audit.insertAudit(audit_user,
                                               "StockSupplyMove", "STOCK", None, "ERROR",
                                               details, "U")
-                        except Exception as err:
-                            self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR audit 500 err=' + str(err))
+                        except Exception:
+                            self.log.exception(Logs.fileline() + ' : StockSupplyMove ERROR audit 500')
                         return compose_ret('', Constants.cst_content_type_json, 500)
             else:
                 # insert new supply
@@ -3963,16 +3963,16 @@ class StockSupplyMove(Resource):
                         details = {"result": "ERROR"}
                         Audit.insertAudit(audit_user, "StockSupplyMove", "STOCK", None, "ERROR",
                                           details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR audit 500 err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : StockSupplyMove ERROR audit 500')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockSupplyMove')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StockSupplyMove", "STOCK", None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockSupplyMove ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -3989,8 +3989,8 @@ class StockSupplyRemove(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item), "id_local": int(id_local)}
                 Audit.insertAudit(audit_user, "StockSupplyRemove", "STOCK", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSupplyRemove ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSupplyRemove ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.removeStockSupply(id_item, id_local, args['id_user'])
@@ -4000,16 +4000,16 @@ class StockSupplyRemove(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item), "id_local": int(id_local)}
                 Audit.insertAudit(audit_user, "StockSupplyRemove", "STOCK", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSupplyRemove ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSupplyRemove ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockSupplyRemove')
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item), "id_local": int(id_local)}
             Audit.insertAudit(audit_user, "StockSupplyRemove", "STOCK", int(id_item), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockSupplyRemove ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockSupplyRemove ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4027,8 +4027,8 @@ class StockUse(Resource):
             try:
                 details = {"result": "SUCCESS", "prs_ser": int(prs_ser)}
                 Audit.insertAudit(audit_user, "StockUse", "STOCK", int(prs_ser), "SUCCESS", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockUse ERROR audit success err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockUse ERROR audit success')
             return compose_ret(nb_stock_use, Constants.cst_content_type_json, 200)
 
         if stock_use['nb_pack']:
@@ -4040,8 +4040,8 @@ class StockUse(Resource):
         try:
             details = {"result": "SUCCESS", "prs_ser": int(prs_ser)}
             Audit.insertAudit(audit_user, "StockUse", "STOCK", int(prs_ser), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockUse ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockUse ERROR audit success')
         return compose_ret(nb_stock_use, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -4054,8 +4054,8 @@ class StockUse(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StockUse", "STOCK", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockUse ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockUse ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertStockUse(pru_user=args['pru_user'],
@@ -4067,8 +4067,8 @@ class StockUse(Resource):
             try:
                 details = {"result": "ERROR", "prs_ser": int(args['pru_prs'])}
                 Audit.insertAudit(audit_user, "StockUse", "STOCK", int(args['pru_prs']), "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockUse ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockUse ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # check if it is the last pack to use
@@ -4086,16 +4086,16 @@ class StockUse(Resource):
                 try:
                     details = {"result": "ERROR", "prs_ser": int(args['pru_prs'])}
                     Audit.insertAudit(audit_user, "StockUse", "STOCK", int(args['pru_prs']), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StockUse ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StockUse ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockUse pru_prs=' + str(args['pru_prs']))
         try:
             details = {"result": "SUCCESS", "prs_ser": int(args['pru_prs'])}
             Audit.insertAudit(audit_user, "StockUse", "STOCK", int(args['pru_prs']), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockUse ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockUse ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4158,8 +4158,8 @@ class StockExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "StockExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -4175,21 +4175,21 @@ class StockExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post StockExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post StockExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StockExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : StockExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE StockExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StockExport", "STOCK", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4238,8 +4238,8 @@ class StockProductsExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "StockProductsExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockProductsExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductsExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -4255,21 +4255,21 @@ class StockProductsExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post StockProductsExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post StockProductsExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StockProductsExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : StockProductsExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockProductsExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductsExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StockProductsExport", "STOCK", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockProductsExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockProductsExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4313,8 +4313,8 @@ class StockSuppliesExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "StockSuppliesExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockSuppliesExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSuppliesExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -4330,21 +4330,21 @@ class StockSuppliesExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post StockSuppliesExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post StockSuppliesExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StockSuppliesExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : StockSuppliesExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockSuppliesExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE StockSuppliesExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StockSuppliesExport", "STOCK", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockSuppliesExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockSuppliesExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4378,8 +4378,8 @@ class StockUsesExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "StockUsesExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StockUsesExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockUsesExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -4395,21 +4395,21 @@ class StockUsesExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post StockUsesExport failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post StockUsesExport failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "StockUsesExport", "STOCK", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : StockUsesExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StockUsesExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE StockUsesExport')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StockUsesExport", "STOCK", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockUsesExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockUsesExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4441,8 +4441,8 @@ class StockLocalList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StockLocalList", "STOCK", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StockLocalList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StockLocalList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -4486,8 +4486,8 @@ class StorageList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_storages) if l_storages else 0}
             Audit.insertAudit(audit_user, "StorageList", "STORAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageList ERROR audit success')
         return compose_ret({"data": l_storages}, Constants.cst_content_type_json)
 
 
@@ -4512,8 +4512,8 @@ class StorageRoomList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StorageRoomList", "STORAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageRoomList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageRoomList ERROR audit success')
         return compose_ret({"data": l_items}, Constants.cst_content_type_json)
 
 
@@ -4530,8 +4530,8 @@ class StorageRoomDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -4543,8 +4543,8 @@ class StorageRoomDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -4557,8 +4557,8 @@ class StorageRoomDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -4574,8 +4574,8 @@ class StorageRoomDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -4590,8 +4590,8 @@ class StorageRoomDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -4600,8 +4600,8 @@ class StorageRoomDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -4614,16 +4614,16 @@ class StorageRoomDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageRoomDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageRoomDet", "STORAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageRoomDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4648,8 +4648,8 @@ class StorageChamberList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StorageChamberList", "STORAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageChamberList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageChamberList ERROR audit success')
         return compose_ret({"data": l_items}, Constants.cst_content_type_json)
 
 
@@ -4666,8 +4666,8 @@ class StorageChamberDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -4679,8 +4679,8 @@ class StorageChamberDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -4694,8 +4694,8 @@ class StorageChamberDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -4712,8 +4712,8 @@ class StorageChamberDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -4729,8 +4729,8 @@ class StorageChamberDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -4740,8 +4740,8 @@ class StorageChamberDet(Resource):
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "SUCCESS", details,
                               "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -4754,16 +4754,16 @@ class StorageChamberDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageChamberDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageChamberDet", "STORAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageChamberDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4788,8 +4788,8 @@ class StorageCompList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StorageCompList", "STORAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageCompList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageCompList ERROR audit success')
         return compose_ret({"data": l_items}, Constants.cst_content_type_json)
 
 
@@ -4806,8 +4806,8 @@ class StorageCompDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -4819,8 +4819,8 @@ class StorageCompDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -4834,8 +4834,8 @@ class StorageCompDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -4855,8 +4855,8 @@ class StorageCompDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -4875,8 +4875,8 @@ class StorageCompDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -4885,8 +4885,8 @@ class StorageCompDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 and int(args.get('id_item', id_item)) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -4899,16 +4899,16 @@ class StorageCompDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageCompDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageCompDet", "STORAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -4933,8 +4933,8 @@ class StorageBoxList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "StorageBoxList", "STORAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageBoxList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageBoxList ERROR audit success')
         return compose_ret({"data": l_items}, Constants.cst_content_type_json)
 
 
@@ -4951,8 +4951,8 @@ class StorageBoxDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -4964,8 +4964,8 @@ class StorageBoxDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -4979,8 +4979,8 @@ class StorageBoxDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -5000,8 +5000,8 @@ class StorageBoxDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -5020,8 +5020,8 @@ class StorageBoxDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -5030,8 +5030,8 @@ class StorageBoxDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -5044,16 +5044,16 @@ class StorageBoxDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageBoxDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageBoxDet", "STORAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5070,8 +5070,8 @@ class StorageBoxCoord(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageBoxCoord", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageBoxCoord ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageBoxCoord ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -5083,8 +5083,8 @@ class StorageBoxCoord(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageBoxCoord", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageBoxCoord ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageBoxCoord ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
 
@@ -5101,8 +5101,8 @@ class StorageAliquotDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -5114,8 +5114,8 @@ class StorageAliquotDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -5128,8 +5128,8 @@ class StorageAliquotDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         for aliquot in args['aliquots']:
@@ -5140,8 +5140,8 @@ class StorageAliquotDet(Resource):
                 try:
                     details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                     Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit 400 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit 400')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
             # Update item
@@ -5161,8 +5161,8 @@ class StorageAliquotDet(Resource):
                     try:
                         details = {"result": "ERROR", "id_item": int(id_item)}
                         Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item), "ERROR", details, "U")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit 500 err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit 500')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
             # Insert new item
@@ -5181,8 +5181,8 @@ class StorageAliquotDet(Resource):
                     try:
                         details = {"result": "ERROR"}
                         Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", None, "ERROR", details, "C")
-                    except Exception as err:
-                        self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit 500 err=' + str(err))
+                    except Exception:
+                        self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit 500')
                     return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageAliquotDet id_item=' + str(ret))
@@ -5190,8 +5190,8 @@ class StorageAliquotDet(Resource):
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item) if id_item and id_item > 0 else None,
                               "SUCCESS", details, "U" if id_item and id_item > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -5204,16 +5204,16 @@ class StorageAliquotDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StorageAliquotDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageAliquotDet", "STORAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageAliquotDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5231,8 +5231,8 @@ class StorageAliquotDestock(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotDestock", "STORAGE", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotDestock ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.destockStorageAliquot(id_item=id_item,
@@ -5247,16 +5247,16 @@ class StorageAliquotDestock(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotDestock", "STORAGE", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotDestock ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : StorageAliquotDestock id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageAliquotDestock", "STORAGE", int(id_item), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageAliquotDestock ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json, 200)
 
 
@@ -5273,8 +5273,8 @@ class StorageAliquotRestock(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotRestock", "STORAGE", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotRestock ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotRestock ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.restockStorageAliquot(id_item=id_item,
@@ -5285,16 +5285,16 @@ class StorageAliquotRestock(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "StorageAliquotRestock", "STORAGE", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : StorageAliquotRestock ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : StorageAliquotRestock ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : StorageAliquotDestock id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "StorageAliquotRestock", "STORAGE", int(id_item), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : StorageAliquotRestock ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : StorageAliquotRestock ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json, 200)
 
 
@@ -5319,8 +5319,8 @@ class SupplierList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_items) if l_items else 0}
             Audit.insertAudit(audit_user, "SupplierList", "SUPPLIER", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -5341,8 +5341,8 @@ class SupplierSearch(Resource):
         try:
             details = {"result": "SUCCESS", "term": str(args['term']) if 'term' in args else ""}
             Audit.insertAudit(audit_user, "SupplierSearch", "SUPPLIER", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierSearch ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierSearch ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -5359,8 +5359,8 @@ class SupplierDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -5372,8 +5372,8 @@ class SupplierDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -5388,8 +5388,8 @@ class SupplierDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -5413,8 +5413,8 @@ class SupplierDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -5437,8 +5437,8 @@ class SupplierDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -5447,8 +5447,8 @@ class SupplierDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
     @require_oauth()
@@ -5461,16 +5461,16 @@ class SupplierDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE SupplierDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "SupplierDet", "SUPPLIER", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5513,8 +5513,8 @@ class SupplierExport(Resource):
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA"}
                 Audit.insertAudit(audit_user, "SupplierExport", "SUPPLIER", None, "ERROR", details, "E")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : SupplierExport ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : SupplierExport ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # write csv file
@@ -5530,21 +5530,21 @@ class SupplierExport(Resource):
                 for line in l_data:
                     writer.writerow(line)
 
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : post ExportSupplier failed, err=%s', err)
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : post ExportSupplier failed')
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "SupplierExport", "SUPPLIER", None, "ERROR", details, "E")
-            except Exception as err2:
-                self.log.error(Logs.fileline() + ' : SupplierExport ERROR audit false err=' + str(err2))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : SupplierExport ERROR audit false')
             return False
 
         self.log.info(Logs.fileline() + ' : TRACE ExportSupplier')
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "SupplierExport", "SUPPLIER", None, "SUCCESS", details, "E")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : SupplierExport ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : SupplierExport ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5561,8 +5561,8 @@ class TraceDownload(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "TraceDownload", "TRACE", None, "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : TraceDownload ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : TraceDownload ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         trace = Quality.getTraceDownload(args['id_user'], args['type'], args['ref'])
@@ -5583,8 +5583,8 @@ class TraceDownload(Resource):
         try:
             details = {"result": "SUCCESS"}
             Audit.insertAudit(audit_user, "TraceDownload", "TRACE", None, "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : TraceDownload ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : TraceDownload ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5618,8 +5618,8 @@ class TraceList(Resource):
         try:
             details = {"result": "SUCCESS", "type_trace": str(type_trace)}
             Audit.insertAudit(audit_user, "TraceList", "TRACE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : TraceList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : TraceList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -5651,8 +5651,8 @@ class TraceList(Resource):
         try:
             details = {"result": "SUCCESS", "type_trace": str(type_trace)}
             Audit.insertAudit(audit_user, "TraceList", "TRACE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : TraceList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : TraceList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -5693,8 +5693,8 @@ class MessageList(Resource):
         try:
             details = {"result": "SUCCESS", "id_user": int(id_user)}
             Audit.insertAudit(audit_user, "MessageList", "MESSAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageList ERROR audit success')
         return compose_ret(l_items, Constants.cst_content_type_json)
 
 
@@ -5711,8 +5711,8 @@ class MessageDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "MessageDet", "MESSAGE", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MessageDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -5727,8 +5727,8 @@ class MessageDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MessageDet", "MESSAGE", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -5742,8 +5742,8 @@ class MessageDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "MessageDet", "MESSAGE", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MessageDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         ret = Quality.insertMessage(id_user=args['id_user'],
@@ -5756,8 +5756,8 @@ class MessageDet(Resource):
             try:
                 details = {"result": "ERROR"}
                 Audit.insertAudit(audit_user, "MessageDet", "MESSAGE", None, "ERROR", details, "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MessageDet ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -5766,8 +5766,8 @@ class MessageDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MessageDet", "MESSAGE", int(id_item), "SUCCESS", details, "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
 
@@ -5784,8 +5784,8 @@ class MessageDel(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item), "id_user": int(id_user)}
                 Audit.insertAudit(audit_user, "MessageDel", "MESSAGE", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MessageDel ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MessageDel ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         id_item = ret
@@ -5794,8 +5794,8 @@ class MessageDel(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item), "id_user": int(id_user)}
             Audit.insertAudit(audit_user, "MessageDel", "MESSAGE", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageDel ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageDel ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
 
@@ -5812,16 +5812,16 @@ class MessageRead(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "MessageRead", "MESSAGE", int(id_item), "ERROR", details, "U")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : MessageRead ERROR audit 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : MessageRead ERROR audit 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE MessageRead id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "MessageRead", "MESSAGE", int(id_item), "SUCCESS", details, "U")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageRead ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageRead ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)
 
 
@@ -5844,8 +5844,8 @@ class MessageUnread(Resource):
         try:
             details = {"result": "SUCCESS", "id_user": int(id_user)}
             Audit.insertAudit(audit_user, "MessageUnread", "MESSAGE", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : MessageUnread ERROR audit success err=' + str(err))"""
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : MessageUnread ERROR audit success')"""
         return compose_ret(nb_msg, Constants.cst_content_type_json)
 
 
@@ -5870,8 +5870,8 @@ class PrinterList(Resource):
         try:
             details = {"result": "SUCCESS", "count": len(l_printers) if l_printers else 0}
             Audit.insertAudit(audit_user, "PrinterList", "PRINTER", None, "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PrinterList ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PrinterList ERROR audit success')
         return compose_ret({"data": l_printers}, Constants.cst_content_type_json)
 
 
@@ -5888,8 +5888,8 @@ class PrinterDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit 404 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -5901,8 +5901,8 @@ class PrinterDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit success')
         return compose_ret(item, Constants.cst_content_type_json, 200)
 
     @require_oauth()
@@ -5915,8 +5915,8 @@ class PrinterDet(Resource):
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
                 Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", None, "ERROR", details, "U" if id_item and id_item > 0 else "C")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit 400 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         # Update item
@@ -5932,8 +5932,8 @@ class PrinterDet(Resource):
                 try:
                     details = {"result": "ERROR", "id_item": int(id_item)}
                     Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "ERROR", details, "U")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # Insert new item
@@ -5948,8 +5948,8 @@ class PrinterDet(Resource):
                 try:
                     details = {"result": "ERROR"}
                     Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", None, "ERROR", details, "C")
-                except Exception as err:
-                    self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit 500 err=' + str(err))
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit 500')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             id_item = ret
@@ -5958,8 +5958,8 @@ class PrinterDet(Resource):
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "SUCCESS", details, "U" if int(id_item) > 0 else "C")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit success')
         return compose_ret(id_item, Constants.cst_content_type_json)
 
     @require_oauth()
@@ -5972,14 +5972,14 @@ class PrinterDet(Resource):
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
                 Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "ERROR", details, "D")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit delete 500 err=' + str(err))
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit delete 500')
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE deletePrinter delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
             Audit.insertAudit(audit_user, "PrinterDet", "PRINTER", int(id_item), "SUCCESS", details, "D")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : PrinterDet ERROR audit delete success err=' + str(err))
+        except Exception:
+            self.log.exception(Logs.fileline() + ' : PrinterDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)
