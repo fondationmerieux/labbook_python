@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Updated epidemio.ini formula syntax for viral load counting
 - duplicate code_var handling when updating analysis variables
 - dropdown result lists in translated languages by preventing translation of technical dictionary keys.
+- manually export DHIS2 with Lite filter
 
 ## [3.6.19] - 2026-05-04
 ### Changed

@@ -480,7 +480,7 @@
             {% if has_permission_by_ser([42,52]) %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-repository">
-                    <a class="nav-link dropdown-toggle repository" href="#" id="navbarrepository" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle repository" href="#" id="navbarrepository" data-bs-toggle="dropdown" aria-label="{{ _('Référentiels') }}">
                     </a>
                     <div class="dropdown-menu repository-content nav-style menu-choice-desktop" style="padding:0;">
                         {% if has_permission("SETTING_42") %}
@@ -499,7 +499,7 @@
             {% if has_permission_by_ser([38,54,1,39,55,174,59,66,68,75,76]) %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-setting">
-                    <a class="nav-link dropdown-toggle setting" href="#" id="navbarsetting" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle setting" href="#" id="navbarsetting" data-bs-toggle="dropdown" aria-label="{{ _('Paramètres') }}">
                     </a>
                     <div class="dropdown-menu setting-content nav-style menu-choice-desktop" style="padding:0;">
                         {% if has_permission("SETTING_38") %}
@@ -545,7 +545,7 @@
             {% if has_permission_by_ser([56,57,58,65,69,67,64]) %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-structure">
-                    <a class="nav-link dropdown-toggle structure" href="#" id="navbarstructure" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle structure" href="#" id="navbarstructure" data-bs-toggle="dropdown" aria-label="{{ _('Structure') }}">
                     </a>
                     <div class="dropdown-menu structure-content nav-style menu-choice-desktop" style="padding:0;">
                         {% if has_permission("SETTING_56") %}
@@ -579,7 +579,7 @@
             {% if has_permission_by_ser([71,175,178,48,179]) or session['user_role'] in ('A') %}
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-integration">
-                    <a class="nav-link dropdown-toggle integration" href="#" id="navbarintegration" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle integration" href="#" id="navbarintegration" data-bs-toggle="dropdown" aria-label="{{ _('Intégrations') }}">
                     </a>
                     <div class="dropdown-menu integration-content nav-style menu-choice-desktop" style="padding:0;">
                         {% if has_permission("SETTING_71") %}
@@ -610,7 +610,7 @@
             {% if session['pref_quality'] == 1 and has_permission_by_ser([77,78,82,86,91,96,120,126,133,143,151,157,163]) %} 
             <span class="nav-cust-btn">
                 <li class="nav-item dropdown btn-qualite">
-                    <a class="nav-link dropdown-toggle qualite" href="#" id="navbarquality" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle qualite" href="#" id="navbarquality" data-bs-toggle="dropdown" aria-label="{{ _('Qualité') }}">
                     </a>
                     <div class="dropdown-menu qualite-content nav-style menu-choice-desktop" style="padding:0;">
                         {% if has_permission("GEN_77") %}
@@ -668,7 +668,7 @@
             {% if session['pref_quality'] == 1 and has_permission("NONCONF_144") %}
             <span class="nav-cust-btn">
                 <li class="nav-item">
-                    <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/non-conformity/0"></a>
+                    <a class="nav-link non-conformite" href="{{ session['server_ext'] }}/non-conformity/0" aria-label="{{ _('Non-conformité') }}"></a>
                 </li>
                 <span class="nav-btn-txt">{{ _("Non-conformité") }}</span>
             </span>

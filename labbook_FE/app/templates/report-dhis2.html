@@ -169,9 +169,10 @@ function export_dhis2()
 
                 let spreadsheet = filename.substr(0, filename.length-4) ;
 
-                var recSuffix = (rec_type === 'E') ? '_rec-external' : (rec_type === 'I') ? '_rec-internal' : '_rec-all';
+                var recSuffix  = (rec_type === 'E') ? '_rec-external' : (rec_type === 'I') ? '_rec-internal' : '_rec-all';
+                var liteSuffix = (lite_filter === 'N') ? '_without-Lite' : (lite_filter === 'Y') ? '_only-Lite' : '';
 
-                download_file( "PY", "dhis2_" + spreadsheet + "_" + rng.beg + "-" + rng.end + recSuffix + ".csv", "GEN", 0 ) ;
+                download_file( "PY", "dhis2_" + spreadsheet + "_" + rng.beg + "-" + rng.end + recSuffix + liteSuffix + ".csv", "GEN", 0 ) ;
             },
             error: function(ret)
             {

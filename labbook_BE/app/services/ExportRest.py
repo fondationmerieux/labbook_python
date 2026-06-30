@@ -202,6 +202,7 @@ class ExportDHIS2(Resource):
 
             # Data headers
             l_data = [["period", "code patient", "record number", "record date", "analysis outsourced", "LabBook Lite"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListOutsourcing(period[1], period[2], rec_type, lite_filter)
@@ -236,6 +237,7 @@ class ExportDHIS2(Resource):
 
             # Data headers
             l_data = [["period", "control name", "control date",  "supplier", "result date", "result", "comment"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListEEQ(period[1], period[2])
@@ -260,6 +262,7 @@ class ExportDHIS2(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_EQUIPMENT_FAILURE')
 
             l_data = [["period", "Equipment name", "Manufacturer name", "Supplier name", "Inventory number", "Date of failure", "Comment"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListEqpFailure(period[1], period[2])
@@ -281,6 +284,7 @@ class ExportDHIS2(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_STOCK')
 
             l_data = [["period", "product name", "Expiration status", "Quantity status"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListStockStatus(period[1], period[2])
@@ -296,6 +300,7 @@ class ExportDHIS2(Resource):
             # Data headers
             l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value",
                        "storedby", "lastupdated", "comment", "followup", "deleted"]]
+            initial_len = len(l_data)
 
             # Read CSV spreadsheet
             base_dir = Path(Constants.cst_dhis2).resolve()
@@ -490,9 +495,8 @@ class ExportDHIS2(Resource):
                             l_data.append(data)
 
         # --- WRITE FILE ---
-
         # if no result to export
-        if len(l_data) < 2:
+        if len(l_data) == initial_len:
             try:
                 details = {"result": "ERROR", "reason": "NO_DATA",
                            "date_beg": args.get('date_beg'), "date_end": args.get('date_end'),
@@ -691,6 +695,7 @@ class ExportDHIS2Api(Resource):
 
             # Data headers
             l_data = [["period", "code patient", "record number", "record date", "analysis outsourced", "LabBook Lite"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListOutsourcing(period[1], period[2], rec_type, lite_filter)
@@ -725,6 +730,7 @@ class ExportDHIS2Api(Resource):
 
             # Data headers
             l_data = [["period", "control name", "control date",  "supplier", "result date", "result", "comment"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListEEQ(period[1], period[2])
@@ -749,6 +755,7 @@ class ExportDHIS2Api(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_EQUIPMENT_FAILURE')
 
             l_data = [["period", "Equipment name", "Manufacturer name", "Supplier name", "Inventory number", "Date of failure", "Comment"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListEqpFailure(period[1], period[2])
@@ -770,6 +777,7 @@ class ExportDHIS2Api(Resource):
             self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_STOCK')
 
             l_data = [["period", "product name", "Expiration status", "Quantity status"]]
+            initial_len = len(l_data)
 
             for period in l_period:
                 l_rows = Export.getListStockStatus(period[1], period[2])
@@ -785,6 +793,7 @@ class ExportDHIS2Api(Resource):
             # Data headers
             l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value",
                        "storedby", "lastupdated", "comment", "followup", "deleted"]]
+            initial_len = len(l_data)
 
             # Read CSV spreadsheet
             base_dir = Path(Constants.cst_dhis2).resolve()
@@ -976,6 +985,14 @@ class ExportDHIS2Api(Resource):
                             l_data.append(data)
 
         # Send data to api DHIS2 (3 steps)
+        if len(l_data) == initial_len:
+            try:
+                details = {"result": "ERROR", "reason": "NO_DATA"}
+                Audit.insertAudit(audit_user, "ExportDHIS2Api", "EXPORT", None, "ERROR", details, "R")
+            except Exception as err:
+                self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR audit no data err=' + str(err))
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
         # 1 - Get api settings
         api = Setting.getDHIS2Det(args['dhs_ser'])
 

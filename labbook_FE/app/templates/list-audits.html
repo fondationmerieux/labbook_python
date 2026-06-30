@@ -200,8 +200,8 @@
                             {{ _("Archiver") }}
                         </button>
                         <ul class="dropdown-menu btn-{{ session['user_role']|safe }}" aria-labelleby="btn_audit_manage">
-                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="audit_manage(false); return false;">{{ _("Archiver") }}</a></li>
-                            <li><a class="dropdown-item dropdown-color-link" href="#" onclick="audit_manage(true); return false;">{{ _("Archiver + purger") }}</a></li>
+                            <li><button class="dropdown-item dropdown-color-link" onclick="audit_manage(false);">{{ _("Archiver") }}</button></li>
+                            <li><button class="dropdown-item dropdown-color-link" onclick="audit_manage(true);">{{ _("Archiver + purger") }}</button></li>
                         </ul>
                     </div>
 
