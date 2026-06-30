@@ -339,7 +339,7 @@ class AuditArchive(Resource):
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "date_beg": date_beg, "date_end": date_end, "purge": purge}
                 Audit.insertAudit(audit_user, "AuditArchive", "AUDIT", None, "ERROR", details, "E")
             except Exception:
-                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit")
+                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit args missing")
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         try:
@@ -351,7 +351,7 @@ class AuditArchive(Resource):
                 details = {"result": "ERROR", "reason": "INVALID_DATE", "date_beg": date_beg, "date_end": date_end, "purge": purge}
                 Audit.insertAudit(audit_user, "AuditArchive", "AUDIT", None, "ERROR", details, "E")
             except Exception:
-                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit")
+                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit invalid date format")
             return compose_ret('', Constants.cst_content_type_json, 400)
 
         date_beg_utc = str(d_beg) + " 00:00:00"
@@ -366,7 +366,7 @@ class AuditArchive(Resource):
                 details = {"result": "ERROR", "reason": "DB_READ_FAILED", "date_beg": date_beg, "date_end": date_end, "purge": purge}
                 Audit.insertAudit(audit_user, "AuditArchive", "AUDIT", None, "ERROR", details, "E")
             except Exception:
-                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit")
+                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit list_audit_by_period")
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         if not rows:
@@ -399,7 +399,7 @@ class AuditArchive(Resource):
                 details = {"result": "ERROR", "reason": "FILE_WRITE_FAILED", "date_beg": date_beg, "date_end": date_end, "purge": purge}
                 Audit.insertAudit(audit_user, "AuditArchive", "AUDIT", None, "ERROR", details, "E")
             except Exception:
-                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit")
+                self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit write file")
             return compose_ret('', Constants.cst_content_type_json, 500)
 
         # 3) Optional purge
@@ -414,7 +414,7 @@ class AuditArchive(Resource):
                     # Purge failure
                     Audit.insertAudit(audit_user, "AuditPurge", "AUDIT", None, "ERROR", details, "D")
                 except Exception:
-                    self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit")
+                    self.log.exception(Logs.fileline() + " : AuditArchive ERROR audit purgeAuditByPeriod")
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
         # 4) Audit success

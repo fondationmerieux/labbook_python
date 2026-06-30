@@ -38,6 +38,7 @@
                     <div class="col-md-4">
                         <h5>{{ _("Importer un plugin") }}</h5>
                         <div class="form-group">
+                            <label for="upload-plugin">{{ _("Fichier") }}</label>
                             <input id="upload-plugin" type="file" class="form-control mb-2" accept=".jar"/>
                         </div>
                         <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" onclick="uploadFile('plugin')">{{ _("Envoyer") }}</button>
@@ -47,6 +48,7 @@
                     <div class="col-md-4">
                         <h5>{{ _("Importer un fichier de configuration") }}</h5>
                         <div class="form-group">
+                            <label for="upload-setting">{{ _("Fichier") }}</label>
                             <input id="upload-setting" type="file" class="form-control mb-2"/>
                         </div>
                         <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" onclick="uploadFile('setting')">{{ _("Envoyer") }}</button>
@@ -56,6 +58,7 @@
                     <div class="col-md-4">
                         <h5>{{ _("Importer un fichier de mapping") }}</h5>
                         <div class="form-group">
+                            <label for="upload-mapping">{{ _("Fichier") }}</label>
                             <input id="upload-mapping" type="file" class="form-control mb-2"/>
                         </div>
                         <button type="button" class="btn btn-lbk btn-{{ session['user_role']|safe }}" onclick="uploadFile('mapping')">{{ _("Envoyer") }}</button>

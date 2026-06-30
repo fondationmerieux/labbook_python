@@ -27,7 +27,8 @@
 
                 <!-- Automation type -->
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Type") }} *</label>
+                    <label for={% if args['id_item']|int > 0 %}"ajb_type_label"{% else %}"ajb_type"{% endif %} 
+                        class="form-label col-3 text-end mt-2 me-1">{{ _("Type") }} *</label>
                     <div class="col">
                         {% if args['id_item']|int > 0 %}
                             <input
@@ -68,7 +69,7 @@
 
                 <!-- Activation -->
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end me-1">{{ _("Options") }}</label>
+                    <div class="form-label col-3 text-end me-1">{{ _("Options") }}</div>
                     <div class="col d-flex gap-4 align-items-center">
                         <div class="form-check">
                             <input
@@ -238,9 +239,7 @@
 
                     <!-- Internal messaging (visible when mode = create) -->
                     <div id="dhis2_internal_block" class="form-group d-flex align-items-start mt-2 d-none">
-                        <label class="form-label col-3 text-end mt-2 me-1">
-                            {{ _("Messagerie interne") }}
-                        </label>
+                        <div class="form-label col-3 text-end mt-2 me-1">{{ _("Messagerie interne") }}</div>
                         <div class="col">
 
                             <!-- "Send" checkbox -->
@@ -314,7 +313,7 @@
                     </div>
 
                     <div class="form-group d-lg-flex align-items-start mt-2">
-                        <label class="form-label col-3 text-end mt-2 me-1">{{ _("Messagerie interne") }}</label>
+                        <div class="form-label col-3 text-end mt-2 me-1">{{ _("Messagerie interne") }}</div>
                         <div class="col">
 
                             <div class="form-check mb-2">
@@ -360,7 +359,7 @@
                     </div>
 
                     <div class="form-group d-lg-flex align-items-start mt-2">
-                        <label class="form-label col-3 text-end mt-2 me-1">{{ _("Messagerie interne") }}</label>
+                        <div class="form-label col-3 text-end mt-2 me-1">{{ _("Messagerie interne") }}</div>
                         <div class="col">
 
                             <div class="form-check mb-2">
@@ -394,7 +393,7 @@
                 <h5 class="mb-3">{{ _("Statut d'exécution") }}</h5>
 
                 <div class="form-group d-lg-flex align-items-start mt-2">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Prochaine exécution") }}</label>
+                    <div class="form-label col-3 text-end mt-2 me-1">{{ _("Prochaine exécution") }}</div>
                     <div class="col">
                         <div class="form-control-plaintext">
                             {{ args['item'].get('ajb_next_run_at','-') }}
@@ -403,7 +402,7 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-2">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Dernière exécution") }}</label>
+                    <div class="form-label col-3 text-end mt-2 me-1">{{ _("Dernière exécution") }}</div>
                     <div class="col">
                         <div class="form-control-plaintext">
                             {{ args['item'].get('ajb_last_run_at','-') }}

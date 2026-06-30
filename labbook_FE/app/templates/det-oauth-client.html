@@ -13,7 +13,7 @@
             {% if session['user_role'] in ('A') %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }} *</label>
+                    <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }} *</label>
                     <div>					
                         <input type="text" name="name" id="name" value="{{ args['item'].get('oacl_client_name','') }}" class="form-control form-lbk">	
                     </div>

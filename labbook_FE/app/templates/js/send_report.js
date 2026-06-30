@@ -132,6 +132,9 @@ function onMethodChange() {
 
     // Prefill recipient based on consent
     if (recip) {
+        recip.value = "";
+        recip.type = (code === 'W') ? 'tel' : 'email';
+
         if (patAgreement === 'Y') {
             if (code === 'W') {
                 recip.value = getPhone();
@@ -234,7 +237,7 @@ function send_last_report(file) {
     }
 
     if (code === 'S' || code === 'M') {
-        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient.toLowerCase());
+        const ok = recip.checkValidity();
         if (!ok) {
             setHelp("{{ _('Méthode email : renseigner une adresse valide.') }}");
             return;

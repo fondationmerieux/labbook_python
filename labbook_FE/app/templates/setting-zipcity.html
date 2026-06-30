@@ -11,7 +11,7 @@
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Paramétrage des codes postaux") }}</span></h2>
             <div class="uploadHTML5 mb-3">
-                <label for="file" class="form-label col-lg-3 text-end mt-2">{{ _("Charger la base à partir d'un fichier csv") }}</label>
+                <label for="ZIPCITY" class="form-label col-lg-3 text-end mt-2">{{ _("Charger la base à partir d'un fichier csv") }}</label>
                 <input id="ZIPCITY" name="file" type="file" />
                 <input type="button" onclick="del_items();" id="btn-del" value="{{ _("Vider la base") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 <input type="button" onclick="upload_file();" id="btn-add" value="{{ _("Ajouter le fichier en base") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">

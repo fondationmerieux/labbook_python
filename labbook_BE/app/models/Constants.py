@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 class Constants:
     cst_content_type_plain = "text/plain"
+    cst_content_type_csv   = "text/csv"
     cst_content_type_json  = "application/json"
     cst_content_type_hl7   = "application/hl7-v2"
     cst_content_type_pdf   = "application/pdf"

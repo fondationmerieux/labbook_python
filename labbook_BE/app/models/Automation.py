@@ -1729,7 +1729,7 @@ def _execute_job_dhis2_create(job_row: dict) -> dict:
         owner_id=owner_id,
         path="dhis2/",
         ext="csv",
-        content_type="text/csv",
+        content_type=Constants.cst_content_type_csv,
     )
 
     if send_msg and receiver_id:
@@ -1750,7 +1750,7 @@ def _execute_job_dhis2_create(job_row: dict) -> dict:
                     file_size=file_size,
                     sender_id=owner_id,
                     ext="csv",
-                    content_type="text/csv",
+                    content_type=Constants.cst_content_type_csv,
                     path="dhis2/",
                 )
         except Exception:
@@ -1886,7 +1886,7 @@ def _execute_job_billing(job_row: dict) -> dict:
         owner_id=owner_id,
         path="billing/",
         ext="pdf",
-        content_type="application/pdf",
+        content_type=Constants.cst_content_type_pdf,
     )
 
     # Internal messaging (translated text)
@@ -1914,7 +1914,7 @@ def _execute_job_billing(job_row: dict) -> dict:
                     file_size,
                     sender,
                     ext="pdf",
-                    content_type="application/pdf",
+                    content_type=Constants.cst_content_type_pdf,
                     path="billing/"
                 )
 
@@ -2221,7 +2221,7 @@ def _execute_job_activity(job_row: dict) -> dict:
             owner_id=owner_id,
             path="activity/",
             ext="csv",
-            content_type="text/csv",
+            content_type=Constants.cst_content_type_csv,
         )
 
         # Optional internal message
@@ -2238,7 +2238,7 @@ def _execute_job_activity(job_row: dict) -> dict:
                     file_size,
                     sender,
                     ext="csv",
-                    content_type="text/csv",
+                    content_type=Constants.cst_content_type_csv,
                     path="activity/",
                 )
 
@@ -2371,7 +2371,7 @@ def _execute_job_activity(job_row: dict) -> dict:
             owner_id=owner_id,
             path="activity/",
             ext="csv",
-            content_type="text/csv",
+            content_type=Constants.cst_content_type_csv,
         )
 
         # Internal message
@@ -2388,7 +2388,7 @@ def _execute_job_activity(job_row: dict) -> dict:
                     file_size,
                     sender,
                     ext="csv",
-                    content_type="text/csv",
+                    content_type=Constants.cst_content_type_csv,
                     path="activity/",
                 )
 
@@ -2455,7 +2455,7 @@ def _execute_job_activity(job_row: dict) -> dict:
         owner_id=owner_id,
         path="activity/",
         ext="pdf",
-        content_type="application/pdf",
+        content_type=Constants.cst_content_type_pdf,
     )
 
     # Optional internal messaging
@@ -2483,7 +2483,7 @@ def _execute_job_activity(job_row: dict) -> dict:
                     file_size,
                     sender,
                     ext="pdf",
-                    content_type="application/pdf",
+                    content_type=Constants.cst_content_type_pdf,
                     path="activity/",
                 )
         except Exception:
