@@ -13,7 +13,13 @@
     <div class="inner">
         <div id="main">
             <h2 class="page-title page-title-color">
-                <span>{{ _("Demande d'analyses patient externe") }}</span>
+                <span>
+                    {% if req_type == "I" %}
+                    {{ _("Demande d'analyses patient hospitalisé") }}
+                    {% else %}
+                    {{ _("Demande d'analyses patient externe") }}
+                    {% endif %}
+                </span>
             </h2>
             <form autocomplete="off">
                 {% if entry == 'N' %}
@@ -37,6 +43,12 @@
                     <div class="col-md-5 panel-heading ms-3">
                         <h3 class="panel-title">{{ _("Prescription") }}</h3>
                     </div>
+
+                    {% if req_type == "I" %}
+                    <div class="col panel-heading ms-3 me-1">
+                        <h3 class="panel-title">{{ _("Hospitalisation") }}</h3>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="d-md-flex align-items-start gy-3">
                     <div class="col-md-3 ms-3">
@@ -187,6 +199,53 @@
                             </div>
                         </div>
                     </div>
+
+                    {% if req_type == "I" %}
+                    <div class="col">
+                        <div class="col-12 mt-1">
+                            <div class="form-group d-md-flex align-items-start mt-2">
+                                <label for="date_hosp" class="form-label col-6 text-end mt-2 me-1">{{ _("Date d'admission") }}</label>
+                                {% if entry == 'Y' %}
+                                <input id="date_hosp" class="form-control form-lbk" type="date" value="" placeholder="">
+                                {% else %}
+                                <span class="font-info">{{ args['record']['date_hosp']|date_format }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group d-md-flex align-items-start mt-2">
+                                <label for="service_int" class="form-label col-6 text-end mt-2 me-1">{{ _("Service demandeur") }}</label>
+                                {% if entry == 'Y' %}
+                                    {% if ihm['req_services'] %}
+                                    <select id="service_int" class="form-select w-auto">
+                                        {% from 'macros.html' import select_req_services %}
+                                        {{ select_req_services(ihm['req_services']) }}
+                                    </select>
+                                    {% else%}
+                                    <input id="service_int" type="text" value="" maxlength="50" class="form-control form-lbk" style="">
+                                    {% endif %}
+                                {% else %}
+                                <span class="font-info">{{ args['record']['service_interne'] }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group d-md-flex align-items-start mt-2">
+                                <label for="bed_num" class="form-label col-6 text-end mt-2 me-1">{{ _("Numéro de lit") }}</label>
+                                {% if entry == 'Y' %}
+                                <input id="bed_num" type="number" value="" maxlength="4" class="form-control form-lbk" min="0" max="9999">
+                                {% else %}
+                                <span class="font-info">{{ args['record']['num_lit'] }}</span>
+                                {% endif %}
+                            </div>                   
+                            <div class="form-group d-md-flex align-items-start mt-2">
+                                <label for="rec_hosp_num" class="form-label col-6 text-end mt-2 me-1">{{ _("Identification hôpital") }}</label>
+                                {% if entry == 'Y' %}
+                                <input id="rec_hosp_num" type="text" value="" class="form-control form-lbk" min="0" max="9999">
+                                {% else %}
+                                <span class="font-info">{{ args['record']['rec_hosp_num'] }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
                 </div>
             </form>
 
@@ -230,6 +289,7 @@
                 </table>
             </form> 
 
+            {% if req_type == "E" %}
             <div class="row ms-3 mt-3">
                 <span class="font-info">{{ _("Actes de prélèvement") }}</span>
             </div>
@@ -251,6 +311,7 @@
                     <tbody id="tbody_sample"></tbody>
                 </table>
             </form>
+            {% endif %}
 
             {% if session['pref_bill'] == '1' %}
             <form autocomplete="off">
@@ -411,7 +472,7 @@ var NEXT_SAMP_CODE = null;
 {% if entry == 'Y' %}
 function change_pat( id_pat ) 
 {
-window.location.href = "{{ session['server_ext'] }}/det-patient/E/" + id_pat ;
+window.location.href = "{{ session['server_ext'] }}/det-patient/{{ req_type }}/" + id_pat ;
 }
 
 function change_pat_hist( id_pat ) 
@@ -541,7 +602,7 @@ let data_exist = false ;
                 tmp_struct_ana.code    = data_ana.code ;
                 tmp_struct_ana.name    = data_ana.nom ;
                 tmp_struct_ana.rate    = data_ana.cote_unite + data_ana.cote_valeur ;
-                tmp_struct_ana.price   = act_price * data_ana.cote_valeur ;
+                tmp_struct_ana.price = {% if req_type == "I" %}{% if args['billing_hosp']['value'] == "1" %}act_price * data_ana.cote_valeur{% else %}0{% endif %}{% else %}act_price * data_ana.cote_valeur{% endif %} ;
 
                 data_analysis.push(tmp_struct_ana) ;
 
@@ -1230,7 +1291,7 @@ var rec_num_int = $("#rec_num_int").val() ;
     save_requests_next() ;
     else
     {
-        set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+        set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
         {# First check if rec_num_int already exist or not #}
         $.ajax( 
         {
@@ -1263,7 +1324,7 @@ function save_requests_next()
 var id_user       = {{ session['user_id']|safe}} ;
 var user_role     = "{{ session['user_role']|safe }}"  ;
 var id_patient    = {{ args['patient']['id_data']|safe }} ;
-var type          = 183 ; // EXTERNAL
+var type          = {% if req_type == "I" %}184{% else %}183{% endif %} ; // EXTERNAL = 183, INTERNAL = 184
 var date_record   = $("#date_record").val() ;
 var id_med        = $("#search_doctor").val() ;
 var date_prescr   = $("#date_prescr").val() ;
@@ -1277,12 +1338,17 @@ var per_discount  = {% if session['pref_bill'] == '1' %}$("#per_discount").val()
 var per_insurance = {% if session['pref_bill'] == '1' %}$("#per_insurance").val(){% else %} 0{%endif%};
 var bill_remain   = {% if session['pref_bill'] == '1' %}$("#bill_remain").val(){% else %} 0{%endif%};
 var receipt_num   = $("#receipt_num").val() ;
-var date_hosp     = "" ;
 var bill_num      = "" ;
 var stat          = 181 ;
 var rec_custody   = $("input[type='radio'][name='rec_custody']:checked").val() ;
 var rec_num_int   = $("#rec_num_int").val() ;
 
+const isInternal = {{ 'true' if req_type == 'I' else 'false' }};
+var date_hosp    = isInternal ? $("#date_hosp").val() : "";
+var service_int  = isInternal ? $("#service_int").val() : "";
+var bed_num      = isInternal ? $("#bed_num").val() : 0;
+var rec_hosp_num = isInternal ? $("#rec_hosp_num").val() : "";
+    
 var seenCodesRecord = {} ;
 var codesToCheck    = [] ;
 
@@ -1440,9 +1506,9 @@ var codesToCheck    = [] ;
                   '"receipt_num":"' + receipt_num + '", ' +
                   '"bill_num":"' + bill_num + '", ' +
                   '"date_hosp":"' + date_hosp + '", ' +
-                  '"service_int":"", ' +
-                  '"bed_num":0, ' +
-                  '"rec_hosp_num":"", ' +
+                  '"service_int":"' + service_int + '", ' +
+                  '"bed_num":' +bed_num + ', ' +
+                  '"rec_hosp_num":"' + rec_hosp_num + '", ' +
                   '"stat":' + stat + ', ' +
                   '"rec_custody":"' + rec_custody + '", ' +
                   '"rec_num_int":"' + rec_num_int + '", ' +
@@ -1452,7 +1518,7 @@ var codesToCheck    = [] ;
         $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+        set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
 
         // Send record information
         $.ajax( 
@@ -1513,7 +1579,7 @@ var codesToCheck    = [] ;
 
             param_list_ana += ' ] }';
 
-                set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+                set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
 
                 // Send analysis information
                 $.ajax( 
@@ -1557,7 +1623,7 @@ var codesToCheck    = [] ;
 
                     param_list_prod += ' ] }';
 
-                        set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+                        set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
 
                         // Send product information
                         $.ajax( 
@@ -1573,7 +1639,7 @@ var codesToCheck    = [] ;
                             {
                             let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
 
-                                set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+                                set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
 
                                 // create in DB list of results to enter and corresponding validation
                                 $.ajax(
@@ -1588,7 +1654,7 @@ var codesToCheck    = [] ;
                                     {
                                     let param_stat = '{ "stat":182 }' ;
 
-                                        set_audit_context("{{ _('Enregistrement de dossier externe') }}");
+                                        set_audit_context("{{ _('Enregistrement de dossier hospitalisé') if req_type == 'I' else _('Enregistrement de dossier externe') }}");
 
                                         // update record stat 181 to 182
                                         $.ajax(
@@ -1603,8 +1669,8 @@ var codesToCheck    = [] ;
                                             {
                                                 $("#dial-wait").modal("hide") ;
 
-                                            // Redirection to adminsitrative page
-                                            window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + id_rec ;
+                                            // Redirection to administrative page
+                                            window.location.href = "{{ session['server_ext'] }}/administrative-record/{{ req_type }}/" + id_rec ;
                                             },
                                             error: function(response)
                                             {
@@ -1693,7 +1759,7 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
                 {
                     $("#dial-wait").modal("hide") ;
 
-                window.location.href = "{{ session['server_ext'] }}/administrative-record/E/" + {{ args['record']['id_data'] }} ;
+                window.location.href = "{{ session['server_ext'] }}/administrative-record/{{ req_type }}/" + {{ args['record']['id_data'] }} ;
                 },
                 error: function(response)
                 {

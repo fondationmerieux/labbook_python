@@ -4917,17 +4917,16 @@ def det_pat_hist(id_pat=0):
     )  # nosec B311
 
 
-# Page : external request details
-@app.route('/det-req-ext/<string:entry>/<int:ref>')
-def det_req_ext(entry='Y', ref=0):
-    log.info(Logs.fileline() + ' : TRACE det-req-ext ref = ' + str(ref))
+# Page : wrapper request details
+def det_req(req_type, entry='Y', ref=0):
+    log.info(Logs.fileline() + ' : TRACE det-req-' + req_type + ' ref = ' + str(ref))
 
     if not test_session():
         log.info(Logs.fileline() + ' : TRACE Labbook det-req-ext => disconnect')
         session.clear()
         return index()
 
-    session['current_page'] = 'det-req-ext/' + str(entry) + '/' + str(ref)
+    session['current_page'] = f'det-req-{"int" if req_type == "I" else "ext"}/{entry}/{ref}'
     session.modified = True
 
     resp = ensure_be_token()
@@ -5060,6 +5059,22 @@ def det_req_ext(entry='Y', ref=0):
         except requests.exceptions.RequestException:
             log.exception(Logs.fileline() + ' : requests billing_pat failed, url=%s', url)
 
+        # load requesting services setting
+        if req_type == "I":
+            try:
+                url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
+                req = requests.get(url, timeout=10, headers=headers)
+
+                redir = be_check_or_bounce(req)
+                if redir:
+                    return redir
+
+                if req.status_code == 200:
+                    json_ihm['req_services'] = req.json()
+
+            except requests.exceptions.RequestException:
+                log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
+
         # add empty structure for post data_save after save_request
         json_data['data_analysis'] = []
         json_data['data_samples']  = []
@@ -5070,176 +5085,21 @@ def det_req_ext(entry='Y', ref=0):
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
 
-    log.info(Logs.fileline() + ' : TRACE det-req-ext processing time = ' + str(dt_time_req))
+    log.info(Logs.fileline() + ' : TRACE det-req processing time = ' + str(dt_time_req))
 
-    return render_template('det-req-ext.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('det-req.html', req_type=req_type, entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+# Page : external request details
+@app.route('/det-req-ext/<string:entry>/<int:ref>')
+def det_req_ext(entry='Y', ref=0):
+    return det_req("E", entry, ref) 
 
 
 # Page : internal request details
 @app.route('/det-req-int/<string:entry>/<int:ref>')
 def det_req_int(entry='Y', ref=0):
-    log.info(Logs.fileline() + ' : TRACE det-req-int ref = ' + str(ref))
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook det-req-int => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = f'det-req-int/{entry}/{ref}'
-    session.modified = True
-
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    get_software_settings(headers)
-
-    json_ihm  = {}
-    json_data = {}
-
-    # Detect if a patient history form TOML exists
-    has_pat_hist_form = False
-    try:
-        path = Constants.cst_form_pat
-        for filename in os.listdir(path):
-            if filename.startswith('form_patient_hist_') and filename.endswith('.toml'):
-                has_pat_hist_form = True
-                break
-    except Exception:
-        log.exception(Logs.fileline() + ' : failed to detect patient history form')
-
-    if entry == "Y":
-        # here : ref = id_pat
-        # Load data patient
-        if ref > 0:
-            try:
-                url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(ref)
-                req = requests.get(url, timeout=10, headers=headers)
-
-                redir = be_check_or_bounce(req)
-                if redir:
-                    return redir
-
-                if req.status_code == 200:
-                    json_data['patient'] = req.json()
-
-            except requests.exceptions.RequestException:
-                log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
-
-        # Load yes or no
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/yorn'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['yorn'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests yorn list failed, url=%s', url)
-
-        # Load discount billing
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/remise_facturation'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['discount_bill'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests discount bill list failed, url=%s', url)
-
-        # Load products statut
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['products_statut'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests products statut list failed, url=%s', url)
-
-        # Load products
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['products'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
-
-        # Load prix_acte
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/prix_acte'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['act_price'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests prix_acte failed, url=%s', url)
-
-        # Load facturation_pat_hosp
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation_pat_hosp'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['billing_hosp'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests billing_pat failed, url=%s', url)
-
-        # load requesting services setting
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['req_services'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
-
-        # add empty structure
-        json_data['data_analysis'] = []
-        json_data['data_samples']  = []
-        json_data['data_products'] = []
-        json_data['record']        = []
-        json_data['has_pat_hist_form'] = has_pat_hist_form
-
-    return render_template('det-req-int.html', entry=entry, ihm=json_ihm, args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return det_req("I", entry, ref)
 
 
 # Page : administrative record
