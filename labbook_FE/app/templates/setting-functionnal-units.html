@@ -37,14 +37,7 @@
                 </table>
             </form>
             
-            <div class="clearfix my-2">
-                <div class="float-start">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
-                </div>
-                <div class="float-end">
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                </div>
-            </div>
+            {% include "block_cancel_save.html" %} 
 
         </div>
     </div>
