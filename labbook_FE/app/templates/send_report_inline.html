@@ -1,5 +1,8 @@
+<label for="send_method_last" class="visually-hidden">{{ _("Méthodes") }}</label>
 <select id="send_method_last" class="form-select form-select-sm w-auto"></select>
+<label for="send_model_last" class="visually-hidden">{{ _("Modèles") }}</label>
 <select id="send_model_last"  class="form-select form-select-sm w-auto"></select>
+<label for="send_recipient_last" class="visually-hidden">{{ _("Destinataire") }}</label>
 <input  id="send_recipient_last" class="form-control form-control-sm w-auto" placeholder="{{ _("Destinataire") }}" />
 <button type="button" class="btn btn-sm btn-{{ session["user_role"]|safe }}" onclick="send_last_report('__FILE__')">{{ _("Envoyer") }}</button>
 {% if args['patient']['pat_agreement'] == 'Y' and args['doctor']['doc_agreement'] == 'Y' %}

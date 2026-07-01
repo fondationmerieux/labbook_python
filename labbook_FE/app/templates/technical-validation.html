@@ -134,7 +134,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Commentaire et motif annulation") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
@@ -152,7 +152,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_cancel_res" id="btn_cancel_res" value="{{ _("Ajouter") }}"  onclick="send_cancel();">
-                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Résultats automate") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div id="analyzer_table"></div>

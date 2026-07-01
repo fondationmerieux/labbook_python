@@ -86,6 +86,7 @@
                         {% if ihm['dhs']|length > 0 %}
                         <div class="d-flex align-items-center">
                             <div class="ms-3">
+                                <label for="dhs_list" class="visually-hidden">{{ _("Plateforme DHIS2 api") }}</label>
                                 <select id="dhs_list" class="form-select me-3 w-auto" {% if ihm['dhs'] and ihm['dhs']|length < 2 %}hidden{% endif %}>
                                     {% for dhs in ihm['dhs'] %}
                                     <option value="{{ dhs["dhs_ser"] }}" {% if dhs["dhs_default"] == "Y" %}selected{% endif %}>{{ dhs["dhs_name"] }}</option>

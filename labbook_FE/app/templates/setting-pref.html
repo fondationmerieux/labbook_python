@@ -20,47 +20,78 @@
                     <tbody>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Prix unitaire des actes de prélévements et d'analyses") }}</th>
-                            <td scope="row" class="col-lg-6"><input type="number" id="pref_deed_price" name="pref_deed_price" min="0" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}"></td>
+                            <td scope="row" class="col-lg-6">
+                                <label for="pref_deed_price" class="visually-hidden">{{ _("Prix unitaire des actes de prélévements et d'analyses") }}</label>
+                                <input type="number" id="pref_deed_price" name="pref_deed_price" min="0" step="1" value="{% if args['pref_list'] %}{{ args['pref_list'][0]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document 1") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_head_1" name="pref_head_1" value="{% if args['pref_list'] %}{{ args['pref_list'][1]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_head_1" class="visually-hidden">{{ _("Entête de document 1") }}</label>
+                                <input class="input-large" type="text" id="pref_head_1" name="pref_head_1" value="{% if args['pref_list'] %}{{ args['pref_list'][1]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document 2") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_head_2" name="pref_head_2" value="{% if args['pref_list'] %}{{ args['pref_list'][2]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_head_2" class="visually-hidden">{{ _("Entête de document 2") }}</label>
+                                <input class="input-large" type="text" id="pref_head_2" name="pref_head_2" value="{% if args['pref_list'] %}{{ args['pref_list'][2]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document 3") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_head_3" name="pref_head_3" value="{% if args['pref_list'] %}{{ args['pref_list'][3]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_head_3" class="visually-hidden">{{ _("Entête de document 3") }}</label>
+                                <input class="input-large" type="text" id="pref_head_3" name="pref_head_3" value="{% if args['pref_list'] %}{{ args['pref_list'][3]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document - Adresse") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_addr" name="pref_addr" value="{% if args['pref_list'] %}{{ args['pref_list'][4]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_addr" class="visually-hidden">{{ _("Entête de document - Adresse") }}</label>
+                                <input class="input-large" type="text" id="pref_addr" name="pref_addr" value="{% if args['pref_list'] %}{{ args['pref_list'][4]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document - Téléphone") }}</th>
-                            <td class="col-lg-6"><input type="text" id="pref_phone" name="pref_phone" value="{% if args['pref_list'] %}{{ args['pref_list'][5]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_phone" class="visually-hidden">{{ _("Entête de document - Téléphone") }}</label>
+                                <input type="text" id="pref_phone" name="pref_phone" value="{% if args['pref_list'] %}{{ args['pref_list'][5]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document - Fax") }}</th>
-                            <td class="col-lg-6"><input type="text" id="pref_fax" name="pref_fax" value="{% if args['pref_list'] %}{{ args['pref_list'][6]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_fax" class="visually-hidden">{{ _("Entête de document - Fax") }}</label>
+                                <input type="text" id="pref_fax" name="pref_fax" value="{% if args['pref_list'] %}{{ args['pref_list'][6]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document - Email") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_email" name="pref_email" value="{% if args['pref_list'] %}{{ args['pref_list'][7]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_email" class="visually-hidden">{{ _("Entête de document - Email") }}</label>
+                                <input class="input-large" type="text" id="pref_email" name="pref_email" value="{% if args['pref_list'] %}{{ args['pref_list'][7]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Entête de document - Ville") }}</th>
-                            <td class="col-lg-6"><input class="input-large" type="text" id="pref_city" name="pref_city" value="{% if args['pref_list'] %}{{ args['pref_list'][8]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_city" class="visually-hidden">{{ _("Entête de document - Ville") }}</label>
+                                <input class="input-large" type="text" id="pref_city" name="pref_city" value="{% if args['pref_list'] %}{{ args['pref_list'][8]['value'] }}{% endif %}">
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Facturation des patients hospitalisés") }}</th>
-                            <td class="col-lg-6"><input type="checkbox" id="pref_fact_hosp" name="pref_fact_hosp" value="1" {% if args['pref_list'] and args['pref_list'][9]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <td class="col-lg-6">
+                                <label for="pref_fact_hosp" class="visually-hidden">{{ _("Facturation des patients hospitalisés") }}</label>
+                                <input type="checkbox" id="pref_fact_hosp" name="pref_fact_hosp" value="1" {% if args['pref_list'] and args['pref_list'][9]['value'] == '1' %} checked="checked"{% endif %}>
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Unité de l'age par défaut (Jours, Semaines, Mois, Années)") }}</th>
                             <td class="col-lg-6">
+                                <label for="pref_age_unit" class="visually-hidden">{{ _("Unité de l'age par défaut (Jours, Semaines, Mois, Années)") }}</label>
                                 <select id="pref_age_unit" class="form-select" name="pref_age_unit">
                                     <option value="Jours" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Jours" %} selected {% endif %}>{{ _("Jours") }}</option>
                                     <option value="Semaines" {% if args['pref_list'] and args['pref_list'][10]['value'] == "Semaines" %} selected {% endif %}>{{ _("Semaines") }}</option>
@@ -71,19 +102,28 @@
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Déconnexion automatique (mn)") }}</th>
-                            <td class="col-lg-6"><input type="number" id="pref_logout" name="pref_logout"  min="1" step="1" max="120" value="{% if args['pref_list'] %}{{ args['pref_list'][11]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_logout" class="visually-hidden">{{ _("Déconnexion automatique (mn)") }}</label>
+                                <input type="number" id="pref_logout" name="pref_logout"  min="1" step="1" max="120" value="{% if args['pref_list'] %}{{ args['pref_list'][11]['value'] }}{% endif %}"></td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Module qualité activé") }}</th>
-                            <td class="col-lg-6"><input type="checkbox" id="pref_quality" name="pref_quality" value="1" {% if args['pref_list'] and args['pref_list'][12]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <td class="col-lg-6">
+                                <label for="pref_quality" class="visually-hidden">{{ _("Module qualité activé") }}</label>
+                                <input type="checkbox" id="pref_quality" name="pref_quality" value="1" {% if args['pref_list'] and args['pref_list'][12]['value'] == '1' %} checked="checked"{% endif %}>
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Module facturation activé") }}</th>
-                            <td class="col-lg-6"><input type="checkbox" id="pref_bill" name="pref_bill" value="1" {% if args['pref_list'] and args['pref_list'][13]['value'] == '1' %} checked="checked"{% endif %}></td>
+                            <td class="col-lg-6">
+                                <label for="pref_bill" class="visually-hidden">{{ _("Module facturation activé") }}</label>
+                                <input type="checkbox" id="pref_bill" name="pref_bill" value="1" {% if args['pref_list'] and args['pref_list'][13]['value'] == '1' %} checked="checked"{% endif %}>
+                            </td>
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Langue des rapports") }}</th>
                             <td class="col-lg-6">
+                                <label for="pref_lang_pdf" class="visually-hidden">{{ _("Langue des rapports") }}</label>
                                 <select id="pref_lang_pdf" class="form-select" name="pref_lang_pdf">
                                     <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][14]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
                                     <option value="en_GB" {% if args['pref_list'] and args['pref_list'][14]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
@@ -99,6 +139,7 @@
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Langue du référentiel") }}</th>
                             <td class="col-lg-6">
+                                <label for="pref_lang_db" class="visually-hidden">{{ _("Langue du référentiel") }}</label>
                                 <select id="pref_lang_db" class="form-select" name="pref_lang_db">
                                     <option value="fr_FR" {% if args['pref_list'] and args['pref_list'][15]['value'] == "fr_FR" %} selected {% endif %}>{{ _("Français") }}</option>
                                     <option value="en_GB" {% if args['pref_list'] and args['pref_list'][15]['value'] == "en_GB" %} selected {% endif %}>{{ _("Anglais") }}</option>
@@ -108,12 +149,16 @@
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Ancienneté de conservations des audits avant archivage et purge (en mois)") }}</th>
-                            <td class="col-lg-6"><input type="number" id="pref_audit_purge" name="pref_audit_purge" min="1" step="1" max="60" value="{% if args.get('pref_list') and (args.get('pref_list')|length > 16) %}{{ args.get('pref_list')[16]['value'] }}{% endif %}"></td>
+                            <td class="col-lg-6">
+                                <label for="pref_audit_purge" class="visually-hidden">{{ _("Ancienneté de conservations des audits avant archivage et purge (en mois)") }}</label>
+                                <input type="number" id="pref_audit_purge" name="pref_audit_purge" min="1" step="1" max="60" value="{% if args.get('pref_list') and (args.get('pref_list')|length > 16) %}{{ args.get('pref_list')[16]['value'] }}{% endif %}">
+                            </td>
                             
                         </tr>
                         <tr class="d-lg-flex">
                             <th scope="row" class="col-lg-6">{{ _("Audit trail activé (un redémarrage de la machine hébergeant LabBook est nécessaire après modification)") }}</th>
                             <td class="col-lg-6">
+                                <label for="pref_audit_enabled" class="visually-hidden">{{ _("Audit trail activé (un redémarrage de la machine hébergeant LabBook est nécessaire après modification)") }}</label>
                                 <input type="checkbox" id="pref_audit_enabled" name="pref_audit_enabled" value="1"
                                 {% if args.get('pref_list') and (args.get('pref_list')|length > 17) and args.get('pref_list')[17]['value'] == '1' %}
                                     checked="checked"

@@ -85,7 +85,7 @@
                     {% endif %}
                 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ item['fos_name'] }}</label>
+                    <div class="form-label col-lg-3 text-end mt-2 me-1">{{ item['fos_name'] }}</div>
                     <label class="form-label text-lg-end mt-2 me-3" id="{{ item['fos_ref'] }}">
                         <input type="radio" name="{{ item['fos_ref'] }}" value="Y" {% if item['fos_stat'] == 'Y' %} checked="true" {% endif %} onChange="update_data(this);">&nbsp;{{ _("Oui") }}</input>
                     </label>
