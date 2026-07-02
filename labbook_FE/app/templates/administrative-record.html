@@ -308,6 +308,7 @@
                 </div>
                 <div class="row ms-3">
                     <div class="col-md-7 mt-3">
+                        <label for="comm" class="visually-hidden">{{ _("Renseignements / Informations complémentaires") }}</label>
                         <textarea id="comm" rows="5" cols="80" class="form-control form-lbk">{{ args['record']['rc'] }}</textarea>
                         <input type="button" onclick="save_comm();" id="btn_comm" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} mt-2">
                     </div>
@@ -331,7 +332,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <table class=table-responsive">
+                                <table class="table-responsive">
                                     <thead>
                                         <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
                                     </thead>

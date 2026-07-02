@@ -2693,7 +2693,7 @@ class Setting:
             return '' if val is None else str(val)
 
         # Matches {{ something }}
-        return re.sub(r"\{\{\s*(.*?)\s*\}\}", repl, tpl)
+        return re.sub(r"\{\{\s*([^{}]*)\s*\}\}", repl, tpl)
 
     @staticmethod
     def getSettingOauthList():
