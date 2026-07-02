@@ -355,6 +355,7 @@
                         <div class="d-flex align-items-center">
                             {% if has_permission("RECORD_20") %}
                             {% if ihm['tpl_outsourced'] %}
+                            <label for="tpl_outsourced" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_outsourced" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_outsourced'] and ihm['tpl_outsourced']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_outsourced'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
@@ -364,6 +365,7 @@
                             {% endif %}
                             {% if session['pref_bill'] == '1' and has_permission("RECORD_22") %}
                             {% if ihm['tpl_invoice'] %}
+                            <label for="tpl_invoice" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_invoice" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_invoice'] and ihm['tpl_invoice']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_invoice'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
@@ -373,6 +375,7 @@
                             <input type="button" onclick="print_invoice({{ args['record']['id_data'] }});" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _('Imprimer la facture') }}">
                             {% endif %}
                             {% if has_permission("RECORD_21") %}
+                            <label for="tpl_sticker" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_sticker" class="form-select me-3 w-auto" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_sticker'] %}
                                 <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
