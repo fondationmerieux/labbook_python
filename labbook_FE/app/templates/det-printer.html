@@ -13,7 +13,7 @@
             {% if has_permission("PRINT_174") %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
+                    <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="name" id="name" value="{{ args['printer']['prt_name'] }}" class="form-control form-lbk">	
                     </div>
@@ -43,14 +43,7 @@
 
             </form>
             
-            <div class="my-2 clearfix">
-                <div class="float-start ms-0">
-                    <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
-                </div>
-                <div class="float-end">
-                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
-                </div>
-            </div>
+            {% include "block_cancel_save.html" %}
 
             {% else %}
             {% include 'no-rights.html' %} 
