@@ -352,7 +352,7 @@ def ensure_base_urls_in_session():
     session.modified = True
 
 
-def get_init_var(be_headers=None):
+def get_init_var():
     """
     Load runtime configuration values from the Back-End into session.
 
@@ -1050,7 +1050,7 @@ def homepage(login=''):
         login = session['login']
 
     # if 'server_ext' not in session or not session['server_ext']:
-    resp = get_init_var(headers)
+    resp = get_init_var()
     if isinstance(resp, Response):
         return resp
 

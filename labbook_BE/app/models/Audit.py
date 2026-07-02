@@ -17,18 +17,7 @@ class Audit:
     def list_audit(offset=0, limit=25, order_col_index=1, order_dir="desc", search_value=None, filters=None):
         cursor = DB.cursor()
         try:
-            col_map = {
-                1: "aud_date_utc",
-                2: "aud_user_display",
-                3: "aud_user_role",
-                4: "aud_details",
-                5: "aud_resource_type",
-                6: "aud_action",
-                7: "aud_client_ip",
-                8: "aud_status",
-                9: "aud_ser"
-            }
-            order_col = col_map.get(order_col_index, "aud_date_utc")
+            order_col = Audit._get_order_column(order_col_index)
             order_dir = "ASC" if str(order_dir).lower() == "asc" else "DESC"
 
             filters = filters or {}
@@ -40,76 +29,14 @@ class Audit:
             '''
             params = []
 
-            # Date filters
-            if filters.get("date_start"):
-                sql += " AND aud_date_utc >= %s"
-                params.append((filters["date_start"] or "").replace("T", " "))
-
-            if filters.get("date_end"):
-                sql += " AND aud_date_utc <= %s"
-                params.append((filters["date_end"] or "").replace("T", " "))
-
-            # User filter (login or display)
-            if filters.get("user"):
-                like_user = "%" + filters["user"] + "%"
-                sql += " AND (aud_user_login LIKE %s OR aud_user_display LIKE %s)"
-                params.extend([like_user, like_user])
-
-            # Role filter
-            if filters.get("role"):
-                role_raw = filters["role"]
-                role_prefix = role_raw.split("_", 1)[0] if role_raw else ""
-                if role_prefix:
-                    sql += " AND LEFT(aud_user_role, 1) = %s"
-                    params.append(role_prefix)
-
-            # Conext filter
-            if filters.get("context"):
-                sql += " AND aud_details LIKE %s"
-                params.append("%" + filters["context"] + "%")
-
-            # Action filter
-            if filters.get("action"):
-                sql += " AND aud_action LIKE %s"
-                params.append("%" + filters["action"] + "%")
-
-            # Status filter (exact match)
-            if filters.get("status"):
-                sql += " AND aud_status = %s"
-                params.append(filters["status"])
-
-            # IP filter
-            if filters.get("ip"):
-                sql += " AND aud_client_ip LIKE %s"
-                params.append("%" + filters["ip"] + "%")
-
-            # Resource filter on "TYPE ID"
-            if filters.get("resource"):
-                sql += " AND CONCAT(COALESCE(aud_resource_type, ''), ' ', COALESCE(aud_resource_id, '')) LIKE %s"
-                params.append("%" + filters["resource"] + "%")
+            sql, params = Audit._apply_filters(sql, params, filters) 
 
             # System calls filter (default: exclude system)
             include_system = str(filters.get("include_system") or "N").upper()
             if include_system != "Y":
                 sql += " AND COALESCE(aud_client_ip, '') <> '127.0.0.1'"
 
-            # Global search (DataTables search box)
-            if search_value:
-                like = "%" + search_value + "%"
-                sql += '''
-                    AND (
-                        aud_user_login LIKE %s OR
-                        aud_user_display LIKE %s OR
-                        aud_user_role LIKE %s OR
-                        aud_resource_type LIKE %s OR
-                        aud_resource_id LIKE %s OR
-                        aud_action LIKE %s OR
-                        aud_client_ip LIKE %s OR
-                        aud_status LIKE %s OR
-                        aud_details LIKE %s
-                    )
-                '''
-                params.extend([like, like, like, like, like, like, like, like, like])
+            sql, params = Audit._apply_global_search(sql, params, search_value)
 
             sql += " ORDER BY " + order_col + " " + order_dir + ", aud_ser DESC LIMIT %s, %s"
             params.extend([offset, limit])
@@ -119,48 +46,9 @@ class Audit:
 
             result = []
             for r in rows:
-                item = {}
-                item["aud_ser"] = r["aud_ser"]
-                item["event_time_utc"] = r["aud_date_utc"].strftime("%Y-%m-%d %H:%M:%S") if r["aud_date_utc"] else ""
-                item["aud_user_login"] = r["aud_user_login"] or ""
-                item["user_display"] = r["aud_user_display"] or item["aud_user_login"]
-                item["role_name"] = r["aud_user_role"]
+                result.append(Audit._build_audit_item(r))
 
-                # Extract context label from aud_details (JSON) for the "Contexte" column
-                context_label = ""
-                details_raw = r.get("aud_details")
-                if details_raw:
-                    try:
-                        details_obj = details_raw if isinstance(details_raw, dict) else json.loads(details_raw)
-                        if isinstance(details_obj, dict):
-                            context_label = str(details_obj.get("context") or "")
-                    except Exception:
-                        context_label = ""
-
-                item["context_label"] = context_label
-
-                if r["aud_resource_type"] and r["aud_resource_id"]:
-                    resource_label = str(r["aud_resource_type"]) + " " + str(r["aud_resource_id"])
-                elif r["aud_resource_type"]:
-                    resource_label = r["aud_resource_type"]
-                else:
-                    resource_label = r["aud_resource_id"]
-
-                action_label = r.get("aud_action") or ""
-                if action_label:
-                    resource_label = str(resource_label) + " - " + str(action_label)
-
-                item["resource_label"] = resource_label
-
-                # Keep action for the "Action" column (menu stays separate)
-                item["details_summary"] = r["aud_action"]
-
-                item["ip_addr"] = r["aud_client_ip"]
-                item["status_label"] = r["aud_status"]
-
-                result.append(item)
-
-            return result
+            return result 
         except Exception as err:
             Audit.log.error(Logs.fileline() + " : ERROR type=" + err.__class__.__name__ + " args=" + repr(getattr(err, "args", None)))
             raise
@@ -169,6 +57,149 @@ class Audit:
                 cursor.close()
             except Exception:
                 pass
+
+    # --- begin of methods for list-audit ---
+
+    @staticmethod
+    def _get_order_column(order_col_index):
+        return {
+            1: "aud_date_utc",
+            2: "aud_user_display",
+            3: "aud_user_role",
+            4: "aud_details",
+            5: "aud_resource_type",
+            6: "aud_action",
+            7: "aud_client_ip",
+            8: "aud_status",
+            9: "aud_ser"
+        }.get(order_col_index, "aud_date_utc")
+
+    @staticmethod
+    def _apply_filters(sql, params, filters):
+        # Date filters
+        if filters.get("date_start"):
+            sql += " AND aud_date_utc >= %s"
+            params.append((filters["date_start"] or "").replace("T", " "))
+
+        if filters.get("date_end"):
+            sql += " AND aud_date_utc <= %s"
+            params.append((filters["date_end"] or "").replace("T", " "))
+
+        # User filter (login or display)
+        if filters.get("user"):
+            like_user = "%" + filters["user"] + "%"
+            sql += " AND (aud_user_login LIKE %s OR aud_user_display LIKE %s)"
+            params.extend([like_user, like_user])
+
+        # Role filter
+        if filters.get("role"):
+            role_raw = filters["role"]
+            role_prefix = role_raw.split("_", 1)[0] if role_raw else ""
+            if role_prefix:
+                sql += " AND LEFT(aud_user_role, 1) = %s"
+                params.append(role_prefix)
+
+        # Context filter
+        if filters.get("context"):
+            sql += " AND aud_details LIKE %s"
+            params.append("%" + filters["context"] + "%")
+
+        # Action filter
+        if filters.get("action"):
+            sql += " AND aud_action LIKE %s"
+            params.append("%" + filters["action"] + "%")
+
+        # Status filter
+        if filters.get("status"):
+            sql += " AND aud_status = %s"
+            params.append(filters["status"])
+
+        # IP filter
+        if filters.get("ip"):
+            sql += " AND aud_client_ip LIKE %s"
+            params.append("%" + filters["ip"] + "%")
+
+        # Resource filter
+        if filters.get("resource"):
+            sql += (
+                " AND CONCAT(COALESCE(aud_resource_type, ''), ' ', "
+                "COALESCE(aud_resource_id, '')) LIKE %s"
+            )
+            params.append("%" + filters["resource"] + "%")
+
+        # System calls filter
+        include_system = str(filters.get("include_system") or "N").upper()
+        if include_system != "Y":
+            sql += " AND COALESCE(aud_client_ip, '') <> '127.0.0.1'"
+
+        return sql, params
+
+    @staticmethod
+    def _apply_global_search(sql, params, search_value):
+        if search_value:
+            like = "%" + search_value + "%"
+            sql += """
+                AND (
+                    aud_user_login LIKE %s OR
+                    aud_user_display LIKE %s OR
+                    aud_user_role LIKE %s OR
+                    aud_resource_type LIKE %s OR
+                    aud_resource_id LIKE %s OR
+                    aud_action LIKE %s OR
+                    aud_client_ip LIKE %s OR
+                    aud_status LIKE %s OR
+                    aud_details LIKE %s
+                )
+            """
+            params.extend([like, like, like, like, like, like, like, like, like])
+
+        return sql, params
+
+    @staticmethod
+    def _build_audit_item(r):
+        item = {}
+
+        item["aud_ser"] = r["aud_ser"]
+        item["event_time_utc"] = r["aud_date_utc"].strftime("%Y-%m-%d %H:%M:%S") if r["aud_date_utc"] else ""
+        item["aud_user_login"] = r["aud_user_login"] or ""
+        item["user_display"] = r["aud_user_display"] or item["aud_user_login"]
+        item["role_name"] = r["aud_user_role"]
+
+        # Extract context label from aud_details (JSON) for the "Contexte" column
+        context_label = ""
+        details_raw = r.get("aud_details")
+        if details_raw:
+            try:
+                details_obj = details_raw if isinstance(details_raw, dict) else json.loads(details_raw)
+                if isinstance(details_obj, dict):
+                    context_label = str(details_obj.get("context") or "")
+            except Exception:
+                context_label = ""
+
+        item["context_label"] = context_label
+
+        if r["aud_resource_type"] and r["aud_resource_id"]:
+            resource_label = str(r["aud_resource_type"]) + " " + str(r["aud_resource_id"])
+        elif r["aud_resource_type"]:
+            resource_label = r["aud_resource_type"]
+        else:
+            resource_label = r["aud_resource_id"]
+
+        action_label = r.get("aud_action") or ""
+        if action_label:
+            resource_label = str(resource_label) + " - " + str(action_label)
+
+        item["resource_label"] = resource_label
+
+        # Keep action for the "Action" column (menu stays separate)
+        item["details_summary"] = r["aud_action"]
+
+        item["ip_addr"] = r["aud_client_ip"]
+        item["status_label"] = r["aud_status"]
+
+        return item
+
+    # --- end of methods for list-audit ---
 
     @staticmethod
     def countAuditTotal():
