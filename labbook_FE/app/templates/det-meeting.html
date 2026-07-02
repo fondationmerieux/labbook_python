@@ -79,7 +79,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_MEET = {% if args['data_MEET'] %}{{ args['data_MEET']|safe }}{% else %}[]{% endif %} ;
+var data_MEET = {{ args['data_MEET']|default([])|tojson }};
 
 $("#search_promoter").select2(
 {
@@ -127,8 +127,8 @@ document.querySelector('.select2-search__field').focus() ;
 
 function save_item()
 {
-var id_owner     = {{ session['user_id']|safe}} ;
-var id_meeting   = {{ args['id_meeting']|safe }} ;
+var id_owner     = {{ session['user_id']|tojson }};
+var id_meeting   = {{ args['id_meeting']|default(0)|tojson }};
 var date_meeting = $("#date_meeting").val()      ;
 var type         = $("#type").val()              ;
 var promoter     = $("#search_promoter").val()   ;
@@ -148,7 +148,7 @@ var msg = "" ;
     if (id_meeting > 0)
     {
         if (promoter < 1)
-        promoter = {% if args['meeting']['promoter_id'] %}{{ args['meeting']['promoter_id']|safe }}{% else %}0{% endif %} ;
+        promoter = {% if args['meeting']['promoter_id'] %}{{ args['meeting']['promoter_id']|tojson }}{% else %}0{% endif %};
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +

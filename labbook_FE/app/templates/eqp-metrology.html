@@ -115,8 +115,8 @@ document.querySelector('.select2-search__field').focus() ;
 function save_item()
 {
 var id_item   = 0 ;    
-var id_user   = {{ session['user_id']|safe}} ;
-var id_eqp    = {{ args['id_eqp']|safe }}    ;
+var id_user   = {{ session['user_id']|default(0)|tojson }};
+var id_eqp    = {{ args['id_eqp']|default(0)|tojson }};
 var date_metr = $("#date_metr").val()        ;
 var supplier  = $("#search_supplier").val()  ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;

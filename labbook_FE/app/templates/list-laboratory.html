@@ -86,7 +86,7 @@
                 </div>
                 <div class="float-end">
                     {% if has_permission("LAB_79") %}
-                    <input type="button" onclick="save_dict();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
+                    <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer les valeurs") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
@@ -103,9 +103,9 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_val  = {"id_ihm":0, "id_data":0 ,"label":"", "code":"", "short_label":"", "position":0} ;
-var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
-var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
-var data_files  = {% if args['data_files'] %}{{ args['data_files']|safe }}{% else %}[]{% endif %} ;
+var data_values = {{ args['data_values']|default([])|tojson }};
+var ind_values  = {{ args['data_last_id']|default(0)|tojson }};
+var data_files  = {{ args['data_files']|default([])|tojson }};
 
 function add_value()
 {
@@ -246,9 +246,9 @@ let id_ihm  = split_id[split_id.length -1] ;
     }
 }
 
-function save_dict()
+function save_item()
 {
-var id_owner  = {{ session['user_id']|safe}} ;
+var id_owner  = {{ session['user_id']|default(0)|tojson }};
 var dict_name = $("#name").val() ;
 
     if (dict_name == "")

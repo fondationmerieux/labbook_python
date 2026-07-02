@@ -74,7 +74,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_MSG = {% if args['data_MSG'] %}{{ args['data_MSG']|safe }}{% else %}[]{% endif %} ;
+var data_MSG = {{ args['data_MSG']|default([])|tojson }};
 
 $("#search_user").select2(
 {
@@ -122,8 +122,8 @@ document.querySelector('.select2-search__field').focus() ;
 
 function save_item()
 {
-var id_user  = {{ session['user_id']|safe}}  ;
-var id_msg   = {{ args['id_message']|safe }} ;
+var id_user  = {{ session['user_id']|default(0)|tojson }};
+var id_msg   = {{ args['id_message']|default(0)|tojson }};
 var receiver = $("#search_user").val()       ;
 var title    = $("#title").val()             ;
 var message  = JSON.stringify( $.trim( $("#message").val() ) ) ;

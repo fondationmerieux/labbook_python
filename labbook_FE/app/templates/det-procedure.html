@@ -108,7 +108,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_PROC = {% if args['data_PROC'] %}{{ args['data_PROC']|safe }}{% else %}[]{% endif %} ;
+var data_PROC = {{ args['data_PROC']|default([])|tojson }};
 
 $("#search_writer").select2(
 {
@@ -232,8 +232,8 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner    = {{ session['user_id']|safe}} ;
-var id_proc     = {{ args['id_procedure']|safe }} ;
+var id_owner    = {{ session['user_id']|default(0)|tojson }};
+var id_proc     = {{ args['id_procedure']|default(0)|tojson }};
 var reference   = $("#reference").val()   ;
 var title       = $("#title").val()       ;
 var writer      = $("#search_writer").val()   ;
@@ -246,7 +246,7 @@ var section     = $("#section").val()     ;
 
 var msg = "" ;
 
-    if (reference == "" && titre == "")
+    if (reference == "" && title == "")
     msg += "{{ _("Veuillez saisir une référence ou un titre.") }}\n" ;
 
     if (msg != "")
@@ -258,13 +258,13 @@ var msg = "" ;
     if (id_proc > 0)
     {
         if (writer < 1)
-        writer = {% if args['procedure']['writer_id'] %}{{ args['procedure']['writer_id']|safe }}{% else %}0{% endif %} ;
+        writer = {% if args['procedure']['writer_id'] %}{{ args['procedure']['writer_id']|tojson }}{% else %}0{% endif %};
 
         if (auditor < 1)
-        auditor = {% if args['procedure']['auditor_id'] %}{{ args['procedure']['auditor_id']|safe }}{% else %}0{% endif %} ;
+        auditor = {% if args['procedure']['auditor_id'] %}{{ args['procedure']['auditor_id']|tojson }}{% else %}0{% endif %};
 
         if (approver < 1)
-        approver = {% if args['procedure']['approver_id'] %}{{ args['procedure']['approver_id']|safe }}{% else %}0{% endif %} ;
+        approver = {% if args['procedure']['approver_id'] %}{{ args['procedure']['approver_id']|tojson }}{% else %}0{% endif %};
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +

@@ -116,7 +116,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_MANU = {% if args['data_MANU'] %}{{ args['data_MANU']|safe }}{% else %}[]{% endif %} ;
+var data_MANU = {{ args['data_MANU']|default([])|tojson }};
 
 $("#search_writer").select2(
 {
@@ -240,8 +240,8 @@ let id_item = $(e.currentTarget).val();
 
 function save_item()
 {
-var id_owner    = {{ session['user_id']|safe}} ;
-var id_manual   = {{ args['id_manual']|safe }} ;
+var id_owner    = {{ session['user_id']|tojson }};
+var id_manual   = {{ args['id_manual']|default(0)|tojson }};
 var reference   = $("#reference").val()   ;
 var title       = $("#title").val()       ;
 var man_mas     = $("#man_mas").val()     ;
@@ -267,13 +267,13 @@ var msg = "" ;
     if (id_manual > 0)
     {
         if (writer < 1)
-        writer = {% if args['manual_det']['writer_id'] %}{{ args['manual_det']['writer_id']|safe }}{% else %}0{% endif %} ;
+        writer = {% if args['manual_det']['writer_id'] %}{{ args['manual_det']['writer_id']|tojson }}{% else %}0{% endif %};
 
         if (auditor < 1)
-        auditor = {% if args['manual_det']['auditor_id'] %}{{ args['manual_det']['auditor_id']|safe }}{% else %}0{% endif %} ;
+        auditor = {% if args['manual_det']['auditor_id'] %}{{ args['manual_det']['auditor_id']|tojson }}{% else %}0{% endif %};
 
         if (approver < 1)
-        approver = {% if args['manual_det']['approver_id'] %}{{ args['manual_det']['approver_id']|safe }}{% else %}0{% endif %} ;
+        approver = {% if args['manual_det']['approver_id'] %}{{ args['manual_det']['approver_id']|tojson }}{% else %}0{% endif %};
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +

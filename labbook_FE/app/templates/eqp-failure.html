@@ -170,8 +170,8 @@ let id_item = $(e.currentTarget).val();
 function save_item()
 {
 var id_item     = 0 ;    
-var id_user     = {{ session['user_id']|safe}} ;
-var id_eqp      = {{ args['id_eqp']|safe }}    ;
+var id_user     = {{ session['user_id']|default(0)|tojson }};
+var id_eqp      = {{ args['id_eqp']|default(0)|tojson }};
 var date_fail   = $("#date_fail").val()        ;
 var type        = $("#type").val()             ;
 var incharge    = $("#search_incharge").val()  ;
