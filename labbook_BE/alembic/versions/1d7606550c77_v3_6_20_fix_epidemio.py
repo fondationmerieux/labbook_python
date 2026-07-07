@@ -5,8 +5,6 @@ Revises: 2c884d401740
 Create Date: 2026-06-18 09:09:05.058910
 
 """
-from alembic import op
-from sqlalchemy import text
 from datetime import datetime
 
 
@@ -20,8 +18,6 @@ depends_on = None
 def upgrade():
     print("--- " + str(datetime.today()) + "---")
     print("START of migration v3_6_20_fix_epidemio revision=1d7606550c77")
-
-    conn = op.get_bind()
 
     # Copy alembic resources to /storage/resource
     # Update file only if source is newer

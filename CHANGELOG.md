@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.6.20] - 2026-07-01
+## [3.6.20] - 2026-07-07
 ### Changed
 - Merged internal and external request detail pages into a single shared template.
 
