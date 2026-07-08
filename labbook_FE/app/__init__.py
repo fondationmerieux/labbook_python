@@ -10922,7 +10922,7 @@ def delete_file(type='', filename=''):
         base_dir = Constants.cst_template
     else:
         # type inconnu → on ne fait rien
-        log.error(Logs.fileline() + ' : delete-file invalid type=%s', type)
+        log.error(Logs.fileline() + ' : delete-file invalid file type')
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
     try:
@@ -10938,7 +10938,7 @@ def delete_file(type='', filename=''):
 
         # Ensure the target path stays inside the allowed directory
         if not target_path.startswith(base_dir_abs + os.sep):
-            log.error(Logs.fileline() + ' : delete-file path traversal attempt: %s', target_path)
+            log.error(Logs.fileline() + ' : delete-file path traversal attempt') 
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
         if os.path.exists(target_path):

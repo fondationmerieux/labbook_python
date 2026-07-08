@@ -19,9 +19,53 @@ It contains two separate python applications that constitute the LabBook applica
 - make
 - git
 
+## Ubuntu ISO requirements
+
+When using a LabBook ISO installation, Ubuntu repositories may need to be restored:
+
+Example for Ubuntu 22.04 (Jammy Jellyfish):
+
+```bash
+sudo tee -a /etc/apt/sources.list <<EOF
+
+deb http://archive.ubuntu.com/ubuntu jammy main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu jammy-updates main restricted universe multiverse
+deb http://archive.ubuntu.com/ubuntu jammy-backports main restricted universe multiverse
+deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+
+EOF
+```
+
 # Installation and usage
 
 The development setup mirrors the production setup with the application running in a container that connects to the database on the host.
+
+## Existing LabBook ISO installation
+
+When installing from an existing LabBook ISO system, stop the embedded LabBook service before running the container version:
+
+```bash
+sudo systemctl stop labbook
+```
+
+or:
+
+```bash
+sudo service labbook stop
+```
+
+Disable automatic startup:
+
+```bash
+sudo mv /etc/init.d/labbook /etc/init.d/labbook.O
+```
+
+If required, disable the firewall:
+
+```bash
+sudo systemctl disable ufw
+sudo systemctl stop ufw
+```
 
 If you are interested in the production setup you may find some useful information in [this document](doc/architecture.md).
 
@@ -61,6 +105,8 @@ LABBOOK_DEBUG=1
 LABBOOK_TEST_OK=
 LABBOOK_TEST_KO=
 ~~~
+
+For a LabBook ISO using an external database server, set this value to the database server IP address.
 
 A sample file is provided in `doc/labbook.conf.sample`.
 
@@ -116,6 +162,30 @@ Query OK, 0 rows affected (0.008 sec)
 MariaDB [(none)]> FLUSH PRIVILEGES;
 Query OK, 0 rows affected (0.008 sec)
 ~~~
+
+For an existing LabBook ISO connected to a remote database server, grant access using the LabBook server IP address.
+
+Example with LabBook server IP `192.168.255.214`:
+
+```sql
+CREATE USER 'root'@'192.168.255.214' IDENTIFIED BY 'root';
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.255.214';
+
+FLUSH PRIVILEGES;
+```
+
+### MySQL 8 authentication
+
+For MySQL 8, authentication plugin compatibility may require:
+
+```sql
+ALTER USER 'root'@'localhost'
+IDENTIFIED WITH caching_sha2_password
+BY 'root';
+
+FLUSH PRIVILEGES;
+```
 
 ### sql_mode
 
