@@ -109,9 +109,6 @@ CORS(
     supports_credentials=False  # set True only if you need cookies/Authorization headers
 )
 
-with app.app_context():
-    Audit.audit_trail_enabled = Setting.isAuditTrailEnabled()
-
 # -----------------------------------------------------------------------------
 # OAuth2 configuration
 # -----------------------------------------------------------------------------
@@ -191,6 +188,10 @@ if config_envvar in os.environ:
         log.info(Logs.fileline() + ' : LABBOOK_TEST_KO=' + str(os.environ['LABBOOK_TEST_KO']))
 else:
     print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
+
+with app.app_context():
+    Audit.audit_trail_enabled = Setting.isAuditTrailEnabled()
+    log.info(Logs.fileline() + ' : AUDIT_TRAIL_ENABLED=' + str(Audit.audit_trail_enabled))
 
 # =========================================
 # Amicare config (LOAD ONCE AT STARTUP)
