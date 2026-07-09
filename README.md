@@ -104,6 +104,8 @@ LABBOOK_DB_HOST=10.88.0.1
 LABBOOK_DEBUG=1
 LABBOOK_TEST_OK=
 LABBOOK_TEST_KO=
+DEVRUN_STORAGE=
+
 ~~~
 
 For a LabBook ISO using an external database server, set this value to the database server IP address.

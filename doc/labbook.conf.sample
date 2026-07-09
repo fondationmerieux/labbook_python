@@ -28,3 +28,7 @@ LABBOOK_ROOTLESS=
 
 # if 0 add --column-statistics=0 to mysqldump arguments [default=empty]
 LABBOOK_DUMP_COL_STATS=
+
+# development storage directory override
+# useful to share the same storage with LabBook Connect [default=empty]
+DEVRUN_STORAGE=
