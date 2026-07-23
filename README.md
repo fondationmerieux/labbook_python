@@ -203,6 +203,18 @@ sql_mode=''
 ...
 ~~~
 
+### bind-address
+
+It may be necessary to allow connections to mysqld from adresses other than localhost.
+
+For example for mysql Ver 8.0.46-0ubuntu0.22.04.3
+
+~~~
+# in /etc/mysql/mysql.conf.d/mysqld.cnf
+# bind-address          = 127.0.0.1
+bind-address          = 0.0.0.0
+~~~
+
 ## Commands available
 
 ~~~
