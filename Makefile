@@ -47,12 +47,20 @@ POD_NAME=labbook
 POD_NETWORK=slirp4netns:allow_host_loopback=true
 CONTAINER_NAME=labbook_python
 DEVRUN_HTTP=5000
-DEVRUN_STORAGE?=$(shell pwd)/devrun_storage
+
+ifndef DEVRUN_STORAGE
+DEVRUN_STORAGE=$(shell pwd)/devrun_storage
+endif
+
 # The Z option tells Podman that two or more <<containers|pods>> share the volume content
 DEVRUN_MAP_STORAGE=$(DEVRUN_STORAGE):/storage:Z
 # DEVRUN_FE_LOG_DIR=./labbook_FE/log
 # DEVRUN_BE_LOG_DIR=./labbook_BE/log
-DEVRUN_LOG_DIR?=$(shell pwd)/logs
+
+ifndef DEVRUN_LOG_DIR
+DEVRUN_LOG_DIR=$(shell pwd)/logs
+endif
+
 DEVRUN_BASE_PATH=/home/apps
 DEVRUN_FE_BASE_PATH=/home/apps/labbook_FE
 DEVRUN_BE_BASE_PATH=/home/apps/labbook_BE
