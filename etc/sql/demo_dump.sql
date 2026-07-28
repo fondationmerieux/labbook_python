@@ -80,18 +80,18 @@ DROP TABLE IF EXISTS `analyzer_msg`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `analyzer_msg` (
-  `anl_ser` int NOT NULL AUTO_INCREMENT,
-  `anl_date` datetime DEFAULT NULL,
-  `anl_date_upd` datetime DEFAULT NULL,
-  `anl_ans` int NOT NULL,
-  `anl_id_samp` int NOT NULL,
-  `anl_stat` varchar(2) NOT NULL,
-  `anl_OML_O33` text NOT NULL,
-  `anl_ORL_O34` text NOT NULL,
+  `anm_ser` int NOT NULL AUTO_INCREMENT,
+  `anm_date` datetime DEFAULT NULL,
+  `anm_date_upd` datetime DEFAULT NULL,
+  `anm_ans` int NOT NULL,
+  `anm_id_samp` int NOT NULL,
+  `anm_stat` varchar(2) NOT NULL,
+  `anm_msg_sent` text NOT NULL,
+  `anm_msg_recv` text NOT NULL,
   `anm_tot` varchar(20) NOT NULL DEFAULT '',
-  PRIMARY KEY (`anl_ser`),
-  KEY `anl_stat` (`anl_stat`),
-  KEY `anl_id_samp` (`anl_id_samp`),
+  PRIMARY KEY (`anm_ser`),
+  KEY `anm_stat` (`anm_stat`),
+  KEY `anm_id_samp` (`anm_id_samp`),
   KEY `idx_anm_tot` (`anm_tot`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;

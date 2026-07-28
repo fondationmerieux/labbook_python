@@ -5093,7 +5093,7 @@ def det_req(req_type, entry='Y', ref=0):
 # Page : external request details
 @app.route('/det-req-ext/<string:entry>/<int:ref>')
 def det_req_ext(entry='Y', ref=0):
-    return det_req("E", entry, ref) 
+    return det_req("E", entry, ref)
 
 
 # Page : internal request details
@@ -10938,7 +10938,7 @@ def delete_file(type='', filename=''):
 
         # Ensure the target path stays inside the allowed directory
         if not target_path.startswith(base_dir_abs + os.sep):
-            log.error(Logs.fileline() + ' : delete-file path traversal attempt') 
+            log.error(Logs.fileline() + ' : delete-file path traversal attempt')
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
         if os.path.exists(target_path):

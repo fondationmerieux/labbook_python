@@ -450,7 +450,7 @@ class AnalyzerLab29(Resource):
                             raw_obx = obx_raw_list[i]
                             self.log.info(Logs.fileline() + f" : DEBUG raw_obx={raw_obx}")
                             fields = raw_obx.strip().split("|")
-                            obs_status = fields[-1] if fields else ""
+                            obs_status = fields[11] if len(fields) > 11 else ""
 
                         obs_status = (obs_status or "").strip().upper()
 
