@@ -2175,7 +2175,7 @@ class EqpMetrologyDet(Resource):
         self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyDet delete id_item=' + str(id_item))
         try:
             details = {"result": "SUCCESS", "id_item": int(id_item)}
-            Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item), "SUCCESS", "ERROR", details, "D")
+            Audit.insertAudit(audit_user, "EqpMetrologyDet", "QUALITY", int(id_item), "SUCCESS", details, "D")
         except Exception:
             self.log.exception(Logs.fileline() + ' : EqpMetrologyDet ERROR audit delete success')
         return compose_ret('', Constants.cst_content_type_json)

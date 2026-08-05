@@ -141,7 +141,7 @@ def create_lock_file(file_path):
             # Définir le gestionnaire de signal pour le signal SIGTERM
             signal.signal(signal.SIGTERM, handle_signal)
     except IOError as e:
-        Logs.log_script(Logs.fileline() + " : create_lock err : ", e)
+        Logs.log_script(Logs.fileline() + " : create_lock err : " + str(e))
 
 
 def remove_lock_file(file_path):

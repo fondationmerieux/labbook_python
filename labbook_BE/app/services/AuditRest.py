@@ -153,8 +153,10 @@ class AuditCreate(Resource):
 
         event_type = data.get('event_type') or "E"
 
+        audit_user = {"usr_login": user_login, "usr_display": user_display, "usr_role": user_role}
+
         try:
-            aud_ser = Audit.insertAudit(user_login, user_display, user_role, action, resource_type, resource_id, request.remote_addr, status, details_json, event_type)
+            aud_ser = Audit.insertAudit(audit_user, action, resource_type, resource_id, status, details_json, event_type)
         except Exception:
             self.log.exception(Logs.fileline() + " : AuditCreate ERROR insertAudit")
             return compose_ret('', Constants.cst_content_type_json, 500)
