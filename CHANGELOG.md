@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Report, outsourcing and invoice PDFs now share their patient and laboratory sections
 
 ### Fixed
+- User-supplied values are now sanitized before being written to the logs
 - Saving an inpatient request failed when the optional bed number was left empty
 - Unclosed tag in the aliquot modal footer
 - Form accessibility on result entry and validation, records, samples and aliquots, stock, equipment, reports and settings screens

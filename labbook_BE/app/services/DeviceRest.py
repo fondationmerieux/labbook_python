@@ -200,7 +200,7 @@ class AnalyzerDet(Resource):
         args = request.get_json()
 
         if args and 'id_user' in args:
-            self.log.error(Logs.fileline() + ' : TRACE AnalyzerDet delete by id_user=' + str(args['id_user']))
+            self.log.error(Logs.fileline() + ' : TRACE AnalyzerDet delete by id_user=' + Logs.clean(args['id_user']))
 
         ret = Analyzer.deleteAnalyzer(id_analyzer)
 

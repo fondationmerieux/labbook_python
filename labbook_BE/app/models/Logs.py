@@ -27,6 +27,15 @@ class Logs:
         return info.filename + ' ' + info.function + ' line ' + str(info.lineno)
 
     @staticmethod
+    def clean(value):
+        """
+        Make a user-supplied value safe to write in a log line.
+        Line breaks and tabs are turned into spaces so nobody can forge an extra
+        log entry by submitting a crafted value.
+        """
+        return str(value).replace('\r', ' ').replace('\n', ' ').replace('\t', ' ')
+
+    @staticmethod
     def log_script(message):
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(f"{timestamp} : {message}")

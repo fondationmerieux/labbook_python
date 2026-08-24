@@ -4075,14 +4075,14 @@ class StockUse(Resource):
         packSupply = Quality.getNbStockSupply(args['pru_prs'])
         packUse    = Quality.getNbStockUse(args['pru_prs'])
 
-        self.log.error(Logs.fileline() + ' : StockUse prs_ser=' + str(args['pru_prs']) + ' packSupply=' + str(packSupply) + ' packUse=' + str(packUse))
+        self.log.error(Logs.fileline() + ' : StockUse prs_ser=' + Logs.clean(args['pru_prs']) + ' packSupply=' + str(packSupply) + ' packUse=' + str(packUse))
 
         if (int(packSupply['nb_pack']) - int(packUse['nb_pack'])) == 0:
-            self.log.error(Logs.alert() + ' : StockUse update empty prs_ser=' + str(args['pru_prs']))
+            self.log.error(Logs.alert() + ' : StockUse update empty prs_ser=' + Logs.clean(args['pru_prs']))
             ret = Quality.emptyStockSupply(args['pru_prs'])
 
             if ret is False:
-                self.log.error(Logs.alert() + ' : StockUse ERROR empty prs_ser=' + str(args['pru_prs']))
+                self.log.error(Logs.alert() + ' : StockUse ERROR empty prs_ser=' + Logs.clean(args['pru_prs']))
                 try:
                     details = {"result": "ERROR", "prs_ser": int(args['pru_prs'])}
                     Audit.insertAudit(audit_user, "StockUse", "STOCK", int(args['pru_prs']), "ERROR", details, "U")

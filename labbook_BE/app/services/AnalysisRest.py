@@ -1590,7 +1590,7 @@ class AnalysisImport(Resource):
         # Keep only the final component; if it changes, separators were present -> reject
         safe_name = os.path.basename(raw_filename)
         if safe_name != raw_filename:
-            self.log.error(Logs.fileline() + f' : TRACE AnalysisImport ERROR invalid filename "{raw_filename}" (path separators)')
+            self.log.error(Logs.fileline() + f' : TRACE AnalysisImport ERROR invalid filename "{Logs.clean(raw_filename)}" (path separators)')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR invalid filename (separators)', type='ANA')
             try:
                 details = {"result": "ERROR", "reason": "INVALID_FILENAME_SEPARATORS"}
@@ -1601,7 +1601,7 @@ class AnalysisImport(Resource):
 
         # Enforce .csv extension
         if not safe_name.lower().endswith('.csv'):
-            self.log.error(Logs.fileline() + f' : TRACE AnalysisImport ERROR invalid extension for "{safe_name}" (must be .csv)')
+            self.log.error(Logs.fileline() + f' : TRACE AnalysisImport ERROR invalid extension for "{Logs.clean(safe_name)}" (must be .csv)')
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR invalid extension', type='ANA')
             try:
                 details = {"result": "ERROR", "reason": "INVALID_EXTENSION"}

@@ -972,7 +972,7 @@ class RecordDetFromExt(Resource):
             tmp_ana = Analysis.getAnalysisByCode(ana['ana_code'])
 
             if not tmp_ana:
-                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR analysis not found with code : ' + str(ana['ana_code']))
+                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR analysis not found with code : ' + Logs.clean(ana['ana_code']))
                 err = {"error": "analysis not found with code = " + str(ana['ana_code'])}
                 try:
                     details = {"result": "ERROR", "reason": "ANALYSIS_NOT_FOUND", "ana_code": str(ana.get('ana_code')), "id_rec": int(id_rec)}
@@ -1029,7 +1029,7 @@ class RecordDetFromExt(Resource):
                 tmp_act = Analysis.getAnalysis(tmp_ana['produit_biologique'])
 
                 if not tmp_ana:
-                    self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR sampling act associated to analysis not found with code : ' + str(ana['ana_code']))
+                    self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR sampling act associated to analysis not found with code : ' + Logs.clean(ana['ana_code']))
                     err = {"error": "sampling act associated to analysis not found with code = " + str(ana['ana_code'])}
                     return compose_ret(err, Constants.cst_content_type_json, 404)
 

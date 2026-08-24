@@ -196,12 +196,12 @@ class LiteSetupLoad(Resource):
         setting = Lite.getLiteSetupByLogin(login)
 
         if not setting:
-            self.log.error(Logs.fileline() + f' : LiteSetupLoad ERROR login "{login}" not found')
+            self.log.error(Logs.fileline() + f' : LiteSetupLoad ERROR login "{Logs.clean(login)}" not found')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         # Compare hash
         if not bcrypt.checkpw(password.encode(), setting['lite_pwd'].encode()):
-            self.log.error(Logs.fileline() + f' : LiteSetupLoad ERROR invalid password for login "{login}"')
+            self.log.error(Logs.fileline() + f' : LiteSetupLoad ERROR invalid password for login "{Logs.clean(login)}"')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         l_users = Lite.getLiteUsers(setting['lite_ser'])
@@ -564,12 +564,12 @@ class LiteDataRecovery(Resource):
         setting = Lite.getLiteSetupByLogin(login)
 
         if not setting:
-            self.log.error(Logs.fileline() + f' : LiteDataRecovery ERROR login "{login}" not found')
+            self.log.error(Logs.fileline() + f' : LiteDataRecovery ERROR login "{Logs.clean(login)}" not found')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         # Compare hash
         if not bcrypt.checkpw(password.encode(), setting['lite_pwd'].encode()):
-            self.log.error(Logs.fileline() + f' : LiteDataRecovery ERROR invalid password for login "{login}"')
+            self.log.error(Logs.fileline() + f' : LiteDataRecovery ERROR invalid password for login "{Logs.clean(login)}"')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         self.log.info(Logs.fileline() + ' : DEBUG LiteDataRecovery args = ' + str(args))
@@ -981,12 +981,12 @@ class LiteReportRecovery(Resource):
         setting = Lite.getLiteSetupByLogin(login)
 
         if not setting:
-            self.log.error(Logs.fileline() + f' : LiteReportRecovery ERROR login "{login}" not found')
+            self.log.error(Logs.fileline() + f' : LiteReportRecovery ERROR login "{Logs.clean(login)}" not found')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         # Compare hash
         if not bcrypt.checkpw(password.encode(), setting['lite_pwd'].encode()):
-            self.log.error(Logs.fileline() + f' : LiteReportRecovery ERROR invalid password for login "{login}"')
+            self.log.error(Logs.fileline() + f' : LiteReportRecovery ERROR invalid password for login "{Logs.clean(login)}"')
             return compose_ret('', Constants.cst_content_type_json, 401)
 
         # puts pdf reports in a directory : Constants.cst_upload

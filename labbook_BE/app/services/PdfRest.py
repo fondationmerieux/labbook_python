@@ -332,7 +332,7 @@ class PdfSticker(Resource):
         ret = Pdf.getPdfSticker(args['id'], args['type_id'], template)
 
         if not ret:
-            self.log.error(Logs.fileline() + ' : PdfSticker failed id=%s, type_id=%s, template=%s', str(args['id']), args['type_id'], template)
+            self.log.error(Logs.fileline() + ' : PdfSticker failed id=%s, type_id=%s, template=%s', Logs.clean(args['id']), Logs.clean(args['type_id']), Logs.clean(template))
             try:
                 details = {"reason": "PDF_FAILED", "id": args.get("id"), "type_id": args.get("type_id"), "template": str(template)}
                 Audit.insertAudit(audit_user, "PdfSticker", "PDF", None, "ERROR", details, "R")

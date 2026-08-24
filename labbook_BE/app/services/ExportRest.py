@@ -445,7 +445,7 @@ class ExportDHIS2(Resource):
                 y, m = y + (next_index // 12), (next_index % 12) + 1
 
         else:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR wrong period : ' + str(period))
+            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR wrong period : ' + Logs.clean(period))
             try:
                 details = {"result": "ERROR", "reason": "WRONG_PERIOD", "period": str(period)}
                 Audit.insertAudit(audit_user, "ExportDHIS2", "EXPORT", None, "ERROR", details, "R")
@@ -709,7 +709,7 @@ class ExportDHIS2Api(Resource):
                 y, m = y + (next_index // 12), (next_index % 12) + 1
 
         else:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api ERROR wrong period : ' + str(period))
+            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api ERROR wrong period : ' + Logs.clean(period))
             try:
                 details = {"result": "ERROR", "reason": "WRONG_PERIOD", "period": str(period)}
                 Audit.insertAudit(audit_user, "ExportDHIS2Api", "EXPORT", None, "ERROR", details, "R")
