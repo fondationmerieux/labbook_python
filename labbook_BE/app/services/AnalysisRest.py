@@ -20,6 +20,123 @@ from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
 
+def save_analysis_variables(id_ana, args, audit_user, log):
+    """
+    Create or update the variables attached to an analysis and their link to it.
+    Handles both cases: a brand new analysis carries id_link 0 for every variable.
+    Returns the error response to send back, or None when everything went through.
+    """
+    for var in args['list_var']:
+        # shared by the update and insert calls below
+        var_fields = {
+            'id_owner': args['id_owner'],
+            'label': var['var_label'],
+            'code_var': var['var_code'],
+            'descr': var['var_descr'],
+            'type_res': var['var_type_res'],
+            'var_min': var['var_min'],
+            'var_max': var['var_max'],
+            'var_show_minmax': var['var_show_minmax'],
+            'var_highlight': var['var_highlight'],
+            'var_in_report': var['var_in_report'],
+            'comment': var['var_comment'],
+            'formula': var['var_formula'],
+            'unit': var['var_unit'],
+            'accu': var['var_accu'],
+            'formula2': var['var_formula2'],
+            'unit2': var['var_unit2'],
+            'accu2': var['var_accu2'],
+        }
+
+        if var['id_var'] > 0:
+            # update variable which already exist
+            ret = Analysis.updateAnalysisVar(id_data=var['id_var'], **var_fields)
+
+            if ret is False:
+                log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
+                try:
+                    details = {"result": "ERROR", "reason": "UPDATE_VAR_ANALYSIS", "id_ana": id_ana}
+                    Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "U")
+                except Exception:
+                    log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit update var analysis')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # new link with analysis
+            if var['id_link'] == 0:
+                ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                                 id_refana=id_ana,
+                                                 id_refvar=var['id_var'],
+                                                 var_pos=var['var_pos'],
+                                                 var_num=var['var_num'],
+                                                 oblig=var['var_oblig'],
+                                                 var_whonet=var['var_whonet'],
+                                                 var_qrcode=var['var_qrcode'])
+
+                if ret <= 0:
+                    log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                    try:
+                        details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana}
+                        Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
+                    except Exception:
+                        log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+            else:
+                ret = Analysis.updateRefVariable(id_data=var['id_link'],
+                                                 id_owner=args['id_owner'],
+                                                 var_pos=var['var_pos'],
+                                                 var_num=var['var_num'],
+                                                 oblig=var['var_oblig'],
+                                                 var_whonet=var['var_whonet'],
+                                                 var_qrcode=var['var_qrcode'])
+
+                if ret is False:
+                    log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
+                    try:
+                        details = {"result": "ERROR", "reason": "UPDATE_LINK_VAR", "id_ana": id_ana,
+                                   "id_link": var.get('id_link')}
+                        Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "U")
+                    except Exception:
+                        log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit update link var')
+                    return compose_ret('', Constants.cst_content_type_json, 500)
+
+        else:
+            # insert new variable
+            ret = Analysis.insertAnalysisVar(**var_fields)
+
+            if ret is False:
+                log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
+                try:
+                    details = {"result": "ERROR", "reason": "INSERT_VAR_ANALYSIS", "id_ana": id_ana}
+                    Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
+                except Exception:
+                    log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert var analysis')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+            id_var = ret
+
+            # link variable
+            ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
+                                             id_refana=id_ana,
+                                             id_refvar=id_var,
+                                             var_pos=var['var_pos'],
+                                             var_num=var['var_num'],
+                                             oblig=var['var_oblig'],
+                                             var_whonet=var['var_whonet'],
+                                             var_qrcode=var['var_qrcode'])
+
+            if ret <= 0:
+                log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
+                try:
+                    details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana, "id_var": id_var}
+                    Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
+                except Exception:
+                    log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
+                return compose_ret('', Constants.cst_content_type_json, 500)
+
+
+    return None
+
+
 class AnalysisSearch(Resource):
     log = logging.getLogger('log_services')
 
@@ -559,113 +676,9 @@ class AnalysisDet(Resource):
             # delete missing link to variable compared to analysis (get list before add new var)
             db_l_var = Analysis.getListVariable(id_ana)
 
-            for var in args['list_var']:
-                # shared by the update and insert calls below
-                var_fields = {
-                    'id_owner': args['id_owner'],
-                    'label': var['var_label'],
-                    'code_var': var['var_code'],
-                    'descr': var['var_descr'],
-                    'type_res': var['var_type_res'],
-                    'var_min': var['var_min'],
-                    'var_max': var['var_max'],
-                    'var_show_minmax': var['var_show_minmax'],
-                    'var_highlight': var['var_highlight'],
-                    'var_in_report': var['var_in_report'],
-                    'comment': var['var_comment'],
-                    'formula': var['var_formula'],
-                    'unit': var['var_unit'],
-                    'accu': var['var_accu'],
-                    'formula2': var['var_formula2'],
-                    'unit2': var['var_unit2'],
-                    'accu2': var['var_accu2'],
-                }
-
-                if var['id_var'] > 0:
-                    # update variable which already exist
-                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'], **var_fields)
-
-                    if ret is False:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "UPDATE_VAR_ANALYSIS", "id_ana": id_ana}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "U")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit update var analysis')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    # new link with analysis
-                    if var['id_link'] == 0:
-                        ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
-                                                         id_refana=id_ana,
-                                                         id_refvar=var['id_var'],
-                                                         var_pos=var['var_pos'],
-                                                         var_num=var['var_num'],
-                                                         oblig=var['var_oblig'],
-                                                         var_whonet=var['var_whonet'],
-                                                         var_qrcode=var['var_qrcode'])
-
-                        if ret <= 0:
-                            self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
-                            try:
-                                details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana}
-                                Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                            except Exception:
-                                self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
-                            return compose_ret('', Constants.cst_content_type_json, 500)
-                    else:
-                        ret = Analysis.updateRefVariable(id_data=var['id_link'],
-                                                         id_owner=args['id_owner'],
-                                                         var_pos=var['var_pos'],
-                                                         var_num=var['var_num'],
-                                                         oblig=var['var_oblig'],
-                                                         var_whonet=var['var_whonet'],
-                                                         var_qrcode=var['var_qrcode'])
-
-                        if ret is False:
-                            self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
-                            try:
-                                details = {"result": "ERROR", "reason": "UPDATE_LINK_VAR", "id_ana": id_ana,
-                                           "id_link": var.get('id_link')}
-                                Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "U")
-                            except Exception:
-                                self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit update link var')
-                            return compose_ret('', Constants.cst_content_type_json, 500)
-
-                else:
-                    # insert new variable
-                    ret = Analysis.insertAnalysisVar(**var_fields)
-
-                    if ret is False:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "INSERT_VAR_ANALYSIS", "id_ana": id_ana}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert var analysis')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    id_var = ret
-
-                    # link variable
-                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
-                                                     id_refana=id_ana,
-                                                     id_refvar=id_var,
-                                                     var_pos=var['var_pos'],
-                                                     var_num=var['var_num'],
-                                                     oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'],
-                                                     var_qrcode=var['var_qrcode'])
-
-                    if ret <= 0:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana, "id_var": id_var}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
+            err = save_analysis_variables(id_ana, args, audit_user, self.log)
+            if err:
+                return err
             for db_var in db_l_var:
                 exist = False
                 for ihm_var in args['list_var']:
@@ -716,96 +729,9 @@ class AnalysisDet(Resource):
 
             id_ana = ret
 
-            for var in args['list_var']:
-                # shared by the update and insert calls below
-                var_fields = {
-                    'id_owner': args['id_owner'],
-                    'label': var['var_label'],
-                    'code_var': var['var_code'],
-                    'descr': var['var_descr'],
-                    'type_res': var['var_type_res'],
-                    'var_min': var['var_min'],
-                    'var_max': var['var_max'],
-                    'var_show_minmax': var['var_show_minmax'],
-                    'var_highlight': var['var_highlight'],
-                    'var_in_report': var['var_in_report'],
-                    'comment': var['var_comment'],
-                    'formula': var['var_formula'],
-                    'unit': var['var_unit'],
-                    'accu': var['var_accu'],
-                    'formula2': var['var_formula2'],
-                    'unit2': var['var_unit2'],
-                    'accu2': var['var_accu2'],
-                }
-
-                if var['id_var'] > 0:
-                    # update variable which already exist
-                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'], **var_fields)
-
-                    if ret is False:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "UPDATE_VAR_ANALYSIS", "id_ana": id_ana,
-                                       "id_var": var.get('id_var')}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "U")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit update var analysis')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    # link variable
-                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
-                                                     id_refana=id_ana,
-                                                     id_refvar=var['id_var'],
-                                                     var_pos=var['var_pos'],
-                                                     var_num=var['var_num'],
-                                                     oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'],
-                                                     var_qrcode=var['var_qrcode'])
-
-                    if ret <= 0:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana,
-                                       "id_var": var.get('id_var')}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                else:
-                    # insert new variable
-                    ret = Analysis.insertAnalysisVar(**var_fields)
-
-                    if ret is False:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "INSERT_VAR_ANALYSIS", "id_ana": id_ana}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert var analysis')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
-                    id_var = ret
-
-                    # link variable
-                    ret = Analysis.insertRefVariable(id_owner=args['id_owner'],
-                                                     id_refana=id_ana,
-                                                     id_refvar=id_var,
-                                                     var_pos=var['var_pos'],
-                                                     var_num=var['var_num'],
-                                                     oblig=var['var_oblig'],
-                                                     var_whonet=var['var_whonet'],
-                                                     var_qrcode=var['var_qrcode'])
-
-                    if ret <= 0:
-                        self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
-                        try:
-                            details = {"result": "ERROR", "reason": "INSERT_LINK_VAR", "id_ana": id_ana, "id_var": id_var}
-                            Audit.insertAudit(audit_user, "AnalysisDet", "ANALYSIS", id_ana, "ERROR", details, "C")
-                        except Exception:
-                            self.log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
-                        return compose_ret('', Constants.cst_content_type_json, 500)
-
+            err = save_analysis_variables(id_ana, args, audit_user, self.log)
+            if err:
+                return err
         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet id_ana=' + str(id_ana))
         try:
             details = {"result": "SUCCESS", "id_ana": id_ana}

@@ -270,6 +270,52 @@ def be_check_or_bounce(resp):
     return None
 
 
+def load_patient_dicts(json_ihm):
+    """
+    Load the dictionaries every patient form relies on.
+    Returns the redirect the caller must honour, or None.
+    """
+    for path, key, what in (
+        ('/services/dict/det/periode_unite', 'pat_age_unit', 'unit age'),
+        ('/services/dict/det/groupesang', 'pat_blood_group', 'blood group'),
+        ('/services/dict/det/posneg', 'pat_blood_rhesus', 'blood rhesus'),
+        ('/services/nationality/list', 'pat_nationality', 'nationality list'),
+    ):
+        data, redir = be_get(path, what)
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm[key] = data
+
+    return None
+
+
+def load_default_age_unit(json_ihm, json_data):
+    """
+    Resolve the age unit configured as the default one and store its id in
+    json_data['def_age_unit']. Needs json_ihm['pat_age_unit'] to be loaded.
+    Returns the redirect the caller must honour, or None.
+    """
+    data, redir = be_get('/services/default/val/unite_age_defaut', 'unite_age_defaut')
+    if redir:
+        return redir
+    if data is not None:
+        unit_age_def = data
+        json_ihm['unit_age_def'] = 0
+
+        val_age_def = unit_age_def['value'].lower()
+
+        # unit_age['code'] without accent so we need to remove it from val_age_def to compare
+        if val_age_def == 'années':
+            val_age_def = 'annees'
+
+        for unit_age in json_ihm['pat_age_unit']:
+            if unit_age['code'] == val_age_def:
+                json_data['def_age_unit'] = unit_age['id_data']
+
+    return None
+
+
 def be_get(path, what):
     """
     GET `path` on the BE and return the pair (data, redirect).
@@ -2490,50 +2536,13 @@ def preview_form(type_form='', filename=''):
     # ------------------------------------------------------------------
 
     # Load unit age
-    data, redir = be_get('/services/dict/det/periode_unite', 'unit age')
+    redir = load_patient_dicts(json_ihm)
     if redir:
         return redir
-    if data is not None:
-        json_ihm['pat_age_unit'] = data
 
-    # Load blood group
-    data, redir = be_get('/services/dict/det/groupesang', 'blood group')
+    redir = load_default_age_unit(json_ihm, json_data)
     if redir:
         return redir
-    if data is not None:
-        json_ihm['pat_blood_group'] = data
-
-    # Load blood rhesus
-    data, redir = be_get('/services/dict/det/posneg', 'blood rhesus')
-    if redir:
-        return redir
-    if data is not None:
-        json_ihm['pat_blood_rhesus'] = data
-
-    # Load nationality
-    data, redir = be_get('/services/nationality/list', 'nationality list')
-    if redir:
-        return redir
-    if data is not None:
-        json_ihm['pat_nationality'] = data
-
-    # Load unit age by default
-    data, redir = be_get('/services/default/val/unite_age_defaut', 'unite_age_defaut')
-    if redir:
-        return redir
-    if data is not None:
-        unit_age_def = data
-        json_ihm['unit_age_def'] = 0
-
-        val_age_def = unit_age_def['value'].lower()
-
-        # unit_age['code'] without accent so we need to remove it from val_age_def to compare
-        if val_age_def == 'années':
-            val_age_def = 'annees'
-
-        for unit_age in json_ihm['pat_age_unit']:
-            if unit_age['code'] == val_age_def:
-                json_data['def_age_unit'] = unit_age['id_data']
 
     # generate a code
     data, redir = be_get('/services/patient/generate/code', 'patient generate code')
@@ -3962,32 +3971,9 @@ def det_patient(type_req='E', id_pat=0):
         log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     # Load unit age
-    data, redir = be_get('/services/dict/det/periode_unite', 'unit age')
+    redir = load_patient_dicts(json_ihm)
     if redir:
         return redir
-    if data is not None:
-        json_ihm['pat_age_unit'] = data
-
-    # Load blood group
-    data, redir = be_get('/services/dict/det/groupesang', 'blood group')
-    if redir:
-        return redir
-    if data is not None:
-        json_ihm['pat_blood_group'] = data
-
-    # Load blood rhesus
-    data, redir = be_get('/services/dict/det/posneg', 'blood rhesus')
-    if redir:
-        return redir
-    if data is not None:
-        json_ihm['pat_blood_rhesus'] = data
-
-    # Load nationality
-    data, redir = be_get('/services/nationality/list', 'nationality list')
-    if redir:
-        return redir
-    if data is not None:
-        json_ihm['pat_nationality'] = data
 
     # Load data patient
     if id_pat > 0:
@@ -4006,23 +3992,9 @@ def det_patient(type_req='E', id_pat=0):
         if data is not None:
             json_data.update(data)
     else:
-        # Load unit age by default
-        data, redir = be_get('/services/default/val/unite_age_defaut', 'unite_age_defaut')
+        redir = load_default_age_unit(json_ihm, json_data)
         if redir:
             return redir
-        if data is not None:
-            unit_age_def = data
-            json_ihm['unit_age_def'] = 0
-
-            val_age_def = unit_age_def['value'].lower()
-
-            # unit_age['code'] without accent so we need to remove it from val_age_def to compare
-            if val_age_def == 'années':
-                val_age_def = 'annees'
-
-            for unit_age in json_ihm['pat_age_unit']:
-                if unit_age['code'] == val_age_def:
-                    json_data['def_age_unit'] = unit_age['id_data']
 
         # generate a code
         data, redir = be_get('/services/patient/generate/code', 'patient generate code')
