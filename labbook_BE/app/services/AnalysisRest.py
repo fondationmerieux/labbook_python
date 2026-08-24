@@ -560,26 +560,30 @@ class AnalysisDet(Resource):
             db_l_var = Analysis.getListVariable(id_ana)
 
             for var in args['list_var']:
+                # shared by the update and insert calls below
+                var_fields = {
+                    'id_owner': args['id_owner'],
+                    'label': var['var_label'],
+                    'code_var': var['var_code'],
+                    'descr': var['var_descr'],
+                    'type_res': var['var_type_res'],
+                    'var_min': var['var_min'],
+                    'var_max': var['var_max'],
+                    'var_show_minmax': var['var_show_minmax'],
+                    'var_highlight': var['var_highlight'],
+                    'var_in_report': var['var_in_report'],
+                    'comment': var['var_comment'],
+                    'formula': var['var_formula'],
+                    'unit': var['var_unit'],
+                    'accu': var['var_accu'],
+                    'formula2': var['var_formula2'],
+                    'unit2': var['var_unit2'],
+                    'accu2': var['var_accu2'],
+                }
+
                 if var['id_var'] > 0:
                     # update variable which already exist
-                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
-                                                     id_owner=args['id_owner'],
-                                                     label=var['var_label'],
-                                                     code_var=var['var_code'],
-                                                     descr=var['var_descr'],
-                                                     type_res=var['var_type_res'],
-                                                     var_min=var['var_min'],
-                                                     var_max=var['var_max'],
-                                                     var_show_minmax=var['var_show_minmax'],
-                                                     var_highlight=var['var_highlight'],
-                                                     var_in_report=var['var_in_report'],
-                                                     comment=var['var_comment'],
-                                                     formula=var['var_formula'],
-                                                     unit=var['var_unit'],
-                                                     accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'], **var_fields)
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -630,23 +634,7 @@ class AnalysisDet(Resource):
 
                 else:
                     # insert new variable
-                    ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
-                                                     label=var['var_label'],
-                                                     code_var=var['var_code'],
-                                                     descr=var['var_descr'],
-                                                     type_res=var['var_type_res'],
-                                                     var_min=var['var_min'],
-                                                     var_max=var['var_max'],
-                                                     var_show_minmax=var['var_show_minmax'],
-                                                     var_highlight=var['var_highlight'],
-                                                     var_in_report=var['var_in_report'],
-                                                     comment=var['var_comment'],
-                                                     formula=var['var_formula'],
-                                                     unit=var['var_unit'],
-                                                     accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                    ret = Analysis.insertAnalysisVar(**var_fields)
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')
@@ -729,26 +717,30 @@ class AnalysisDet(Resource):
             id_ana = ret
 
             for var in args['list_var']:
+                # shared by the update and insert calls below
+                var_fields = {
+                    'id_owner': args['id_owner'],
+                    'label': var['var_label'],
+                    'code_var': var['var_code'],
+                    'descr': var['var_descr'],
+                    'type_res': var['var_type_res'],
+                    'var_min': var['var_min'],
+                    'var_max': var['var_max'],
+                    'var_show_minmax': var['var_show_minmax'],
+                    'var_highlight': var['var_highlight'],
+                    'var_in_report': var['var_in_report'],
+                    'comment': var['var_comment'],
+                    'formula': var['var_formula'],
+                    'unit': var['var_unit'],
+                    'accu': var['var_accu'],
+                    'formula2': var['var_formula2'],
+                    'unit2': var['var_unit2'],
+                    'accu2': var['var_accu2'],
+                }
+
                 if var['id_var'] > 0:
                     # update variable which already exist
-                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'],
-                                                     id_owner=args['id_owner'],
-                                                     label=var['var_label'],
-                                                     code_var=var['var_code'],
-                                                     descr=var['var_descr'],
-                                                     type_res=var['var_type_res'],
-                                                     var_min=var['var_min'],
-                                                     var_max=var['var_max'],
-                                                     var_show_minmax=var['var_show_minmax'],
-                                                     var_highlight=var['var_highlight'],
-                                                     var_in_report=var['var_in_report'],
-                                                     comment=var['var_comment'],
-                                                     formula=var['var_formula'],
-                                                     unit=var['var_unit'],
-                                                     accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                    ret = Analysis.updateAnalysisVar(id_data=var['id_var'], **var_fields)
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update var analysis')
@@ -782,23 +774,7 @@ class AnalysisDet(Resource):
 
                 else:
                     # insert new variable
-                    ret = Analysis.insertAnalysisVar(id_owner=args['id_owner'],
-                                                     label=var['var_label'],
-                                                     code_var=var['var_code'],
-                                                     descr=var['var_descr'],
-                                                     type_res=var['var_type_res'],
-                                                     var_min=var['var_min'],
-                                                     var_max=var['var_max'],
-                                                     var_show_minmax=var['var_show_minmax'],
-                                                     var_highlight=var['var_highlight'],
-                                                     var_in_report=var['var_in_report'],
-                                                     comment=var['var_comment'],
-                                                     formula=var['var_formula'],
-                                                     unit=var['var_unit'],
-                                                     accu=var['var_accu'],
-                                                     formula2=var['var_formula2'],
-                                                     unit2=var['var_unit2'],
-                                                     accu2=var['var_accu2'])
+                    ret = Analysis.insertAnalysisVar(**var_fields)
 
                     if ret is False:
                         self.log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert var analysis')

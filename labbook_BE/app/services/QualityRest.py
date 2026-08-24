@@ -223,119 +223,122 @@ class ConformityDet(Resource):
                 self.log.exception(Logs.fileline() + ' : ConformityDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'id_owner': args['id_owner'],
+            'name': args['name'],
+            'reporter': args['reporter'],
+            'report_date': args['report_date'],
+            'cat_preana': args['cat_preana'],
+            'sub_preana_cat1': args['sub_preana_cat1'],
+            'sub_preana_cat2': args['sub_preana_cat2'],
+            'sub_preana_cat3': args['sub_preana_cat3'],
+            'sub_preana_cat4': args['sub_preana_cat4'],
+            'sub1_sub_preana_cat4': args['sub1_sub_preana_cat4'],
+            'sub2_sub_preana_cat4': args['sub2_sub_preana_cat4'],
+            'sub3_sub_preana_cat4': args['sub3_sub_preana_cat4'],
+            'sub_preana_cat5': args['sub_preana_cat5'],
+            'sub_preana_cat6': args['sub_preana_cat6'],
+            'sub_preana_cat7': args['sub_preana_cat7'],
+            'sub_preana_cat8': args['sub_preana_cat8'],
+            'sub_preana_cat9': args['sub_preana_cat9'],
+            'sub_preana_cat10': args['sub_preana_cat10'],
+            'cat_analy': args['cat_analy'],
+            'sub_analy_cat1': args['sub_analy_cat1'],
+            'sub_analy_cat2': args['sub_analy_cat2'],
+            'sub_analy_cat3': args['sub_analy_cat3'],
+            'sub_analy_cat4': args['sub_analy_cat4'],
+            'sub_analy_cat5': args['sub_analy_cat5'],
+            'sub_analy_cat6': args['sub_analy_cat6'],
+            'sub_analy_cat7': args['sub_analy_cat7'],
+            'sub_analy_cat8': args['sub_analy_cat8'],
+            'sub_analy_cat9': args['sub_analy_cat9'],
+            'sub_analy_cat10': args['sub_analy_cat10'],
+            'sub_analy_cat11': args['sub_analy_cat11'],
+            'cat_postana': args['cat_postana'],
+            'sub_postana_cat1': args['sub_postana_cat1'],
+            'sub_postana_cat2': args['sub_postana_cat2'],
+            'sub_postana_cat3': args['sub_postana_cat3'],
+            'sub_postana_cat4': args['sub_postana_cat4'],
+            'sub_postana_cat5': args['sub_postana_cat5'],
+            'sub_postana_cat6': args['sub_postana_cat6'],
+            'sub_postana_cat7': args['sub_postana_cat7'],
+            'sub_postana_cat8': args['sub_postana_cat8'],
+            'sub_postana_cat9': args['sub_postana_cat9'],
+            'sub_postana_cat10': args['sub_postana_cat10'],
+            'cat_res': args['cat_res'],
+            'sub_res_cat1': args['sub_res_cat1'],
+            'sub_res_cat2': args['sub_res_cat2'],
+            'sub_res_cat3': args['sub_res_cat3'],
+            'sub_res_cat4': args['sub_res_cat4'],
+            'sub_res_cat5': args['sub_res_cat5'],
+            'sub_res_cat6': args['sub_res_cat6'],
+            'sub_res_cat7': args['sub_res_cat7'],
+            'cat_hr': args['cat_hr'],
+            'sub_hr_cat1': args['sub_hr_cat1'],
+            'sub_hr_cat2': args['sub_hr_cat2'],
+            'sub_hr_cat3': args['sub_hr_cat3'],
+            'sub_hr_cat4': args['sub_hr_cat4'],
+            'sub_hr_cat5': args['sub_hr_cat5'],
+            'cat_eqp': args['cat_eqp'],
+            'sub_eqp_cat1': args['sub_eqp_cat1'],
+            'sub_eqp_cat2': args['sub_eqp_cat2'],
+            'sub_eqp_cat3': args['sub_eqp_cat3'],
+            'sub_eqp_cat4': args['sub_eqp_cat4'],
+            'sub_eqp_cat5': args['sub_eqp_cat5'],
+            'sub_eqp_cat6': args['sub_eqp_cat6'],
+            'equipment': args['equipment'],
+            'cat_consu': args['cat_consu'],
+            'sub_consu_cat1': args['sub_consu_cat1'],
+            'sub_consu_cat2': args['sub_consu_cat2'],
+            'sub_consu_cat3': args['sub_consu_cat3'],
+            'sub_consu_cat4': args['sub_consu_cat4'],
+            'sub_consu_cat5': args['sub_consu_cat5'],
+            'sub_consu_cat6': args['sub_consu_cat6'],
+            'supplier': args['supplier'],
+            'cat_local': args['cat_local'],
+            'sub_local_cat1': args['sub_local_cat1'],
+            'sub_local_cat2': args['sub_local_cat2'],
+            'sub_local_cat3': args['sub_local_cat3'],
+            'sub_local_cat4': args['sub_local_cat4'],
+            'sub_local_cat5': args['sub_local_cat5'],
+            'sub_local_cat6': args['sub_local_cat6'],
+            'cat_si': args['cat_si'],
+            'sub_si_cat1': args['sub_si_cat1'],
+            'sub_si_cat2': args['sub_si_cat2'],
+            'sub_si_cat3': args['sub_si_cat3'],
+            'sub_si_cat4': args['sub_si_cat4'],
+            'sub_si_cat5': args['sub_si_cat5'],
+            'sub_si_cat6': args['sub_si_cat6'],
+            'cat_contract': args['cat_contract'],
+            'sub_contract_cat1': args['sub_contract_cat1'],
+            'sub_contract_cat2': args['sub_contract_cat2'],
+            'sub_contract_cat3': args['sub_contract_cat3'],
+            'sub_contract_cat4': args['sub_contract_cat4'],
+            'sub_contract_cat5': args['sub_contract_cat5'],
+            'cat_client': args['cat_client'],
+            'cat_other': args['cat_other'],
+            'about_pat_rec': args['about_pat_rec'],
+            'pat_rec_num': args['pat_rec_num'],
+            'description': args['description'],
+            'impact_pat': args['impact_pat'],
+            'impact_user': args['impact_user'],
+            'followed': args['followed'],
+            'flwd_what': args['flwd_what'],
+            'flwd_when': args['flwd_when'],
+            'impl_action': args['impl_action'],
+            'flwd_descr_action': args['flwd_descr_action'],
+            'flwd_action_date': args['flwd_action_date'],
+            'incharge': args['incharge'],
+            'close_comment': args['close_comment'],
+            'validate': args['validate'],
+            'close_date': args['close_date'],
+        }
+
         # Update item
         if id_item > 0:
             self.log.info(Logs.fileline() + ' : TRACE update conformityDet')
-
-            ret = Quality.updateNonConformity(id_data=id_item,
-                                              id_owner=args['id_owner'],
-                                              name=args['name'],
-                                              reporter=args['reporter'],
-                                              report_date=args['report_date'],
-                                              cat_preana=args['cat_preana'],
-                                              sub_preana_cat1=args['sub_preana_cat1'],
-                                              sub_preana_cat2=args['sub_preana_cat2'],
-                                              sub_preana_cat3=args['sub_preana_cat3'],
-                                              sub_preana_cat4=args['sub_preana_cat4'],
-                                              sub1_sub_preana_cat4=args['sub1_sub_preana_cat4'],
-                                              sub2_sub_preana_cat4=args['sub2_sub_preana_cat4'],
-                                              sub3_sub_preana_cat4=args['sub3_sub_preana_cat4'],
-                                              sub_preana_cat5=args['sub_preana_cat5'],
-                                              sub_preana_cat6=args['sub_preana_cat6'],
-                                              sub_preana_cat7=args['sub_preana_cat7'],
-                                              sub_preana_cat8=args['sub_preana_cat8'],
-                                              sub_preana_cat9=args['sub_preana_cat9'],
-                                              sub_preana_cat10=args['sub_preana_cat10'],
-                                              cat_analy=args['cat_analy'],
-                                              sub_analy_cat1=args['sub_analy_cat1'],
-                                              sub_analy_cat2=args['sub_analy_cat2'],
-                                              sub_analy_cat3=args['sub_analy_cat3'],
-                                              sub_analy_cat4=args['sub_analy_cat4'],
-                                              sub_analy_cat5=args['sub_analy_cat5'],
-                                              sub_analy_cat6=args['sub_analy_cat6'],
-                                              sub_analy_cat7=args['sub_analy_cat7'],
-                                              sub_analy_cat8=args['sub_analy_cat8'],
-                                              sub_analy_cat9=args['sub_analy_cat9'],
-                                              sub_analy_cat10=args['sub_analy_cat10'],
-                                              sub_analy_cat11=args['sub_analy_cat11'],
-                                              cat_postana=args['cat_postana'],
-                                              sub_postana_cat1=args['sub_postana_cat1'],
-                                              sub_postana_cat2=args['sub_postana_cat2'],
-                                              sub_postana_cat3=args['sub_postana_cat3'],
-                                              sub_postana_cat4=args['sub_postana_cat4'],
-                                              sub_postana_cat5=args['sub_postana_cat5'],
-                                              sub_postana_cat6=args['sub_postana_cat6'],
-                                              sub_postana_cat7=args['sub_postana_cat7'],
-                                              sub_postana_cat8=args['sub_postana_cat8'],
-                                              sub_postana_cat9=args['sub_postana_cat9'],
-                                              sub_postana_cat10=args['sub_postana_cat10'],
-                                              cat_res=args['cat_res'],
-                                              sub_res_cat1=args['sub_res_cat1'],
-                                              sub_res_cat2=args['sub_res_cat2'],
-                                              sub_res_cat3=args['sub_res_cat3'],
-                                              sub_res_cat4=args['sub_res_cat4'],
-                                              sub_res_cat5=args['sub_res_cat5'],
-                                              sub_res_cat6=args['sub_res_cat6'],
-                                              sub_res_cat7=args['sub_res_cat7'],
-                                              cat_hr=args['cat_hr'],
-                                              sub_hr_cat1=args['sub_hr_cat1'],
-                                              sub_hr_cat2=args['sub_hr_cat2'],
-                                              sub_hr_cat3=args['sub_hr_cat3'],
-                                              sub_hr_cat4=args['sub_hr_cat4'],
-                                              sub_hr_cat5=args['sub_hr_cat5'],
-                                              cat_eqp=args['cat_eqp'],
-                                              sub_eqp_cat1=args['sub_eqp_cat1'],
-                                              sub_eqp_cat2=args['sub_eqp_cat2'],
-                                              sub_eqp_cat3=args['sub_eqp_cat3'],
-                                              sub_eqp_cat4=args['sub_eqp_cat4'],
-                                              sub_eqp_cat5=args['sub_eqp_cat5'],
-                                              sub_eqp_cat6=args['sub_eqp_cat6'],
-                                              equipment=args['equipment'],
-                                              cat_consu=args['cat_consu'],
-                                              sub_consu_cat1=args['sub_consu_cat1'],
-                                              sub_consu_cat2=args['sub_consu_cat2'],
-                                              sub_consu_cat3=args['sub_consu_cat3'],
-                                              sub_consu_cat4=args['sub_consu_cat4'],
-                                              sub_consu_cat5=args['sub_consu_cat5'],
-                                              sub_consu_cat6=args['sub_consu_cat6'],
-                                              supplier=args['supplier'],
-                                              cat_local=args['cat_local'],
-                                              sub_local_cat1=args['sub_local_cat1'],
-                                              sub_local_cat2=args['sub_local_cat2'],
-                                              sub_local_cat3=args['sub_local_cat3'],
-                                              sub_local_cat4=args['sub_local_cat4'],
-                                              sub_local_cat5=args['sub_local_cat5'],
-                                              sub_local_cat6=args['sub_local_cat6'],
-                                              cat_si=args['cat_si'],
-                                              sub_si_cat1=args['sub_si_cat1'],
-                                              sub_si_cat2=args['sub_si_cat2'],
-                                              sub_si_cat3=args['sub_si_cat3'],
-                                              sub_si_cat4=args['sub_si_cat4'],
-                                              sub_si_cat5=args['sub_si_cat5'],
-                                              sub_si_cat6=args['sub_si_cat6'],
-                                              cat_contract=args['cat_contract'],
-                                              sub_contract_cat1=args['sub_contract_cat1'],
-                                              sub_contract_cat2=args['sub_contract_cat2'],
-                                              sub_contract_cat3=args['sub_contract_cat3'],
-                                              sub_contract_cat4=args['sub_contract_cat4'],
-                                              sub_contract_cat5=args['sub_contract_cat5'],
-                                              cat_client=args['cat_client'],
-                                              cat_other=args['cat_other'],
-                                              about_pat_rec=args['about_pat_rec'],
-                                              pat_rec_num=args['pat_rec_num'],
-                                              description=args['description'],
-                                              impact_pat=args['impact_pat'],
-                                              impact_user=args['impact_user'],
-                                              followed=args['followed'],
-                                              flwd_what=args['flwd_what'],
-                                              flwd_when=args['flwd_when'],
-                                              impl_action=args['impl_action'],
-                                              flwd_descr_action=args['flwd_descr_action'],
-                                              flwd_action_date=args['flwd_action_date'],
-                                              incharge=args['incharge'],
-                                              close_comment=args['close_comment'],
-                                              validate=args['validate'],
-                                              close_date=args['close_date'])
+            ret = Quality.updateNonConformity(id_data=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : ConformityDet ERROR update')
@@ -349,114 +352,7 @@ class ConformityDet(Resource):
         # Insert new item
         else:
             self.log.info(Logs.fileline() + ' : TRACE insert NonConformity')
-            ret = Quality.insertNonConformity(id_owner=args['id_owner'],
-                                              name=args['name'],
-                                              reporter=args['reporter'],
-                                              report_date=args['report_date'],
-                                              cat_preana=args['cat_preana'],
-                                              sub_preana_cat1=args['sub_preana_cat1'],
-                                              sub_preana_cat2=args['sub_preana_cat2'],
-                                              sub_preana_cat3=args['sub_preana_cat3'],
-                                              sub_preana_cat4=args['sub_preana_cat4'],
-                                              sub1_sub_preana_cat4=args['sub1_sub_preana_cat4'],
-                                              sub2_sub_preana_cat4=args['sub2_sub_preana_cat4'],
-                                              sub3_sub_preana_cat4=args['sub3_sub_preana_cat4'],
-                                              sub_preana_cat5=args['sub_preana_cat5'],
-                                              sub_preana_cat6=args['sub_preana_cat6'],
-                                              sub_preana_cat7=args['sub_preana_cat7'],
-                                              sub_preana_cat8=args['sub_preana_cat8'],
-                                              sub_preana_cat9=args['sub_preana_cat9'],
-                                              sub_preana_cat10=args['sub_preana_cat10'],
-                                              cat_analy=args['cat_analy'],
-                                              sub_analy_cat1=args['sub_analy_cat1'],
-                                              sub_analy_cat2=args['sub_analy_cat2'],
-                                              sub_analy_cat3=args['sub_analy_cat3'],
-                                              sub_analy_cat4=args['sub_analy_cat4'],
-                                              sub_analy_cat5=args['sub_analy_cat5'],
-                                              sub_analy_cat6=args['sub_analy_cat6'],
-                                              sub_analy_cat7=args['sub_analy_cat7'],
-                                              sub_analy_cat8=args['sub_analy_cat8'],
-                                              sub_analy_cat9=args['sub_analy_cat9'],
-                                              sub_analy_cat10=args['sub_analy_cat10'],
-                                              sub_analy_cat11=args['sub_analy_cat11'],
-                                              cat_postana=args['cat_postana'],
-                                              sub_postana_cat1=args['sub_postana_cat1'],
-                                              sub_postana_cat2=args['sub_postana_cat2'],
-                                              sub_postana_cat3=args['sub_postana_cat3'],
-                                              sub_postana_cat4=args['sub_postana_cat4'],
-                                              sub_postana_cat5=args['sub_postana_cat5'],
-                                              sub_postana_cat6=args['sub_postana_cat6'],
-                                              sub_postana_cat7=args['sub_postana_cat7'],
-                                              sub_postana_cat8=args['sub_postana_cat8'],
-                                              sub_postana_cat9=args['sub_postana_cat9'],
-                                              sub_postana_cat10=args['sub_postana_cat10'],
-                                              cat_res=args['cat_res'],
-                                              sub_res_cat1=args['sub_res_cat1'],
-                                              sub_res_cat2=args['sub_res_cat2'],
-                                              sub_res_cat3=args['sub_res_cat3'],
-                                              sub_res_cat4=args['sub_res_cat4'],
-                                              sub_res_cat5=args['sub_res_cat5'],
-                                              sub_res_cat6=args['sub_res_cat6'],
-                                              sub_res_cat7=args['sub_res_cat7'],
-                                              cat_hr=args['cat_hr'],
-                                              sub_hr_cat1=args['sub_hr_cat1'],
-                                              sub_hr_cat2=args['sub_hr_cat2'],
-                                              sub_hr_cat3=args['sub_hr_cat3'],
-                                              sub_hr_cat4=args['sub_hr_cat4'],
-                                              sub_hr_cat5=args['sub_hr_cat5'],
-                                              cat_eqp=args['cat_eqp'],
-                                              sub_eqp_cat1=args['sub_eqp_cat1'],
-                                              sub_eqp_cat2=args['sub_eqp_cat2'],
-                                              sub_eqp_cat3=args['sub_eqp_cat3'],
-                                              sub_eqp_cat4=args['sub_eqp_cat4'],
-                                              sub_eqp_cat5=args['sub_eqp_cat5'],
-                                              sub_eqp_cat6=args['sub_eqp_cat6'],
-                                              equipment=args['equipment'],
-                                              cat_consu=args['cat_consu'],
-                                              sub_consu_cat1=args['sub_consu_cat1'],
-                                              sub_consu_cat2=args['sub_consu_cat2'],
-                                              sub_consu_cat3=args['sub_consu_cat3'],
-                                              sub_consu_cat4=args['sub_consu_cat4'],
-                                              sub_consu_cat5=args['sub_consu_cat5'],
-                                              sub_consu_cat6=args['sub_consu_cat6'],
-                                              supplier=args['supplier'],
-                                              cat_local=args['cat_local'],
-                                              sub_local_cat1=args['sub_local_cat1'],
-                                              sub_local_cat2=args['sub_local_cat2'],
-                                              sub_local_cat3=args['sub_local_cat3'],
-                                              sub_local_cat4=args['sub_local_cat4'],
-                                              sub_local_cat5=args['sub_local_cat5'],
-                                              sub_local_cat6=args['sub_local_cat6'],
-                                              cat_si=args['cat_si'],
-                                              sub_si_cat1=args['sub_si_cat1'],
-                                              sub_si_cat2=args['sub_si_cat2'],
-                                              sub_si_cat3=args['sub_si_cat3'],
-                                              sub_si_cat4=args['sub_si_cat4'],
-                                              sub_si_cat5=args['sub_si_cat5'],
-                                              sub_si_cat6=args['sub_si_cat6'],
-                                              cat_contract=args['cat_contract'],
-                                              sub_contract_cat1=args['sub_contract_cat1'],
-                                              sub_contract_cat2=args['sub_contract_cat2'],
-                                              sub_contract_cat3=args['sub_contract_cat3'],
-                                              sub_contract_cat4=args['sub_contract_cat4'],
-                                              sub_contract_cat5=args['sub_contract_cat5'],
-                                              cat_client=args['cat_client'],
-                                              cat_other=args['cat_other'],
-                                              about_pat_rec=args['about_pat_rec'],
-                                              pat_rec_num=args['pat_rec_num'],
-                                              description=args['description'],
-                                              impact_pat=args['impact_pat'],
-                                              impact_user=args['impact_user'],
-                                              followed=args['followed'],
-                                              flwd_what=args['flwd_what'],
-                                              flwd_when=args['flwd_when'],
-                                              impl_action=args['impl_action'],
-                                              flwd_descr_action=args['flwd_descr_action'],
-                                              flwd_action_date=args['flwd_action_date'],
-                                              incharge=args['incharge'],
-                                              close_comment=args['close_comment'],
-                                              validate=args['validate'],
-                                              close_date=args['close_date'])
+            ret = Quality.insertNonConformity(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ConformityDet ERROR  insert')
@@ -1440,32 +1336,36 @@ class EquipmentDet(Resource):
                 self.log.exception(Logs.fileline() + ' : EquipmentDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'id_owner': args['id_owner'],
+            'name': args['name'],
+            'maker': args['maker'],
+            'model': args['model'],
+            'funct': args['funct'],
+            'location': args['location'],
+            'section': args['section'],
+            'supplier': args['supplier'],
+            'serial': args['serial'],
+            'inventory': args['inventory'],
+            'incharge': args['incharge'],
+            'manual': args['manual'],
+            'procedur': args['procedur'],
+            'calibration': args['calibration'],
+            'contract': args['contract'],
+            'date_endcontract': args['date_endcontract'],
+            'date_receipt': args['date_receipt'],
+            'date_buy': args['date_buy'],
+            'date_onduty': args['date_onduty'],
+            'date_revoc': args['date_revoc'],
+            'critical': args['critical'],
+            'comment': args['comment'],
+            'eqp_status': args['eqp_status'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateEquipment(id_data=id_item,
-                                          id_owner=args['id_owner'],
-                                          name=args['name'],
-                                          maker=args['maker'],
-                                          model=args['model'],
-                                          funct=args['funct'],
-                                          location=args['location'],
-                                          section=args['section'],
-                                          supplier=args['supplier'],
-                                          serial=args['serial'],
-                                          inventory=args['inventory'],
-                                          incharge=args['incharge'],
-                                          # manual=args['manual'],
-                                          # procedur=args['procedur'],
-                                          # calibration=args['calibration'],
-                                          # contract=args['contract'],
-                                          # date_endcontract=args['date_endcontract'],
-                                          date_receipt=args['date_receipt'],
-                                          date_buy=args['date_buy'],
-                                          date_onduty=args['date_onduty'],
-                                          date_revoc=args['date_revoc'],
-                                          critical=args['critical'],
-                                          comment=args['comment'],
-                                          eqp_status=args['eqp_status'])
+            ret = Quality.updateEquipment(id_data=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : EquipmentDet ERROR update')
@@ -1478,29 +1378,7 @@ class EquipmentDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertEquipment(id_owner=args['id_owner'],
-                                          name=args['name'],
-                                          maker=args['maker'],
-                                          model=args['model'],
-                                          funct=args['funct'],
-                                          location=args['location'],
-                                          section=args['section'],
-                                          supplier=args['supplier'],
-                                          serial=args['serial'],
-                                          inventory=args['inventory'],
-                                          incharge=args['incharge'],
-                                          # manual=args['manual'],
-                                          # procedur=args['procedur'],
-                                          # calibration=args['calibration'],
-                                          # contract=args['contract'],
-                                          # date_endcontract=args['date_endcontract'],
-                                          date_receipt=args['date_receipt'],
-                                          date_buy=args['date_buy'],
-                                          date_onduty=args['date_onduty'],
-                                          date_revoc=args['date_revoc'],
-                                          critical=args['critical'],
-                                          comment=args['comment'],
-                                          eqp_status=args['eqp_status'])
+            ret = Quality.insertEquipment(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : EquipmentDet ERROR  insert')
@@ -2621,20 +2499,24 @@ class ManualDet(Resource):
                 self.log.exception(Logs.fileline() + ' : ManualDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'id_owner': args['id_owner'],
+            'reference': args['reference'],
+            'title': args['title'],
+            'man_mas': args['man_mas'],
+            'writer': args['writer'],
+            'auditor': args['auditor'],
+            'approver': args['approver'],
+            'date_insert': args['date_insert'],
+            'date_apply': args['date_apply'],
+            'date_update': args['date_update'],
+            'section': args['section'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateManual(id_data=id_item,
-                                       id_owner=args['id_owner'],
-                                       reference=args['reference'],
-                                       title=args['title'],
-                                       man_mas=args['man_mas'],
-                                       writer=args['writer'],
-                                       auditor=args['auditor'],
-                                       approver=args['approver'],
-                                       date_insert=args['date_insert'],
-                                       date_apply=args['date_apply'],
-                                       date_update=args['date_update'],
-                                       section=args['section'])
+            ret = Quality.updateManual(id_data=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : ManualDet ERROR update')
@@ -2647,17 +2529,7 @@ class ManualDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertManual(id_owner=args['id_owner'],
-                                       reference=args['reference'],
-                                       title=args['title'],
-                                       man_mas=args['man_mas'],
-                                       writer=args['writer'],
-                                       auditor=args['auditor'],
-                                       approver=args['approver'],
-                                       date_insert=args['date_insert'],
-                                       date_apply=args['date_apply'],
-                                       date_update=args['date_update'],
-                                       section=args['section'])
+            ret = Quality.insertManual(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ManualDet ERROR  insert')
@@ -3137,19 +3009,35 @@ class ProcedureDet(Resource):
                 self.log.exception(Logs.fileline() + ' : ProcedureDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'prd_name': args['prd_name'],
+            'prd_type': args['prd_type'],
+            'prd_nb_by_pack': args['prd_nb_by_pack'],
+            'prd_safe_limit': args['prd_safe_limit'],
+            'prd_supplier': args['prd_supplier'],
+            'prd_ref_supplier': args['prd_ref_supplier'],
+            'prd_conserv': args['prd_conserv'],
+            'prd_expir_oblig': args['prd_expir_oblig'],
+        }
+
+        # shared by the update and insert calls below
+        fields = {
+            'id_owner': args['id_owner'],
+            'reference': args['reference'],
+            'title': args['title'],
+            'writer': args['writer'],
+            'auditor': args['auditor'],
+            'approver': args['approver'],
+            'date_insert': args['date_insert'],
+            'date_apply': args['date_apply'],
+            'date_update': args['date_update'],
+            'section': args['section'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateProcedure(id_data=id_item,
-                                          id_owner=args['id_owner'],
-                                          reference=args['reference'],
-                                          title=args['title'],
-                                          writer=args['writer'],
-                                          auditor=args['auditor'],
-                                          approver=args['approver'],
-                                          date_insert=args['date_insert'],
-                                          date_apply=args['date_apply'],
-                                          date_update=args['date_update'],
-                                          section=args['section'])
+            ret = Quality.updateProcedure(id_data=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : ProcedureDet ERROR update')
@@ -3162,16 +3050,7 @@ class ProcedureDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertProcedure(id_owner=args['id_owner'],
-                                          reference=args['reference'],
-                                          title=args['title'],
-                                          writer=args['writer'],
-                                          auditor=args['auditor'],
-                                          approver=args['approver'],
-                                          date_insert=args['date_insert'],
-                                          date_apply=args['date_apply'],
-                                          date_update=args['date_update'],
-                                          section=args['section'])
+            ret = Quality.insertProcedure(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : ProcedureDet ERROR  insert')
@@ -3721,15 +3600,7 @@ class StockProductDet(Resource):
 
         # Update stock product
         if id_item > 0:
-            ret = Quality.updateStockProduct(prd_ser=id_item,
-                                             prd_name=args['prd_name'],
-                                             prd_type=args['prd_type'],
-                                             prd_nb_by_pack=args['prd_nb_by_pack'],
-                                             prd_safe_limit=args['prd_safe_limit'],
-                                             prd_supplier=args['prd_supplier'],
-                                             prd_ref_supplier=args['prd_ref_supplier'],
-                                             prd_conserv=args['prd_conserv'],
-                                             prd_expir_oblig=args['prd_expir_oblig'])
+            ret = Quality.updateStockProduct(prd_ser=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StockProductDet ERROR update')
@@ -3742,14 +3613,7 @@ class StockProductDet(Resource):
 
         # Insert new stock product
         else:
-            ret = Quality.insertStockProduct(prd_name=args['prd_name'],
-                                             prd_type=args['prd_type'],
-                                             prd_nb_by_pack=args['prd_nb_by_pack'],
-                                             prd_safe_limit=args['prd_safe_limit'],
-                                             prd_supplier=args['prd_supplier'],
-                                             prd_ref_supplier=args['prd_ref_supplier'],
-                                             prd_conserv=args['prd_conserv'],
-                                             prd_expir_oblig=args['prd_expir_oblig'])
+            ret = Quality.insertStockProduct(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : StockProductDet ERROR  insert')
@@ -4838,17 +4702,21 @@ class StorageCompDet(Resource):
                 self.log.exception(Logs.fileline() + ' : StorageCompDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'user': args['sco_user'],
+            'name': args['sco_name'],
+            'abbrev': args['sco_abbrev'],
+            'label': args['sco_label'],
+            'dim_x': args['sco_dim_x'],
+            'dim_y': args['sco_dim_y'],
+            'dim_z': args['sco_dim_z'],
+            'chamber': args['sco_chamber'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateStorageComp(id_item=id_item,
-                                            user=args['sco_user'],
-                                            name=args['sco_name'],
-                                            abbrev=args['sco_abbrev'],
-                                            label=args['sco_label'],
-                                            dim_x=args['sco_dim_x'],
-                                            dim_y=args['sco_dim_y'],
-                                            dim_z=args['sco_dim_z'],
-                                            chamber=args['sco_chamber'])
+            ret = Quality.updateStorageComp(id_item=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StorageCompDet ERROR update')
@@ -4861,14 +4729,7 @@ class StorageCompDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertStorageComp(user=args['sco_user'],
-                                            name=args['sco_name'],
-                                            abbrev=args['sco_abbrev'],
-                                            label=args['sco_label'],
-                                            dim_x=args['sco_dim_x'],
-                                            dim_y=args['sco_dim_y'],
-                                            dim_z=args['sco_dim_z'],
-                                            chamber=args['sco_chamber'])
+            ret = Quality.insertStorageComp(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : StorageCompDet ERROR insert')
@@ -4983,17 +4844,21 @@ class StorageBoxDet(Resource):
                 self.log.exception(Logs.fileline() + ' : StorageBoxDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'user': args['sbo_user'],
+            'name': args['sbo_name'],
+            'label': args['sbo_label'],
+            'coordinates': args['sbo_coordinates'],
+            'dim_x': args['sbo_dim_x'],
+            'dim_y': args['sbo_dim_y'],
+            'full': args['sbo_full'],
+            'compartment': args['sbo_compartment'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateStorageBox(id_item=id_item,
-                                            user=args['sbo_user'],
-                                            name=args['sbo_name'],
-                                            label=args['sbo_label'],
-                                            coordinates=args['sbo_coordinates'],
-                                            dim_x=args['sbo_dim_x'],
-                                            dim_y=args['sbo_dim_y'],
-                                            full=args['sbo_full'],
-                                            compartment=args['sbo_compartment'])
+            ret = Quality.updateStorageBox(id_item=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : StorageBoxDet ERROR update')
@@ -5006,14 +4871,7 @@ class StorageBoxDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertStorageBox(user=args['sbo_user'],
-                                            name=args['sbo_name'],
-                                            label=args['sbo_label'],
-                                            coordinates=args['sbo_coordinates'],
-                                            dim_x=args['sbo_dim_x'],
-                                            dim_y=args['sbo_dim_y'],
-                                            full=args['sbo_full'],
-                                            compartment=args['sbo_compartment'])
+            ret = Quality.insertStorageBox(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : StorageBoxDet ERROR insert')
@@ -5392,21 +5250,25 @@ class SupplierDet(Resource):
                 self.log.exception(Logs.fileline() + ' : SupplierDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # shared by the update and insert calls below
+        fields = {
+            'id_owner': args['id_owner'],
+            'supplier': args['supplier'],
+            'lastname': args['lastname'],
+            'firstname': args['firstname'],
+            'address': args['address'],
+            'phone': args['phone'],
+            'email': args['email'],
+            'funct': args['funct'],
+            'comment': args['comment'],
+            'mobile': args['mobile'],
+            'fax': args['fax'],
+            'critical': args['critical'],
+        }
+
         # Update item
         if id_item > 0:
-            ret = Quality.updateSupplier(id_data=id_item,
-                                         id_owner=args['id_owner'],
-                                         supplier=args['supplier'],
-                                         lastname=args['lastname'],
-                                         firstname=args['firstname'],
-                                         address=args['address'],
-                                         phone=args['phone'],
-                                         email=args['email'],
-                                         funct=args['funct'],
-                                         comment=args['comment'],
-                                         mobile=args['mobile'],
-                                         fax=args['fax'],
-                                         critical=args['critical'])
+            ret = Quality.updateSupplier(id_data=id_item, **fields)
 
             if ret is False:
                 self.log.error(Logs.alert() + ' : SupplierDet ERROR update')
@@ -5419,18 +5281,7 @@ class SupplierDet(Resource):
 
         # Insert new item
         else:
-            ret = Quality.insertSupplier(id_owner=args['id_owner'],
-                                         supplier=args['supplier'],
-                                         lastname=args['lastname'],
-                                         firstname=args['firstname'],
-                                         address=args['address'],
-                                         phone=args['phone'],
-                                         email=args['email'],
-                                         funct=args['funct'],
-                                         comment=args['comment'],
-                                         mobile=args['mobile'],
-                                         fax=args['fax'],
-                                         critical=args['critical'])
+            ret = Quality.insertSupplier(**fields)
 
             if ret <= 0:
                 self.log.error(Logs.alert() + ' : SupplierDet ERROR  insert')

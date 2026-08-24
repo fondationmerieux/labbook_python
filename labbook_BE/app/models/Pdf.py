@@ -1077,6 +1077,36 @@ class Pdf:
         return True
 
     @staticmethod
+    def buildLabelData():
+        """
+        Build the labels common to the report, outsourcing and invoice PDFs.
+        Each caller adds its own extra labels to the returned dict.
+        """
+        label = {}
+
+        label['phone']      = str(_("Tél"))
+        label['fax']        = str(_("Fax"))
+        label['email']      = str(_("Email"))
+        label['record']     = str(_("Dossier"))
+        label['code']       = str(_("Code"))
+        label['born']       = str(_("Né(e) le"))
+        label['admit']      = str(_("Admis le"))
+        label['at']         = str(_("en"))
+        label['bed']        = str(_("Lit"))
+        label['by']         = str(_("par"))
+        label['exam_presc'] = str(_("Examen prescrit le"))
+        label['save']       = str(_("Enregistré le"))
+        label['edit']       = str(_("édité le"))
+        label['analyzes']   = str(_("ANALYSE"))
+        label['results']    = str(_("RESULTAT"))
+        label['references'] = str(_("Références"))
+        label['previous']   = str(_("Antériorités"))
+        label['comm']       = str(_("Commentaire"))
+        label['validate']   = str(_("validé par"))
+
+        return label
+
+    @staticmethod
     def buildLaboratoryData():
         """
         Build the laboratory header shared by the generated PDFs.
@@ -1315,27 +1345,7 @@ class Pdf:
         data['signature'] = ""  # filled further when you know the validator
 
         # === Label details ===
-        data['label'] = {}
-
-        data['label']['phone']      = str(_("Tél"))
-        data['label']['fax']        = str(_("Fax"))
-        data['label']['email']      = str(_("Email"))
-        data['label']['record']     = str(_("Dossier"))
-        data['label']['code']       = str(_("Code"))
-        data['label']['born']       = str(_("Né(e) le"))
-        data['label']['admit']      = str(_("Admis le"))
-        data['label']['at']         = str(_("en"))
-        data['label']['bed']        = str(_("Lit"))
-        data['label']['by']         = str(_("par"))
-        data['label']['exam_presc'] = str(_("Examen prescrit le"))
-        data['label']['save']       = str(_("Enregistré le"))
-        data['label']['edit']       = str(_("édité le"))
-        data['label']['analyzes']   = str(_("ANALYSE"))
-        data['label']['results']    = str(_("RESULTAT"))
-        data['label']['references'] = str(_("Références"))
-        data['label']['previous']   = str(_("Antériorités"))
-        data['label']['comm']       = str(_("Commentaire"))
-        data['label']['validate']   = str(_("validé par"))
+        data['label'] = Pdf.buildLabelData()
         data['label']['technician'] = str(_("technicien"))
         data['label']['sampling_info'] = str(_("Informations de prélèvement"))
         data['label']['sampled_at']    = str(_("Prélève le"))
@@ -2348,27 +2358,7 @@ class Pdf:
         data['logo'] = (open(filepath, 'rb'), 'image/png')
 
         # === Label details ===
-        data['label'] = {}
-
-        data['label']['phone']      = str(_("Tél"))
-        data['label']['fax']        = str(_("Fax"))
-        data['label']['email']      = str(_("Email"))
-        data['label']['record']     = str(_("Dossier"))
-        data['label']['code']       = str(_("Code"))
-        data['label']['born']       = str(_("Né(e) le"))
-        data['label']['admit']      = str(_("Admis le"))
-        data['label']['at']         = str(_("en"))
-        data['label']['bed']        = str(_("Lit"))
-        data['label']['by']         = str(_("par"))
-        data['label']['exam_presc'] = str(_("Examen prescrit le"))
-        data['label']['save']       = str(_("Enregistré le"))
-        data['label']['edit']       = str(_("édité le"))
-        data['label']['analyzes']   = str(_("ANALYSE"))
-        data['label']['results']    = str(_("RESULTAT"))
-        data['label']['references'] = str(_("Références"))
-        data['label']['previous']   = str(_("Antériorités"))
-        data['label']['comm']       = str(_("Commentaire"))
-        data['label']['validate']   = str(_("validé par"))
+        data['label'] = Pdf.buildLabelData()
 
         # === Laboratory details ===
         data['lab'] = Pdf.buildLaboratoryData()
@@ -2734,27 +2724,7 @@ class Pdf:
         data['logo'] = (open(filepath, 'rb'), 'image/png')
 
         # === Label details ===
-        data['label'] = {}
-
-        data['label']['phone']      = str(_("Tél"))
-        data['label']['fax']        = str(_("Fax"))
-        data['label']['email']      = str(_("Email"))
-        data['label']['record']     = str(_("Dossier"))
-        data['label']['code']       = str(_("Code"))
-        data['label']['born']       = str(_("Né(e) le"))
-        data['label']['admit']      = str(_("Admis le"))
-        data['label']['at']         = str(_("en"))
-        data['label']['bed']        = str(_("Lit"))
-        data['label']['by']         = str(_("par"))
-        data['label']['exam_presc'] = str(_("Examen prescrit le"))
-        data['label']['save']       = str(_("Enregistré le"))
-        data['label']['edit']       = str(_("édité le"))
-        data['label']['analyzes']   = str(_("ANALYSE"))
-        data['label']['results']    = str(_("RESULTAT"))
-        data['label']['references'] = str(_("Références"))
-        data['label']['previous']   = str(_("Antériorités"))
-        data['label']['comm']       = str(_("Commentaire"))
-        data['label']['validate']   = str(_("validé par"))
+        data['label'] = Pdf.buildLabelData()
         data['label']['total']      = str(_("Total"))
         data['label']['total_remain'] = str(_("Total à payer"))
         data['label']['analyzes_requested'] = str(_("Analyses demandées"))
