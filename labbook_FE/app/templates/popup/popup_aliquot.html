@@ -1,0 +1,57 @@
+{#
+    Modal used to add one or more aliquots to a sample.
+    Shared by the single-record and multi-record result pages; its behaviour
+    lives in js/aliquot.js.
+#}
+            <!-- Modal add aliquot -->
+            <div class="modal fade" id="aliquotModal" tabindex="-1" aria-labelledby="aliquotModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="aliquotModalLabel">{{ _("Ajouter un aliquot") }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div id="aliquotList">
+                                <div class="aliquot_form">
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Pathogène") }}</label>
+                                        <select class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
+                                            {% from 'macros.html' import select_pathogen %}
+                                            {{ select_pathogen(ihm['l_pathogen'], 0) }}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Localisation d'accès") }} *</label>
+                                        <input type="text" class="form-control coordinates" aria-label="{{ _('Localisation d\'accès') }}">
+                                    </div>
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input in_stock" checked aria-label="{{ _('Présent en stock') }}">
+                                        <label class="form-check-label">{{ _("Présent en stock") }}</label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">{{ _("Boîte associée") }} *</label>
+                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
+                                            {% from 'macros.html' import select_storage_box %}
+                                            {{ select_storage_box(ihm['l_box']['data'], 0) }}
+                                        </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-check-label">{{ _("Stockage boîte") }} : </label>
+                                        <span class="box_coord"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                            <div class="ms-auto">
+                                <button type="button" id="more_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
+                                <button type="button" class="btn btn-success" onclick="saveAliquot()">{{ _("Enregistrer") }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>

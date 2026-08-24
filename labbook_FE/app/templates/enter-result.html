@@ -155,56 +155,7 @@
             </form>
             {% endif %}
 
-            <!-- Modal add aliquot -->
-            <div class="modal fade" id="aliquotModal" tabindex="-1" aria-labelledby="aliquotModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="aliquotModalLabel">{{ _("Ajouter un aliquot") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-
-                        <div class="modal-body">
-                            <div id="aliquotList">
-                                <div class="aliquot_form">
-                                    <div class="mb-3">
-                                        <label class="form-label">{{ _("Pathogène") }}</label>
-                                        <select class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
-                                            {% from 'macros.html' import select_pathogen %}
-                                            {{ select_pathogen(ihm['l_pathogen'], 0) }}
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">{{ _("Localisation d'accès") }} *</label>
-                                        <input type="text" class="form-control coordinates" aria-label="{{ _('Localisation d\'accès') }}">
-                                    </div>
-                                    <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input in_stock" checked aria-label="{{ _('Présent en stock') }}">
-                                        <label class="form-check-label">{{ _("Présent en stock") }}</label>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">{{ _("Boîte associée") }} *</label>
-                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
-                                            {% from 'macros.html' import select_storage_box %}
-                                            {{ select_storage_box(ihm['l_box']['data'], 0) }}
-                                        </select>
-                                    </div>
-                                    <div class="mb-1">
-                                        <label class="form-check-label">{{ _("Stockage boîte") }} : </label>
-                                        <span class="box_coord"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
-                            <button type="button" id="more_aliquot" class="btn btn-lbk btn-{{ session['user_role']|safe }}">{{ _("Ajouter un aliquot") }}</button>
-                            <button type="button" class="btn btn-success" onclick="saveAliquot()">{{ _("Enregistrer") }}</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'popup/popup_aliquot.html' %}
 
             <!-- Modal analyzer result -->
             <div class="modal fade" id="analyzerModal" tabindex="-1" aria-labelledby="analyzerModalLabel" aria-hidden="true">
@@ -253,6 +204,8 @@ var per_rec      = "" ;
 var rec_stat     = 0  ;
 var cur_id_samp  = 0  ;
 var cur_samp_type= 0  ;
+// single record page: the patient never changes, js/aliquot.js expects it as a global
+var cur_id_pat   = {{ args['patient']['id_data']|default(0) }} ;
 
 function save_res( id_rec, ref_ana )
 {
@@ -611,7 +564,7 @@ let btn_aliquot = "" ;
             {% if has_permission("ALIQUOT_170") %}
             if ( id_samp_p > 0 && samp_type_p > 0 )
             {
-            btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+            btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
             }
             {% endif %}
 
@@ -960,7 +913,7 @@ let btn_aliquot = "" ;
         {% if has_permission("ALIQUOT_170") %}
         if ( id_samp_p > 0 && samp_type_p > 0 )
         {
-        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
         }
         {% endif %}
 
@@ -1265,157 +1218,8 @@ info = " - {% if args['patient']['pat_code_lab'] %}{{ args['patient']['pat_code_
 {% endif %}
 }
 
-function add_aliquot(id_samp, samp_type)
-{
-cur_id_samp = id_samp;
-cur_samp_type = samp_type;
-
-let firstForm = document.querySelector(".aliquot_form");
-
-    if (firstForm) 
-    {
-        firstForm.querySelector(".pathogen").value = "";
-        firstForm.querySelector(".coordinates").value = "";
-        firstForm.querySelector(".in_stock").checked = true;
-        firstForm.querySelector(".box").selectedIndex = 0;
-        firstForm.querySelector(".box_coord").textContent = "";
-    }
-
-document.querySelectorAll(".aliquot_form:not(:first-child), .aliquot-separator").forEach(elem => elem.remove());
-
-let aliquotModal = new bootstrap.Modal(document.getElementById('aliquotModal'));
-aliquotModal.show();
-}
-
-function saveAliquot() 
-{
-let aliquots = [];
-
-    document.querySelectorAll(".aliquot_form").forEach(form => 
-    {
-        let pathogen = form.querySelector(".pathogen").value;  
-        let coord = form.querySelector(".coordinates").value;  
-        let in_stock = form.querySelector(".in_stock").checked ? "Y" : "N";  
-        let box = form.querySelector(".box").value;
-
-        if (!box || box == "0") {
-            alert("{{ _("L'association à une boîte est obligatoire.") }}");
-            return false;
-        }
-
-        let aliquotData = {
-            sal_user: {{ session['user_id']|safe }},
-            sal_type: cur_samp_type,
-            sal_sample: cur_id_samp,
-            sal_patient: {{ args['patient']['id_data']}},
-            sal_pathogen: pathogen,
-            sal_coordinates: coord,
-            sal_in_stock: in_stock,
-            sal_box: box
-        };
-
-        aliquots.push(aliquotData) ;
-    } ) ;
-
-    set_audit_context("{{ _('Enregistrement aliquot') }}");    
-
-    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/0", {
-        method: "POST",
-        headers: with_audit_headers({ "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" }),
-        body: JSON.stringify({ aliquots: aliquots })
-    })
-    .then(response => {
-        if (response.status === 200 || response.status === 204) {
-            return;
-        }
-        return response.json().catch(() => ({}));
-    })
-    .then(data => {
-        if (data && data.error) 
-        {
-            alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}");
-        }
-        else
-        {
-        let modal = bootstrap.Modal.getInstance(document.getElementById('aliquotModal'));
-            modal.hide();
-
-            setTimeout(() => {
-                let toast = new bootstrap.Toast(document.getElementById('toastSuccess'));
-                toast.show();
-            }, 500);
-        }
-    })
-    .catch(error => alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}") );
-}
-
-document.getElementById("more_aliquot").addEventListener("click", function() 
-{
-    let newAliquot = document.querySelector(".aliquot_form").cloneNode(true);
-
-    let separator = document.createElement("hr");
-    separator.classList.add("aliquot-separator");
-
-    let removeButton = document.createElement("button");
-    removeButton.type = "button";
-    removeButton.className = "btn btn-danger btn-sm remove-aliquot";
-    removeButton.innerHTML = "<i class='bi bi-trash'></i> {{ _('Supprimer') }}";
-    removeButton.style.marginTop = "10px";
-
-    removeButton.addEventListener("click", function() {
-        separator.remove();
-        newAliquot.remove();
-    });
-
-    let newBoxCoord = newAliquot.querySelector(".box_coord");
-    if (newBoxCoord) {
-        newBoxCoord.textContent = "";
-    }
-
-    newAliquot.appendChild(removeButton);
-
-    let aliquotList = document.getElementById("aliquotList");
-    aliquotList.appendChild(separator);
-    aliquotList.appendChild(newAliquot);
-});
-
-function get_box_coord(event) 
-{
-let boxSelect = event.target;
-let boxId = boxSelect.value;
-
-let aliquotForm = boxSelect.closest(".aliquot_form");
-let boxCoordSpan = aliquotForm.querySelector(".box_coord");
-
-    if (boxId) {
-        let url = `{{ session['server_ext'] }}/services/quality/storage/box/coord/${boxId}`;
-
-        fetch(url, {
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}" }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sbo_label) {
-                    let coordText = `${data.sro_label || ''} > ${data.sch_label || ''} > ${data.sco_label || ''} > ${data.sbo_label}`;
-                    
-                    if (data.sbo_coordinates) {
-                        coordText += ` [${data.sbo_coordinates}]`;
-                    } 
-
-                    if (data.sbo_full === "Y") {
-                        coordText += " ({{ _('Pleine') }})";
-                    }
-
-                    boxCoordSpan.textContent = coordText;
-                }
-            })
-            .catch(() => {
-                boxCoordSpan.textContent = "{{ _("Erreur lors de la récupération") }}";
-            });
-    } else {
-        boxCoordSpan.textContent = "";
-    }
-}
+{% set aliquot_audit = true %}
+{% include 'js/aliquot.js' %}
 
 // Return true if at least one result is technically validated (type_validation == 251)
 function has_tech_validated() 
