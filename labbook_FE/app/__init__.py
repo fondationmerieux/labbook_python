@@ -8180,16 +8180,22 @@ def list_ctrl_int():
 
 
 # Page : internal control details
-@app.route('/det-control-int/<int:id_ctrl>')
-def det_control_int(id_ctrl=0):
-    log.info(Logs.fileline() + ' : TRACE internal control det=' + str(id_ctrl))
+def det_control(id_ctrl, type_ctrl):
+    """
+    Shared handler for the internal (INT) and external (EXT) control detail pages.
+    Both differ only by the back-end sub-path and the template flavour.
+    """
+    type_url = 'ext' if type_ctrl == 'EXT' else 'int'
+    label    = 'external' if type_ctrl == 'EXT' else 'internal'
+
+    log.info(Logs.fileline() + ' : TRACE ' + label + ' control det=' + str(id_ctrl))
 
     if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook internal control det => disconnect')
+        log.info(Logs.fileline() + ' : TRACE Labbook ' + label + ' control det => disconnect')
         session.clear()
         return index()
 
-    session['current_page'] = 'det-control-int/' + str(id_ctrl)
+    session['current_page'] = 'det-control-' + type_url + '/' + str(id_ctrl)
     session.modified = True
 
     resp = ensure_be_token()
@@ -8203,7 +8209,7 @@ def det_control_int(id_ctrl=0):
     json_data['result']  = []
 
     if id_ctrl > 0:
-        # Load internal control details
+        # Load control details
         try:
             url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/det/' + str(id_ctrl)
             req = requests.get(url, timeout=10, headers=headers)
@@ -8216,11 +8222,11 @@ def det_control_int(id_ctrl=0):
                 json_data['control'] = req.json()
 
         except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests internal control det failed, url=%s', url)
+            log.exception(Logs.fileline() + ' : requests ' + label + ' control det failed, url=%s', url)
 
         # Load list of result
         try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/int/res/list/' + str(id_ctrl)
+            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/' + type_url + '/res/list/' + str(id_ctrl)
             req = requests.get(url, timeout=10, headers=headers)
 
             redir = be_check_or_bounce(req)
@@ -8231,11 +8237,16 @@ def det_control_int(id_ctrl=0):
                 json_data['result'] = req.json()
 
         except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests internal control res list failed, url=%s', url)
+            log.exception(Logs.fileline() + ' : requests ' + label + ' control res list failed, url=%s', url)
 
     json_data['id_ctrl'] = id_ctrl
 
-    return render_template('det-control-int.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return render_template('det-control.html', type_ctrl=type_ctrl, args=json_data, rand=random.randint(0, 999))  # nosec B311
+
+
+@app.route('/det-control-int/<int:id_ctrl>')
+def det_control_int(id_ctrl=0):
+    return det_control(id_ctrl, 'INT')
 
 
 # Page : internal control results
@@ -8323,60 +8334,7 @@ def list_ctrl_ext():
 # Page : external control details
 @app.route('/det-control-ext/<int:id_ctrl>')
 def det_control_ext(id_ctrl=0):
-    log.info(Logs.fileline() + ' : TRACE external control det=' + str(id_ctrl))
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook external control det => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = 'det-control-ext/' + str(id_ctrl)
-    session.modified = True
-
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    json_data = {}
-
-    json_data['control'] = []
-    json_data['result']  = []
-
-    if id_ctrl > 0:
-        # Load external control details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/det/' + str(id_ctrl)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['control'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests external control det failed, url=%s', url)
-
-        # Load list of result
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/ext/res/list/' + str(id_ctrl)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['result'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests external control res list failed, url=%s', url)
-
-    json_data['id_ctrl'] = id_ctrl
-
-    return render_template('det-control-ext.html', args=json_data, rand=random.randint(0, 999))  # nosec B311
+    return det_control(id_ctrl, 'EXT')
 
 
 # Page : external control results

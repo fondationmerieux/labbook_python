@@ -1,8 +1,24 @@
 {% extends "skeleton.html" %}
 
+{#
+    Shared detail page for internal (INT) and external (EXT) quality controls.
+    The calling route passes type_ctrl, everything below derives from it.
+#}
+{% set is_ext   = (type_ctrl == 'EXT') %}
+{% set type_url = 'ext' if is_ext else 'int' %}
+{% set col_prefix = 'cte' if is_ext else 'cti' %}
+
+{% set perm_create = 'CTRLEXT_158' if is_ext else 'CTRLINT_152' %}
+{% set perm_edit   = 'CTRLEXT_159' if is_ext else 'CTRLINT_153' %}
+{% set perm_add    = 'CTRLEXT_161' if is_ext else 'CTRLINT_155' %}
+{% set perm_export = 'CTRLEXT_162' if is_ext else 'CTRLINT_156' %}
+
+{% set page_title = _("Contrôle externe") if is_ext else _("Contrôle interne") %}
+{% set nb_col     = 7 if is_ext else 6 %}
+
 {% block head %}
 {{ super() }}
-    <title>{{ _("Contrôle interne") }}</title>
+    <title>{{ page_title }}</title>
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}"></script>
 {% endblock %}
@@ -11,8 +27,8 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Contrôle interne") }}</span></h2>
-            {% if (has_permission("CTRLINT_152") and args['id_ctrl'] == 0) or (has_permission("CTRLINT_153") and args['id_ctrl'] > 0) %}
+            <h2 class="page-title page-title-color"><span>{{ page_title }}</span></h2>
+            {% if (has_permission(perm_create) and args['id_ctrl'] == 0) or (has_permission(perm_edit) and args['id_ctrl'] > 0) %}
             <div class="form-group d-lg-flex align-items-start mt-3">
                 <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
                 <label class="form-label text-end me-3">
@@ -36,7 +52,7 @@
                     <input type="hidden" id="id_eqp" value="{{ args['control']['ctq_eqp'] }}">
                 </div>
             </div>
-            {% if has_permission("CTRLINT_152") %}
+            {% if has_permission(perm_create) %}
             <div class="col-12 text-end my-2">
                 <input type="button" onclick="save_ctrl();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
             </div>
@@ -58,11 +74,14 @@
                     <thead>
                         <tr>
                             <th hidden>{{ _("serial") }}</th>
-                            <th class="text-start">{{ _("Action") }}</th>
-                            <th class="text-start cursor-act">{{ _("Date") }}</th>
-                            <th class="text-start cursor-act">{{ _("Cible") }}</th>
-                            <th class="text-start cursor-act">{{ _("Résultat") }}</th>
-                            <th class="text-start cursor-act">{{ _("Commentaire") }}</th>
+                            <th scope="col" class="text-start">{{ _("Action") }}</th>
+                            <th scope="col" class="text-start cursor-act">{{ _("Date") }}</th>
+                            <th scope="col" class="text-start cursor-act">{% if is_ext %}{{ _("Fournisseur") }}{% else %}{{ _("Cible") }}{% endif %}</th>
+                            <th scope="col" class="text-start cursor-act">{{ _("Résultat") }}</th>
+                            <th scope="col" class="text-start cursor-act">{{ _("Commentaire") }}</th>
+                            {% if is_ext %}
+                            <th scope="col" class="text-start">{{ _("Compte rendu") }}</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody id="tbody_items">
@@ -83,17 +102,17 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
-                    {% if has_permission("CTRLINT_156") %}
+                    {% if has_permission(perm_export) %}
                     <input type="button" onclick="export_data();" id="btn_export" value="{{ _("Export des données") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-3">
                     {% endif %}
-                    {% if has_permission("CTRLINT_155") %}
+                    {% if has_permission(perm_add) %}
                     <input type="button" onclick="add_item();" id="btn_add" value="{{ _("Ajouter") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                     {% endif %}
                 </div>
             </div>
 
             {% else %}
-            {% include 'no-rights.html' %} 
+            {% include 'no-rights.html' %}
             {% endif %}
 
         </div>
@@ -129,7 +148,7 @@ let res = "" ;
 
 {% if not args['result'] %}
 res = "<tr>" +
-      "<td colspan=\"6\">" +
+      "<td colspan=\"{{ nb_col }}\">" +
       "<div>{{ _("Aucune donnée à afficher") }}</div></td></tr>" ;
 {% else %}
 let data_len = data_items.length ;
@@ -141,24 +160,46 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    {% if has_permission("CTRLINT_153") %}
+    {% if has_permission(perm_edit) %}
     let menu_act = "<nav>" +
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-int/" + data_items[i].cti_ctq + "/" + data_items[i].cti_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";   
-        
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-{{ type_url }}/" + data_items[i].{{ col_prefix }}_ctq + "/" + data_items[i].{{ col_prefix }}_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";
+
     menu_act += "</div></ul></nav>" ;
     {% else %}
     let menu_act = "" ;
     {% endif %}
 
+    {% if is_ext %}
+    conform = ""
+
+    if (data_items[i].cte_conform == "Y") conform = "{{ _("Conforme") }}" ;
+    else if (data_items[i].cte_conform == "N") conform = "{{ _("Non conforme") }}" ;
+    else if (data_items[i].cte_conform == "U") conform = "{{ _("Autre") }}" ;
+
+    if ( data_items[i].id_file > 0)
+    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'CTRL', " + data_items[i].id_file + ");\"><span class=\"bi bi-download\"></span></a>" ;
+    else
+    link_manual = "" ;
+
+    {% endif %}
     res += "<tr><td hidden><div>" + data_items[i].id_item + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].cti_date + "</div></td>" +
+           "<td><div class=\"text-start\">" + data_items[i].{{ col_prefix }}_date + "</div></td>" +
+    {% if is_ext %}
+           "<td><div class=\"text-start\">" + data_items[i].cte_organizer + "</div></td>" +
+           "<td><div class=\"text-start\">" + conform + "</div></td>" +
+    {% else %}
            "<td><div class=\"text-start\">" + data_items[i].cti_target + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].cti_result + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].cti_comment + "</div></td></tr>" ;
+    {% endif %}
+           "<td><div class=\"text-start\">" + data_items[i].{{ col_prefix }}_comment + "</div></td>" +
+    {% if is_ext %}
+           "<td><div class=\"text-start\">" + link_manual + "</div></td>" +
+    {% endif %}
+           "</tr>" ;
     }
 {% endif %}
 
@@ -166,7 +207,7 @@ $("#list_items_total").html( data_len ) ;
     $("#num_page_t").text( p_cur ) ;
     $("#num_page_b").text( p_cur ) ;
 
-    $("#table_items").tablesorter() ;  // sort only data on screen 
+    $("#table_items").tablesorter() ;  // sort only data on screen
 }
 
 function save_ctrl()
@@ -191,7 +232,7 @@ var msg = "" ;
 
 var param = '{ "id_item":' + id_item + ', ' +
               '"name":"' + name + '", ' +
-              '"type_ctrl":"INT", ' +
+              '"type_ctrl":"{{ type_ctrl }}", ' +
               '"type_val":"' + type_val + '", ' +
               '"id_eqp":' + id_eqp + '}' ;
 
@@ -204,11 +245,11 @@ var param = '{ "id_item":' + id_item + ', ' +
        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
-           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ; 
+           tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
 
            id_item = JSON.stringify(data) ;
 
-           setTimeout(function(){location.href="{{ session['server_ext'] }}/det-control-int/"+id_item}, 2400) ;
+           setTimeout(function(){location.href="{{ session['server_ext'] }}/det-control-{{ type_url }}/"+id_item}, 2400) ;
            },
        error: function(data)
            {
@@ -222,7 +263,7 @@ function add_item()
 {
 var type_val  = $("input:radio[name=ctrl-type]:checked").val() ;
 
-window.location.href = "{{ session['server_ext'] }}/res-control-int/" +id_item + "/" + type_val + "/0";
+window.location.href = "{{ session['server_ext'] }}/res-control-{{ type_url }}/" +id_item + "/" + type_val + "/0";
 }
 
 function export_data()
@@ -233,10 +274,10 @@ var param = '{}' ;
     $("#dial-wait").off('shown.bs.modal') ;
     $("#dial-wait").modal("show") ;
 
-    $.ajax( 
+    $.ajax(
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/control/int/res/export/" + id_item,
+        url: "{{ session['server_ext'] }}/services/quality/control/{{ type_url }}/res/export/" + id_item,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
@@ -244,7 +285,7 @@ var param = '{}' ;
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
-        
+
         let today = new Date();
 
         let month = today.getMonth() + 1 ;
@@ -257,7 +298,7 @@ var param = '{}' ;
 
         today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "control_int_" + id_item + "_" + today + ".csv" ;
+        let filename = "control_{{ type_url }}_" + id_item + "_" + today + ".csv" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },
@@ -306,7 +347,7 @@ $("#search_eqp").select2(
     }
 } ) ;
 
-$("#search_eqp").on("select2:select", function (e) 
+$("#search_eqp").on("select2:select", function (e)
 {
 let id_eqp = $(e.currentTarget).val();
 
@@ -314,14 +355,14 @@ let id_eqp = $(e.currentTarget).val();
 } ) ;
 
 // fix bug between jquery 3.6.0 and select2
-$(document).on('select2:open', () => 
+$(document).on('select2:open', () =>
 {
 document.querySelector('.select2-search__field').focus() ;
 } ) ;
 
 function return_home()
 {
-window.location.href = "{{ session['server_ext'] }}/list-ctrl-int" ;
+window.location.href = "{{ session['server_ext'] }}/list-ctrl-{{ type_url }}" ;
 }
 
 $( document ).ready( function()
@@ -333,4 +374,3 @@ display_item( 1 ) ;
 } ) ;
 </script>
 {% endblock %}
-
