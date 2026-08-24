@@ -46,3 +46,6 @@ etc/httpd/build/
 labbook_FE/logs/*
 labbook_BE/logs/*
 logs/*
+
+# local assistant instructions, not part of the project
+CLAUDE.md

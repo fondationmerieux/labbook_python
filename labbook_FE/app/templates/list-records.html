@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="form-group d-lg-flex align-items-start">
-                            <label class="form-label text-end me-1 mt-2">{{ _("Type dossier") }}</label>
+                            <label for="f_type_rec" class="form-label text-end me-1 mt-2">{{ _("Type dossier") }}</label>
                             <div>
                                 <select name="type_rec" id="f_type_rec" class="form-select ms-1">
                                     {% from 'macros.html' import select_type_record %}
@@ -85,7 +85,7 @@
 
                     <div class="col-lg-12">
                         <div class="form-group d-lg-flex align-items-start">
-                            <label class="form-label align-self-center text-end mt-1 me-1">{{ _("Type") }}</label>
+                            <label for="f_type_ana" class="form-label align-self-center text-end mt-1 me-1">{{ _("Type") }}</label>
                             <div>
                                 <select name="type_ana" id="f_type_ana" class="form-select ms-1">
                                     {% from 'macros.html' import select_type_ana %}

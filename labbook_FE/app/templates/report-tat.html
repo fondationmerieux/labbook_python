@@ -29,19 +29,19 @@
 
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("N° dossier") }}</div>
                         <div>					
-                            <input id="rec_num" type="text" value="" maxlength="10" class="form-control form-lbk cnx_trigger">
+                            <input id="rec_num" type="text" value="" maxlength="10" class="form-control form-lbk cnx_trigger" aria-label="{{ _('N° dossier') }}">
                         </div>
 
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("Code patient") }}</div>
                         <div>					
-                            <input name="code_pat" id="code_pat" type="text" value="" class="form-control form-lbk cnx_trigger">			
+                            <input name="code_pat" id="code_pat" type="text" value="" class="form-control form-lbk cnx_trigger" aria-label="{{ _('Code patient') }}">			
                         </div>
                     </div>
 
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label mt-2">{{ _("Type") }}</div>
                         <div>
-                            <select name="type_ana" id="type_ana" class="form-select form-lbk ms-lg-1">
+                            <select name="type_ana" id="type_ana" class="form-select form-lbk ms-lg-1" aria-label="{{ _('Type') }}">
                                 {% from 'macros.html' import select_type_ana %}
                                 {{ select_type_ana(ihm['type_ana']) }}
                             </select>       
@@ -50,7 +50,7 @@
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("ou") }}</div>
 
                         <div class="control-label ms-lg-1 mt-2 me-1">{{ _("Analyse") }}</div>
-                        <select id="search_analysis" class="ms-1 form-select form-lbk form-search" style="margin-top:8px;"></select>
+                        <select id="search_analysis" class="ms-1 form-select form-lbk form-search" style="margin-top:8px;" aria-label="{{ _('Analyse') }}"></select>
                     </div>
                     
                     {% set lite_filter_val = args.get('lite_filter', 'A') %}

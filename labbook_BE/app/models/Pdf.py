@@ -312,10 +312,11 @@ class Pdf:
 
             if not report:
                 Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped report not found, id_rec=' + str(id_rec))
+                continue
 
             # increase nb_download
             if not File.raiseReportNbDL(report['file']):
-                Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped raise nb_download, id_rec=' + str(id_rec['id_rec']))
+                Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGrouped raise nb_download, id_rec=' + str(id_rec))
 
             l_file_rec.append(report['file'])
 
@@ -368,6 +369,7 @@ class Pdf:
 
             if not report:
                 Pdf.log.error(Logs.fileline() + ' : TRACE getPdfReportGlobal report not found, id_rec=' + str(id_rec['id_rec']))
+                continue
 
             if exclu == 'N' or (exclu == 'O' and report['nb_download'] == 0):
                 # increase nb_download
@@ -379,8 +381,6 @@ class Pdf:
         if l_file_rec:
             try:
                 # merge list of file in one PDF
-                import pikepdf
-
                 pdf = pikepdf.Pdf.new()
 
                 for file_rec in l_file_rec:
@@ -1475,14 +1475,16 @@ class Pdf:
 
         # === ANALYZES details ===
         data['l_data'] = []
-        analysis       = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "",
-                          "ana_outsourced": "", "ana_ast": "N", "ana_with_one_result": "N", "tech_validate": ""}
+        analysis       = {"fam_name": "", "ana_name": "", "ana_code": "", "ana_loinc": "", "ana_comm": "", "l_res": [],
+                          "validate": "", "ana_outsourced": "", "ana_ast": "N", "ana_with_one_result": "N",
+                          "tech_validate": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
                           "in_report": "Y", "formatting": "N", "valueConv": "", "unitConv": ""}
 
         """
-        [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N,
+        [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_code': CODE, 'ana_loinc': LOINC_CODE,
+                       'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N,
                        'ana_with_one_result': Y/N
                        'l_res': [{'label': VAR_NAME,
                                   'value': RESULT_VALUE,
@@ -1610,8 +1612,9 @@ class Pdf:
                             # --- end of close previous analysis ---
 
                             # init new analysis
-                            tmp_ana = {"fam_name": "", "ana_name": "", "ana_comm": "", "l_res": [], "validate": "",
-                                       "ana_outsourced": "", "ana_ast": "N", "ana_with_one_result": "N", "tech_validate": ""}
+                            tmp_ana = {"fam_name": "", "ana_name": "", "ana_code": "", "ana_loinc": "", "ana_comm": "",
+                                       "l_res": [], "validate": "", "ana_outsourced": "", "ana_ast": "N",
+                                       "ana_with_one_result": "N", "tech_validate": ""}
 
                             tmp_ana['ana_with_one_result'] = "Y" if res.get('res_count', 0) == 1 else "N"
 
@@ -1648,6 +1651,10 @@ class Pdf:
                                     tmp_ana['ana_name'] = ''
 
                                 Various.useLangPDF()
+
+                            # ==== ANALYSIS CODE AND LOINC CODE ====
+                            tmp_ana['ana_code']  = res['ana_code'] if res.get('ana_code') else ''
+                            tmp_ana['ana_loinc'] = res['ana_loinc'] if res.get('ana_loinc') else ''
 
                             if res['ana_comm'] and not res['ana_comm'].startswith('Project-Id-Version'):
                                 tmp_ana['ana_comm'] = res['ana_comm'].split("\n")

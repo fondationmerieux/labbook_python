@@ -142,7 +142,7 @@
                     <fieldset class="d-md-flex flex-wrap border px-md-3 py-2">
                         <legend class="legend-lbk">{{ _("Ajouter de nouvelles analyses") }}</legend>
                         <div class="form-group">
-                            <select id="search_analysis" class="form-select form-lbk form-search"></select>
+                            <select id="search_analysis" class="form-select form-lbk form-search" aria-label="{{ _('Analyse') }}"></select>
                         </div>
                         <div class="col-md-12">
                             <div id="new_analysis"></div>
@@ -169,22 +169,22 @@
                                 <div class="aliquot_form">
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Pathogène") }}</label>
-                                        <select class="form-select pathogen">
+                                        <select class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
                                             {% from 'macros.html' import select_pathogen %}
                                             {{ select_pathogen(ihm['l_pathogen'], 0) }}
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Localisation d'accès") }} *</label>
-                                        <input type="text" class="form-control coordinates">
+                                        <input type="text" class="form-control coordinates" aria-label="{{ _('Localisation d\'accès') }}">
                                     </div>
                                     <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input in_stock" checked>
+                                        <input type="checkbox" class="form-check-input in_stock" checked aria-label="{{ _('Présent en stock') }}">
                                         <label class="form-check-label">{{ _("Présent en stock") }}</label>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Boîte associée") }} *</label>
-                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);">
+                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
                                             {% from 'macros.html' import select_storage_box %}
                                             {{ select_storage_box(ihm['l_box']['data'], 0) }}
                                         </select>

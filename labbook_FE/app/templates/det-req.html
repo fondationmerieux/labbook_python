@@ -185,13 +185,13 @@
                             </div>
                             <div id="colis-group" class="form-group row" style="display:none;">
                                 <div class="form-group d-md-flex align-items-start">
-                                    <label class="form-label col-md-5 text-end mt-2" style="">{{ _("Identification du colis") }}</label>
+                                    <label for="parcel_id" class="form-label col-md-5 text-end mt-2" style="">{{ _("Identification du colis") }}</label>
                                     <div>
                                         <input id="parcel_id" type="text" value="" maxlength="30" class="form-control form-lbk ms-1" style="width: 240px;">
                                     </div>
                                 </div>
                                 <div class="form-group d-md-flex align-items-start mt-1">
-                                    <label class="form-label col-md-5 text-end mt-2">{{ _("Date de réception du colis") }} *</label>
+                                    <label for="parcel_date" class="form-label col-md-5 text-end mt-2">{{ _("Date de réception du colis") }} *</label>
                                     <div>
                                         <input id="parcel_date" class="form-control form-lbk ms-1" type="datetime-local" value="" placeholder="" style="color:#888;">
                                     </div>
@@ -257,7 +257,7 @@
             <div class="row ms-3 mt-3">
                 <div class="col-md-12">
                     <div class="form-group d-md-flex align-items-start">
-                        <label class="form-label col-md-3 text-end me-1 mt-1">{{ _("Rechercher une analyse") }}</label>
+                        <label for="search_analysis" class="form-label col-md-3 text-end me-1 mt-1">{{ _("Rechercher une analyse") }}</label>
                         <div>
                             <select id="search_analysis" class="form-select form-lbk form-search"></select>
                         </div>
@@ -321,7 +321,7 @@
                 </div>
                 <div class="row ms-3">
                     <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
-                        <label class="form-label text-end me-1 mt-1">{{ _("Prix total") }}</label>
+                        <label for="bill_price" class="form-label text-end me-1 mt-1">{{ _("Prix total") }}</label>
                         {% if entry == 'Y' %}
                         <input type="number" id="bill_price" name="bill_price" value="" maxlength="16" class="form-control form-lbk bg-readonly col-3" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
@@ -329,7 +329,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
-                        <label class="form-label text-end me-1 mt-1">{{ _("Remise sur la facturation") }}</label>
+                        <label for="discount" class="form-label text-end me-1 mt-1">{{ _("Remise sur la facturation") }}</label>
                         {% if entry == 'Y' %}
                         <select id="discount" class="form-select w-auto">
                             {% from 'macros.html' import select_discount_bill %}
@@ -338,7 +338,7 @@
                         {% else %}
                         <span class="font-info">{{ args['record']['remise'] }}</span>
                         {% endif %}
-                        <label class="form-label text-end ms-3 me-1 mt-1">{{ _("Pourcentage de la remise") }}</label>
+                        <label for="per_discount" class="form-label text-end ms-3 me-1 mt-1">{{ _("Pourcentage de la remise") }}</label>
                         {% if entry == 'Y' %}
                         <input id="per_discount" type="number" value="" maxlength="8" class="form-control form-lbk" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_discount=this.value;" onchange="change_per_discount(this);">
                         {% else %}
@@ -346,7 +346,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
-                        <label class="form-label text-end me-1 mt-1">{{ _("Pourcentage assurance maladie / mutuelle") }}</label>
+                        <label for="per_insurance" class="form-label text-end me-1 mt-1">{{ _("Pourcentage assurance maladie / mutuelle") }}</label>
                         {% if entry == 'Y' %}
                         <input id="per_insurance" type="number" value="" maxlength="8" class="form-control form-lbk" style="width: 96px;" min="0" max="99999" step=".01" onfocus="old_insurance=this.value;" onchange="change_per_insurance(this);">
                         {% else %}
@@ -354,7 +354,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group d-md-flex align-items-start col-md-12 mt-3">
-                        <label class="form-label text-end me-1 mt-1">{{ _("Reste à payer") }}</label>
+                        <label for="bill_remain" class="form-label text-end me-1 mt-1">{{ _("Reste à payer") }}</label>
                         {% if entry == 'Y' %}
                         <input type="number" id="bill_remain" name="bill_remain" value="" maxlength="16" class="form-control form-lbk bg-readonly" style="width: 160px;" min="0" max="9999999999999" step=".01" readonly="">
                         {% else %}
@@ -397,9 +397,9 @@
                             <th class="text-center cursor-act">{{ _("Préleveur") }}</th>
                         </tr><tr>
                             <th class="text-center cursor-act">{{ _("Analyse") }}</th>
-                            <th class="text-left cursor-act">{{ _("Date réception") }}</th>
-                            <th class="text-center cursor-act">{{ _("Statut") }} *</th>
-                            <th class="text-center cursor-act" colspan="2">{{ _("Commentaire") }}</th>
+                            <th scope="col" class="text-left cursor-act">{{ _("Date réception") }}</th>
+                            <th scope="col" class="text-center cursor-act">{{ _("Statut") }} *</th>
+                            <th scope="col" class="text-center cursor-act" colspan="2">{{ _("Commentaire") }}</th>
                         </tr>
                     </thead>
                     <tbody id="tbody_product"></tbody>
@@ -414,7 +414,7 @@
                 <div class="row ms-3">
                     <div class="col-md-7 mt-3">
                         {% if entry == 'Y' %}
-                        <textarea id="comm" rows="5" cols="80" class="form-control form-lbk"></textarea>
+                        <textarea id="comm" rows="5" cols="80" class="form-control form-lbk" aria-label="{{ _('Renseignements / Informations complémentaires') }}"></textarea>
                         {% else %}
                         <span class="font-info">{{ args['record']['rc'] }}</span>
                         {% endif %}

@@ -13,7 +13,7 @@
             {% if (has_permission("SETTING_49") and args['id_analyzer'] == 0) or (has_permission("SETTING_50") and args['id_analyzer'] > 0) %}
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="reference" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
+                    <label for="name" class="form-label col-3 text-end mt-2 me-1">{{ _("Nom") }}</label>
                     <div>					
                         <input type="text" name="name" id="name" value="{{ args['analyzer']['ans_name'] }}" class="form-control form-lbk">	
                     </div>

@@ -55,7 +55,7 @@
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Statut") }} *</div>
                         <div>
-                            <select name="prod_stat" id="prod_stat" class="form-select ms-1">
+                            <select name="prod_stat" id="prod_stat" class="form-select ms-1" aria-label="{{ _('Statut') }}">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_stat in ihm['products_statut'] %}
                                 <option value="{{ prod_stat['id_data'] }}" {% if args['product']['stat'] == prod_stat['id_data'] %} selected {% endif %}>{{ prod_stat['label'] }}</option>
@@ -66,19 +66,19 @@
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Code prélèvement") }}</div>
                         <div>
-                            <input type="text" name="prod_code" id="prod_code" value="{{ args['product']['code'] }}" class="form-control form-lbk">     
+                            <input type="text" name="prod_code" id="prod_code" value="{{ args['product']['code'] }}" class="form-control form-lbk" aria-label="{{ _('Code prélèvement') }}">     
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Analyse associée") }}</div>
                         <div>
-                            <input type="text" name="prod_ana" id="prod_ana" value="{{ args['product']['code_ana'] }}" class="form-control form-lbk" readonly disabled>       
+                            <input type="text" name="prod_ana" id="prod_ana" value="{{ args['product']['code_ana'] }}" class="form-control form-lbk" readonly disabled aria-label="{{ _('Analyse associée') }}">       
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Produit pathologique") }} *</div>
                         <div>
-                            <select name="prod_type" id="prod_type" class="form-select ms-1">
+                            <select name="prod_type" id="prod_type" class="form-select ms-1" aria-label="{{ _('Produit pathologique') }}">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_type in ihm['products'] %}
                                 <option value="{{ prod_type['id_data'] }}" {% if args['product']['prod_type'] == prod_type['id_data'] %} selected {% endif %}>{{ prod_type['label'] }}</option>
@@ -89,25 +89,25 @@
                     <div class="form-group form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Localisation prélèvement") }}</div>
                         <div>
-                            <input type="text" name="prod_storage" id="prod_storage" value="{{ args['product']['storage'] }}" class="form-control form-lbk">     
+                            <input type="text" name="prod_storage" id="prod_storage" value="{{ args['product']['storage'] }}" class="form-control form-lbk" aria-label="{{ _('Localisation prélèvement') }}">     
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date du prélèvement") }}</div>
                         <div>
-                            <input id="prod_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;">      
+                            <input id="prod_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['prod_date'] }}" name="prod_date" style="color: #888;" aria-label="{{ _('Date du prélèvement') }}">      
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Préleveur") }}</div>
                         <div>
-                            <input type="text" name="prod_sampler" id="prod_sampler" value="{{ args['product']['sampler'] }}" class="form-control form-lbk">     
+                            <input type="text" name="prod_sampler" id="prod_sampler" value="{{ args['product']['sampler'] }}" class="form-control form-lbk" aria-label="{{ _('Préleveur') }}">     
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Lieu de prélèvement") }}</div>
                         <div>
-                            <select name="prod_location" id="prod_location" class="form-select ms-1">
+                            <select name="prod_location" id="prod_location" class="form-select ms-1" aria-label="{{ _('Lieu de prélèvement') }}">
                                 <option value="0" selected="selected"></option>
                                 {% for prod_location in ihm['products_location'] %}
                                 <option value="{{ prod_location['id_data'] }}" {% if args['product']['prod_location'] == prod_location['id_data'] %} selected {% endif %}>{{ prod_location['label'] }}</option>
@@ -118,19 +118,19 @@
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Précision lieu") }}</div>
                         <div>
-                            <input type="text" name="prod_location_accu" id="prod_location_accu" value="{{ args['product']['prod_location_accu'] }}" class="form-control form-lbk">       
+                            <input type="text" name="prod_location_accu" id="prod_location_accu" value="{{ args['product']['prod_location_accu'] }}" class="form-control form-lbk" aria-label="{{ _('Précision lieu') }}">       
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Date de réception") }}</div>
                         <div>
-                            <input id="prod_receipt_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;">       
+                            <input id="prod_receipt_date" class="form-control form-lbk" type="datetime-local" value="{{ args['product']['receipt_date'] }}" name="prod_receipt_date" style="color: #888;" aria-label="{{ _('Date de réception') }}">       
                         </div>
                     </div>
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label col-2 text-end mt-2 me-1">{{ _("Commentaire") }}</div>
                         <div>
-                            <input type="text" name="prod_comm" id="prod_comm" value="{{ args['product']['comment'] }}" class="form-control form-lbk">       
+                            <input type="text" name="prod_comm" id="prod_comm" value="{{ args['product']['comment'] }}" class="form-control form-lbk" aria-label="{{ _('Commentaire') }}">       
                         </div>
                     </div>
                 </fieldset>

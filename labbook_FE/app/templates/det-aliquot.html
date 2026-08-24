@@ -28,7 +28,7 @@
                     <span id="identity_patient" class="offset-md-3">
                         {% if args and args['aliquot'] %}{{ args['aliquot']['pat_name']}} {{ args['aliquot']['pat_firstname']}}{% endif %}
                     </span>
-                    <input type="number" id="id_pat" value="{{ args['id_pat'] }}" hidden />
+                    <input type="hidden" id="id_pat" value="{{ args['id_pat'] }}" />
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">					
@@ -48,9 +48,9 @@
                 <form autocomplete="off">
                     <div class="aliquot_form">
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sal_pathogen" class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</label>
+                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</label>
                             <div class="d-flex align-items-center">
-                                <select name="sal_pathogen[]" class="form-select pathogen">
+                                <select name="sal_pathogen[]" class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
                                     {% from 'macros.html' import select_pathogen %}
                                     {{ select_pathogen(ihm['l_pathogen'], args['aliquot']['sal_pathogen']) }}
                                 </select>
@@ -63,24 +63,24 @@
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sal_coordinates" class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation d'accès") }} *</label>
+                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation d'accès") }} *</label>
                             <div>
-                                <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates" pattern="^[A-Za-z]{1}[0-9]+$">
+                                <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates" pattern="^[A-Za-z]{1}[0-9]+$" aria-label="{{ _('Localisation d\'accès') }}">
                                 <small id="sal_coordinates_error" class="text-danger" style="display:none;">"{{ _("Le format attendu est une lettre suivie d'un nombre") }}"</small>
                             </div>
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sal_in_stock" class="form-label col-3 text-end mt-2 me-1">{{ _("Présent en stock") }}</label>
+                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Présent en stock") }}</label>
                             <div class="form-check">
-                                <input name="sal_in_stock[]" type="checkbox" class="form-check-input in_stock" {% if args['aliquot'].get('sal_in_stock', 'Y') == 'Y' %}checked{% endif %}>
+                                <input name="sal_in_stock[]" type="checkbox" class="form-check-input in_stock" aria-label="{{ _('Présent en stock') }}" {% if args['aliquot'].get('sal_in_stock', 'Y') == 'Y' %}checked{% endif %}>
                             </div>
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sal_box" class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</label>
+                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</label>
                             <div>
-                                <select name="sal_box[]" class="form-select box" onchange="get_box_coord(event);">
+                                <select name="sal_box[]" class="form-select box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
                                     {% from 'macros.html' import select_storage_box %}
                                     {{ select_storage_box(ihm['l_box']['data'], args['aliquot']['sal_box']) }}
                                 </select>

@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.22] - 2026-08-24
+### Added
+- ana_loinc and ana_code for report template
+
 ## [3.6.21] - 2026-07-28
 ### Fixed
 - incorrect parsing of HL7 OBX observation status field

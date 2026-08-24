@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Type produit") }}</label>
+                    <label for="prd_type" class="form-label col-3 text-end mt-2 me-1">{{ _("Type produit") }}</label>
                     <div>
                         <select name="prd_type" id="prd_type" class="form-select">
                             {% from 'macros.html' import select_prd_type %}
@@ -66,7 +66,7 @@
                 {% endif %}
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Conservation") }}</label>
+                    <label for="prd_conserv" class="form-label col-3 text-end mt-2 me-1">{{ _("Conservation") }}</label>
                     <div>
                         <select name="prd_conserv" id="prd_conserv" class="form-select">
                             {% from 'macros.html' import select_prd_conserv %}

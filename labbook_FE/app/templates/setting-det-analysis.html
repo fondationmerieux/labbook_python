@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label for="sample" class="form-label col-4 text-end mt-2 me-1">{{ _("Type de prélèvement") }}</label>
+                            <label for="type_prod" class="form-label col-4 text-end mt-2 me-1">{{ _("Type de prélèvement") }}</label>
                             <div>					
                                 <select name="type_prod" id="type_prod" class="form-select">
                                     <option value="0" selected="selected"></option>
@@ -230,7 +230,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <label for=var_accu2" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision 2") }}</label>
+                        <label for="var_accu2" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision 2") }}</label>
                         <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu2'] }}{% endif %}" class="group-det-var form-control form-lbk"  style="width:80px;" onChange="change_data(this);">			
                     </div>
 

@@ -22,22 +22,22 @@
                     <div class="form-group d-lg-flex align-items-start">
                         <div class="control-label mt-2 me-1"><span>{{ _("Date de la demande du") }}</span></div>
                         <div class="me-1">
-                            <input id="date_beg" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            <input id="date_beg" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;" aria-label="{{ _('Date de la demande du') }}">
                         </div>
                         <div class="control-label ms-lg-2 mt-2 me-1"><span>{{ _("au") }}</span></div>
                         <div>
-                            <input id="date_end" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;">
+                            <input id="date_end" class="form-control form-lbk cnx_trigger ms-lg-1" type="date" maxlength="10" size="10" value="" placeholder="" style="color: #888;" aria-label="{{ _('au') }}">
                         </div>
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("Code patient") }}</div>
                         <div>					
-                            <input type="text" name="code_pat" id="code_pat" value="" class="form-control form-lbk cnx_trigger">			
+                            <input type="text" name="code_pat" id="code_pat" value="" class="form-control form-lbk cnx_trigger" aria-label="{{ _('Code patient') }}">			
                         </div>
                     </div>
 
                     <div class="form-group d-lg-flex align-items-start mt-3">
                         <div class="control-label mt-2">{{ _("Type") }}</div>
                         <div>
-                            <select name="type_ana" id="f_type_ana" class="form-select form-lbk ms-lg-1">
+                            <select name="type_ana" id="f_type_ana" class="form-select form-lbk ms-lg-1" aria-label="{{ _('Type') }}">
                                 {% from 'macros.html' import select_type_ana %}
                                 {{ select_type_ana(ihm['type_ana']) }}
                             </select>       
@@ -46,7 +46,7 @@
                         <div class="control-label ms-lg-3 mt-2 me-1">{{ _("ou") }}</div>
 
                         <div class="control-label ms-lg-1 mt-2 me-1">{{ _("Analyse") }}</div>
-                        <select id="search_analysis" class="ms-1 form-select form-lbk form-search" style="margin-top:8px;"></select>
+                        <select id="search_analysis" class="ms-1 form-select form-lbk form-search" style="margin-top:8px;" aria-label="{{ _('Analyse') }}"></select>
                     </div>
 
                     <div class="offset-lg-5 col-lg-7 mt-2">
@@ -91,22 +91,22 @@
                                 <div class="aliquot_form">
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Pathogène") }}</label>
-                                        <select class="form-select pathogen">
+                                        <select class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
                                             {% from 'macros.html' import select_pathogen %}
                                             {{ select_pathogen(ihm['l_pathogen'], 0) }}
                                         </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Localisation d'accès") }} *</label>
-                                        <input type="text" class="form-control coordinates">
+                                        <input type="text" class="form-control coordinates" aria-label="{{ _('Localisation d\'accès') }}">
                                     </div>
                                     <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input in_stock" checked>
+                                        <input type="checkbox" class="form-check-input in_stock" checked aria-label="{{ _('Présent en stock') }}">
                                         <label class="form-check-label">{{ _("Présent en stock") }}</label>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">{{ _("Boîte associée") }} *</label>
-                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);">
+                                        <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
                                             {% from 'macros.html' import select_storage_box %}
                                             {{ select_storage_box(ihm['l_box']['data'], 0) }}
                                         </select>
