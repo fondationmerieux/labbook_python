@@ -4633,36 +4633,36 @@ def det_doctor(id_doctor=0):
     return render_template('det-doctor.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
 
-# Page : new external request
-@app.route('/new-req-ext')
-def new_req_ext():
-    log.info(Logs.fileline() + ' : TRACE new-req-ext')
+def new_req(req_type):
+    """
+    Shared handler to start a new analysis request, for an inpatient ('I')
+    or an outpatient ('E').
+    """
+    page = 'new-req-int' if req_type == 'I' else 'new-req-ext'
+
+    log.info(Logs.fileline() + ' : TRACE ' + page)
 
     if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook new-req-ext => disconnect')
+        log.info(Logs.fileline() + ' : TRACE Labbook ' + page + ' => disconnect')
         session.clear()
         return index()
 
-    session['current_page'] = 'new-req-ext'
+    session['current_page'] = page
     session.modified = True
 
-    return render_template('new-req-ext.html', rand=secrets.randbelow(1000))
+    return render_template('new-req.html', req_type=req_type, rand=secrets.randbelow(1000))
+
+
+# Page : new external request
+@app.route('/new-req-ext')
+def new_req_ext():
+    return new_req('E')
 
 
 # Page : new internal request
 @app.route('/new-req-int')
 def new_req_int():
-    log.info(Logs.fileline() + ' : TRACE new-req-int')
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook new-req-int => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = 'new-req-int'
-    session.modified = True
-
-    return render_template('new-req-int.html', rand=secrets.randbelow(1000))
+    return new_req('I')
 
 
 # Page : patient details

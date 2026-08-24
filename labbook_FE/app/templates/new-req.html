@@ -1,8 +1,15 @@
 {% extends "skeleton.html" %}
 
+{#
+    Shared page to start a new analysis request, for an inpatient (req_type 'I')
+    or an outpatient (req_type 'E'). Same convention as det-req.html.
+#}
+{% set is_int  = (req_type == 'I') %}
+{% set req_url = 'int' if is_int else 'ext' %}
+
 {% block head %}
 {{ super() }}
-    <title>{{ _("Patient externe") }}</title>
+    <title>{% if is_int %}{{ _("Nouvelle demande hospitalisé") }}{% else %}{{ _("Patient externe") }}{% endif %}</title>
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
 {% endblock %}
@@ -11,7 +18,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Demande d'analyses patient externe") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{% if is_int %}{{ _("Demande d'analyses patient hospitalisé") }}{% else %}{{ _("Demande d'analyses patient externe") }}{% endif %}</span></h2>
 
             <form autocomplete="off">
                 <div class="panel-heading row">
@@ -136,7 +143,7 @@ return display ;
 $("#search_patient").on("select2:select", function (e) 
 {
   var id_pat = $(e.currentTarget).val();
-  window.location.href = "{{ session['server_ext'] }}/det-req-ext/Y/" + id_pat ;
+  window.location.href = "{{ session['server_ext'] }}/det-req-{{ req_url }}/Y/" + id_pat ;
 } ) ;
 
 // fix bug between jquery 3.6.0 and select2
@@ -147,7 +154,7 @@ document.querySelector('.select2-search__field').focus() ;
 
 function new_pat() 
 {
-window.location.href = "{{ session['server_ext'] }}/det-patient/E/0";
+window.location.href = "{{ session['server_ext'] }}/det-patient/{{ req_type }}/0";
 }
 
 function return_home()
