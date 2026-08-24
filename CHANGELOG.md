@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Quality and analysis services now build their create and update calls from a single set of fields
 - Job and audit list pages now share their DataTables labels and their action toast
 - Audit filtering and search no longer duplicate the query builders they already had
+- File and photo upload routes now share a single implementation
+- Attached file and photo downloads now share the same branch
 
 ### Fixed
 - User-supplied values are now sanitized before being written to the logs

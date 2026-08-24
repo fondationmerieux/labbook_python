@@ -7797,8 +7797,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
     if validated_type == 'PY':
         filepath = Constants.cst_path_tmp
         generated_name = filename
-    elif validated_type == 'JF':
-        # ref = id_file
+    elif validated_type in ('JF', 'PH'):
+        # ref = id_file ; photos live beside the other resources, plain files under upload
+        sub_dir = '/resource/photo' if validated_type == 'PH' else '/upload'
         url = ''
         try:
             validated_type_ref = str(type_ref or '')
@@ -7828,51 +7829,13 @@ def download_file(type='', filename='', type_ref='', ref=''):
                 file_info = req.json()
 
                 if file_info:
-                    filepath = os.path.join(file_info['storage'] + '/upload', file_info['path'])
+                    filepath = os.path.join(file_info['storage'] + sub_dir, file_info['path'])
                     generated_name = file_info['generated_name']
                 else:
                     return False
 
         except requests.exceptions.RequestException:
             log.exception(Logs.fileline() + ' : requests file document failed, url=%s', url)
-    elif validated_type == 'PH':
-        # ref = id_file
-        url = ''
-        try:
-            validated_type_ref = str(type_ref or '')
-            if validated_type_ref not in allowed_types_ref:
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            validated_ref = str(ref or '')
-            if not validated_ref.isdigit():
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            redirect_name = str(session.get('redirect_name') or '')
-            if not re.fullmatch(r'[A-Za-z0-9_-]+', redirect_name):
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            url = (
-                str(session.get('server_int') or '') + '/' + redirect_name +
-                '/services/file/document/' + quote(validated_type_ref, safe='') +
-                '/' + quote(validated_ref, safe='')
-            )
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                file_info = req.json()
-
-                if file_info:
-                    filepath = os.path.join(file_info['storage'] + '/resource/photo', file_info['path'])
-                    generated_name = file_info['generated_name']
-                else:
-                    return False
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + " : requests file photo failed")
     elif validated_type in ('RP', 'RLT'):
         filepath = Constants.cst_report
         generated_name = filename  # UUID
@@ -8027,15 +7990,119 @@ def download_file(type='', filename='', type_ref='', ref=''):
     return ret_file
 
 
-# Route : upload a file to permanent storage
-@app.route('/upload-file/<string:type_ref>/<int:id_ref>', methods=['POST'])
-def upload_file(type_ref='', id_ref=0):
-    log.info(Logs.fileline() + " : upload-file called")
-
+def store_uploaded_file(type_ref, id_ref, label, allowed_types_ref, filepath):
+    """
+    Shared body of the upload routes: save the posted file under a hashed path
+    below `filepath`, then register it in the back end.
+    `label` only names the route in the log lines.
+    """
     resp = ensure_be_token()
     if resp:
         return resp
     headers = be_auth_headers()
+
+    validated_type_ref = str(type_ref or '')
+    if validated_type_ref not in allowed_types_ref:
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+    if request.method != 'POST':
+        return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+
+    try:
+        f = request.files['file']
+
+        original_name = f.filename
+
+        # random name kind like VOOZANOO
+        # PHP version : md5( mt_rand() . mt_rand() .microtime() )
+        import pathlib
+        import time
+        import hashlib
+        generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
+        hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
+
+        # Create end of storage path
+        end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
+    except Exception:
+        log.exception(Logs.fileline() + ' : ' + label + ' failed to hash name')
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    # Get last storage path
+    data, redir = be_get('/services/file/storage', label + ' storage')
+    if redir:
+        return redir
+    if data is not None:
+        storage = data
+
+        if not storage:
+            log.error(Logs.fileline() + ' : ' + label + ' storage failed')
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    try:
+        pathlib.Path(os.path.join(filepath, end_path)).mkdir(mode=0o777, parents=True, exist_ok=True)
+    except Exception:
+        log.exception(Logs.fileline() + ' : ' + label + ' failed to filepath')
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    file_path = os.path.join(filepath, end_path, generated_name)
+
+    try:
+        f.save(file_path)
+    except Exception:
+        log.exception(Logs.fileline() + ' : ' + label + ' failed to save file')
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    try:
+        # Get info on file
+        file_ext  = pathlib.Path(original_name).suffix
+        file_size = pathlib.Path(file_path).stat().st_size
+        mime_type = f.mimetype
+
+        # remove first dot
+        if file_ext.startswith('.'):
+            file_ext = file_ext[1:]
+
+        # insert upload information in DB
+        payload = {'id_owner': session['user_id'],
+                   'original_name': original_name,
+                   'generated_name': generated_name,
+                   'size': file_size,
+                   'hash': hash_name,
+                   'ext': file_ext,
+                   'content_type': mime_type,
+                   'id_storage': storage['id_data'],
+                   'end_path': end_path}
+
+        redirect_name = str(session.get('redirect_name') or '')
+        if not re.fullmatch(r'[A-Za-z0-9_-]+', redirect_name):
+            return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+        url = (
+            str(session.get('server_int') or '') + '/' + redirect_name +
+            '/services/file/document/' + quote(validated_type_ref, safe='') +
+            '/' + str(int(id_ref))
+        )
+        req = requests.post(url, timeout=10, json=payload, headers=headers)
+
+        redir = be_check_or_bounce(req)
+        if redir:
+            return redir
+
+        if req.status_code != 200:
+            log.error(Logs.fileline() + ' : ' + label + ' insert failed')
+            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    except Exception:
+        log.exception(Logs.fileline() + ' : ' + label + ' failed information file')
+        return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
+
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+# Route : upload a file to permanent storage
+@app.route('/upload-file/<string:type_ref>/<int:id_ref>', methods=['POST'])
+def upload_file(type_ref='', id_ref=0):
+    log.info(Logs.fileline() + " : upload-file called")
 
     allowed_types_ref = {
         'GEN', 'MEET', 'PROC', 'MSG', 'CTRL', 'REC', 'FORM', 'MANU', 'LABO', 'TPL',
@@ -8044,108 +8111,7 @@ def upload_file(type_ref='', id_ref=0):
         'DHIS2', 'EPIDEMIO', 'INDICATOR', 'AUDIT', 'ACTU', 'BILU', 'DHU', 'STAFF'
     }
 
-    validated_type_ref = str(type_ref or '')
-    if validated_type_ref not in allowed_types_ref:
-        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-    if request.method == 'POST':
-        try:
-            f = request.files['file']
-
-            original_name = f.filename
-
-            # random name kind like VOOZANOO
-            # PHP version : md5( mt_rand() . mt_rand() .microtime() )
-            import pathlib
-            import time
-            import hashlib
-            generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
-            hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
-
-            # Create end of storage path
-            end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-file failed to hash name')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        # Get last storage path
-        data, redir = be_get('/services/file/storage', 'BE call')
-        if redir:
-            return redir
-        if data is not None:
-            storage = data
-
-            if not storage:
-                log.error(Logs.fileline() + ' : upload-file storage failed')
-                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        filepath = Constants.cst_upload
-
-        try:
-            pathlib.Path(filepath + end_path[:2]).mkdir(mode=0o777, parents=False, exist_ok=True)
-            pathlib.Path(filepath + end_path).mkdir(mode=0o777, parents=False, exist_ok=True)
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-file failed to filepath')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        try:
-            f.save(os.path.join(filepath + end_path, generated_name))
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-file failed to save file')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        try:
-            # Get info on file
-            file_ext  = pathlib.Path(original_name).suffix
-            file_size = pathlib.Path(os.path.join(filepath + end_path, generated_name)).stat().st_size
-            mime_type = f.mimetype
-
-            # remove first dot
-            if file_ext.startswith('.'):
-                file_ext = file_ext[1:]
-
-            # insert upload information in DB
-            payload = {'id_owner': session['user_id'],
-                       'original_name': original_name,
-                       'generated_name': generated_name,
-                       'size': file_size,
-                       'hash': hash_name,
-                       'ext': file_ext,
-                       'content_type': mime_type,
-                       'id_storage': storage['id_data'],
-                       'end_path': end_path}
-
-            redirect_name = str(session.get('redirect_name') or '')
-            if not re.fullmatch(r'[A-Za-z0-9_-]+', redirect_name):
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            validated_type_ref = str(type_ref or '')
-            if validated_type_ref not in allowed_types_ref:
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            url = (
-                str(session.get('server_int') or '') + '/' + redirect_name +
-                '/services/file/document/' + quote(validated_type_ref, safe='') +
-                '/' + str(int(id_ref))
-            )
-            req = requests.post(url, timeout=10, json=payload, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code != 200:
-                log.error(Logs.fileline() + ' : upload-file insert failed')
-                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-file failed information file')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-
-    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+    return store_uploaded_file(type_ref, id_ref, 'upload-file', allowed_types_ref, Constants.cst_upload)
 
 
 # Route : upload a photo to permanent storage
@@ -8153,116 +8119,7 @@ def upload_file(type_ref='', id_ref=0):
 def upload_photo(type_ref='', id_ref=0):
     log.info(Logs.fileline() + " : upload-photo called")
 
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    allowed_types_ref = {'EQPH'}
-
-    validated_type_ref = str(type_ref or '')
-    if validated_type_ref not in allowed_types_ref:
-        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-    if request.method == 'POST':
-        try:
-            f = request.files['file']
-
-            original_name = f.filename
-
-            # random name kind like VOOZANOO
-            # PHP version : md5( mt_rand() . mt_rand() .microtime() )
-            import pathlib
-            import time
-            import hashlib
-            generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
-            hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
-
-            # Create end of storage path
-            end_path = generated_name[:2] + "/" + generated_name[2:4] + "/"
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-photo failed to hash name')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        # Get last storage path
-        data, redir = be_get('/services/file/storage', 'BE call')
-        if redir:
-            return redir
-        if data is not None:
-            storage = data
-
-            if not storage:
-                log.error(Logs.fileline() + ' : upload-photo storage failed')
-                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        filepath = Constants.cst_photo
-
-        try:
-            full_path = os.path.join(filepath, end_path)
-            pathlib.Path(full_path).mkdir(mode=0o777, parents=True, exist_ok=True)
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-photo failed to filepath')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        try:
-            file_path = os.path.join(filepath, end_path, generated_name)
-            f.save(file_path)
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-photo failed to save file')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        try:
-            # Get info on file
-            file_ext = pathlib.Path(original_name).suffix
-            file_size = pathlib.Path(os.path.join(filepath + end_path, generated_name)).stat().st_size
-            mime_type = f.mimetype
-
-            # remove first dot
-            if file_ext.startswith('.'):
-                file_ext = file_ext[1:]
-
-            # insert upload information in DB
-            payload = {'id_owner': session['user_id'],
-                       'original_name': original_name,
-                       'generated_name': generated_name,
-                       'size': file_size,
-                       'hash': hash_name,
-                       'ext': file_ext,
-                       'content_type': mime_type,
-                       'id_storage': storage['id_data'],
-                       'end_path': end_path}
-
-            redirect_name = str(session.get('redirect_name') or '')
-            if not re.fullmatch(r'[A-Za-z0-9_-]+', redirect_name):
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            validated_type_ref = str(type_ref or '')
-            if validated_type_ref not in allowed_types_ref:
-                return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
-
-            url = (
-                str(session.get('server_int') or '') + '/' + redirect_name +
-                '/services/file/document/' + quote(validated_type_ref, safe='') +
-                '/' + str(int(id_ref))
-            )
-            req = requests.post(url, timeout=10, json=payload, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code != 200:
-                log.error(Logs.fileline() + ' : upload-photo insert failed')
-                return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        except Exception:
-            log.exception(Logs.fileline() + ' : upload-photo failed information file')
-            return json.dumps({'success': False}), 500, {'ContentType': 'application/json'}
-
-        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
-
-    return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
+    return store_uploaded_file(type_ref, id_ref, 'upload-photo', {'EQPH'}, Constants.cst_photo)
 
 
 # Route : upload a logo for document
