@@ -40,17 +40,7 @@
             </div>
 
             <!-- Toast -->
-            <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
-                <div id="jobToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body" id="jobToastBody">
-                            {{ _("Action effectuée.") }}
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="{{ _('Fermer') }}"></button>
-                    </div>
-                </div>
-            </div>
-
+            {% include 'popup/popup_job_toast.html' %}
             {% else %}
             {% include 'no-rights.html' %}
             {% endif %}
@@ -314,20 +304,7 @@ function loadRunTable() {
             { targets: 4, className: 'text-center' }
         ],
 
-        language: {
-            lengthMenu: "{{ _('Afficher _MENU_ entrées') }}",
-            zeroRecords: "{{ _('Aucun enregistrement trouvé') }}",
-            info: "{{ _('Affichage de _START_ à _END_ sur _TOTAL_ entrées') }}",
-            infoEmpty: "{{ _('Aucune entrée disponible') }}",
-            infoFiltered: "{{ _('(filtré de _MAX_ entrées au total)') }}",
-            search: "{{ _('Rechercher') }}:",
-            paginate: {
-                first: "{{ _('Premier') }}",
-                last: "{{ _('Dernier') }}",
-                next: "{{ _('Suivant') }}",
-                previous: "{{ _('Précédent') }}"
-            }
-        },
+    {% include 'js/datatables_lang.js' %}
 
         ajax: {
             url: "{{ session['server_ext'] }}/services/automation/run/list",

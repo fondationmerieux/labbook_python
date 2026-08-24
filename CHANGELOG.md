@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Front-end pages now share common helpers for their back-end calls
 - Report, outsourcing and invoice PDFs now share their patient, laboratory and label sections
 - Quality and analysis services now build their create and update calls from a single set of fields
+- Job and audit list pages now share their DataTables labels and their action toast
+- Audit filtering and search no longer duplicate the query builders they already had
 
 ### Fixed
 - User-supplied values are now sanitized before being written to the logs

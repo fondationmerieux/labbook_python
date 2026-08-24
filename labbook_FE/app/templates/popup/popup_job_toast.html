@@ -1,0 +1,14 @@
+{#
+    Success toast shown after an action on a scheduled job.
+    Its text is set from JavaScript through the jobToastBody element.
+#}
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
+  <div id="jobToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="jobToastBody">
+        {{ _("Action effectuée.") }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="{{ _('Fermer') }}"></button>
+    </div>
+  </div>
+</div>

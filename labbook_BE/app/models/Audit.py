@@ -234,75 +234,8 @@ class Audit:
             sql = "SELECT COUNT(*) AS nb FROM audit_trail WHERE 1=1"
             params = []
 
-            # Date filters
-            if filters.get("date_start"):
-                sql += " AND aud_date_utc >= %s"
-                params.append((filters["date_start"] or "").replace("T", " "))
-
-            if filters.get("date_end"):
-                sql += " AND aud_date_utc <= %s"
-                params.append((filters["date_end"] or "").replace("T", " "))
-
-            # User filter (login or display)
-            if filters.get("user"):
-                like_user = "%" + filters["user"] + "%"
-                sql += " AND (aud_user_login LIKE %s OR aud_user_display LIKE %s)"
-                params.extend([like_user, like_user])
-
-            # Role filter
-            if filters.get("role"):
-                role_raw = filters["role"]
-                role_prefix = role_raw.split("_", 1)[0] if role_raw else ""
-                if role_prefix:
-                    sql += " AND LEFT(aud_user_role, 1) = %s"
-                    params.append(role_prefix)
-
-            # Context filter
-            if filters.get("context"):
-                sql += " AND aud_details LIKE %s"
-                params.append("%" + filters["context"] + "%")
-
-            # Action filter
-            if filters.get("action"):
-                sql += " AND aud_action LIKE %s"
-                params.append("%" + filters["action"] + "%")
-
-            # Status filter (exact match)
-            if filters.get("status"):
-                sql += " AND aud_status = %s"
-                params.append(filters["status"])
-
-            # IP filter
-            if filters.get("ip"):
-                sql += " AND aud_client_ip LIKE %s"
-                params.append("%" + filters["ip"] + "%")
-
-            # Resource filter on "TYPE ID"
-            if filters.get("resource"):
-                sql += " AND CONCAT(COALESCE(aud_resource_type, ''), ' ', COALESCE(aud_resource_id, '')) LIKE %s"
-                params.append("%" + filters["resource"] + "%")
-
-            # System calls filter (default: exclude system)
-            include_system = str(filters.get("include_system") or "N").upper()
-            if include_system != "Y":
-                sql += " AND COALESCE(aud_client_ip, '') <> '127.0.0.1'"
-
-            # Global search (DataTables search box)
-            if search_value:
-                like = "%" + search_value + "%"
-                sql += (
-                    " AND ("
-                    "aud_user_login LIKE %s OR "
-                    "aud_user_display LIKE %s OR "
-                    "aud_user_role LIKE %s OR "
-                    "aud_resource_type LIKE %s OR "
-                    "aud_resource_id LIKE %s OR "
-                    "aud_action LIKE %s OR "
-                    "aud_client_ip LIKE %s OR "
-                    "aud_status LIKE %s OR "
-                    "aud_details LIKE %s)"
-                )
-                params.extend([like, like, like, like, like, like, like, like, like])
+            sql, params = Audit._apply_filters(sql, params, filters)
+            sql, params = Audit._apply_global_search(sql, params, search_value)
 
             cursor.execute(sql, params)
             row = cursor.fetchone()

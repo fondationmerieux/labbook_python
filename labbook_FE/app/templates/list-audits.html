@@ -268,20 +268,7 @@ function loadAuditTable() {
             { targets: 8, visible: false, searchable: false } // hide ID column
         ],
 
-        language: {
-            lengthMenu: "{{ _('Afficher _MENU_ entrées') }}",
-            zeroRecords: "{{ _('Aucun enregistrement trouvé') }}",
-            info: "{{ _('Affichage de _START_ à _END_ sur _TOTAL_ entrées') }}",
-            infoEmpty: "{{ _('Aucune entrée disponible') }}",
-            infoFiltered: "{{ _('(filtré de _MAX_ entrées au total)') }}",
-            search: "{{ _('Rechercher') }}:",
-            paginate: {
-                first: "{{ _('Premier') }}",
-                last: "{{ _('Dernier') }}",
-                next: "{{ _('Suivant') }}",
-                previous: "{{ _('Précédent') }}"
-            }
-        },
+        {% include 'js/datatables_lang.js' %}
 
         ajax: {
             url: "{{ session['server_ext'] }}/services/audit/list",
