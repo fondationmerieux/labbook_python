@@ -7463,42 +7463,7 @@ def list_eqp_failure(id_eqp=0):
 # Page : failures equipment
 @app.route('/eqp-failure/<int:id_eqp>')
 def eqp_failure(id_eqp=0):
-    log.info(Logs.fileline() + ' : TRACE eqp failure=' + str(id_eqp))
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook eqp failure => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = 'eqp-failure/' + str(id_eqp)
-    session.modified = True
-
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    json_ihm  = {}
-    json_data = {}
-
-    # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
-
-    json_data['id_eqp'] = id_eqp
-
-    return render_template('eqp-failure.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return eqp_operation(id_eqp, 'FAILURE')
 
 
 # Page : list metrology of equipment
@@ -7557,11 +7522,22 @@ def list_eqp_metrology(id_eqp=0):
 
 def eqp_operation(id_eqp, type_doc):
     """
-    Shared handler for the two dated equipment operations:
-    metrology/calibration (METROLOGY) and maintenance contract (CONTRACT).
+    Shared handler for the four dated equipment operations: metrology/calibration
+    (METROLOGY), maintenance contract (CONTRACT), preventive maintenance (PREVENTIVE)
+    and failure report (FAILURE).
     """
-    page  = 'eqp-maintenance-contract' if type_doc == 'CONTRACT' else 'eqp-metrology'
-    label = 'eqp maintenance contract' if type_doc == 'CONTRACT' else 'eqp metrology'
+    pages = {'METROLOGY': 'eqp-metrology',
+             'CONTRACT': 'eqp-maintenance-contract',
+             'PREVENTIVE': 'eqp-maintenance-preventive',
+             'FAILURE': 'eqp-failure'}
+
+    labels = {'METROLOGY': 'eqp metrology',
+              'CONTRACT': 'eqp maintenance contract',
+              'PREVENTIVE': 'eqp preventive maintenance',
+              'FAILURE': 'eqp failure'}
+
+    page  = pages[type_doc]
+    label = labels[type_doc]
 
     log.info(Logs.fileline() + ' : TRACE ' + label + '=' + str(id_eqp))
 
@@ -7680,42 +7656,7 @@ def list_eqp_maintenance(id_eqp=0):
 # Page : preventive maintenance equipment
 @app.route('/eqp-maintenance-preventive/<int:id_eqp>')
 def eqp_maintenance_preventive(id_eqp=0):
-    log.info(Logs.fileline() + ' : TRACE eqp preventive maintenance=' + str(id_eqp))
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook eqp preventive maintenance => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = 'eqp-maintenance-preventive/' + str(id_eqp)
-    session.modified = True
-
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    json_ihm  = {}
-    json_data = {}
-
-    # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
-
-    json_data['id_eqp'] = id_eqp
-
-    return render_template('eqp-maintenance-preventive.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return eqp_operation(id_eqp, 'PREVENTIVE')
 
 
 # Page : maintenance contract equipment

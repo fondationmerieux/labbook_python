@@ -1,19 +1,53 @@
 {% extends "skeleton.html" %}
 
 {#
-    Shared form for the two dated equipment operations: metrology/calibration
-    and maintenance contract. The calling route passes type_doc, everything
-    below derives from it.
-#}
-{% set is_contract = (type_doc == 'CONTRACT') %}
+    Shared form for the three dated equipment operations: metrology/calibration,
+    maintenance contract and preventive maintenance. The calling route passes
+    type_doc, everything below is read from the matching entry.
 
-{% set page_title = _("Maintenance") if is_contract else _("Métrologie et étalonnage") %}
-{% set date_field = 'date_contract' if is_contract else 'date_metr' %}
-{% set file_code  = 'EQMC' if is_contract else 'EQCC' %}
-{% set service    = 'contract' if is_contract else 'metrology' %}
-{% set list_page  = 'list-eqp-maintenance' if is_contract else 'list-eqp-metrology' %}
-{% set perm_save  = 'EQP_104' if is_contract else 'EQP_117' %}
-{% set perm_del   = 'EQP_107' if is_contract else 'EQP_119' %}
+    person_* describes who performed the operation: a supplier for the first two,
+    a staff member for preventive maintenance, hence a different search endpoint.
+#}
+{% set doc_conf = {
+    'METROLOGY': {
+        'title': _("Métrologie et étalonnage"), 'date_field': 'date_metr', 'file_code': 'EQCC',
+        'service': 'metrology', 'list_page': 'list-eqp-metrology',
+        'perm_save': 'EQP_117', 'perm_del': 'EQP_119',
+        'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
+        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+    'CONTRACT': {
+        'title': _("Maintenance"), 'date_field': 'date_contract', 'file_code': 'EQMC',
+        'service': 'contract', 'list_page': 'list-eqp-maintenance',
+        'perm_save': 'EQP_104', 'perm_del': 'EQP_107',
+        'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
+        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+    'PREVENTIVE': {
+        'title': _("Maintenance préventive"), 'date_field': 'date_prevent', 'file_code': 'EQPM',
+        'service': 'preventive', 'list_page': 'list-eqp-maintenance',
+        'perm_save': 'EQP_108', 'perm_del': 'EQP_111',
+        'person_id': 'search_operator', 'person_label': _("Intervenant"),
+        'person_url': '/services/user/search', 'person_param': 'operator'},
+    'FAILURE': {
+        'title': _("Panne et réparation"), 'date_field': 'date_fail', 'file_code': 'EQBD',
+        'service': 'failure', 'list_page': 'list-eqp-failure',
+        'perm_save': 'EQP_113', 'perm_del': 'EQP_116',
+        'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
+        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+} %}
+{% set conf = doc_conf[type_doc] %}
+
+{% set is_contract = (type_doc == 'CONTRACT') %}
+{# Failure reports carry two extra fields: a failure/repair type and a person in charge #}
+{% set is_failure  = (type_doc == 'FAILURE') %}
+
+{% set page_title = conf['title'] %}
+{% set date_field = conf['date_field'] %}
+{% set file_code  = conf['file_code'] %}
+{% set service    = conf['service'] %}
+{% set list_page  = conf['list_page'] %}
+{% set perm_save  = conf['perm_save'] %}
+{% set perm_del   = conf['perm_del'] %}
+{% set person_id  = conf['person_id'] %}
 
 {% block head %}
 {{ super() }}
@@ -36,10 +70,29 @@
                     </div>
                 </div>
 
+                {% if is_failure %}
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="search_supplier" class="form-label col-3 text-end mt-2 me-1">{{ _("Fournisseur") }}</label>
+                    <label for="type" class="form-label col-3 text-end mt-2 me-1">{{ _("Type") }}</label>
                     <div>
-                        <select id="search_supplier" class="form-select form-lbk form-search"></select>
+                        <select id="type" name="type" class="form-select">
+                            <option value="FAIL">{{ _("Panne") }}</option>
+                            <option value="REPA">{{ _("Réparation") }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="search_incharge" class="form-label col-3 text-end mt-2 me-1">{{ _("Responsable") }}</label>
+                    <div>
+                        <select id="search_incharge" class="form-select form-lbk form-search"></select>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="form-group d-lg-flex align-items-start mt-3">
+                    <label for="{{ person_id }}" class="form-label col-3 text-end mt-2 me-1">{{ conf['person_label'] }}</label>
+                    <div>
+                        <select id="{{ person_id }}" class="form-select form-lbk form-search"></select>
                     </div>
                 </div>
 
@@ -92,7 +145,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-$("#search_supplier").select2(
+$("#{{ person_id }}").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
     tags: false,
@@ -100,11 +153,11 @@ $("#search_supplier").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/supplier/search",
+        url: "{{ session['server_ext'] }}{{ conf['person_url'] }}",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        term: $("#search_supplier").text(),
+        term: $("#{{ person_id }}").text(),
         headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
@@ -125,10 +178,50 @@ $("#search_supplier").select2(
     }
 } ) ;
 
-$("#search_supplier").on("select2:select", function (e)
+$("#{{ person_id }}").on("select2:select", function (e)
 {
 let id_item = $(e.currentTarget).val();
 } ) ;
+
+{% if is_failure %}
+$("#search_incharge").select2(
+{
+    placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
+    tags: false,
+    multiple: false,
+    tokenSeparators: [','],
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ session['server_ext'] }}/services/user/search",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        term: $("#search_incharge").text(),
+        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        data: function (params) {
+
+            return JSON.stringify({
+                term: params.term
+            });
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (item) {
+                    return {
+                        text: item.field_value,
+                        id: item.id_data
+                    }
+                })
+            };
+        }
+    }
+} ) ;
+
+$("#search_incharge").on("select2:select", function (e)
+{
+let id_item = $(e.currentTarget).val();
+} ) ;
+{% endif %}
 
 // fix bug between jquery 3.6.0 and select2
 $(document).on('select2:open', () =>
@@ -142,14 +235,21 @@ var id_item   = 0 ;
 var id_user   = {{ session['user_id']|default(0)|tojson }};
 var id_eqp    = {{ args['id_eqp']|default(0)|tojson }};
 var date_op   = $("#{{ date_field }}").val()  ;
-var supplier  = $("#search_supplier").val()  ;
+var person    = $("#{{ person_id }}").val()  ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
 {% if is_contract %}
 var date_upd  = $("#date_upd").val()         ;
 {% endif %}
+{% if is_failure %}
+var type      = $("#type").val()             ;
+var incharge  = $("#search_incharge").val()  ;
 
-    if (supplier == null)
-    supplier = 0;
+    if (incharge == null)
+    incharge = 0;
+{% endif %}
+
+    if (person == null)
+    person = 0;
 
     if (date_op == "")
     {
@@ -163,7 +263,11 @@ var param = '{ "id_user":' + id_user + ', ' +
 {% if is_contract %}
               '"date_upd":"' + date_upd + '", ' +
 {% endif %}
-              '"supplier":' + supplier + ', ' +
+{% if is_failure %}
+              '"type":"' + type + '", ' +
+              '"incharge":' + incharge + ', ' +
+{% endif %}
+              '"{{ conf['person_param'] }}":' + person + ', ' +
               '"comment":' + comment + '}' ; // No quotes with stringify
 
     // popup wait
