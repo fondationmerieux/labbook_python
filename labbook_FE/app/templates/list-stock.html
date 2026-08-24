@@ -62,13 +62,8 @@
                 <span>{{ _("Nombre total de lignes") }} :</span>
                 <span id="list_items_total">{% if not args %}0{% endif %}</span>
             </div>
-            <div>
-                <span><a class="link" id="first_item_l" onclick="display_item(1);">{{ _("Premier") }}</a></span>
-                <span><a class="link" id="prev_item_l" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_t" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
-                <span><a class="link" id="next_item_l" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
-                <span><a class="link" id="last_item_l" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
-            </div>
+            {% from 'macros.html' import paging_links %}
+            {{ paging_links('l', 'num_page_t') }}
 
             <form class="row justify-content-center mt-3" id="items-list">
                 <table id="table_items" class="table table-responsive table-striped table-hover col-lg-12 table-lbk tablesorter">
@@ -92,13 +87,7 @@
                 </table>
             </form>
 
-            <div>
-                <span><a class="link" id="first_item_r" onclick="display_item(1);">{{ _("Premier") }}</a></span>
-                <span><a class="link" id="prev_item_r" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
-                <span id="num_page_b" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
-                <span><a class="link" id="next_item_r" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
-                <span><a class="link" id="last_item_r" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
-            </div>
+            {{ paging_links('r', 'num_page_b') }}
 
             <div class="clearfix mb-5">
                 <div class="float-start ms-0">

@@ -190,3 +190,18 @@
         {% endif %}
     {% endfor %}
 {%- endmacro %}
+
+
+{#
+    Paging links shown above (suffix 'l', page id 'num_page_t') and below
+    (suffix 'r', page id 'num_page_b') a list. display_item() lives in the page.
+#}
+{% macro paging_links(suffix, page_id) %}
+            <div>
+                <span><a class="link" id="first_item_{{ suffix }}" onclick="display_item(1);">{{ _("Premier") }}</a></span>
+                <span><a class="link" id="prev_item_{{ suffix }}" onclick="display_item(-1000);">{{ _("Précédent") }}</a></span>
+                <span id="{{ page_id }}" class="font-info">{% if not args %}0{% else %}1{% endif %}</span>
+                <span><a class="link" id="next_item_{{ suffix }}" onclick="display_item(1000);">{{ _("Suivant") }}</a></span>
+                <span><a class="link" id="last_item_{{ suffix }}" onclick="display_item(p_max);">{{ _("Dernier") }}</a></span>
+            </div>
+{%- endmacro %}
