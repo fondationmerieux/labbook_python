@@ -1,8 +1,17 @@
 {% extends "skeleton.html" %}
 
+{#
+    Shared page for the two period-based count reports: epidemiology and indicators.
+    The calling route passes report_type, which is also the key holding the rows
+    in args and the base name of the generated PDF.
+#}
+{% set is_indicator = (report_type == 'indicator') %}
+{% set page_title   = _("Rapport indicateurs") if is_indicator else _("Rapport épidémiologique") %}
+{% set legend       = _("Indicateurs") if is_indicator else _("Epidémiologie") %}
+
 {% block head %}
 {{ super() }}
-    <title>{{ _("Rapport épidémiologique") }}</title>
+    <title>{{ page_title }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
@@ -10,7 +19,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Rapport épidémiologique") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ page_title }}</span></h2>
             <form autocomplete="off">
                 <fieldset class="border mx-1 p-1 p-lg-2">
                     <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
@@ -56,7 +65,7 @@
                 </fieldset>
 
                 <fieldset class="row border mx-1 mt-3 p-2">
-                    <legend class="legend-lbk">{{ _("Epidémiologie") }}</legend>
+                    <legend class="legend-lbk">{{ legend }}</legend>
                     <table id="html_report" class="table table-striped table-hover col-lg-12 table-lbk" style="border:0;">
                         <thead>
                             <tr>
@@ -67,8 +76,8 @@
                                 <th class="text-center font-info">{{ _("Résultats") }}</th>
                             </tr>
                         </thead>
-                        <tbody id="tbody_epidemio">
-                            {% for disease in args['epidemio'] %}
+                        <tbody id="tbody_{{ report_type }}">
+                            {% for disease in args[report_type] %}
                             <tr style="border:0;">
                                 <td style="border:0;" class="text-center">{{ disease['disease'] }}</td>
                                 <td style="border:0;" class="text-center">{{ disease['sample'] }}</td>
@@ -116,7 +125,7 @@ let lite_user_id = 0 ;
 
 {# date converted to datetime in python front-end #}
 
-let url = "{{ session['server_ext'] }}/report-epidemio/" + date_beg + "/" + date_end + "/" + lite_filter + "/" + lite_user_id ;
+let url = "{{ session['server_ext'] }}/report-{{ report_type }}/" + date_beg + "/" + date_end + "/" + lite_filter + "/" + lite_user_id ;
 
 window.location = url ; 
 }
@@ -136,7 +145,7 @@ var html_report = JSON.stringify($("#html_report")[0].outerHTML) ;
 html_report = html_report.replaceAll("border:0", "border:1px solid #000") ;
 
 var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
-              '"filename": "epidemio"}' ;
+              '"filename": "{{ report_type }}"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
@@ -166,7 +175,7 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
 
         today = today.getFullYear() + '' + month + '' + day ;
 
-        let filename = "epidemio_" + today + ".pdf" ;
+        let filename = "{{ report_type }}_" + today + ".pdf" ;
 
         download_file( "PY", filename, "GEN", 0 ) ;
         },

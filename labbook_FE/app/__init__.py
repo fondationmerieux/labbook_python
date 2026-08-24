@@ -6183,7 +6183,7 @@ def report_epidemio(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
     except requests.exceptions.RequestException:
         log.exception(Logs.fileline() + ' : requests report epidemio failed, url=%s', url)
 
-    return render_template('report-epidemio.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return render_template('report-epid-indi.html', report_type='epidemio', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
 
 # Page : report with indicator
@@ -6257,7 +6257,7 @@ def report_indicator(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
     except requests.exceptions.RequestException:
         log.exception(Logs.fileline() + ' : requests report indicator failed, url=%s', url)
 
-    return render_template('report-indicator.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return render_template('report-epid-indi.html', report_type='indicator', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
 
 # Page : pivot table

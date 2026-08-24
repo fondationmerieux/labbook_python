@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Quality control detail pages, internal and external, now share a single template
 - Equipment metrology, maintenance contract, preventive maintenance and failure report pages now share a single template
 - New request pages, inpatient and outpatient, now share a single template
+- Epidemiological and indicator report pages now share a single template
 - DHIS2 exports, file and API, now share their common export code
 
 ### Fixed
