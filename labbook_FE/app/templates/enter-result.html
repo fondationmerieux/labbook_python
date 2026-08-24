@@ -564,7 +564,7 @@ let btn_aliquot = "" ;
             {% if has_permission("ALIQUOT_170") %}
             if ( id_samp_p > 0 && samp_type_p > 0 )
             {
-            btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+            btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role'] }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
             }
             {% endif %}
 
@@ -913,7 +913,7 @@ let btn_aliquot = "" ;
         {% if has_permission("ALIQUOT_170") %}
         if ( id_samp_p > 0 && samp_type_p > 0 )
         {
-        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role']|safe }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
+        btn_aliquot = "<button type=\"button\" class=\"btn-aliquot btn btn-lbk btn-{{ session['user_role'] }} ms-3\" onclick=\"add_aliquot(" + id_samp_p + "," + samp_type_p + "," + cur_id_pat + ")\">{{ _("Ajouter un aliquot") }}</button>" ;
         }
         {% endif %}
 

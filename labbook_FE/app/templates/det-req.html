@@ -1369,6 +1369,10 @@ var codesToCheck    = [] ;
     return false ;
     }
 
+    // optional field: an empty value would break the JSON payload
+    if (bed_num == "")
+    bed_num = 0 ;
+
     if (per_discount == "")
     per_discount = 0 ;
 

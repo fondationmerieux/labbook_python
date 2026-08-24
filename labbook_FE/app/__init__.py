@@ -270,6 +270,34 @@ def be_check_or_bounce(resp):
     return None
 
 
+def be_get(path, what):
+    """
+    GET `path` on the BE and return the pair (data, redirect).
+
+    data     : decoded JSON on a 200 answer, None otherwise, so the caller can
+               leave its own default untouched when the call fails.
+    redirect : response the caller must return at once when the token expired,
+               None the rest of the time.
+    what     : names the call in the log line, nothing else.
+    """
+    url = session['server_int'] + '/' + session['redirect_name'] + path
+
+    try:
+        req = requests.get(url, timeout=10, headers=be_auth_headers())
+
+        redir = be_check_or_bounce(req)
+        if redir:
+            return None, redir
+
+        if req.status_code == 200:
+            return req.json(), None
+
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : requests ' + what + ' failed, url=%s', url)
+
+    return None, None
+
+
 def get_locale():
     """
     Selects the active language for the current request.
@@ -1235,34 +1263,18 @@ def homepage(login=''):
             log.exception(Logs.fileline() + ' : requests count ermergency failed, url=%s', url)
 
         # Load nb_rec_tech
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/technician'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['nb_rec_tech'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests count technician records failed, url=%s', url)
+        data, redir = be_get('/services/record/count/technician', 'count technician records')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['nb_rec_tech'] = data
 
         # Load nb_rec_bio
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/biologist'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['nb_rec_bio'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests count biologist records failed, url=%s', url)
+        data, redir = be_get('/services/record/count/biologist', 'count biologist records')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['nb_rec_bio'] = data
 
         # Load nb_rec
         try:
@@ -1282,34 +1294,18 @@ def homepage(login=''):
             log.exception(Logs.fileline() + ' : requests count records failed, url=%s', url)
 
         # Load nb_rec_today
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/count/today'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['nb_rec_today'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests count today validated records failed, url=%s', url)
+        data, redir = be_get('/services/record/count/today', 'count today validated records')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['nb_rec_today'] = data
 
         # Load last_record
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/last'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['record'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests last records failed, url=%s', url)
+        data, redir = be_get('/services/record/last', 'last records')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['record'] = data
 
         # Load list of stock for display alert
         try:
@@ -1686,50 +1682,26 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
             log.exception(Logs.fileline() + ' : requests user role list failed, url=%s', url)
 
     # Load civility
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['civility'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/titre_civilite', 'civility list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['civility'] = data
 
     # Load sections
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['sections'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sections', 'sections')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['sections'] = data
 
     if user_id > 0:
         # Load user details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/det/' + str(user_id)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests user det failed, url=%s', url)
+        data, redir = be_get('/services/user/det/' + str(user_id), 'user det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data = data
 
     json_data['user_id'] = user_id
 
@@ -1955,34 +1927,18 @@ def setting_analyzes():
     json_data = {}
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load products
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_prel', 'products list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products'] = data
 
     # Load list analyzes
     try:
@@ -2018,24 +1974,15 @@ def list_analyzers():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analyzers list failed, url=%s', url)
+    data, redir = be_get('/services/device/analyzer/list', 'analyzers list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-analyzers.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -2056,7 +2003,6 @@ def det_analyzer(id_analyzer=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -2064,50 +2010,26 @@ def det_analyzer(id_analyzer=0):
     json_data['analyzer'] = []
 
     # Load Connect setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/connect/setting'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['connect'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests get connect setting failed, url=%s', url)
+    data, redir = be_get('/services/connect/setting', 'get connect setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['connect'] = data
 
     # Load list of analyzers
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/file'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['analyzers'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list of analyzers files failed, url=%s', url)
+    data, redir = be_get('/services/device/analyzer/file', 'list of analyzers files')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['analyzers'] = data
 
     if id_analyzer > 0:
         # Load analyzer details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/device/analyzer/det/' + str(id_analyzer)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['analyzer'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests analyzer det failed, url=%s', url)
+        data, redir = be_get('/services/device/analyzer/det/' + str(id_analyzer), 'analyzer det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['analyzer'] = data
 
     json_data['id_analyzer'] = id_analyzer
 
@@ -2216,24 +2138,15 @@ def list_vars():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load list vars
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/variable/all'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests vars all failed, url=%s', url)
+    data, redir = be_get('/services/analysis/variable/all', 'vars all')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-vars.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -2273,7 +2186,6 @@ def setting_det_analysis(analysis_id=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -2282,95 +2194,47 @@ def setting_det_analysis(analysis_id=0):
     json_data['var'] = []
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load products
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_prel', 'products list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products'] = data
 
     # Load type result
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_resultat'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_res'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests type result list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_resultat', 'type result list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_res'] = data
 
     # Load unit
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/unite_valeur'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['unit'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests unit list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/unite_valeur', 'unit list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['unit'] = data
 
     if analysis_id > 0:
         # Load analysis details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/det/' + str(analysis_id)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['details'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests analysis det failed, url=%s', url)
+        data, redir = be_get('/services/analysis/det/' + str(analysis_id), 'analysis det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['details'] = data
 
         # Load analysis variables list
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/variable/list/' + str(analysis_id)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['var'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests analysis var list failed, url=%s', url)
+        data, redir = be_get('/services/analysis/variable/list/' + str(analysis_id), 'analysis var list')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['var'] = data
 
     json_data['analysis_id'] = analysis_id
 
@@ -2399,19 +2263,11 @@ def manage_pat_records():
     json_data = {}
 
     # Load nationality
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/nationality/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_nationality'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests nationality list failed, url=%s', url)
+    data, redir = be_get('/services/nationality/list', 'nationality list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_nationality'] = data
 
     # Load unit age
     try:
@@ -2490,23 +2346,14 @@ def setting_preferences():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/pref/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['pref_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests preferences list failed, url=%s', url)
+    data, redir = be_get('/services/setting/pref/list', 'preferences list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['pref_list'] = data
 
     return render_template('setting-pref.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -2527,7 +2374,6 @@ def setting_backup():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
     json_data['stat_backup'] = ''
@@ -2568,19 +2414,11 @@ def setting_backup():
         log.exception(Logs.fileline() + ' : cant read ' + Constants.cst_io + 'last_backup_ok ')
 
     # load start_time
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/backup'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['bks_data'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests preferences list failed, url=%s', url)
+    data, redir = be_get('/services/setting/backup', 'preferences list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['bks_data'] = data
 
     return render_template('setting-backup.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -2645,19 +2483,11 @@ def setting_stock():
     json_data = {}
 
     # Load stock setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/stock'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests stock setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/stock', 'stock setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     # Load local list
     try:
@@ -2700,7 +2530,6 @@ def setting_form():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
@@ -2735,19 +2564,11 @@ def setting_form():
         log.exception(Logs.fileline() + ' : load patient form files failed')
 
     # Load form setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/form/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['l_fos'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests form setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/form/list', 'form setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['l_fos'] = data
 
     return render_template('setting-form.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -2837,19 +2658,11 @@ def preview_form(type_form='', filename=''):
     # ------------------------------------------------------------------
 
     # Load unit age
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/periode_unite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_age_unit'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests unit age failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/periode_unite', 'unit age')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_age_unit'] = data
 
     # Load blood group
     try:
@@ -2964,23 +2777,14 @@ def list_template():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests template list failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list', 'template list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-template.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -3001,7 +2805,6 @@ def det_template(id_tpl=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
@@ -3009,19 +2812,11 @@ def det_template(id_tpl=0):
 
     if id_tpl > 0:
         # Load template details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/det/' + str(id_tpl)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['template'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests template det failed, url=%s', url)
+        data, redir = be_get('/services/setting/template/det/' + str(id_tpl), 'template det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['template'] = data
 
     json_data['id_tpl'] = id_tpl
 
@@ -3044,24 +2839,15 @@ def setting_report():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load setting report
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/report'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests setting report failed, url=%s', url)
+    data, redir = be_get('/services/setting/report', 'setting report')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('setting-report.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -3200,24 +2986,15 @@ def setting_rec_num():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load record number setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/record/number'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests record number setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/record/number', 'record number setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('setting-rec-num.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -3445,19 +3222,11 @@ def setting_link_unit_user(id_unit):
     json_data['id_func_unit'] = id_unit
 
     # Load details of functionnal unit
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/functionnal/unit/det/' + str(id_unit)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['func_unit'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests functionnal unit details failed, url=%s', url)
+    data, redir = be_get('/services/setting/functionnal/unit/det/' + str(id_unit), 'functionnal unit details')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['func_unit'] = data
 
     # Load list of user with or without link with this unit
     try:
@@ -3496,19 +3265,11 @@ def setting_link_unit_fam(id_unit):
     json_data['id_func_unit'] = id_unit
 
     # Load details of functionnal unit
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/functionnal/unit/det/' + str(id_unit)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['func_unit'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests functionnal unit details failed, url=%s', url)
+    data, redir = be_get('/services/setting/functionnal/unit/det/' + str(id_unit), 'functionnal unit details')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['func_unit'] = data
 
     # Load list of analysis family with or without link with this unit
     try:
@@ -3540,26 +3301,17 @@ def setting_dhis2():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     json_data['data_dhis2'] = []
 
     # Load list of dhis2 api
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/dhis2/api/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['dhs'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list of dhis2 api failed, url=%s', url)
+    data, redir = be_get('/services/setting/dhis2/api/list', 'list of dhis2 api')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['dhs'] = data
 
     # Load dhis2 files in dhis2 directory
     try:
@@ -3741,19 +3493,11 @@ def det_lite(id_item=0):
 
     if id_item > 0:
         # Load printer details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/lite/setup/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['item'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests lite setup det failed, url=%s', url)
+        data, redir = be_get('/services/lite/setup/det/' + str(id_item), 'lite setup det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['item'] = data
 
     json_data['id_item'] = id_item
 
@@ -3794,7 +3538,6 @@ def det_oauth_client(id_item=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -3803,19 +3546,11 @@ def det_oauth_client(id_item=0):
 
     if id_item > 0:
         # Load printer details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/oauth/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['item'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests oauth det failed, url=%s', url)
+        data, redir = be_get('/services/setting/oauth/det/' + str(id_item), 'oauth det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['item'] = data
     else:
         # Defaults for creation
         json_data['item'] = {
@@ -3863,49 +3598,25 @@ def list_results():
     dt_start_req = datetime.now()
 
     # List pathogen
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_pathogen'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/pathogène', 'list pathogen')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_pathogen'] = data
 
     # List storage box
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_box'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/box/list', 'list storage box')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_box'] = data
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load list results
     try:
@@ -3978,49 +3689,25 @@ def enter_result(id_rec=0, anchor=''):
     dt_start_req = datetime.now()
 
     # Load products
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_prel', 'products list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products'] = data
 
     # List pathogen
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_pathogen'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/pathogène', 'list pathogen')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_pathogen'] = data
 
     # List storage box
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_box'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/box/list', 'list storage box')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_box'] = data
 
     # Load list results
     try:
@@ -4129,19 +3816,11 @@ def enter_result(id_rec=0, anchor=''):
             if res and res['id_med']:
                 id_med = res['id_med']
 
-                try:
-                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(id_med)
-                    req = requests.get(url, timeout=10, headers=headers)
-
-                    redir = be_check_or_bounce(req)
-                    if redir:
-                        return redir
-
-                    if req.status_code == 200:
-                        json_data['doctor'] = req.json()
-
-                except requests.exceptions.RequestException:
-                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
+                data, redir = be_get('/services/doctor/det/' + str(id_med), 'doctor det')
+                if redir:
+                    return redir
+                if data is not None:
+                    json_data['doctor'] = data
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -4168,19 +3847,11 @@ def enter_result(id_rec=0, anchor=''):
 
     json_data['patient'] = {}
     if id_pat > 0:
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['patient'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+        data, redir = be_get('/services/patient/det/' + str(id_pat), 'patient det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['patient'] = data
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -4218,19 +3889,11 @@ def list_records():
 
     dt_start_req = datetime.now()
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load list records
     try:
@@ -4284,19 +3947,11 @@ def list_works(user_role='', emer=''):
 
     dt_start_req = datetime.now()
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load list records with status filter
     try:
@@ -4427,65 +4082,33 @@ def det_sample(id_prod=0):
     json_data = {}
 
     # Load samples statut
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products_statut'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests samples statut list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/prel_statut', 'samples statut list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products_statut'] = data
 
     # Load samples type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests samples type list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_prel', 'samples type list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products'] = data
 
     # Load samples location choice
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/lieu_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products_location'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests samples location list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/lieu_prel', 'samples location list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products_location'] = data
 
     if id_prod > 0:
         # Load sample details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/product/det/' + str(id_prod)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['product'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests sample det failed, url=%s', url)
+        data, redir = be_get('/services/product/det/' + str(id_prod), 'sample det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['product'] = data
 
         # Load record details
         try:
@@ -4501,19 +4124,11 @@ def det_sample(id_prod=0):
 
                 # Load data patient with id_patient
                 if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
-                    try:
-                        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
-                        req = requests.get(url, timeout=10, headers=headers)
-
-                        redir = be_check_or_bounce(req)
-                        if redir:
-                            return redir
-
-                        if req.status_code == 200:
-                            json_data['patient'] = req.json()
-
-                    except requests.exceptions.RequestException:
-                        log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+                    data, redir = be_get('/services/patient/det/' + str(json_data['record']['id_patient']), 'patient det')
+                    if redir:
+                        return redir
+                    if data is not None:
+                        json_data['patient'] = data
 
         except requests.exceptions.RequestException:
             log.exception(Logs.fileline() + ' : requests record det failed, url=%s', url)
@@ -4577,56 +4192,31 @@ def det_doctor(id_doctor=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # Load speciality
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/specialite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['spe_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests speciality list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/specialite', 'speciality list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['spe_list'] = data
 
     # Load civility
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['civility'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/titre_civilite', 'civility list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['civility'] = data
 
     if id_doctor > 0:
         # Load doctor details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(id_doctor)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
+        data, redir = be_get('/services/doctor/det/' + str(id_doctor), 'doctor det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data = data
 
     json_data['id_doctor'] = id_doctor
 
@@ -4700,64 +4290,32 @@ def det_patient(type_req='E', id_pat=0):
         log.exception(Logs.fileline() + ' : failed to detect patient history form')
 
     # Load unit age
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/periode_unite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_age_unit'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests unit age failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/periode_unite', 'unit age')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_age_unit'] = data
 
     # Load blood group
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/groupesang'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_blood_group'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests blood group failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/groupesang', 'blood group')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_blood_group'] = data
 
     # Load blood rhesus
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/posneg'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_blood_rhesus'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests blood rhesus failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/posneg', 'blood rhesus')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_blood_rhesus'] = data
 
     # Load nationality
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/nationality/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['pat_nationality'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests nationality list failed, url=%s', url)
+    data, redir = be_get('/services/nationality/list', 'nationality list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['pat_nationality'] = data
 
     # Load data patient
     if id_pat > 0:
@@ -4778,19 +4336,11 @@ def det_patient(type_req='E', id_pat=0):
             log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
 
         # add form items to json_data
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/form/item/' + str(id_pat)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data.update(req.json())
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+        data, redir = be_get('/services/patient/form/item/' + str(id_pat), 'patient det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data.update(data)
     else:
         # Load unit age by default
         try:
@@ -4954,125 +4504,61 @@ def det_req(req_type, entry='Y', ref=0):
         # ref = id_pat
         # Load data patient
         if ref > 0:
-            try:
-                url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(ref)
-                req = requests.get(url, timeout=10, headers=headers)
-
-                redir = be_check_or_bounce(req)
-                if redir:
-                    return redir
-
-                if req.status_code == 200:
-                    json_data['patient'] = req.json()
-
-            except requests.exceptions.RequestException:
-                log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+            data, redir = be_get('/services/patient/det/' + str(ref), 'patient det')
+            if redir:
+                return redir
+            if data is not None:
+                json_data['patient'] = data
 
         # Load yes or no
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/yorn'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['yorn'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests yorn list failed, url=%s', url)
+        data, redir = be_get('/services/dict/det/yorn', 'yorn list')
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm['yorn'] = data
 
         # Load discount billing
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/remise_facturation'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['discount_bill'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests discount bill list failed, url=%s', url)
+        data, redir = be_get('/services/dict/det/remise_facturation', 'discount bill list')
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm['discount_bill'] = data
 
         # Load samples statut
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/prel_statut'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['products_statut'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests samples statut list failed, url=%s', url)
+        data, redir = be_get('/services/dict/det/prel_statut', 'samples statut list')
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm['products_statut'] = data
 
         # Load samples
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['products'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests samples list failed, url=%s', url)
+        data, redir = be_get('/services/dict/det/type_prel', 'samples list')
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm['products'] = data
 
         # Load prix_acte
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/prix_acte'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_ihm['act_price'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests prix_acte failed, url=%s', url)
+        data, redir = be_get('/services/default/val/prix_acte', 'prix_acte')
+        if redir:
+            return redir
+        if data is not None:
+            json_ihm['act_price'] = data
 
         # Load facturation_pat_hosp
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/default/val/facturation_pat_hosp'
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['billing_hosp'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests billing_pat failed, url=%s', url)
+        data, redir = be_get('/services/default/val/facturation_pat_hosp', 'billing_pat')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['billing_hosp'] = data
 
         # load requesting services setting
         if req_type == "I":
-            try:
-                url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
-                req = requests.get(url, timeout=10, headers=headers)
-
-                redir = be_check_or_bounce(req)
-                if redir:
-                    return redir
-
-                if req.status_code == 200:
-                    json_ihm['req_services'] = req.json()
-
-            except requests.exceptions.RequestException:
-                log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
+            data, redir = be_get('/services/setting/requesting/services', 'requesting services setting')
+            if redir:
+                return redir
+            if data is not None:
+                json_ihm['req_services'] = data
 
         # add empty structure for post data_save after save_request
         json_data['data_analysis'] = []
@@ -5158,188 +4644,92 @@ def administrative_record(type_req='E', id_rec=0):
 
             # Load data patient with id_patient
             if json_data['record']['id_patient'] and json_data['record']['id_patient'] > 0:
-                try:
-                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(json_data['record']['id_patient'])
-                    req = requests.get(url, timeout=10, headers=headers)
-
-                    redir = be_check_or_bounce(req)
-                    if redir:
-                        return redir
-
-                    if req.status_code == 200:
-                        json_data['patient'] = req.json()
-
-                except requests.exceptions.RequestException:
-                    log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+                data, redir = be_get('/services/patient/det/' + str(json_data['record']['id_patient']), 'patient det')
+                if redir:
+                    return redir
+                if data is not None:
+                    json_data['patient'] = data
 
             # Load data doctor with id_doctor
             if json_data['record']['med_prescripteur'] and json_data['record']['med_prescripteur'] > 0:
-                try:
-                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(json_data['record']['med_prescripteur'])
-                    req = requests.get(url, timeout=10, headers=headers)
-
-                    redir = be_check_or_bounce(req)
-                    if redir:
-                        return redir
-
-                    if req.status_code == 200:
-                        json_data['doctor'] = req.json()
-
-                except requests.exceptions.RequestException:
-                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
+                data, redir = be_get('/services/doctor/det/' + str(json_data['record']['med_prescripteur']), 'doctor det')
+                if redir:
+                    return redir
+                if data is not None:
+                    json_data['doctor'] = data
 
     except requests.exceptions.RequestException:
         log.exception(Logs.fileline() + ' : requests record det failed, url=%s', url)
 
     # Load list analysis requested
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list/req/' + str(id_rec) + '/type/Y'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_analysis'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list ana failed, url=%s', url)
+    data, redir = be_get('/services/analysis/list/req/' + str(id_rec) + '/type/Y', 'list ana')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_analysis'] = data
 
     # Load list samples requested
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/analysis/list/req/' + str(id_rec) + '/type/N'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_samples'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list ana failed, url=%s', url)
+    data, redir = be_get('/services/analysis/list/req/' + str(id_rec) + '/type/N', 'list ana')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_samples'] = data
 
     # Load report attached to this record
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/record/' + str(id_rec)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_reports'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests report file failed, url=%s', url)
+    data, redir = be_get('/services/file/report/record/' + str(id_rec), 'report file')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_reports'] = data
 
     # Load files attached to this record
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/REC/' + str(id_rec)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_files'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests record list files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/REC/' + str(id_rec), 'record list files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_files'] = data
 
     # Load list template RES
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/RES'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_result'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template RES failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/RES', 'list template RES')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_result'] = data
 
     # Load list template OUT
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/OUT'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_outsourced'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/OUT', 'list template')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_outsourced'] = data
 
     # Load list template STI
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/STI'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_sticker'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template STI failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/STI', 'list template STI')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_sticker'] = data
 
     # Load list template INV
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/INV'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_invoice'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template INV failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/INV', 'list template INV')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_invoice'] = data
 
     # Load list of sending method
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/sending/method/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['send_method_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
+    data, redir = be_get('/services/setting/sending/method/list', 'sending method list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['send_method_list'] = data
 
     # Load list of sending model
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/sending/model/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['send_model_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
+    data, redir = be_get('/services/setting/sending/model/list', 'sending method list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['send_model_list'] = data
 
     json_data['has_pat_hist_form'] = has_pat_hist_form
 
@@ -5528,34 +4918,18 @@ def technical_validation(id_rec=0, anchor=''):
             if res and res['id_med']:
                 id_med = res['id_med']
 
-                try:
-                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(id_med)
-                    req = requests.get(url, timeout=10, headers=headers)
-
-                    redir = be_check_or_bounce(req)
-                    if redir:
-                        return redir
-
-                    if req.status_code == 200:
-                        json_data['doctor'] = req.json()
-
-                except requests.exceptions.RequestException:
-                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
-
-            # Load record
-            try:
-                url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/det/' + str(id_rec)
-                req = requests.get(url, timeout=10, headers=headers)
-
-                redir = be_check_or_bounce(req)
+                data, redir = be_get('/services/doctor/det/' + str(id_med), 'doctor det')
                 if redir:
                     return redir
+                if data is not None:
+                    json_data['doctor'] = data
 
-                if req.status_code == 200:
-                    json_data['record'] = req.json()
-
-            except requests.exceptions.RequestException:
-                log.exception(Logs.fileline() + ' : requests record failed, url=%s', url)
+            # Load record
+            data, redir = be_get('/services/record/det/' + str(id_rec), 'record')
+            if redir:
+                return redir
+            if data is not None:
+                json_data['record'] = data
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -5582,34 +4956,18 @@ def technical_validation(id_rec=0, anchor=''):
 
     json_data['patient'] = {}
     if id_pat > 0:
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['patient'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
-
-    # Load reasons to cancel a result
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/motif_annulation'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
+        data, redir = be_get('/services/patient/det/' + str(id_pat), 'patient det')
         if redir:
             return redir
+        if data is not None:
+            json_data['patient'] = data
 
-        if req.status_code == 200:
-            json_ihm['cancel_reason'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests cancel reason failed, url=%s', url)
+    # Load reasons to cancel a result
+    data, redir = be_get('/services/dict/det/motif_annulation', 'cancel reason')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['cancel_reason'] = data
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -5679,19 +5037,11 @@ def biological_validation(mode='', id_rec=0):
     dt_start_req = datetime.now()
 
     # Load list template
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/RES'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_result'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/RES', 'list template')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_result'] = data
 
     # Load record
     try:
@@ -5864,19 +5214,11 @@ def biological_validation(mode='', id_rec=0):
             if res and res['id_med']:
                 id_med = res['id_med']
 
-                try:
-                    url = session['server_int'] + '/' + session['redirect_name'] + '/services/doctor/det/' + str(id_med)
-                    req = requests.get(url, timeout=10, headers=headers)
-
-                    redir = be_check_or_bounce(req)
-                    if redir:
-                        return redir
-
-                    if req.status_code == 200:
-                        json_data['doctor'] = req.json()
-
-                except requests.exceptions.RequestException:
-                    log.exception(Logs.fileline() + ' : requests doctor det failed, url=%s', url)
+                data, redir = be_get('/services/doctor/det/' + str(id_med), 'doctor det')
+                if redir:
+                    return redir
+                if data is not None:
+                    json_data['doctor'] = data
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -5903,79 +5245,39 @@ def biological_validation(mode='', id_rec=0):
 
     json_data['patient'] = {}
     if id_pat > 0:
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/det/' + str(id_pat)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['patient'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests patient det failed, url=%s', url)
+        data, redir = be_get('/services/patient/det/' + str(id_pat), 'patient det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['patient'] = data
 
     # Load report attached to this record
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/report/record/' + str(id_rec)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_reports'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests report file failed, url=%s', url)
+    data, redir = be_get('/services/file/report/record/' + str(id_rec), 'report file')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_reports'] = data
 
     # Load reasons to cancel a result
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/motif_annulation'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['cancel_reason'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests cancel reason failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/motif_annulation', 'cancel reason')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['cancel_reason'] = data
 
     # Load list of sending method
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/sending/method/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['send_method_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
+    data, redir = be_get('/services/setting/sending/method/list', 'sending method list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['send_method_list'] = data
 
     # Load list of sending model
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/sending/model/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['send_model_list'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sending method list failed, url=%s', url)
+    data, redir = be_get('/services/setting/sending/model/list', 'sending method list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['send_model_list'] = data
 
     dt_stop_req = datetime.now()
     dt_time_req = dt_stop_req - dt_start_req
@@ -6027,49 +5329,25 @@ def report_activity():
         log.exception(Logs.fileline() + ' : load lite users failed, url=%s', url)
 
     # Load list template ACT
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/ACT'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_activity_report'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template ACT failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/ACT', 'list template ACT')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_activity_report'] = data
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # load age interval setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/age/interval'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['age_interval'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests age interval setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/age/interval', 'age interval setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['age_interval'] = data
 
     # load data for activity
     try:
@@ -6324,34 +5602,18 @@ def report_statistic(lite_filter='A', lite_user_id=0):
         json_ihm['lite_users'] = []
 
     # load age interval setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/age/interval'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['age_interval'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests age interval setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/age/interval', 'age interval setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['age_interval'] = data
 
     # load requesting services setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['req_services'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/requesting/services', 'requesting services setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['req_services'] = data
 
     # load data for statistic
     try:
@@ -6411,19 +5673,11 @@ def report_tat():
     json_data = {}
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load LabBook Lite users
     json_ihm['lite_users'] = []
@@ -6459,7 +5713,6 @@ def report_dhis2():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -6478,19 +5731,11 @@ def report_dhis2():
         log.exception(Logs.fileline() + ' : load dhis2 files in dhis2 directory failed')
 
     # Load list dhis2 setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/dhis2/api/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['dhs'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list dhis2 setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/dhis2/api/list', 'list dhis2 setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['dhs'] = data
 
     return render_template('report-dhis2.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -6533,19 +5778,11 @@ def hist_patients():
     json_data = {}
 
     # Load sex
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sexe'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['dict_sex'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests dict sex failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sexe', 'dict sex')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['dict_sex'] = data
 
     # Load list patients
     try:
@@ -6581,24 +5818,15 @@ def det_hist_patient(id_pat=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load details hitoric patient
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/patient/historic/' + str(id_pat)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests details hitoric patient failed, url=%s', url)
+    data, redir = be_get('/services/patient/historic/' + str(id_pat), 'details hitoric patient')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('det-hist-patient.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -6625,19 +5853,11 @@ def hist_analyzes():
     json_data = {}
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load list analyzes
     try:
@@ -6733,19 +5953,11 @@ def report_today():
     json_data = {}
 
     # load requesting services setting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/requesting/services'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['req_services'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests requesting services setting failed, url=%s', url)
+    data, redir = be_get('/services/setting/requesting/services', 'requesting services setting')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['req_services'] = data
 
     try:
         date_end = date.today()
@@ -6797,19 +6009,11 @@ def report_billing():
     json_data = {}
 
     # Load list template BIL
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/template/list/BIL'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['tpl_billing_status'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list template BIL failed, url=%s', url)
+    data, redir = be_get('/services/setting/template/list/BIL', 'list template BIL')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['tpl_billing_status'] = data
 
     try:
         date_end = date.today()
@@ -6859,84 +6063,43 @@ def quality_general():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load nb_users
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/count'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['nb_users'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests count users failed, url=%s', url)
+    data, redir = be_get('/services/user/count', 'count users')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['nb_users'] = data
 
     # Load nb_manuals
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/count/manual'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['nb_manuals'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests count manuals failed, url=%s', url)
+    data, redir = be_get('/services/file/count/manual', 'count manuals')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['nb_manuals'] = data
 
     # Load last_meeting
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/last/meeting'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['meeting'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests last meeting failed, url=%s', url)
+    data, redir = be_get('/services/quality/last/meeting', 'last meeting')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['meeting'] = data
 
     # Load nb_noncompliances_open
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/count/noncompliance/open'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['nb_noncompliances_open'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests count noncompliances open failed, url=%s', url)
+    data, redir = be_get('/services/quality/count/noncompliance/open', 'count noncompliances open')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['nb_noncompliances_open'] = data
 
     # Load nb_noncompliances_month
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/count/noncompliance/month'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['nb_noncompliances_month'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests count noncompliances month failed, url=%s', url)
+    data, redir = be_get('/services/quality/count/noncompliance/month', 'count noncompliances month')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['nb_noncompliances_month'] = data
 
     return render_template('quality-general.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -6962,19 +6125,11 @@ def list_laboratory():
     json_data = {}
 
     # Load laboratory files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/LABO/1'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_files'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests laboratory files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/LABO/1', 'laboratory files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_files'] = data
 
     # Load dict details
     try:
@@ -7067,109 +6222,53 @@ def det_staff(user_id=0, ctx=''):
         json_ihm['return_page'] = ctx
 
     # Load civility
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/titre_civilite'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['civility'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests civility list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/titre_civilite', 'civility list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['civility'] = data
 
     # Load sections
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['sections'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sections', 'sections')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['sections'] = data
 
     # Load User CV files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USCV/' + str(user_id)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_USCV'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests User CV files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/USCV/' + str(user_id), 'User CV files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_USCV'] = data
 
     # Load User Diploma files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USDI/' + str(user_id)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_USDI'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests User Diploma files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/USDI/' + str(user_id), 'User Diploma files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_USDI'] = data
 
     # Load User Training files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USTR/' + str(user_id)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_USTR'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests User Training files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/USTR/' + str(user_id), 'User Training files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_USTR'] = data
 
     # Load User Evaluation files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/USEV/' + str(user_id)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_USEV'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests User Evaluation files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/USEV/' + str(user_id), 'User Evaluation files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_USEV'] = data
 
     # Load User signature files
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/SIGN/' + str(user_id)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_SIGN'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests User signature files failed, url=%s', url)
+    data, redir = be_get('/services/file/document/list/SIGN/' + str(user_id), 'User signature files')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_SIGN'] = data
 
     if user_id > 0:
         # Load user details
@@ -7210,23 +6309,14 @@ def list_equipment():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment list failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/list', 'equipment list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-equipment.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -7247,7 +6337,6 @@ def det_equipment(id_eqp=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -7255,80 +6344,40 @@ def det_equipment(id_eqp=0):
     json_data['det_eqp'] = {}
 
     # Load sections
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['sections'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sections', 'sections')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['sections'] = data
 
     # Load equipment status
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/etat_equipement'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['statuses'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment status failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/etat_equipement', 'equipment status')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['statuses'] = data
 
     if id_eqp > 0:
         # Load Equipment Photo files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQPH/' + str(id_eqp)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_EQPH'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Equipment Photo files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/EQPH/' + str(id_eqp), 'Equipment Photo files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_EQPH'] = data
 
         # Load Equipment Bill files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/EQBI/' + str(id_eqp)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_EQBI'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Equipment Bill files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/EQBI/' + str(id_eqp), 'Equipment Bill files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_EQBI'] = data
 
         # Load equipment details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['det_eqp'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
+        data, redir = be_get('/services/quality/equipment/det/' + str(id_eqp), 'equipment det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['det_eqp'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7351,55 +6400,30 @@ def eqp_document(id_eqp=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # Load Equipment document Manuels
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/doc/MANU/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_MANU'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests Equipment document MANU failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/doc/MANU/' + str(id_eqp), 'Equipment document MANU')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_MANU'] = data
 
     # Load Equipment document Procedures
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/doc/PROC/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['data_PROC'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests Equipment document PROC failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/doc/PROC/' + str(id_eqp), 'Equipment document PROC')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['data_PROC'] = data
 
     # Load equipment document comment
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/comm/DOC/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['comm'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment comm DOC failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/comm/DOC/' + str(id_eqp), 'equipment comm DOC')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['comm'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7422,38 +6446,21 @@ def list_eqp_failure(id_eqp=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/failure/list/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['eqf'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment failure list failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/failure/list/' + str(id_eqp), 'equipment failure list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['eqf'] = data
 
     # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/det/' + str(id_eqp), 'equipment det')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['det_eqp'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7482,38 +6489,21 @@ def list_eqp_metrology(id_eqp=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/metrology/list/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['eqm'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment metrology list failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/metrology/list/' + str(id_eqp), 'equipment metrology list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['eqm'] = data
 
     # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/det/' + str(id_eqp), 'equipment det')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['det_eqp'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7552,25 +6542,16 @@ def eqp_operation(id_eqp, type_doc):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/det/' + str(id_eqp), 'equipment det')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['det_eqp'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7599,54 +6580,29 @@ def list_eqp_maintenance(id_eqp=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # List of preventive maintenance
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/preventive/list/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['eqpm'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment preventive maintenance list failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/preventive/list/' + str(id_eqp), 'equipment preventive maintenance list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['eqpm'] = data
 
     # List of maintenance contract
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/contract/list/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['eqmc'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment maintenance contract list failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/contract/list/' + str(id_eqp), 'equipment maintenance contract list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['eqmc'] = data
 
     # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
+    data, redir = be_get('/services/quality/equipment/det/' + str(id_eqp), 'equipment det')
+    if redir:
+        return redir
+    if data is not None:
+        json_data['det_eqp'] = data
 
     json_data['id_eqp'] = id_eqp
 
@@ -7681,24 +6637,15 @@ def list_suppliers():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load list suppliers
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/supplier/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests suppliers list failed, url=%s', url)
+    data, redir = be_get('/services/quality/supplier/list', 'suppliers list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-suppliers.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -7719,25 +6666,16 @@ def det_supplier(id_supplier=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     if id_supplier > 0:
         # Load supplier details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/supplier/det/' + str(id_supplier)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests supplier det failed, url=%s', url)
+        data, redir = be_get('/services/quality/supplier/det/' + str(id_supplier), 'supplier det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data = data
 
     json_data['id_supplier'] = id_supplier
 
@@ -7766,19 +6704,11 @@ def list_manuals():
     json_data = {}
 
     # Load list of manual category
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/manual/category'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_manualCat'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
+    data, redir = be_get('/services/setting/manual/category', 'product local list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_manualCat'] = data
 
     try:
         url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/list'
@@ -7813,7 +6743,6 @@ def det_manual(id_manual=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -7821,65 +6750,33 @@ def det_manual(id_manual=0):
     json_data['manual_det'] = []
 
     # Load list of manual category
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/setting/manual/category'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_manualCat'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
+    data, redir = be_get('/services/setting/manual/category', 'product local list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_manualCat'] = data
 
     # Load sections
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['sections'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sections', 'sections')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['sections'] = data
 
     if id_manual > 0:
         # Load Manual files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MANU/' + str(id_manual)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_MANU'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Manual files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/MANU/' + str(id_manual), 'Manual files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_MANU'] = data
 
         # Load manual details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/manual/det/' + str(id_manual)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['manual_det'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests manual det failed, url=%s', url)
+        data, redir = be_get('/services/quality/manual/det/' + str(id_manual), 'manual det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['manual_det'] = data
 
     json_data['id_manual'] = id_manual
 
@@ -7902,23 +6799,14 @@ def list_procedure():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/procedure/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests procedure list failed, url=%s', url)
+    data, redir = be_get('/services/quality/procedure/list', 'procedure list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-procedure.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -7939,7 +6827,6 @@ def det_procedure(id_procedure=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -7947,50 +6834,26 @@ def det_procedure(id_procedure=0):
     json_data['procedure'] = []
 
     # Load sections
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/sections'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['sections'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests sections failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/sections', 'sections')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['sections'] = data
 
     if id_procedure > 0:
         # Load procedure files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/PROC/' + str(id_procedure)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_PROC'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Procedure files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/PROC/' + str(id_procedure), 'Procedure files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_PROC'] = data
 
         # Load procedure details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/procedure/det/' + str(id_procedure)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['procedure'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests procedure det failed, url=%s', url)
+        data, redir = be_get('/services/quality/procedure/det/' + str(id_procedure), 'procedure det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['procedure'] = data
 
     json_data['id_procedure'] = id_procedure
 
@@ -8021,19 +6884,11 @@ def list_trace_download(type_trace=''):
     json_ihm['type_trace'] = type_trace
 
     # Load list of user ident
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/ident/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['user_ident'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests user ident list failed, url=%s', url)
+    data, redir = be_get('/services/user/ident/list', 'user ident list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['user_ident'] = data
 
     try:
         allowed_types = {'PROC': 'PROC'}
@@ -8074,23 +6929,14 @@ def list_ctrl_int():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/list/INT'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests internal control list failed, url=%s', url)
+    data, redir = be_get('/services/quality/control/list/INT', 'internal control list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-ctrl-int.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -8116,7 +6962,6 @@ def det_control(id_ctrl, type_ctrl):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
@@ -8125,34 +6970,18 @@ def det_control(id_ctrl, type_ctrl):
 
     if id_ctrl > 0:
         # Load control details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/det/' + str(id_ctrl)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['control'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests ' + label + ' control det failed, url=%s', url)
+        data, redir = be_get('/services/quality/control/det/' + str(id_ctrl), '\' + label + \' control det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['control'] = data
 
         # Load list of result
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/' + type_url + '/res/list/' + str(id_ctrl)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['result'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests ' + label + ' control res list failed, url=%s', url)
+        data, redir = be_get('/services/quality/control/' + type_url + '/res/list/' + str(id_ctrl), '\' + label + \' control res list')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['result'] = data
 
     json_data['id_ctrl'] = id_ctrl
 
@@ -8181,7 +7010,6 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
@@ -8189,19 +7017,11 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
 
     if cti_ser > 0:
         # Load internal control details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/int/res/' + str(cti_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['result'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests internal control res failed, url=%s', url)
+        data, redir = be_get('/services/quality/control/int/res/' + str(cti_ser), 'internal control res')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['result'] = data
 
     json_data['ctq_ser']  = ctq_ser
     json_data['type_val'] = type_val
@@ -8226,23 +7046,14 @@ def list_ctrl_ext():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/list/EXT'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests external control list failed, url=%s', url)
+    data, redir = be_get('/services/quality/control/list/EXT', 'external control list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-ctrl-ext.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -8269,7 +7080,6 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
@@ -8277,34 +7087,18 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
 
     if cte_ser > 0:
         # Load Report control external files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/CTRL/' + str(cte_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_CTRL'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Control files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/CTRL/' + str(cte_ser), 'Control files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_CTRL'] = data
 
         # Load external control details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/control/ext/res/' + str(cte_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['result'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests external control res failed, url=%s', url)
+        data, redir = be_get('/services/quality/control/ext/res/' + str(cte_ser), 'external control res')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['result'] = data
 
     json_data['ctq_ser']  = ctq_ser
     json_data['type_val'] = type_val
@@ -8335,49 +7129,25 @@ def list_stock():
     json_data = {}
 
     # Load product_type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_type'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_type'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/product_type', 'product type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_type'] = data
 
     # Load product_conserv
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_conserv'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_conserv'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product status failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/product_conserv', 'product status')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_conserv'] = data
 
     # Load list of local
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_local'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
+    data, redir = be_get('/services/quality/stock/local/list', 'product local list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_local'] = data
 
     # Load list of stock
     try:
@@ -8419,19 +7189,11 @@ def move_stock_product():
     json_data = {}
 
     # Load list of local
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_local'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
+    data, redir = be_get('/services/quality/stock/local/list', 'product local list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_local'] = data
 
     # Load stock product by local
     try:
@@ -8467,24 +7229,15 @@ def list_products():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     # Load list products
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
+    data, redir = be_get('/services/quality/stock/product/list', 'products list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-products.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -8505,7 +7258,6 @@ def det_list_stock(prd_ser=0, prl_ser=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -8514,19 +7266,11 @@ def det_list_stock(prd_ser=0, prl_ser=0):
 
     if prd_ser > 0:
         # Load stock product details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/list/det/' + str(prd_ser) + '/' + str(prl_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['det_list_stock'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
+        data, redir = be_get('/services/quality/stock/list/det/' + str(prd_ser) + '/' + str(prl_ser), 'stock product det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['det_list_stock'] = data
 
     json_data['prd_ser'] = prd_ser
     json_data['prl_ser'] = prl_ser
@@ -8607,7 +7351,6 @@ def det_new_product(prd_ser=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -8615,50 +7358,26 @@ def det_new_product(prd_ser=0):
     json_data['stock_product'] = []
 
     # Load product_type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_type'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_type'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/product_type', 'product type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_type'] = data
 
     # Load product_conserv
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/product_conserv'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_conserv'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product conserv failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/product_conserv', 'product conserv')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_conserv'] = data
 
     if prd_ser > 0:
         # Load stock product details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/det/' + str(prd_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['stock_product'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
+        data, redir = be_get('/services/quality/stock/product/det/' + str(prd_ser), 'stock product det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['stock_product'] = data
 
     json_data['prd_ser'] = prd_ser
 
@@ -8681,7 +7400,6 @@ def det_stock_product(prs_ser=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -8689,35 +7407,19 @@ def det_stock_product(prs_ser=0):
     json_data['stock_product'] = []
 
     # Load list of local
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/local/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['product_local'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests product local list failed, url=%s', url)
+    data, redir = be_get('/services/quality/stock/local/list', 'product local list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['product_local'] = data
 
     if prs_ser > 0:
         # Load stock product details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/stock/product/det/' + str(prs_ser)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['stock_product'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests stock product det failed, url=%s', url)
+        data, redir = be_get('/services/quality/stock/product/det/' + str(prs_ser), 'stock product det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['stock_product'] = data
 
     json_data['prs_ser'] = prs_ser
 
@@ -8758,7 +7460,6 @@ def det_printer(id_printer=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
@@ -8767,19 +7468,11 @@ def det_printer(id_printer=0):
 
     if id_printer > 0:
         # Load printer details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/printer/det/' + str(id_printer)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['printer'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests printer det failed, url=%s', url)
+        data, redir = be_get('/services/quality/printer/det/' + str(id_printer), 'printer det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['printer'] = data
 
     json_data['id_printer'] = id_printer
 
@@ -8859,25 +7552,16 @@ def det_storage_room(id_item=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
     if id_item > 0:
         # Load storage room details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/room/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['room'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests storage room det failed, url=%s', url)
+        data, redir = be_get('/services/quality/storage/room/det/' + str(id_item), 'storage room det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['room'] = data
     else:
         json_data['room'] = {}
 
@@ -8920,41 +7604,24 @@ def det_storage_chamber(id_item=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # List storage room
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/room/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_rooms'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage room failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/room/list', 'list storage room')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_rooms'] = data
 
     if id_item > 0:
         # Load storage chamber details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/chamber/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['chamber'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests storage chamber det failed, url=%s', url)
+        data, redir = be_get('/services/quality/storage/chamber/det/' + str(id_item), 'storage chamber det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['chamber'] = data
     else:
         json_data['chamber'] = {}
 
@@ -8997,41 +7664,24 @@ def det_storage_compartment(id_item=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # List storage chamber
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/chamber/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_chambers'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage chamber failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/chamber/list', 'list storage chamber')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_chambers'] = data
 
     if id_item > 0:
         # Load storage compartment details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/compartment/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['compartment'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests storage compartment det failed, url=%s', url)
+        data, redir = be_get('/services/quality/storage/compartment/det/' + str(id_item), 'storage compartment det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['compartment'] = data
     else:
         json_data['compartment'] = {}
 
@@ -9074,41 +7724,24 @@ def det_storage_box(id_item=0):
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_ihm  = {}
     json_data = {}
 
     # List storage compartment
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/compartment/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_compartments'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage compartment failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/compartment/list', 'list storage compartment')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_compartments'] = data
 
     if id_item > 0:
         # Load storage box details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/det/' + str(id_item)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['box'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests storage box det failed, url=%s', url)
+        data, redir = be_get('/services/quality/storage/box/det/' + str(id_item), 'storage box det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['box'] = data
     else:
         json_data['box'] = {}
 
@@ -9142,49 +7775,25 @@ def det_aliquot(id_item=0):
     json_data['id_samp'] = 0
 
     # Load products
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/type_prel'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['products'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests products list failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/type_prel', 'products list')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['products'] = data
 
     # List pathogen
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/pathogène'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_pathogen'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list pathogen failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/pathogène', 'list pathogen')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_pathogen'] = data
 
     # List storage box
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/storage/box/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['l_box'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests list storage box failed, url=%s', url)
+    data, redir = be_get('/services/quality/storage/box/list', 'list storage box')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['l_box'] = data
 
     if id_item > 0:
         # Load aliquot details
@@ -9321,19 +7930,11 @@ def det_job(id_item=0):
         log.exception(Logs.fileline() + ' : requests list dhis2 setting failed, url=%s', url)
 
     # Load analysis type
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/dict/det/famille_analyse'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_ihm['type_ana'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests analysis type failed, url=%s', url)
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
 
     # Load templates ACT
     try:
@@ -9533,23 +8134,14 @@ def list_meeting():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/meeting/list'
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests meeting list failed, url=%s', url)
+    data, redir = be_get('/services/quality/meeting/list', 'meeting list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-meeting.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -9578,19 +8170,11 @@ def det_meeting(id_meeting=0):
 
     if id_meeting > 0:
         # Load meeting files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MEET/' + str(id_meeting)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_MEET'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Meeting files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/MEET/' + str(id_meeting), 'Meeting files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_MEET'] = data
 
         # Load meeting details
         try:
@@ -9632,23 +8216,14 @@ def list_messages():
     resp = ensure_be_token()
     if resp:
         return resp
-    headers = be_auth_headers()
 
     json_data = {}
 
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/list/' + str(session['user_id'])
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests messages list failed, url=%s', url)
+    data, redir = be_get('/services/quality/message/list/' + str(session['user_id']), 'messages list')
+    if redir:
+        return redir
+    if data is not None:
+        json_data = data
 
     return render_template('list-messages.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -9693,34 +8268,18 @@ def det_message(id_message=0):
             log.exception(Logs.fileline() + ' : requests Message read failed, url=%s', url)
 
         # Load message files
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/file/document/list/MSG/' + str(id_message)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['data_MSG'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests Message files failed, url=%s', url)
+        data, redir = be_get('/services/file/document/list/MSG/' + str(id_message), 'Message files')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['data_MSG'] = data
 
         # Load message details
-        try:
-            url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/message/det/' + str(id_message)
-            req = requests.get(url, timeout=10, headers=headers)
-
-            redir = be_check_or_bounce(req)
-            if redir:
-                return redir
-
-            if req.status_code == 200:
-                json_data['message'] = req.json()
-
-        except requests.exceptions.RequestException:
-            log.exception(Logs.fileline() + ' : requests message det failed, url=%s', url)
+        data, redir = be_get('/services/quality/message/det/' + str(id_message), 'message det')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['message'] = data
 
     json_data['id_message'] = id_message
 

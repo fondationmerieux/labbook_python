@@ -19,8 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Epidemiological and indicator report pages now share a single template
 - DHIS2 exports, file and API, now share their common export code
 - Aliquot modal and its handling are now shared by the single-record and multi-record result pages
+- Front-end pages now share a single helper for their back-end calls
 
 ### Fixed
+- Saving an inpatient request failed when the optional bed number was left empty
 - Unclosed tag in the aliquot modal footer
 - Form accessibility on result entry and validation, records, samples and aliquots, stock, equipment, reports and settings screens
 - Accessibility of the main navigation menu
