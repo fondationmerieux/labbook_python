@@ -22,6 +22,265 @@ from app.models.Setting import Setting
 from app.security.oauth_routes import require_oauth
 
 
+def get_dhis2_orgunit_storedby(l_cols, l_rows, id_user):
+    """
+    Resolve the DHIS2 'orgunit' and 'storedby' values from the epidemio spreadsheet.
+    Both fall back on a default when the sheet leaves them empty: the lab header for
+    orgunit, the requesting user for storedby. Shared by the file and API exports.
+    """
+    # Determine orgunit
+    orgunit = ''
+
+    idx_orgunit = l_cols.index("orgunit")
+
+    if idx_orgunit:
+        orgunit = l_rows[1][idx_orgunit]
+
+    if not orgunit:
+        lab = Various.getDefaultValue('entete_1')
+
+        if lab:
+            orgunit = lab['value']
+
+    # Determine storedby
+    storedby = ''
+
+    idx_storedby = l_cols.index("storedby")
+
+    if idx_storedby:
+        storedby = l_rows[1][idx_storedby]
+
+    if not storedby:
+        user = User.getUserDetails(id_user)
+
+        if user:
+            storedby = user['firstname'] + user['lastname']
+
+    # remove space
+    storedby = storedby.replace(' ', '')
+
+    return orgunit, storedby
+
+
+def build_dhis2_list_data(filename, l_period, rec_type, lite_filter, caller):
+    """
+    Build the exported rows for the four LIST_* reports, header row included.
+    Returns (l_data, initial_len), or (None, 0) when filename is not one of them:
+    the caller then falls back on the spreadsheet-driven export.
+    'caller' only names the calling resource in the log lines.
+    """
+    log = logging.getLogger('log_services')
+
+    if filename == "LIST_OUTSOURCING":
+        log.error(Logs.fileline() + ' : TRACE ' + caller + ' LIST_OUTSOURCING')
+
+        # Data headers
+        l_data = [["period", "code patient", "record number", "record date", "analysis outsourced", "LabBook Lite"]]
+
+        for period in l_period:
+            l_rows = Export.getListOutsourcing(period[1], period[2], rec_type, lite_filter)
+
+            for row in (l_rows or []):
+                data = []
+
+                code = str(row['code'])
+
+                if row['code_patient']:
+                    code += ' / ' + str(row['code_patient'])
+
+                num_rec = str(row['num_dos_an'])
+
+                date_rec = str(row['date_rec'])
+
+                ana_outsourced = str(row['ana_code']) + ' ' + str(row['ana_name'])
+
+                lite_flag = 'Y' if (row.get('rec_lite') or 0) > 0 else 'N'
+
+                data.append(period[0])
+                data.append(code)
+                data.append(num_rec)
+                data.append(date_rec)
+                data.append(ana_outsourced)
+                data.append(lite_flag)
+
+                l_data.append(data)
+
+    elif filename == "LIST_EEQ":
+        log.error(Logs.fileline() + ' : TRACE ' + caller + ' LIST_EEQ')
+
+        # Data headers
+        l_data = [["period", "control name", "control date",  "supplier", "result date", "result", "comment"]]
+
+        for period in l_period:
+            l_rows = Export.getListEEQ(period[1], period[2])
+
+            for row in (l_rows or []):
+                result_map = {'Y': 'Conforme', 'N': 'Non conforme', 'U': 'Autres'}
+                result = result_map.get(row.get('cte_conform'), '')
+
+                data = []
+
+                data.append(period[0])
+                data.append(row.get('ctq_name'))
+                data.append(row.get('ctq_date'))
+                data.append(row.get('cte_date'))
+                data.append(row.get('cte_organizer'))
+                data.append(result)
+                data.append(row.get('cte_comment'))
+
+                l_data.append(data)
+
+    elif filename == "LIST_EQUIPMENT_FAILURE":
+        log.error(Logs.fileline() + ' : TRACE ' + caller + ' LIST_EQUIPMENT_FAILURE')
+
+        l_data = [["period", "Equipment name", "Manufacturer name", "Supplier name", "Inventory number", "Date of failure", "Comment"]]
+
+        for period in l_period:
+            l_rows = Export.getListEqpFailure(period[1], period[2])
+
+            for row in (l_rows or []):
+                data = []
+
+                data.append(period[0])
+                data.append(row.get('eqp_name'))
+                data.append(row.get('eqp_manufacturer'))
+                data.append(row.get('supplier_name'))
+                data.append(row.get('eqp_invent_num'))
+                data.append(row.get('eqf_date'))
+                data.append(row.get('eqf_comm'))
+
+                l_data.append(data)
+
+    elif filename == "LIST_STOCK_STATUS":
+        log.error(Logs.fileline() + ' : TRACE ' + caller + ' LIST_STOCK')
+
+        l_data = [["period", "product name", "Expiration status", "Quantity status"]]
+
+        for period in l_period:
+            l_rows = Export.getListStockStatus(period[1], period[2])
+
+            for row in (l_rows or []):
+                l_data.append([
+                    period[0],
+                    str(row.get('prd_name') or ''),
+                    str(row.get('exp_status') or ''),
+                    str(row.get('qty_status') or '')
+                ])
+
+    else:
+        return None, 0
+
+    # The header row is the only content when no data row was appended
+    return l_data, 1
+
+
+def fill_dhis2_rows(l_data, l_rows, l_period, version, orgunit, storedby, rec_type, lite_filter, caller):
+    """
+    Append one exported row per (period, spreadsheet row) pair to l_data.
+    The exported value comes either from a parsed formula or from a statistic query,
+    depending on the filter column of the row.
+    l_rows is consumed: its header line is removed.
+    'caller' only names the calling resource in the log lines.
+    """
+    log = logging.getLogger('log_services')
+
+    date_now = datetime.now()
+
+    if not l_rows:
+        return l_data
+
+    # remove headers line
+    l_rows.pop(0)
+
+    for period in l_period:
+        for row in l_rows:
+
+            # in case of an empty line
+            if not row or all(str(c).strip() == '' for c in row):
+                continue
+
+            if row:
+                data = []
+
+                if version == 'v3':
+                    data.append(row[0])
+                    data.append(period[0])
+                    data.append(orgunit)
+                    data.append(row[4])
+                    data.append(row[5])
+                else:
+                    data.append(row[0])
+                    data.append(period[0])
+                    data.append(orgunit)
+                    data.append(row[5])
+                    data.append(row[6])
+
+                period_beg_db = period[1]
+                period_end_db = period[2]
+
+                if version == 'v3':
+                    filter_row = row[2].strip()
+                else:
+                    filter_row = row[3].strip()
+
+                # --- check if formula or others statistic object  ---
+                # formula case
+                # if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.startswith("( "):
+                if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.lstrip().startswith("("):
+                    # Parse formula for result request
+                    formula   = filter_row
+
+                    if version == 'v3':
+                        type_samp = row[3]
+                    else:
+                        type_samp = row[4]
+
+                    log.error(Logs.fileline() + ' : TRACE ' + caller + ' --- before ParseFormula ---')
+                    log.error(Logs.fileline() + ' : TRACE ' + caller + ' formula=%s', formula)
+                    log.error(Logs.fileline() + ' : TRACE ' + caller + ' type_samp=%s', type_samp)
+
+                    req_part = ''
+
+                    req_part = Report.ParseFormula(formula, type_samp)
+
+                    log.error(Logs.fileline() + ' : DEBUG ' + caller + ' req_part=%s', req_part)
+
+                    result = Report.getResultEpidemio(req_part=req_part,
+                                                      date_beg=period_beg_db,
+                                                      date_end=period_end_db,
+                                                      rec_type=rec_type,
+                                                      lite_filter=lite_filter)
+
+                    # result normalization
+                    value_to_write = ''
+                    if isinstance(result, dict):
+                        value_to_write = result.get('value', '')
+                    elif isinstance(result, (list, tuple)) and len(result) > 0:
+                        value_to_write = result[0]
+                    elif result is not None:
+                        value_to_write = result
+                    data.append(str(value_to_write) if value_to_write != '' else '')
+
+                # statistic case
+                else:
+                    result = Export.getStatDHIS2(period_beg_db, period_end_db, filter_row, rec_type, lite_filter)
+
+                    if result:
+                        data.append(str(result['value']))
+                    else:
+                        data.append('')
+
+                data.append(storedby)
+                data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
+                data.append('')
+                data.append('FALSE')
+                data.append('')
+
+                l_data.append(data)
+
+    return l_data
+
+
 class ExportCSV(Resource):
     log = logging.getLogger('log_services')
 
@@ -197,106 +456,9 @@ class ExportDHIS2(Resource):
         # --- BUILD DATA ---
 
         # Pre-defined export
-        if filename == "LIST_OUTSOURCING":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_OUTSOURCING')
+        l_data, initial_len = build_dhis2_list_data(filename, l_period, rec_type, lite_filter, 'ExportDHIS2')
 
-            # Data headers
-            l_data = [["period", "code patient", "record number", "record date", "analysis outsourced", "LabBook Lite"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListOutsourcing(period[1], period[2], rec_type, lite_filter)
-
-                for row in (l_rows or []):
-                    data = []
-
-                    code = str(row['code'])
-
-                    if row['code_patient']:
-                        code += ' / ' + str(row['code_patient'])
-
-                    num_rec = str(row['num_dos_an'])
-
-                    date_rec = str(row['date_rec'])
-
-                    ana_outsourced = str(row['ana_code']) + ' ' + str(row['ana_name'])
-
-                    lite_flag = 'Y' if (row.get('rec_lite') or 0) > 0 else 'N'
-
-                    data.append(period[0])
-                    data.append(code)
-                    data.append(num_rec)
-                    data.append(date_rec)
-                    data.append(ana_outsourced)
-                    data.append(lite_flag)
-
-                    l_data.append(data)
-
-        elif filename == "LIST_EEQ":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_EEQ')
-
-            # Data headers
-            l_data = [["period", "control name", "control date",  "supplier", "result date", "result", "comment"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListEEQ(period[1], period[2])
-
-                for row in (l_rows or []):
-                    result_map = {'Y': 'Conforme', 'N': 'Non conforme', 'U': 'Autres'}
-                    result = result_map.get(row.get('cte_conform'), '')
-
-                    data = []
-
-                    data.append(period[0])
-                    data.append(row.get('ctq_name'))
-                    data.append(row.get('ctq_date'))
-                    data.append(row.get('cte_date'))
-                    data.append(row.get('cte_organizer'))
-                    data.append(result)
-                    data.append(row.get('cte_comment'))
-
-                    l_data.append(data)
-
-        elif filename == "LIST_EQUIPMENT_FAILURE":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_EQUIPMENT_FAILURE')
-
-            l_data = [["period", "Equipment name", "Manufacturer name", "Supplier name", "Inventory number", "Date of failure", "Comment"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListEqpFailure(period[1], period[2])
-
-                for row in (l_rows or []):
-                    data = []
-
-                    data.append(period[0])
-                    data.append(row.get('eqp_name'))
-                    data.append(row.get('eqp_manufacturer'))
-                    data.append(row.get('supplier_name'))
-                    data.append(row.get('eqp_invent_num'))
-                    data.append(row.get('eqf_date'))
-                    data.append(row.get('eqf_comm'))
-
-                    l_data.append(data)
-
-        elif filename == "LIST_STOCK_STATUS":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 LIST_STOCK')
-
-            l_data = [["period", "product name", "Expiration status", "Quantity status"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListStockStatus(period[1], period[2])
-
-                for row in (l_rows or []):
-                    l_data.append([
-                        period[0],
-                        str(row.get('prd_name') or ''),
-                        str(row.get('exp_status') or ''),
-                        str(row.get('qty_status') or '')
-                    ])
-        else:
+        if l_data is None:
             # Data headers
             l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value",
                        "storedby", "lastupdated", "comment", "followup", "deleted"]]
@@ -358,141 +520,9 @@ class ExportDHIS2(Resource):
                     self.log.error(Logs.fileline() + ' : ExportDHIS2 ERROR audit version not found err=' + str(err))
                 return compose_ret('', Constants.cst_content_type_json, 409)
 
-            # Determine orgunit
-            orgunit = ''
+            orgunit, storedby = get_dhis2_orgunit_storedby(l_cols, l_rows, args['id_user'])
 
-            idx_orgunit = l_cols.index("orgunit")
-
-            if idx_orgunit:
-                orgunit = l_rows[1][idx_orgunit]
-
-            if not orgunit:
-                lab = Various.getDefaultValue('entete_1')
-
-                if lab:
-                    orgunit = lab['value']
-
-            # Determine storedby
-            storedby = ''
-
-            idx_storedby = l_cols.index("storedby")
-
-            if idx_storedby:
-                storedby = l_rows[1][idx_storedby]
-
-            if not storedby:
-                user = User.getUserDetails(args['id_user'])
-
-                if user:
-                    storedby = user['firstname'] + user['lastname']
-
-            # remove space
-            storedby = storedby.replace(' ', '')
-
-            date_now = datetime.now()
-
-            if l_rows:
-                # remove headers line
-                l_rows.pop(0)
-
-                for period in l_period:
-                    for row in l_rows:
-
-                        # in case of an empty line
-                        if not row or all(str(c).strip() == '' for c in row):
-                            continue
-
-                        if row:
-                            data = []
-
-                            if version == 'v3':
-                                data.append(row[0])
-                                data.append(period[0])
-                                data.append(orgunit)
-                                data.append(row[4])
-                                data.append(row[5])
-                            else:
-                                data.append(row[0])
-                                data.append(period[0])
-                                data.append(orgunit)
-                                data.append(row[5])
-                                data.append(row[6])
-
-                            period_beg_db = period[1]
-                            period_end_db = period[2]
-
-                            if version == 'v3':
-                                filter_row = row[2].strip()
-                            else:
-                                filter_row = row[3].strip()
-
-                            # --- check if formula or others statistic object  ---
-                            # formula case
-                            # if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.startswith("( "):
-                            if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.lstrip().startswith("("):
-                                # Parse formula for result request
-                                formula   = filter_row
-
-                                if version == 'v3':
-                                    type_samp = row[3]
-                                else:
-                                    type_samp = row[4]
-
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 --- before ParseFormula ---')
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 formula=%s', formula)
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 type_samp=%s', type_samp)
-
-                                req_part = ''
-
-                                req_part = Report.ParseFormula(formula, type_samp)
-
-                                self.log.error(Logs.fileline() + ' : DEBUG ExportDHIS2 req_part=%s', req_part)
-
-                                """ OLD CALL 23/09/2025
-                                result = Report.getResultEpidemio(inner_req=req_part['inner'],
-                                                                  end_req=req_part['end'],
-                                                                  date_beg=period_beg_db,
-                                                                  date_end=period_end_db,
-                                                                  rec_type=rec_type)"""
-
-                                result = Report.getResultEpidemio(req_part=req_part,
-                                                                  date_beg=period_beg_db,
-                                                                  date_end=period_end_db,
-                                                                  rec_type=rec_type,
-                                                                  lite_filter=lite_filter)
-
-                                # result normalization
-                                value_to_write = ''
-                                if isinstance(result, dict):
-                                    value_to_write = result.get('value', '')
-                                elif isinstance(result, (list, tuple)) and len(result) > 0:
-                                    value_to_write = result[0]
-                                elif result is not None:
-                                    value_to_write = result
-                                data.append(str(value_to_write) if value_to_write != '' else '')
-
-                                """ OLD 23/09/2025
-                                if result:
-                                    data.append(str(result['value']))
-                                else:
-                                    data.append('')"""
-
-                            # statistic case
-                            else:
-                                result = Export.getStatDHIS2(period_beg_db, period_end_db, filter_row, rec_type, lite_filter)
-
-                                if result:
-                                    data.append(str(result['value']))
-                                else:
-                                    data.append('')
-
-                            data.append(storedby)
-                            data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
-                            data.append('')
-                            data.append('FALSE')
-                            data.append('')
-
-                            l_data.append(data)
+            fill_dhis2_rows(l_data, l_rows, l_period, version, orgunit, storedby, rec_type, lite_filter, 'ExportDHIS2')
 
         # --- WRITE FILE ---
         # if no result to export
@@ -690,106 +720,9 @@ class ExportDHIS2Api(Resource):
         # --- BUILD DATA ---
 
         # Pre-defined export
-        if filename == "LIST_OUTSOURCING":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_OUTSOURCING')
+        l_data, initial_len = build_dhis2_list_data(filename, l_period, rec_type, lite_filter, 'ExportDHIS2Api')
 
-            # Data headers
-            l_data = [["period", "code patient", "record number", "record date", "analysis outsourced", "LabBook Lite"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListOutsourcing(period[1], period[2], rec_type, lite_filter)
-
-                for row in (l_rows or []):
-                    data = []
-
-                    code = str(row['code'])
-
-                    if row['code_patient']:
-                        code += ' / ' + str(row['code_patient'])
-
-                    num_rec = str(row['num_dos_an'])
-
-                    date_rec = str(row['date_rec'])
-
-                    ana_outsourced = str(row['ana_code']) + ' ' + str(row['ana_name'])
-
-                    lite_flag = 'Y' if (row.get('rec_lite') or 0) > 0 else 'N'
-
-                    data.append(period[0])
-                    data.append(code)
-                    data.append(num_rec)
-                    data.append(date_rec)
-                    data.append(ana_outsourced)
-                    data.append(lite_flag)
-
-                    l_data.append(data)
-
-        elif filename == "LIST_EEQ":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_EEQ')
-
-            # Data headers
-            l_data = [["period", "control name", "control date",  "supplier", "result date", "result", "comment"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListEEQ(period[1], period[2])
-
-                for row in (l_rows or []):
-                    result_map = {'Y': 'Conforme', 'N': 'Non conforme', 'U': 'Autres'}
-                    result = result_map.get(row.get('cte_conform'), '')
-
-                    data = []
-
-                    data.append(period[0])
-                    data.append(row.get('ctq_name'))
-                    data.append(row.get('ctq_date'))
-                    data.append(row.get('cte_date'))
-                    data.append(row.get('cte_organizer'))
-                    data.append(result)
-                    data.append(row.get('cte_comment'))
-
-                    l_data.append(data)
-
-        elif filename == "LIST_EQUIPMENT_FAILURE":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_EQUIPMENT_FAILURE')
-
-            l_data = [["period", "Equipment name", "Manufacturer name", "Supplier name", "Inventory number", "Date of failure", "Comment"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListEqpFailure(period[1], period[2])
-
-                for row in (l_rows or []):
-                    data = []
-
-                    data.append(period[0])
-                    data.append(row.get('eqp_name'))
-                    data.append(row.get('eqp_manufacturer'))
-                    data.append(row.get('supplier_name'))
-                    data.append(row.get('eqp_invent_num'))
-                    data.append(row.get('eqf_date'))
-                    data.append(row.get('eqf_comm'))
-
-                    l_data.append(data)
-
-        elif filename == "LIST_STOCK_STATUS":
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api LIST_STOCK')
-
-            l_data = [["period", "product name", "Expiration status", "Quantity status"]]
-            initial_len = len(l_data)
-
-            for period in l_period:
-                l_rows = Export.getListStockStatus(period[1], period[2])
-
-                for row in (l_rows or []):
-                    l_data.append([
-                        period[0],
-                        str(row.get('prd_name') or ''),
-                        str(row.get('exp_status') or ''),
-                        str(row.get('qty_status') or '')
-                    ])
-        else:
+        if l_data is None:
             # Data headers
             l_data = [["dataelement", "period", "orgunit", "categoryoptioncombo", "attributeoptioncombo", "value",
                        "storedby", "lastupdated", "comment", "followup", "deleted"]]
@@ -851,138 +784,9 @@ class ExportDHIS2Api(Resource):
                     self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR audit version not found err=' + str(err))
                 return compose_ret('', Constants.cst_content_type_json, 409)
 
-            # Determine orgunit
-            orgunit = ''
+            orgunit, storedby = get_dhis2_orgunit_storedby(l_cols, l_rows, args['id_user'])
 
-            idx_orgunit = l_cols.index("orgunit")
-
-            if idx_orgunit:
-                orgunit = l_rows[1][idx_orgunit]
-
-            if not orgunit:
-                lab = Various.getDefaultValue('entete_1')
-
-                if lab:
-                    orgunit = lab['value']
-
-            # Determine storedby
-            storedby = ''
-
-            idx_storedby = l_cols.index("storedby")
-
-            if idx_storedby:
-                storedby = l_rows[1][idx_storedby]
-
-            if not storedby:
-                user = User.getUserDetails(args['id_user'])
-
-                if user:
-                    storedby = user['firstname'] + user['lastname']
-
-            # remove space
-            storedby = storedby.replace(' ', '')
-
-            date_now = datetime.now()
-
-            if l_rows:
-                # remove headers line
-                l_rows.pop(0)
-
-                for period in l_period:
-                    for row in l_rows:
-
-                        # in case of an empty line
-                        if not row or all(str(c).strip() == '' for c in row):
-                            continue
-
-                        if row:
-                            data = []
-
-                            if version == 'v3':
-                                data.append(row[0])
-                                data.append(period[0])
-                                data.append(orgunit)
-                                data.append(row[4])
-                                data.append(row[5])
-                            else:
-                                data.append(row[0])
-                                data.append(period[0])
-                                data.append(orgunit)
-                                data.append(row[5])
-                                data.append(row[6])
-
-                            period_beg_db = period[1]
-                            period_end_db = period[2]
-
-                            if version == 'v3':
-                                filter_row = row[2].strip()
-                            else:
-                                filter_row = row[3].strip()
-
-                            # --- check if formula or others statistic object  ---
-                            # formula case
-                            if filter_row.startswith("$") or filter_row.startswith("{") or filter_row.lstrip().startswith("("):
-                                # Parse formula for result request
-                                formula   = filter_row
-
-                                if version == 'v3':
-                                    type_samp = row[3]
-                                else:
-                                    type_samp = row[4]
-
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api --- before ParseFormula ---')
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api formula=%s', formula)
-                                self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api type_samp=%s', type_samp)
-
-                                req_part = ''
-
-                                req_part = Report.ParseFormula(formula, type_samp)
-
-                                """ OLD CALL 23/09/2025
-                                result = Report.getResultEpidemio(inner_req=req_part['inner'],
-                                                                  end_req=req_part['end'],
-                                                                  date_beg=period_beg_db,
-                                                                  date_end=period_end_db,
-                                                                  rec_type=rec_type)"""
-
-                                result = Report.getResultEpidemio(req_part=req_part,
-                                                                  date_beg=period_beg_db,
-                                                                  date_end=period_end_db,
-                                                                  rec_type=rec_type,
-                                                                  lite_filter=lite_filter)
-
-                                # result normalization
-                                value_to_write = ''
-                                if isinstance(result, dict):
-                                    value_to_write = result.get('value', '')
-                                elif isinstance(result, (list, tuple)) and len(result) > 0:
-                                    value_to_write = result[0]
-                                elif result is not None:
-                                    value_to_write = result
-                                data.append(str(value_to_write) if value_to_write != '' else '')
-
-                                """ OLD 23/09/2025
-                                if result:
-                                    data.append(str(result['value']))
-                                else:
-                                    data.append('')"""
-
-                            # statistic case
-                            else:
-                                result = Export.getStatDHIS2(period_beg_db, period_end_db, filter_row, rec_type, lite_filter)
-
-                                if result:
-                                    data.append(str(result['value']))
-                                else:
-                                    data.append('')
-
-                            data.append(storedby)
-                            data.append(date_now.strftime("%Y-%m-%dT%H:%M:%S"))
-                            data.append('')
-                            data.append('FALSE')
-                            data.append('')
-
-                            l_data.append(data)
+            fill_dhis2_rows(l_data, l_rows, l_period, version, orgunit, storedby, rec_type, lite_filter, 'ExportDHIS2Api')
 
         # Send data to api DHIS2 (3 steps)
         if len(l_data) == initial_len:
