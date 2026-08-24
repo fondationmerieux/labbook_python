@@ -5098,12 +5098,12 @@ def report_statistic(lite_filter='A', lite_user_id=0):
     json_data = {}
 
     # load lite users
+    json_ihm['lite_users'] = []
     data, redir = be_get('/services/user/lite/list', 'lite users list')
     if redir:
         return redir
     if data is not None:
         json_ihm['lite_users'] = data
-        json_ihm['lite_users'] = []
 
     # load age interval setting
     data, redir = be_get('/services/setting/age/interval', 'age interval setting')

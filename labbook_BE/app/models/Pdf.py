@@ -1077,6 +1077,218 @@ class Pdf:
         return True
 
     @staticmethod
+    def buildLaboratoryData():
+        """
+        Build the laboratory header shared by the generated PDFs.
+        Values come from the lab settings; phone, fax and email stay empty when unset.
+        """
+        lab_data = {}
+
+        name  = Various.getDefaultValue('entete_1')
+        line2 = Various.getDefaultValue('entete_2')
+        line3 = Various.getDefaultValue('entete_3')
+        addr  = Various.getDefaultValue('entete_adr')
+        phone = Various.getDefaultValue('entete_tel')
+        fax   = Various.getDefaultValue('entete_fax')
+        email = Various.getDefaultValue('entete_email')
+
+        lab_data['name']  = str(name['value'])
+        lab_data['head2'] = str(line2['value'])
+        lab_data['head3'] = str(line3['value'])
+        lab_data['addr']  = str(addr['value'])
+        lab_data['phone'] = ''
+        lab_data['fax']   = ''
+        lab_data['email'] = ''
+
+        if phone['value']:
+            lab_data['phone'] = str(phone['value'])
+
+        if fax['value']:
+            lab_data['fax'] = str(fax['value'])
+
+        if email['value']:
+            lab_data['email'] = str(email['value'])
+
+        return lab_data
+
+    @staticmethod
+    def buildPatientData(record):
+        """
+        Build the patient section shared by the report, outsourcing and invoice PDFs.
+        Falls back on a dummy patient when the record carries none: this is what the
+        template test print relies on.
+        """
+        pat_data = {}
+
+        if record['id_patient'] > 0:
+            pat = Patient.getPatient(record['id_patient'])
+
+            pat_data.update(Pdf.getDataFormItem(record['id_patient']))
+        # For print test patient
+        else:
+            pat = {}
+            pat['pat_ano']       = 'N'
+            pat['pat_code']      = 'Z1X2Y3'
+            pat['pat_code_lab']  = 'PAT123'
+            pat['pat_name']      = 'PATIENT'
+            pat['pat_firstname'] = 'Pauline'
+            pat['pat_maiden']    = 'PERRIERS'
+            pat['pat_midname']   = 'Monica'
+            pat['pat_birth']     = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
+            pat['pat_age']       = 42
+            pat['pat_age_unit']  = '1037'
+            pat['pat_sex']       = '2'
+            pat['pat_address']   = '3 rue du Paradis'
+            pat['pat_zipcode']   = '12345'
+            pat['pat_city']      = 'Testville'
+            pat['pat_district']  = ''
+            pat['pat_pbox']      = 'BP 123'
+            pat['pat_phone1']    = '0607080910'
+            pat['pat_phone2']    = '0700000002'
+            pat['pat_profession']   = 'Architecte'
+            pat['pat_nationality']  = 49
+            pat['pat_resident']     = 'Y'
+            pat['pat_blood_group']  = 904
+            pat['pat_blood_rhesus'] = 232
+
+        pat_data['anonymous']    = ''
+        pat_data['code']         = str(pat['pat_code'])
+        pat_data['code_lab']     = ''
+        pat_data['lastname']     = ''
+        pat_data['firstname']    = ''
+        pat_data['maidenname']   = ''
+        pat_data['middlename']   = ''
+        pat_data['birth']        = ''
+        pat_data['age']          = ''
+        pat_data['age_unit']     = ''
+        pat_data['age_days']     = ''
+        pat_data['sex']          = _('Inconnu')
+        pat_data['addr']         = ''
+        pat_data['zipcode']      = ''
+        pat_data['city']         = ''
+        pat_data['district']     = ''
+        pat_data['pbox']         = ''
+        pat_data['phone']        = ''
+        pat_data['phone2']       = ''
+        pat_data['profession']   = ''
+        pat_data['nationality']  = ''
+        pat_data['resident']     = str(pat['pat_resident'])
+        pat_data['blood_group']  = ''
+        pat_data['blood_rhesus'] = ''
+
+        if pat['pat_ano'] and pat['pat_ano'] == 4:
+            pat_data['anonymous'] = 'Y'
+        else:
+            pat_data['anonymous'] = 'N'
+
+        if pat['pat_code_lab']:
+            pat_data['code_lab'] = str(pat['pat_code_lab'])
+
+        if pat['pat_name']:
+            pat_data['lastname'] = str(pat['pat_name'])
+
+        if pat['pat_firstname']:
+            pat_data['firstname'] = str(pat['pat_firstname'])
+
+        if pat['pat_maiden']:
+            pat_data['maidenname'] = str(pat['pat_maiden'])
+
+        if pat['pat_midname']:
+            pat_data['middlename'] = str(pat['pat_midname'])
+
+        if pat['pat_birth']:
+            pat_data['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
+
+            # calc age
+            today = datetime.now()
+            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
+
+            age = (today - born).days
+
+            pat_data['age_days'] = str(age)
+
+            if age >= 365:
+                pat_data['age']  = str(today.year - born.year)
+                pat_data['age_unit'] = _('ans')
+            elif age > 0 and age <= 31:
+                pat_data['age']  = str((today - born).days)
+                pat_data['age_unit'] = _('jours')
+            elif today.month - born.month > 0:
+                tmp_age = int((today - born).days / 28)
+                pat_data['age']  = str(tmp_age)
+                pat_data['age_unit'] = _('mois')
+        elif pat['pat_age']:
+            pat_data['age'] = str(pat['pat_age'])
+
+            if pat['pat_age_unit'] == 1037:
+                pat_data['age_unit'] = _('ans')
+                age = int(pat['pat_age']) * 365
+                pat_data['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1036:
+                pat_data['age_unit'] = _('mois')
+                age = int(pat['pat_age']) * 30
+                pat_data['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1035:
+                pat_data['age_unit'] = _('semaines')
+                age = int(pat['pat_age']) * 7
+                pat_data['age_days'] = str(age)
+            elif pat['pat_age_unit'] == 1034:
+                pat_data['age_unit'] = _('jours')
+                pat_data['age_days'] = str(pat['pat_age'])
+
+        if pat['pat_sex'] == 1:
+            pat_data['sex'] = _('Masculin')
+        elif pat['pat_sex'] == 2:
+            pat_data['sex'] = _('Féminin')
+
+        if pat['pat_address']:
+            pat_data['addr'] = str(pat['pat_address'])
+
+        if pat['pat_zipcode']:
+            pat_data['zipcode'] = str(pat['pat_zipcode'])
+
+        if pat['pat_city']:
+            pat_data['city'] = str(pat['pat_city'])
+
+        if pat['pat_district']:
+            pat_data['district'] = str(pat['pat_district'])
+
+        if pat['pat_pbox']:
+            pat_data['pbox'] = str(pat['pat_pbox'])
+
+        if pat['pat_phone1']:
+            pat_data['phone'] = str(pat['pat_phone1'])
+
+        if pat['pat_phone2']:
+            pat_data['phone2'] = str(pat['pat_phone2'])
+
+        if pat['pat_profession']:
+            pat_data['profession'] = str(pat['pat_profession'])
+
+        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
+            nat = Various.getNationalityById(pat['pat_nationality'])
+
+            if nat:
+                Various.useLangDB()
+                trans = nat['nat_name'].strip()
+                pat_data['nationality'] = _(trans)
+                Various.useLangPDF()
+
+        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
+            pat_data['blood_group'] = 'A'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
+            pat_data['blood_group'] = 'AB'
+        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
+            pat_data['blood_group'] = 'O'
+
+        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
+            pat_data['blood_rhesus'] = '+'
+        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
+            pat_data['blood_rhesus'] = '-'
+
+        return pat_data
+
+    @staticmethod
     def getDataReport(id_rec, filename, reedit):
         """Build dict of data for Report
 
@@ -1130,33 +1342,7 @@ class Pdf:
         data['label']['received_at']   = str(_("reçu le"))
 
         # === Laboratory details ===
-        data['lab'] = {}
-
-        name  = Various.getDefaultValue('entete_1')
-        line2 = Various.getDefaultValue('entete_2')
-        line3 = Various.getDefaultValue('entete_3')
-        addr  = Various.getDefaultValue('entete_adr')
-        phone = Various.getDefaultValue('entete_tel')
-        fax   = Various.getDefaultValue('entete_fax')
-        email = Various.getDefaultValue('entete_email')
-
-        data['lab']['name']  = str(name['value'])
-        data['lab']['head2'] = str(line2['value'])
-        data['lab']['head3'] = str(line3['value'])
-        data['lab']['addr']  = str(addr['value'])
-        data['lab']['phone'] = ''
-        data['lab']['fax']   = ''
-        data['lab']['email'] = ''
-
-        if phone['value']:
-            data['lab']['phone'] = str(phone['value'])
-
-        if fax['value']:
-            data['lab']['fax'] = str(fax['value'])
-
-        if email['value']:
-            data['lab']['email'] = str(email['value'])
-
+        data['lab'] = Pdf.buildLaboratoryData()
         # === Report details ===
         data['report'] = {}
 
@@ -1304,174 +1490,7 @@ class Pdf:
             data['rec']['date_save'] = ''
 
         # === Patient details ===
-        # for getDataReport
-        data['pat'] = {}
-
-        if record['id_patient'] > 0:
-            pat = Patient.getPatient(record['id_patient'])
-
-            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
-        # For print test patient
-        else:
-            pat = {}
-            pat['pat_ano']       = 'N'
-            pat['pat_code']      = 'Z1X2Y3'
-            pat['pat_code_lab']  = 'PAT123'
-            pat['pat_name']      = 'PATIENT'
-            pat['pat_firstname'] = 'Pauline'
-            pat['pat_maiden']    = 'PERRIERS'
-            pat['pat_midname']   = 'Monica'
-            pat['pat_birth']     = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
-            pat['pat_age']       = 42
-            pat['pat_age_unit']  = '1037'
-            pat['pat_sex']       = '2'
-            pat['pat_address']   = '3 rue du Paradis'
-            pat['pat_zipcode']   = '12345'
-            pat['pat_city']      = 'Testville'
-            pat['pat_district']  = ''
-            pat['pat_pbox']      = 'BP 123'
-            pat['pat_phone1']    = '0607080910'
-            pat['pat_phone2']    = '0700000002'
-            pat['pat_profession']   = 'Architecte'
-            pat['pat_nationality']  = 49
-            pat['pat_resident']     = 'Y'
-            pat['pat_blood_group']  = 904
-            pat['pat_blood_rhesus'] = 232
-
-        data['pat']['anonymous']    = ''
-        data['pat']['code']         = str(pat['pat_code'])
-        data['pat']['code_lab']     = ''
-        data['pat']['lastname']     = ''
-        data['pat']['firstname']    = ''
-        data['pat']['maidenname']   = ''
-        data['pat']['middlename']   = ''
-        data['pat']['birth']        = ''
-        data['pat']['age']          = ''
-        data['pat']['age_unit']     = ''
-        data['pat']['age_days']     = ''
-        data['pat']['sex']          = _('Inconnu')
-        data['pat']['addr']         = ''
-        data['pat']['zipcode']      = ''
-        data['pat']['city']         = ''
-        data['pat']['district']     = ''
-        data['pat']['pbox']         = ''
-        data['pat']['phone']        = ''
-        data['pat']['phone2']       = ''
-        data['pat']['profession']   = ''
-        data['pat']['nationality']  = ''
-        data['pat']['resident']     = str(pat['pat_resident'])
-        data['pat']['blood_group']  = ''
-        data['pat']['blood_rhesus'] = ''
-
-        if pat['pat_ano'] and pat['pat_ano'] == 4:
-            data['pat']['anonymous'] = 'Y'
-        else:
-            data['pat']['anonymous'] = 'N'
-
-        if pat['pat_code_lab']:
-            data['pat']['code_lab'] = str(pat['pat_code_lab'])
-
-        if pat['pat_name']:
-            data['pat']['lastname'] = str(pat['pat_name'])
-
-        if pat['pat_firstname']:
-            data['pat']['firstname'] = str(pat['pat_firstname'])
-
-        if pat['pat_maiden']:
-            data['pat']['maidenname'] = str(pat['pat_maiden'])
-
-        if pat['pat_midname']:
-            data['pat']['middlename'] = str(pat['pat_midname'])
-
-        if pat['pat_birth']:
-            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
-
-            # calc age
-            today = datetime.now()
-            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
-
-            age = (today - born).days
-
-            data['pat']['age_days'] = str(age)
-
-            if age >= 365:
-                data['pat']['age']  = str(today.year - born.year)
-                data['pat']['age_unit'] = _('ans')
-            elif age > 0 and age <= 31:
-                data['pat']['age']  = str((today - born).days)
-                data['pat']['age_unit'] = _('jours')
-            elif today.month - born.month > 0:
-                tmp_age = int((today - born).days / 28)
-                data['pat']['age']  = str(tmp_age)
-                data['pat']['age_unit'] = _('mois')
-        elif pat['pat_age']:
-            data['pat']['age'] = str(pat['pat_age'])
-
-            if pat['pat_age_unit'] == 1037:
-                data['pat']['age_unit'] = _('ans')
-                age = int(pat['pat_age']) * 365
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1036:
-                data['pat']['age_unit'] = _('mois')
-                age = int(pat['pat_age']) * 30
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1035:
-                data['pat']['age_unit'] = _('semaines')
-                age = int(pat['pat_age']) * 7
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1034:
-                data['pat']['age_unit'] = _('jours')
-                data['pat']['age_days'] = str(pat['pat_age'])
-
-        if pat['pat_sex'] == 1:
-            data['pat']['sex'] = _('Masculin')
-        elif pat['pat_sex'] == 2:
-            data['pat']['sex'] = _('Féminin')
-
-        if pat['pat_address']:
-            data['pat']['addr'] = str(pat['pat_address'])
-
-        if pat['pat_zipcode']:
-            data['pat']['zipcode'] = str(pat['pat_zipcode'])
-
-        if pat['pat_city']:
-            data['pat']['city'] = str(pat['pat_city'])
-
-        if pat['pat_district']:
-            data['pat']['district'] = str(pat['pat_district'])
-
-        if pat['pat_pbox']:
-            data['pat']['pbox'] = str(pat['pat_pbox'])
-
-        if pat['pat_phone1']:
-            data['pat']['phone'] = str(pat['pat_phone1'])
-
-        if pat['pat_phone2']:
-            data['pat']['phone2'] = str(pat['pat_phone2'])
-
-        if pat['pat_profession']:
-            data['pat']['profession'] = str(pat['pat_profession'])
-
-        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
-            nat = Various.getNationalityById(pat['pat_nationality'])
-
-            if nat:
-                Various.useLangDB()
-                trans = nat['nat_name'].strip()
-                data['pat']['nationality'] = _(trans)
-                Various.useLangPDF()
-
-        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
-            data['pat']['blood_group'] = 'A'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
-            data['pat']['blood_group'] = 'AB'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
-            data['pat']['blood_group'] = 'O'
-
-        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
-            data['pat']['blood_rhesus'] = '+'
-        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
-            data['pat']['blood_rhesus'] = '-'
+        data['pat'] = Pdf.buildPatientData(record)
 
         # === ANALYZES details ===
         data['l_data'] = []
@@ -2352,33 +2371,7 @@ class Pdf:
         data['label']['validate']   = str(_("validé par"))
 
         # === Laboratory details ===
-        data['lab'] = {}
-
-        name  = Various.getDefaultValue('entete_1')
-        line2 = Various.getDefaultValue('entete_2')
-        line3 = Various.getDefaultValue('entete_3')
-        addr  = Various.getDefaultValue('entete_adr')
-        phone = Various.getDefaultValue('entete_tel')
-        fax   = Various.getDefaultValue('entete_fax')
-        email = Various.getDefaultValue('entete_email')
-
-        data['lab']['name']  = str(name['value'])
-        data['lab']['head2'] = str(line2['value'])
-        data['lab']['head3'] = str(line3['value'])
-        data['lab']['addr']  = str(addr['value'])
-        data['lab']['phone'] = ''
-        data['lab']['fax']   = ''
-        data['lab']['email'] = ''
-
-        if phone['value']:
-            data['lab']['phone'] = str(phone['value'])
-
-        if fax['value']:
-            data['lab']['fax'] = str(fax['value'])
-
-        if email['value']:
-            data['lab']['email'] = str(email['value'])
-
+        data['lab'] = Pdf.buildLaboratoryData()
         # === Report details ===
         data['report'] = {}
 
@@ -2481,174 +2474,7 @@ class Pdf:
             data['rec']['date_save'] = ''
 
         # === Patient details ===
-        # for getDataOutsourced
-        data['pat'] = {}
-
-        if record['id_patient'] > 0:
-            pat = Patient.getPatient(record['id_patient'])
-
-            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
-        # For print test patient
-        else:
-            pat = {}
-            pat['pat_ano']       = 'N'
-            pat['pat_code']      = 'Z1X2Y3'
-            pat['pat_code_lab']  = 'PAT123'
-            pat['pat_name']      = 'PATIENT'
-            pat['pat_firstname'] = 'Pauline'
-            pat['pat_maiden']    = 'PERRIERS'
-            pat['pat_midname']   = 'Monica'
-            pat['pat_birth']     = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
-            pat['pat_age']       = 42
-            pat['pat_age_unit']  = '1037'
-            pat['pat_sex']       = '2'
-            pat['pat_address']   = '3 rue du Paradis'
-            pat['pat_zipcode']   = '12345'
-            pat['pat_city']      = 'Testville'
-            pat['pat_district']  = ''
-            pat['pat_pbox']      = 'BP 123'
-            pat['pat_phone1']    = '0607080910'
-            pat['pat_phone2']    = '0700000002'
-            pat['pat_profession']   = 'Architecte'
-            pat['pat_nationality']  = 49
-            pat['pat_resident']     = 'Y'
-            pat['pat_blood_group']  = 904
-            pat['pat_blood_rhesus'] = 232
-
-        data['pat']['anonymous']    = ''
-        data['pat']['code']         = str(pat['pat_code'])
-        data['pat']['code_lab']     = ''
-        data['pat']['lastname']     = ''
-        data['pat']['firstname']    = ''
-        data['pat']['maidenname']   = ''
-        data['pat']['middlename']   = ''
-        data['pat']['birth']        = ''
-        data['pat']['age']          = ''
-        data['pat']['age_unit']     = ''
-        data['pat']['age_days']     = ''
-        data['pat']['sex']          = _('Inconnu')
-        data['pat']['addr']         = ''
-        data['pat']['zipcode']      = ''
-        data['pat']['city']         = ''
-        data['pat']['district']     = ''
-        data['pat']['pbox']         = ''
-        data['pat']['phone']        = ''
-        data['pat']['phone2']       = ''
-        data['pat']['profession']   = ''
-        data['pat']['nationality']  = ''
-        data['pat']['resident']     = str(pat['pat_resident'])
-        data['pat']['blood_group']  = ''
-        data['pat']['blood_rhesus'] = ''
-
-        if pat['pat_ano'] and pat['pat_ano'] == 4:
-            data['pat']['anonymous'] = 'Y'
-        else:
-            data['pat']['anonymous'] = 'N'
-
-        if pat['pat_code_lab']:
-            data['pat']['code_lab'] = str(pat['pat_code_lab'])
-
-        if pat['pat_name']:
-            data['pat']['lastname'] = str(pat['pat_name'])
-
-        if pat['pat_firstname']:
-            data['pat']['firstname'] = str(pat['pat_firstname'])
-
-        if pat['pat_maiden']:
-            data['pat']['maidenname'] = str(pat['pat_maiden'])
-
-        if pat['pat_midname']:
-            data['pat']['middlename'] = str(pat['pat_midname'])
-
-        if pat['pat_birth']:
-            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
-
-            # calc age
-            today = datetime.now()
-            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
-
-            age = (today - born).days
-
-            data['pat']['age_days'] = str(age)
-
-            if age >= 365:
-                data['pat']['age']  = str(today.year - born.year)
-                data['pat']['age_unit'] = _('ans')
-            elif age > 0 and age <= 31:
-                data['pat']['age']  = str((today - born).days)
-                data['pat']['age_unit'] = _('jours')
-            elif today.month - born.month > 0:
-                tmp_age = int((today - born).days / 28)
-                data['pat']['age']  = str(tmp_age)
-                data['pat']['age_unit'] = _('mois')
-        elif pat['pat_age']:
-            data['pat']['age'] = str(pat['pat_age'])
-
-            if pat['pat_age_unit'] == 1037:
-                data['pat']['age_unit'] = _('ans')
-                age = int(pat['pat_age']) * 365
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1036:
-                data['pat']['age_unit'] = _('mois')
-                age = int(pat['pat_age']) * 30
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1035:
-                data['pat']['age_unit'] = _('semaines')
-                age = int(pat['pat_age']) * 7
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1034:
-                data['pat']['age_unit'] = _('jours')
-                data['pat']['age_days'] = str(pat['pat_age'])
-
-        if pat['pat_sex'] == 1:
-            data['pat']['sex'] = _('Masculin')
-        elif pat['pat_sex'] == 2:
-            data['pat']['sex'] = _('Féminin')
-
-        if pat['pat_address']:
-            data['pat']['addr'] = str(pat['pat_address'])
-
-        if pat['pat_zipcode']:
-            data['pat']['zipcode'] = str(pat['pat_zipcode'])
-
-        if pat['pat_city']:
-            data['pat']['city'] = str(pat['pat_city'])
-
-        if pat['pat_district']:
-            data['pat']['district'] = str(pat['pat_district'])
-
-        if pat['pat_pbox']:
-            data['pat']['pbox'] = str(pat['pat_pbox'])
-
-        if pat['pat_phone1']:
-            data['pat']['phone'] = str(pat['pat_phone1'])
-
-        if pat['pat_phone2']:
-            data['pat']['phone2'] = str(pat['pat_phone2'])
-
-        if pat['pat_profession']:
-            data['pat']['profession'] = str(pat['pat_profession'])
-
-        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
-            nat = Various.getNationalityById(pat['pat_nationality'])
-
-            if nat:
-                Various.useLangDB()
-                trans = nat['nat_name'].strip()
-                data['pat']['nationality'] = _(trans)
-                Various.useLangPDF()
-
-        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
-            data['pat']['blood_group'] = 'A'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
-            data['pat']['blood_group'] = 'AB'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
-            data['pat']['blood_group'] = 'O'
-
-        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
-            data['pat']['blood_rhesus'] = '+'
-        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
-            data['pat']['blood_rhesus'] = '-'
+        data['pat'] = Pdf.buildPatientData(record)
 
         # === ANALYZES details ===
         data['l_data'] = []
@@ -2937,33 +2763,7 @@ class Pdf:
         data['label']['percent_insurance'] = str(_("Pourcentage assurance maladie / mutuelle"))
 
         # === Laboratory details ===
-        data['lab'] = {}
-
-        name  = Various.getDefaultValue('entete_1')
-        line2 = Various.getDefaultValue('entete_2')
-        line3 = Various.getDefaultValue('entete_3')
-        addr  = Various.getDefaultValue('entete_adr')
-        phone = Various.getDefaultValue('entete_tel')
-        fax   = Various.getDefaultValue('entete_fax')
-        email = Various.getDefaultValue('entete_email')
-
-        data['lab']['name']  = str(name['value'])
-        data['lab']['head2'] = str(line2['value'])
-        data['lab']['head3'] = str(line3['value'])
-        data['lab']['addr']  = str(addr['value'])
-        data['lab']['phone'] = ''
-        data['lab']['fax']   = ''
-        data['lab']['email'] = ''
-
-        if phone['value']:
-            data['lab']['phone'] = str(phone['value'])
-
-        if fax['value']:
-            data['lab']['fax'] = str(fax['value'])
-
-        if email['value']:
-            data['lab']['email'] = str(email['value'])
-
+        data['lab'] = Pdf.buildLaboratoryData()
         # === Invoice details ===
         data['invoice'] = {}
 
@@ -3091,174 +2891,7 @@ class Pdf:
             data['rec']['invoice_remain'] = '0.00'
 
         # === Patient details ===
-        # for getDataOutsourced
-        data['pat'] = {}
-
-        if record['id_patient'] > 0:
-            pat = Patient.getPatient(record['id_patient'])
-
-            data['pat'].update(Pdf.getDataFormItem(record['id_patient']))
-        # For print test patient
-        else:
-            pat = {}
-            pat['pat_ano']       = 'N'
-            pat['pat_code']      = 'Z1X2Y3'
-            pat['pat_code_lab']  = 'PAT123'
-            pat['pat_name']      = 'PATIENT'
-            pat['pat_firstname'] = 'Pauline'
-            pat['pat_maiden']    = 'PERRIERS'
-            pat['pat_midname']   = 'Monica'
-            pat['pat_birth']     = datetime.strptime('1979-04-01', Constants.cst_isodate).date()
-            pat['pat_age']       = 42
-            pat['pat_age_unit']  = '1037'
-            pat['pat_sex']       = '2'
-            pat['pat_address']   = '3 rue du Paradis'
-            pat['pat_zipcode']   = '12345'
-            pat['pat_city']      = 'Testville'
-            pat['pat_district']  = ''
-            pat['pat_pbox']      = 'BP 123'
-            pat['pat_phone1']    = '0607080910'
-            pat['pat_phone2']    = '0700000002'
-            pat['pat_profession']   = 'Architecte'
-            pat['pat_nationality']  = 49
-            pat['pat_resident']     = 'Y'
-            pat['pat_blood_group']  = 904
-            pat['pat_blood_rhesus'] = 232
-
-        data['pat']['anonymous']    = ''
-        data['pat']['code']         = str(pat['pat_code'])
-        data['pat']['code_lab']     = ''
-        data['pat']['lastname']     = ''
-        data['pat']['firstname']    = ''
-        data['pat']['maidenname']   = ''
-        data['pat']['middlename']   = ''
-        data['pat']['birth']        = ''
-        data['pat']['age']          = ''
-        data['pat']['age_unit']     = ''
-        data['pat']['age_days']     = ''
-        data['pat']['sex']          = _('Inconnu')
-        data['pat']['addr']         = ''
-        data['pat']['zipcode']      = ''
-        data['pat']['city']         = ''
-        data['pat']['district']     = ''
-        data['pat']['pbox']         = ''
-        data['pat']['phone']        = ''
-        data['pat']['phone2']       = ''
-        data['pat']['profession']   = ''
-        data['pat']['nationality']  = ''
-        data['pat']['resident']     = str(pat['pat_resident'])
-        data['pat']['blood_group']  = ''
-        data['pat']['blood_rhesus'] = ''
-
-        if pat['pat_ano'] and pat['pat_ano'] == 4:
-            data['pat']['anonymous'] = 'Y'
-        else:
-            data['pat']['anonymous'] = 'N'
-
-        if pat['pat_code_lab']:
-            data['pat']['code_lab'] = str(pat['pat_code_lab'])
-
-        if pat['pat_name']:
-            data['pat']['lastname'] = str(pat['pat_name'])
-
-        if pat['pat_firstname']:
-            data['pat']['firstname'] = str(pat['pat_firstname'])
-
-        if pat['pat_maiden']:
-            data['pat']['maidenname'] = str(pat['pat_maiden'])
-
-        if pat['pat_midname']:
-            data['pat']['middlename'] = str(pat['pat_midname'])
-
-        if pat['pat_birth']:
-            data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
-
-            # calc age
-            today = datetime.now()
-            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
-
-            age = (today - born).days
-
-            data['pat']['age_days'] = str(age)
-
-            if age >= 365:
-                data['pat']['age']  = str(today.year - born.year)
-                data['pat']['age_unit'] = _('ans')
-            elif age > 0 and age <= 31:
-                data['pat']['age']  = str((today - born).days)
-                data['pat']['age_unit'] = _('jours')
-            elif today.month - born.month > 0:
-                tmp_age = int((today - born).days / 28)
-                data['pat']['age']  = str(tmp_age)
-                data['pat']['age_unit'] = _('mois')
-        elif pat['pat_age']:
-            data['pat']['age'] = str(pat['pat_age'])
-
-            if pat['pat_age_unit'] == 1037:
-                data['pat']['age_unit'] = _('ans')
-                age = int(pat['pat_age']) * 365
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1036:
-                data['pat']['age_unit'] = _('mois')
-                age = int(pat['pat_age']) * 30
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1035:
-                data['pat']['age_unit'] = _('semaines')
-                age = int(pat['pat_age']) * 7
-                data['pat']['age_days'] = str(age)
-            elif pat['pat_age_unit'] == 1034:
-                data['pat']['age_unit'] = _('jours')
-                data['pat']['age_days'] = str(pat['pat_age'])
-
-        if pat['pat_sex'] == 1:
-            data['pat']['sex'] = _('Masculin')
-        elif pat['pat_sex'] == 2:
-            data['pat']['sex'] = _('Féminin')
-
-        if pat['pat_address']:
-            data['pat']['addr'] = str(pat['pat_address'])
-
-        if pat['pat_zipcode']:
-            data['pat']['zipcode'] = str(pat['pat_zipcode'])
-
-        if pat['pat_city']:
-            data['pat']['city'] = str(pat['pat_city'])
-
-        if pat['pat_district']:
-            data['pat']['district'] = str(pat['pat_district'])
-
-        if pat['pat_pbox']:
-            data['pat']['pbox'] = str(pat['pat_pbox'])
-
-        if pat['pat_phone1']:
-            data['pat']['phone'] = str(pat['pat_phone1'])
-
-        if pat['pat_phone2']:
-            data['pat']['phone2'] = str(pat['pat_phone2'])
-
-        if pat['pat_profession']:
-            data['pat']['profession'] = str(pat['pat_profession'])
-
-        if pat['pat_nationality'] and pat['pat_nationality'] > 0:
-            nat = Various.getNationalityById(pat['pat_nationality'])
-
-            if nat:
-                Various.useLangDB()
-                trans = nat['nat_name'].strip()
-                data['pat']['nationality'] = _(trans)
-                Various.useLangPDF()
-
-        if pat['pat_blood_group'] and pat['pat_blood_group'] == 902:
-            data['pat']['blood_group'] = 'A'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 903:
-            data['pat']['blood_group'] = 'AB'
-        elif pat['pat_blood_group'] and pat['pat_blood_group'] == 904:
-            data['pat']['blood_group'] = 'O'
-
-        if pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 232:
-            data['pat']['blood_rhesus'] = '+'
-        elif pat['pat_blood_rhesus'] and pat['pat_blood_rhesus'] == 233:
-            data['pat']['blood_rhesus'] = '-'
+        data['pat'] = Pdf.buildPatientData(record)
 
         # === ANALYZES details ===
         data['l_data'] = []

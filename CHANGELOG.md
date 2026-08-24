@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - DHIS2 exports, file and API, now share their common export code
 - Aliquot modal and its handling are now shared by the single-record and multi-record result pages
 - Front-end pages now share common helpers for their back-end calls
+- Report, outsourcing and invoice PDFs now share their patient and laboratory sections
 
 ### Fixed
 - Saving an inpatient request failed when the optional bed number was left empty
