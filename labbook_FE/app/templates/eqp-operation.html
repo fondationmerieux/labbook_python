@@ -1,8 +1,23 @@
 {% extends "skeleton.html" %}
 
+{#
+    Shared form for the two dated equipment operations: metrology/calibration
+    and maintenance contract. The calling route passes type_doc, everything
+    below derives from it.
+#}
+{% set is_contract = (type_doc == 'CONTRACT') %}
+
+{% set page_title = _("Maintenance") if is_contract else _("Métrologie et étalonnage") %}
+{% set date_field = 'date_contract' if is_contract else 'date_metr' %}
+{% set file_code  = 'EQMC' if is_contract else 'EQCC' %}
+{% set service    = 'contract' if is_contract else 'metrology' %}
+{% set list_page  = 'list-eqp-maintenance' if is_contract else 'list-eqp-metrology' %}
+{% set perm_save  = 'EQP_104' if is_contract else 'EQP_117' %}
+{% set perm_del   = 'EQP_107' if is_contract else 'EQP_119' %}
+
 {% block head %}
 {{ super() }}
-    <title>{{ _("Maintenance") }}</title>
+    <title>{{ page_title }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/select2.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/js/select2.min.js') }}" nonce="{{ session['nonce'] }}"></script>
@@ -12,12 +27,12 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Maintenance") }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ page_title }}{% if args['det_eqp'] %} : {{ args['det_eqp']['name'] }}{% endif %}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label for="date_contract" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }}</label>
-                    <div>					
-                        <input id="date_contract" class="form-control form-lbk" type="datetime-local" name="date_contract" style="color: #888;">
+                    <label for="{{ date_field }}" class="form-label col-3 text-end mt-2 me-1">{{ _("Date") }}</label>
+                    <div>
+                        <input id="{{ date_field }}" class="form-control form-lbk" type="datetime-local" name="{{ date_field }}" style="color: #888;">
                     </div>
                 </div>
 
@@ -27,42 +42,44 @@
                         <select id="search_supplier" class="form-select form-lbk form-search"></select>
                     </div>
                 </div>
-                
+
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <div class="offset-3 text-start upload-container">
                         <div class="uploadHTML5 d-inline-block pe-3">
-                            <label for="EQMC">{{ _("Fichier") }}</label>
-                            <input id="EQMC" name="file" type="file" class="mb-1"/>
+                            <label for="{{ file_code }}">{{ _("Fichier") }}</label>
+                            <input id="{{ file_code }}" name="file" type="file" class="mb-1"/>
                         </div>
                         <table class="table-responsive">
                             <thead>
-                                <tr><th><div>{{ _("Fichier") }}</div></th><th><div>{{ _("Action") }}</div></th></tr>
+                                <tr><th scope="col"><div>{{ _("Fichier") }}</div></th><th scope="col"><div>{{ _("Action") }}</div></th></tr>
                             </thead>
-                            <tbody id="tbody_file_EQMC"></tbody>
+                            <tbody id="tbody_file_{{ file_code }}"></tbody>
                         </table>
                     </div>
                 </div>
 
+                {% if is_contract %}
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="date_upd" class="form-label col-3 text-end mt-2 me-1">{{ _("Renouvellement") }}</label>
-                    <div>					
+                    <div>
                         <input id="date_upd" class="form-control form-lbk" type="date" name="date_upd" style="color: #888;">
                     </div>
                 </div>
+                {% endif %}
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="comment" class="form-label col-3 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
-                    <div>					
+                    <div>
                         <textarea id="comment" name="comment" rows="4" cols="50" class="form-control form-lbk"></textarea>
                     </div>
                 </div>
             </form>
-            
+
             <div class="my-2 clearfix">
                 <div class="float-start ms-0">
                     <input type="button" onclick="cancel();" id="btn_cancel" value="{{ _("Annuler") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
-                {% if has_permission("EQP_104") %}
+                {% if has_permission(perm_save) %}
                 <div class="float-end">
                     <input type="button" onclick="save_item();" id="btn_save" value="{{ _("Enregistrer") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-2">
                 </div>
@@ -108,31 +125,33 @@ $("#search_supplier").select2(
     }
 } ) ;
 
-$("#search_supplier").on("select2:select", function (e) 
+$("#search_supplier").on("select2:select", function (e)
 {
 let id_item = $(e.currentTarget).val();
 } ) ;
 
 // fix bug between jquery 3.6.0 and select2
-$(document).on('select2:open', () => 
+$(document).on('select2:open', () =>
 {
 document.querySelector('.select2-search__field').focus() ;
 } ) ;
 
 function save_item()
 {
-var id_item   = 0 ;    
+var id_item   = 0 ;
 var id_user   = {{ session['user_id']|default(0)|tojson }};
 var id_eqp    = {{ args['id_eqp']|default(0)|tojson }};
-var date_contract = $("#date_contract").val() ;
+var date_op   = $("#{{ date_field }}").val()  ;
 var supplier  = $("#search_supplier").val()  ;
-var date_upd  = $("#date_upd").val()         ;
 var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
+{% if is_contract %}
+var date_upd  = $("#date_upd").val()         ;
+{% endif %}
 
     if (supplier == null)
     supplier = 0;
 
-    if (date_contract == "")
+    if (date_op == "")
     {
     alert( "{{ _("Veuillez sélectionner une date") }}" ) ;
     return false ;
@@ -140,9 +159,11 @@ var comment   = JSON.stringify( $.trim( $("#comment").val() ) ) ;
 
 var param = '{ "id_user":' + id_user + ', ' +
               '"id_eqp":' + id_eqp + ', ' +
-              '"date_contract":"' + date_contract + '", ' +
-              '"supplier":' + supplier + ', ' +
+              '"{{ date_field }}":"' + date_op + '", ' +
+{% if is_contract %}
               '"date_upd":"' + date_upd + '", ' +
+{% endif %}
+              '"supplier":' + supplier + ', ' +
               '"comment":' + comment + '}' ; // No quotes with stringify
 
     // popup wait
@@ -151,7 +172,7 @@ var param = '{ "id_user":' + id_user + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/equipment/contract/det/" + id_item,
+       url: "{{ session['server_ext'] }}/services/quality/equipment/{{ service }}/det/" + id_item,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
@@ -160,12 +181,12 @@ var param = '{ "id_user":' + id_user + ', ' +
            {
            let ref = JSON.stringify(data) ;
 
-           upload_file("EQMC", ref)
+           upload_file("{{ file_code }}", ref)
            .then( function()
                {
                $("#dial-wait").modal("hide") ;
 
-               window.location = "{{ session['server_ext'] }}/list-eqp-maintenance/" + id_eqp ;
+               window.location = "{{ session['server_ext'] }}/{{ list_page }}/" + id_eqp ;
                } ) ;
            },
        error: function(data)
@@ -188,10 +209,10 @@ let type    = 'JF' ;
     if ( obj.id_data > 0 )
     {
     let tmp_tr = '<tr>' ;
-    
+
     tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    {% if has_permission("EQP_107") %}
+    {% if has_permission(perm_del) %}
     tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
     {% endif %}
     tmp_tr += '</tr>' ;
@@ -245,7 +266,7 @@ let input_file = $('#' + type_ref)[0] ;
                 }
             } ) ;
         } ) ;
-    }    
+    }
     else
     {
     console.log( "file empty upload ") ;
@@ -262,7 +283,7 @@ function delete_file( type_ref, id_file )
         $("#dial-wait").off('shown.bs.modal') ;
         $("#dial-wait").modal("show") ;
 
-        $.ajax( 
+        $.ajax(
         {
             type: "DELETE",
             url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,

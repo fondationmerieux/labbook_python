@@ -7555,17 +7555,22 @@ def list_eqp_metrology(id_eqp=0):
     return render_template('list-eqp-metrology.html', args=json_data, rand=secrets.randbelow(1000))
 
 
-# Page : metrology equipment
-@app.route('/eqp-metrology/<int:id_eqp>')
-def eqp_metrology(id_eqp=0):
-    log.info(Logs.fileline() + ' : TRACE eqp metrology=' + str(id_eqp))
+def eqp_operation(id_eqp, type_doc):
+    """
+    Shared handler for the two dated equipment operations:
+    metrology/calibration (METROLOGY) and maintenance contract (CONTRACT).
+    """
+    page  = 'eqp-maintenance-contract' if type_doc == 'CONTRACT' else 'eqp-metrology'
+    label = 'eqp maintenance contract' if type_doc == 'CONTRACT' else 'eqp metrology'
+
+    log.info(Logs.fileline() + ' : TRACE ' + label + '=' + str(id_eqp))
 
     if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook eqp metrology => disconnect')
+        log.info(Logs.fileline() + ' : TRACE Labbook ' + label + ' => disconnect')
         session.clear()
         return index()
 
-    session['current_page'] = 'eqp-metrology/' + str(id_eqp)
+    session['current_page'] = page + '/' + str(id_eqp)
     session.modified = True
 
     resp = ensure_be_token()
@@ -7593,7 +7598,13 @@ def eqp_metrology(id_eqp=0):
 
     json_data['id_eqp'] = id_eqp
 
-    return render_template('eqp-metrology.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return render_template('eqp-operation.html', type_doc=type_doc, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+
+
+# Page : metrology equipment
+@app.route('/eqp-metrology/<int:id_eqp>')
+def eqp_metrology(id_eqp=0):
+    return eqp_operation(id_eqp, 'METROLOGY')
 
 
 # Page : list maintenance of equipment
@@ -7710,42 +7721,7 @@ def eqp_maintenance_preventive(id_eqp=0):
 # Page : maintenance contract equipment
 @app.route('/eqp-maintenance-contract/<int:id_eqp>')
 def eqp_maintenance_contract(id_eqp=0):
-    log.info(Logs.fileline() + ' : TRACE eqp maintenance contract=' + str(id_eqp))
-
-    if not test_session():
-        log.info(Logs.fileline() + ' : TRACE Labbook eqp maintenance contract => disconnect')
-        session.clear()
-        return index()
-
-    session['current_page'] = 'eqp-maintenance-contract/' + str(id_eqp)
-    session.modified = True
-
-    resp = ensure_be_token()
-    if resp:
-        return resp
-    headers = be_auth_headers()
-
-    json_ihm  = {}
-    json_data = {}
-
-    # Load equipment details to get name
-    try:
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/quality/equipment/det/' + str(id_eqp)
-        req = requests.get(url, timeout=10, headers=headers)
-
-        redir = be_check_or_bounce(req)
-        if redir:
-            return redir
-
-        if req.status_code == 200:
-            json_data['det_eqp'] = req.json()
-
-    except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : requests equipment det failed, url=%s', url)
-
-    json_data['id_eqp'] = id_eqp
-
-    return render_template('eqp-maintenance-contract.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return eqp_operation(id_eqp, 'CONTRACT')
 
 
 # Page : suppliers list
@@ -8178,7 +8154,6 @@ def list_ctrl_int():
     return render_template('list-ctrl-int.html', args=json_data, rand=secrets.randbelow(1000))
 
 
-# Page : internal control details
 def det_control(id_ctrl, type_ctrl):
     """
     Shared handler for the internal (INT) and external (EXT) control detail pages.
@@ -8243,6 +8218,7 @@ def det_control(id_ctrl, type_ctrl):
     return render_template('det-control.html', type_ctrl=type_ctrl, args=json_data, rand=secrets.randbelow(1000))
 
 
+# Page : internal control details
 @app.route('/det-control-int/<int:id_ctrl>')
 def det_control_int(id_ctrl=0):
     return det_control(id_ctrl, 'INT')

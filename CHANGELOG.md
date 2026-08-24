@@ -12,6 +12,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - ana_loinc and ana_code for report template
 
+### Changed
+- Quality control detail pages, internal and external, now share a single template
+- Equipment metrology and maintenance contract pages now share a single template
+
+### Fixed
+- Form accessibility on result entry and validation, records, samples and aliquots, stock, equipment, reports and settings screens
+- Accessibility of the main navigation menu
+
 ## [3.6.21] - 2026-07-28
 ### Fixed
 - incorrect parsing of HL7 OBX observation status field
