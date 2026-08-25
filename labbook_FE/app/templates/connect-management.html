@@ -1,8 +1,8 @@
 {% extends "skeleton.html" %}
+{% block title %}{{ _("Connect") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Connect") }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 

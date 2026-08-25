@@ -1,8 +1,8 @@
 {% extends "skeleton.html" %}
+{% block title %}{{ _("Résultats du contrôle interne") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Résultats du contrôle interne") }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
 {% endblock %}
 

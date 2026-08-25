@@ -3,6 +3,8 @@
 
 <head>
     {% block head %}
+    {# each page names itself through the title block; the default only serves pages that do not #}
+    <title>{% block title %}{{ _("LabBook") }}{% endblock %}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">

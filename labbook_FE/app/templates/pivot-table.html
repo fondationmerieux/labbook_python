@@ -1,8 +1,8 @@
 {% extends "skeleton.html" %}
+{% block title %}{{ _("Tableau croisé dynamique") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Tableau croisé dynamique") }}</title>
     <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/jquery-ui.min.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='vendor/css/pivot.min.css') }}" rel="stylesheet" />

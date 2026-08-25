@@ -1,9 +1,9 @@
 {% if session and 'login_ok' in session and session['login_ok'] == session['login'] %}
 {% extends "skeleton.html" %}
+{% block title %}{{ _("Accueil") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
-    <title>{{ _("Accueil") }}</title>
     <script src="{{ url_for('static', filename='vendor/js/Chart.min.js') }}"></script>
 {% endblock %}
 
