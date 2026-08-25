@@ -183,6 +183,9 @@ def before_request_func():
     session.permanent = True
     session.modified = True
 
+    # None lets the request carry on, a response would interrupt it
+    return None
+
 
 LANG_SELECT = {
     'fr_FR': 'FR', 'en_GB': 'UK', 'en_US': 'US', 'es': 'ES',
@@ -601,6 +604,9 @@ def get_init_var():
         session['amicare'] = {}
 
     log.info(Logs.fileline() + ' : LABBOOK_FE get_init_var ends')
+
+    # None means everything loaded; a redirect is returned above when the token expired
+    return None
 
 
 def get_user_data(login, be_headers=None):

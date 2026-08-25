@@ -33,7 +33,7 @@ def upgrade():
         try:
             Path(path).mkdir(parents=True, exist_ok=True)
             os.chmod(path, 0o775)
-            open(os.path.join(path, ".keep"), "a").close()
+            Path(path, ".keep").touch()
         except Exception as err:
             print(f"ERROR creating directory {path},\n\terr={err}")
 
