@@ -628,9 +628,11 @@ class PrintByScript(Resource):
                 self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit invalid script_name')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        script_path = os.path.join(Constants.cst_printer, script_name)
+        # the resolved path must stay under the printer directory, whatever the name contains
+        base_dir = os.path.realpath(Constants.cst_printer)
+        script_path = os.path.realpath(os.path.join(base_dir, script_name))
 
-        if not os.path.isfile(script_path):
+        if not script_path.startswith(base_dir + os.sep) or not os.path.isfile(script_path):
             self.log.error(Logs.fileline() + ' : PrintByScript ERROR script not found path=' + script_path)
             try:
                 details = {"result": "ERROR", "reason": "SCRIPT_NOT_FOUND", "script_name": str(script_name)}
