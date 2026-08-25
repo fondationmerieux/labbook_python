@@ -12,7 +12,7 @@
             <h2 class="page-title page-title-color"><span>{{ _("Paramétrage des dossiers") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Période de numérotation") }}</label>
+                    <span class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Période de numérotation") }}</span>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="period" value="1070" {% if args['rstg_period'] == 1070 %} checked="true" {% endif %}>&nbsp;{{ _("Mois") }}</input>
                     </label>
@@ -21,7 +21,7 @@
                     </label>
                 </div>
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Format de numérotation") }}</label>
+                    <span class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Format de numérotation") }}</span>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="format" value="1072" {% if args['rstg_format'] == 1072 %} checked="true" {% endif %}>&nbsp;{{ _("Court") }}</input>
                     </label>

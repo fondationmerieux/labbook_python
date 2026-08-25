@@ -2692,8 +2692,8 @@ class Setting:
             val = ctx.get(key)
             return '' if val is None else str(val)
 
-        # Matches {{ something }}
-        return re.sub(r"\{\{\s*([^{}]*)\s*\}\}", repl, tpl)
+        # Matches {{ something }} - surrounding spaces are part of the group, repl() strips them
+        return re.sub(r"\{\{([^{}]*)\}\}", repl, tpl)
 
     @staticmethod
     def getSettingOauthList():

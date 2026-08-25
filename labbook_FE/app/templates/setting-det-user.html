@@ -83,7 +83,7 @@
                 </div>
                 {% if args['user_id'] > 0 %}
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end mt-2 me-1">{{ _("Statut") }}</label>
+                    <span class="form-label col-3 text-end mt-2 me-1">{{ _("Statut") }}</span>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="stat" value="A" {% if args['stat'] == 'A' %} checked="checked" {% endif %}>&nbsp;{{ _("Activé") }}</input>
                     </label>

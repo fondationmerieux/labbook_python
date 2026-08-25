@@ -16,19 +16,19 @@
                             <div id="aliquotList">
                                 <div class="aliquot_form">
                                     <div class="mb-3">
-                                        <label class="form-label">{{ _("Pathogène") }}</label>
+                                        <span class="form-label">{{ _("Pathogène") }}</span>
                                         <select class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
                                             {% from 'macros.html' import select_pathogen %}
                                             {{ select_pathogen(ihm['l_pathogen'], 0) }}
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">{{ _("Localisation d'accès") }} *</label>
+                                        <span class="form-label">{{ _("Localisation d'accès") }} *</span>
                                         <input type="text" class="form-control coordinates" aria-label="{{ _('Localisation d\'accès') }}">
                                     </div>
                                     <div class="mb-3 form-check">
                                         <input type="checkbox" class="form-check-input in_stock" checked aria-label="{{ _('Présent en stock') }}">
-                                        <label class="form-check-label">{{ _("Présent en stock") }}</label>
+                                        <span class="form-check-label">{{ _("Présent en stock") }}</span>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="select_storage_box">{{ _("Boîte associée") }} *</label>

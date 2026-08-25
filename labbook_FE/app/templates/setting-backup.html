@@ -52,7 +52,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez saisir le mot de passe de l'utilisateur user_labbook") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
@@ -64,7 +64,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_pwd_user" id="btn_pwd_user" value="{{ _("Valider") }}"  onclick="after_pwd_user();">
-                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez saisir le mot de passe pour la clé de sauvegarde") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
@@ -94,7 +94,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn-pwd-key" id="btn-pwd-key" value="{{ _("Valider") }}"  onclick="after_pwd_key();">
-                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez sélectionner un média") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
@@ -119,7 +119,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn-vld-media" id="btn-vld-media" value="{{ _("Valider") }}"  onclick="after_listmedia();">
-                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5>{{ _("Veuillez sélectionner la sauvegarde à restaurer") }}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ _('Fermer') }}"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group form-inline">
@@ -144,7 +144,7 @@
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="button btn btn-lbk btn-{{ session['user_role']|safe }}" name="btn_restore_list" id="btn_restore_list" value="{{ _("Valider") }}"  onclick="restore();">
-                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal" aria-hidden="true">{{ _("Annuler") }}</button>
+                            <button class="btn btn-lbk btn-{{ session['user_role']|safe }}" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
                         </div>
                     </div>
                 </div>

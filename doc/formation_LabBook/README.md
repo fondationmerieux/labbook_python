@@ -28,7 +28,7 @@ Flask, ni Jinja, ni Podman : il explique comment LabBook les utilise.
 
 ## Version de référence
 
-Ce manuel décrit LabBook **3.6.20** (tag `v3.6.20`, commit `d9f19c2`).
+Manuel **1.1**. Il décrit LabBook **3.6.22** (tag `v3.6.22`).
 
 Les chemins de fichiers, les noms de fonctions et les rares numéros de ligne cités renvoient à
 cette version. Les chemins et les noms restent valables longtemps ; **les numéros de ligne, non**

@@ -11,7 +11,7 @@ labbook_FE/
 ├── gunicorn.sh          script de lancement
 └── app/
     ├── __init__.py      l'application : configuration, fonctions communes, 182 routes
-    ├── templates/       151 templates Jinja
+    ├── templates/       187 templates Jinja
     ├── static/          ressources statiques (img, js, vendor)
     ├── models/          Form.py, Constants.py, Logs.py
     ├── translations/    catalogues de traduction
@@ -63,7 +63,7 @@ variables d'environnement, qui l'emportent.
 
 ## 4.2 Le fichier `__init__.py`
 
-Près de **11 000 lignes**. Il se lit en trois zones.
+Près de **8 500 lignes**. Il se lit en trois zones.
 
 ### Zone 1 — Initialisation (jusqu'à la ligne ~1000)
 
@@ -114,27 +114,40 @@ Presque toutes les routes suivent le même schéma :
 def home_page():
     log.info(Logs.fileline() + ' : TRACE home_page')   # 1. tracer l'entrée
     session['current_page'] = 'home_page'              # 2. mémoriser la page courante
-    token = get_oauth_token()                          # 3. récupérer le jeton
+    session.modified = True
+
+    resp = ensure_be_token()                           # 3. s'assurer d'avoir un jeton
+    if resp:                                           #    sinon partir vers OAuth
+        return resp
+
     args = {}                                          # 4. préparer le conteneur de données
 
-    req = requests.get(url, headers=..., timeout=10)   # 5. interroger le back end
-    if oauth_error(req):                               # 6. traiter l'erreur OAuth à part
-        return redirect(...)
-    data = req.json()                                  # 7. exploiter la réponse
+    data, redir = be_get('/services/…', 'home data')   # 5. interroger le back end
+    if redir:                                          # 6. jeton expiré : repartir vers OAuth
+        return redir
+    if data is not None:                               # 7. exploiter la réponse
+        args['data'] = data
 
     return render_template('home-page.html',           # 8. rendre le template
-                           args=args, rand=random.randint(0, 999))
+                           args=args, rand=secrets.randbelow(1000))
 ```
 
 Quelques points :
 
 - **la mémorisation de la page courante** permet de revenir où l'on était après un
   rafraîchissement ;
-- **les erreurs OAuth sont traitées séparément** des autres, pour distinguer « refusé faute
-  d'authentification » de « vraie erreur » ;
+- **`be_get(chemin, libellé)` et `be_post(chemin, corps, libellé)`** portent tous les appels au
+  back end : ils construisent l'URL, posent l'en-tête d'autorisation, appliquent le délai de
+  10 secondes, tracent l'appel sous le `libellé` donné, et renvoient le couple
+  `(données, redirection)` ;
+- **`données` vaut `None`** dès que l'appel n'aboutit pas, ce qui laisse à l'appelant sa propre
+  valeur par défaut — d'où le `if data is not None` avant d'affecter ;
+- **`redirection` n'est renseignée que si le jeton a expiré** ; l'appelant la retourne
+  immédiatement, ce qui relance la séquence OAuth. Les autres erreurs ne provoquent pas de
+  redirection : elles sont tracées et la page s'affiche sans ces données ;
 - **le nombre aléatoire `rand`** passé au template contourne des mises en cache trop zélées
-  de certains navigateurs, qui réaffichaient l'ancienne page après une modification ;
-- le délai de 10 secondes sur les appels au back end : au-delà, il y a un problème.
+  de certains navigateurs, qui réaffichaient l'ancienne page après une modification. Il vient
+  de `secrets`, et non de `random`, dont le générateur n'offre aucune garantie.
 
 Une même vue peut porter plusieurs routes, avec ou sans argument typé :
 
@@ -150,16 +163,36 @@ Une même vue peut porter plusieurs routes, avec ou sans argument typé :
 | Préfixe | Rôle | Nombre |
 |---|---|---|
 | `list-` | vues liste / grille | 36 |
-| `det-` | formulaires de détail (*detail*) | 34 |
+| `det-` | formulaires de détail (*detail*) | 33 |
 | `setting-` | pages d'administration | 30 |
-| `report-` | écrans de rapport | 8 |
+| `report-` | écrans de rapport | 7 |
 | `res-` | résultats de contrôle | 2 |
 
 Plus `templates/popup/` (fenêtres modales), `templates/js/` (JavaScript à rendre
-dynamiquement), `templates/lm/` (éléments des formulaires paramétrables), et `macros.html`.
+dynamiquement), `templates/elem/` (éléments des formulaires paramétrables), et `macros.html`.
 
 > **À savoir.** Tout ce qui est sous `templates/` est passé à la moulinette Jinja. Tout ce
 > qui est sous `static/` est servi tel quel. C'est le seul critère.
+
+### Les morceaux partagés
+
+Un fragment identique répété dans plusieurs pages est sorti dans son propre fichier, inclus
+par chacune. `templates/js/` en compte une quinzaine — libellés des tableaux DataTables,
+recherche d'analyse, dépôt et suppression de pièce jointe, réinitialisation d'un résultat,
+filtre LabBook Lite — et le même principe s'applique au HTML : `patient-identity.html`
+(identité du patient), `lite-filter.html` (le filtre lui-même), `patient-header.html`.
+
+Ces fichiers commencent par un commentaire Jinja `{# … #}` qui dit ce qu'ils attendent de
+l'appelant. Quand un paramètre est nécessaire, il est posé juste avant l'inclusion :
+
+```jinja
+{% set result_return_page = 'technical-validation' %}
+{% include 'js/result_reset_cancel.js' %}
+```
+
+> **Piège.** Sortir un bloc dans un fichier neuf ne réduit la duplication que si **toutes**
+> ses copies sont remplacées. Il en reste une ailleurs et le compte augmente, le nouveau
+> fichier s'ajoutant aux occurrences déjà présentes.
 
 ### `static/`
 
@@ -174,7 +207,7 @@ les polices Font Awesome. Ces bibliothèques ne sont **pas** installées par un 
 paquets : ce sont des fichiers versionnés dans le dépôt (voir `doc/dependencies.md`).
 
 Bootstrap est volontairement resté en 5.1 : monter de version imposerait de revérifier le
-rendu des 151 pages.
+rendu des 132 pages.
 
 ## 4.4 `skeleton.html`, le gabarit
 

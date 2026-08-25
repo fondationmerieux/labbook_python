@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-3">
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-6 text-end mt-2 me-3">{{ _("Analyse active") }}</label>
+                            <span class="form-label col-6 text-end mt-2 me-3">{{ _("Analyse active") }}</span>
                             <label class="form-label text-end mt-2 me-3">
                                 <input type="radio" name="stat" value="4" {% if not args['details'] or args['details']['actif'] == 4 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-3">
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-6 text-end mt-2 me-3">{{ _("Export whonet") }}</label>
+                            <span class="form-label col-6 text-end mt-2 me-3">{{ _("Export whonet") }}</span>
                             <label class="form-label text-end mt-2 me-3">
                                 <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>

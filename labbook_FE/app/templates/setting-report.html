@@ -12,7 +12,7 @@
             <h2 class="page-title page-title-color"><span>{{ _("Paramétrage des comptes rendus") }}</span></h2>
             <form autocomplete="off">
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Type d'entête") }}</label>
+                    <span class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Type d'entête") }}</span>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="header" value="1068" {% if args['entete'] == 1068 %} checked="checked" {% endif %}>&nbsp;{{ _("Complet") }}</input>
                     </label>
@@ -21,7 +21,7 @@
                     </label>
                 </div>
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Afficher les commentaires") }}</label>
+                    <span class="form-label col-lg-3 text-end mt-2 me-1">{{ _("Afficher les commentaires") }}</span>
                     <label class="form-label text-end mt-2 me-3">
                         <input type="radio" name="comment" value="1049" {% if args['commentaire'] == 1049 %} checked="checked" {% endif %}>&nbsp;{{ _("Oui") }}</input>
                     </label>

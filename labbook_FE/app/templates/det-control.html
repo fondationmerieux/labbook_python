@@ -30,7 +30,7 @@
             <h2 class="page-title page-title-color"><span>{{ page_title }}</span></h2>
             {% if (has_permission(perm_create) and args['id_ctrl'] == 0) or (has_permission(perm_edit) and args['id_ctrl'] > 0) %}
             <div class="form-group d-lg-flex align-items-start mt-3">
-                <label class="form-label col-3 text-end mx-3">{{ _("Type") }}</label>
+                <span class="form-label col-3 text-end mx-3">{{ _("Type") }}</span>
                 <label class="form-label text-end me-3">
                     <input type="radio" name="ctrl-type" value="QL" {% if not args['control']['ctq_type_val'] or args['control']['ctq_type_val'] == "QL" %} checked="checked" {% endif %} {% if args['id_ctrl'] > 0 %}disabled{% endif %}>&nbsp;{{ _("Qualitatif") }}</input>
                 </label>

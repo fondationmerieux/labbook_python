@@ -655,7 +655,7 @@
 
                     <!-- PATIENT IMPACT -->
                     <div class="form-group d-lg-flex align-items-start">
-                        <label class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le patient") }}</label>
+                        <span class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le patient") }}</span>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="impact_pat" value="1053" {% if args['details']['impact_pat'] == 1053 %}checked{% endif %}>{{ _("Faible") }}</input>
                         </label>
@@ -672,7 +672,7 @@
 
                     <!-- USER IMPACT -->
                     <div class="form-group d-lg-flex align-items-start">
-                        <label class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le personnel/visiteur") }}</label>
+                        <span class="form-label col-3 text-end mt-2 me-1">{{ _("Impact sur le personnel/visiteur") }}</span>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="impact_user" value="1053" {% if args['details']['impact_user'] == 1053 %}checked{% endif %}>{{ _("Faible") }}</input>
                         </label>
@@ -713,7 +713,7 @@
 
                     <!-- IMPLEMENTATION OF ACTION  -->
                     <div class="form-group d-lg-flex align-items-start">
-                        <label class="form-label col-3 text-end mt-2 me-1">{{ _("Mise en place d’une action correctrice") }}</label>
+                        <span class="form-label col-3 text-end mt-2 me-1">{{ _("Mise en place d’une action correctrice") }}</span>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" class="me-1" name="impl_action" value="4" {% if not has_permission("NONCONF_149") %}disabled{% endif %} {% if args['details']['impl_action'] == 4 %}checked{% endif %}>{{ _("Oui") }}</input>
                         </label>

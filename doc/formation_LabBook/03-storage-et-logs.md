@@ -95,6 +95,20 @@ ligne, message.
 C'est pourquoi le code est parsemé de `log.info(Logs.fileline() + ' : ...')` plutôt que de
 s'appuyer sur les informations d'appel natives de `logging`.
 
+### Journaliser une valeur venue de l'utilisateur
+
+Une valeur saisie par l'utilisateur ne part jamais telle quelle dans le journal : elle passe
+d'abord par `Logs.clean()`, qui remplace les retours à la ligne et les tabulations par des
+espaces.
+
+```python
+log.info(Logs.fileline() + ' : TRACE search doctor=' + Logs.clean(name))
+```
+
+Sans cela, une valeur contenant un retour à la ligne écrit **plusieurs lignes** dans le
+fichier, dont une qui imite le format ci-dessus. Le journal devient alors une source dans
+laquelle on ne peut plus avoir confiance, et les recherches d'erreur portent à faux.
+
 ### Erreur rattrapée ou non
 
 Distinction utile au débogage :

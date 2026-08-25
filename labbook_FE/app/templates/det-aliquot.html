@@ -48,7 +48,7 @@
                 <form autocomplete="off">
                     <div class="aliquot_form">
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</label>
+                            <span class="form-label col-3 text-end mt-2 me-1">{{ _("Pathogène") }}</span>
                             <div class="d-flex align-items-center">
                                 <select name="sal_pathogen[]" class="form-select pathogen" aria-label="{{ _('Pathogène') }}">
                                     {% from 'macros.html' import select_pathogen %}
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation d'accès") }} *</label>
+                            <span class="form-label col-3 text-end mt-2 me-1">{{ _("Localisation d'accès") }} *</span>
                             <div>
                                 <input name="sal_coordinates[]" type="text" value="{{ args['aliquot']['sal_coordinates'] }}" maxlength="10" class="form-control form-lbk coordinates" pattern="^[A-Za-z]{1}[0-9]+$" aria-label="{{ _('Localisation d\'accès') }}">
                                 <small id="sal_coordinates_error" class="text-danger" style="display:none;">"{{ _("Le format attendu est une lettre suivie d'un nombre") }}"</small>
@@ -71,14 +71,14 @@
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Présent en stock") }}</label>
+                            <span class="form-label col-3 text-end mt-2 me-1">{{ _("Présent en stock") }}</span>
                             <div class="form-check">
                                 <input name="sal_in_stock[]" type="checkbox" class="form-check-input in_stock" aria-label="{{ _('Présent en stock') }}" {% if args['aliquot'].get('sal_in_stock', 'Y') == 'Y' %}checked{% endif %}>
                             </div>
                         </div>
 
                         <div class="form-group d-lg-flex align-items-start mt-3">
-                            <label class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</label>
+                            <span class="form-label col-3 text-end mt-2 me-1">{{ _("Boîte associée") }} *</span>
                             <div>
                                 <select name="sal_box[]" class="form-select box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
                                     {% from 'macros.html' import select_storage_box %}
