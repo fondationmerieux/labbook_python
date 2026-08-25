@@ -3,6 +3,9 @@ name: CodeQL
 # Replaces the default setup configured in the repository settings, which has no way
 # to exclude a path. The exclusion itself lives in .github/codeql/codeql-config.yml
 # and keeps the vendored libraries (static/vendor) out of the analysis.
+#
+# analysis-kinds takes a single value, hence the second matrix axis: one run reports
+# security findings, the other the quality ones shown under "Code quality".
 
 on:
   push:
@@ -14,7 +17,7 @@ on:
 
 jobs:
   analyze:
-    name: Analyze ${{ matrix.language }}
+    name: Analyze ${{ matrix.language }} (${{ matrix.kind }})
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -25,19 +28,20 @@ jobs:
       fail-fast: false
       matrix:
         language: [python, javascript-typescript]
+        kind: [code-scanning, code-quality]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yml
-          quality-queries: code-quality
+          analysis-kinds: ${{ matrix.kind }}
 
       - name: Analyze
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
-          category: /language:${{ matrix.language }}
+          category: /language:${{ matrix.language }}/kind:${{ matrix.kind }}
