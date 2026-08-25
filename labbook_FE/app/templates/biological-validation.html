@@ -174,6 +174,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var lbl_histo = "{{ _('Historique') }}" ;
 var data_res     = [] ;
 var data_reports = {% if args['data_reports'] %}{{ args['data_reports']|safe }}{% else %}[]{% endif %} ;
 var list_id_ana  = [] ;
@@ -501,7 +502,7 @@ function gen_ihm_res( data )
                 '<td class="col-lg-1 text-center">' + res_emer + '</td>' +
                 '<td class="text-start">' + res_stat + '</td>' +
                 '<td class="text-center">' +
-                '<div class="history" onclick="display_histo(' + i + ');"></div>' +
+                '<button type="button" class="history" title="' + lbl_histo + '" onclick="display_histo(' + i + ');"></button>' +
                 '</td>' +
                 '<td class="col-lg-5 text-center">' + res_label + '</td>' ;
 

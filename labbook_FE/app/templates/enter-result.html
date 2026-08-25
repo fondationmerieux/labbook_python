@@ -109,6 +109,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var lbl_histo = "{{ _('Historique') }}" ;
 var user_role    = "{{ session['user_role']|safe }}" ;
 var data_res     = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
 {#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;#}
@@ -604,7 +605,7 @@ let btn_aliquot = "" ;
                    "<td class=\"col-lg-1 align-middle text-center border-0 p-1\">" + res_emer + "</td>" +
                    "<td class=\"align-middle text-center border-0 p-1\">" + res_stat + "</td>" +
                    "<td class=\"align-middle text-center border-0 p-1\">" +
-                   "<div class=\"history\" onclick=\"display_histo(" + i + ");\"></div>" +
+                   "<button type=\"button\" class=\"history\" title=\"" + lbl_histo + "\" onclick=\"display_histo(" + i + ");\"></button>" +
                    "</td>" +
                    "<td class=\"col-lg-5 align-middle text-center border-0 p-1\">" + res_label + "</td>" ;
 

@@ -48,7 +48,10 @@
                 <fieldset class="row border mx-1 mt-3 p-2">
                     <legend class="legend-lbk">{{ _("Analyses par type de demande") }}</legend>
                         <table class="table table-striped table-hover col-lg-12 table-lbk">
-                            <thead id="thead_stat_by_type"></thead>
+                            {# the JS empties this thead and puts the real columns in it #}
+                            <thead id="thead_stat_by_type">
+                                <tr class="visually-hidden"><th scope="col">{{ _("Analyses") }}</th></tr>
+                            </thead>
                             <tbody id="tbody_stat_by_type"></tbody>
                         </table>
                 </fieldset>
@@ -56,7 +59,10 @@
                 <fieldset class="row border mx-1 mt-3 p-2">
                     <legend class="legend-lbk">{{ _("Analyses par tranche d'âge") }}</legend>
                         <table class="table table-striped table-hover col-lg-12 table-lbk">
-                            <thead id="thead_stat_by_age"></thead>
+                            {# the JS empties this thead and puts the real columns in it #}
+                            <thead id="thead_stat_by_age">
+                                <tr class="visually-hidden"><th scope="col">{{ _("Analyses") }}</th></tr>
+                            </thead>
                             <tbody id="tbody_stat_by_age"></tbody>
                         </table>
                 </fieldset>

@@ -1350,6 +1350,7 @@ width               : 21px;
 vertical-align      : middle;
 }
 
+/* used on a <button>, hence the reset of its default border and padding */
 .history
 {
 display             : inline-block;
@@ -1360,6 +1361,8 @@ background-position : center center;
 height              : 21px;
 width               : 21px;
 vertical-align      : middle;
+border              : 0;
+padding             : 0;
 }
 
 .report a

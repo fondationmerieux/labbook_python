@@ -53,7 +53,10 @@
                 <fieldset class="row border mx-1 mt-3 p-2">
                     <legend class="legend-lbk">{{ _("Répartition dossiers") }}</legend>
                         <table class="table table-striped table-hover col-md-12 table-lbk">
-                            <thead id="thead_stat_patient"></thead>
+                            {# the JS empties this thead and puts the real columns in it #}
+                            <thead id="thead_stat_patient">
+                                <tr class="visually-hidden"><th scope="col">{{ _("Dossiers") }}</th></tr>
+                            </thead>
                             <tbody id="tbody_stat_patient"></tbody>
                         </table>
                 </fieldset>

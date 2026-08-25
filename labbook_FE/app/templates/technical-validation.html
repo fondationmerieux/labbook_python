@@ -118,6 +118,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+var lbl_histo = "{{ _('Historique') }}" ;
 var data_res     = [] ;
 {#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;#}
 var list_id_ana  = [] ;
@@ -370,7 +371,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                "<td class=\"text-center\">" + res_stat +
                "</td>" +
                "<td class=\"text-center\">" +
-               "<div class=\"history\" onclick=\"display_histo(" + i + ");\"></div>" +
+               "<button type=\"button\" class=\"history\" title=\"" + lbl_histo + "\" onclick=\"display_histo(" + i + ");\"></button>" +
                "</td>" +
                "<td class=\"col-lg-5 text-center\">" + res_label + "</td>" ;
 

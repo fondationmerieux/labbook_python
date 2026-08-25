@@ -24,7 +24,7 @@
 </head>
 
 {% block body %}
-{% block tag_body %}<body onLoad="init_timeOut('{{ session['server_ext'] }}', {{ session['auto_logout'] }});" onmousemove="reboot_timeOut({{ session['auto_logout'] }});">{% endblock %}
+{% block tag_body %}<body>{% endblock %}
     <div id="page" class="container-fluid">
 
         {% block header %}
@@ -169,6 +169,14 @@ $( document ).ready( function()
 load_username() ;
 nb_msg_unread() ;
 setInterval(nb_msg_unread, 30000);
+
+    // idle timeout: started here and restarted on every mouse move
+    init_timeOut("{{ session['server_ext'] }}", {{ session['auto_logout'] }}) ;
+
+    $( document ).on( "mousemove", function()
+    {
+    reboot_timeOut({{ session['auto_logout'] }}) ;
+    } ) ;
 } ) ;
 </script>
 {% block add_script %}
