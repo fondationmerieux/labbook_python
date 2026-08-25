@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import os
 import logging
+import subprocess  # nosec B404
 import barcode
 import pdfkit
 import pikepdf
@@ -2208,10 +2209,13 @@ class Pdf:
 
         # convert odt to pdf via openoffice
         try:
-            cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            # a list, not a shell line: a file name can never extend the command
+            argv = ["unoconv", "-e", "SelectPdfVersion=1", "-f", "pdf", "-o", out_pdf, tmp_odt]
 
-            Pdf.log.error(Logs.fileline() + ' : buildReport cmd=' + cmd)
-            os.system(cmd)
+            Pdf.log.info(Logs.fileline() + ' : buildReport argv=' + str(argv))
+
+            with open(os.path.join(Constants.cst_log, 'unoconv.out'), "w", encoding="utf-8", errors="ignore") as f_out:
+                subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
 
             if id_rec > 0:
                 file_exists = os.path.exists(out_pdf + '.pdf')
@@ -2308,10 +2312,13 @@ class Pdf:
 
         # convert odt to pdf via openoffice
         try:
-            cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + Constants.cst_log + 'unoconv.out 2>&1')
+            # a list, not a shell line: a file name can never extend the command
+            argv = ["unoconv", "-e", "SelectPdfVersion=1", "-f", "pdf", "-o", out_pdf, tmp_odt]
 
-            Pdf.log.error(Logs.fileline() + ' : buildPdf cmd=' + cmd)
-            os.system(cmd)
+            Pdf.log.info(Logs.fileline() + ' : buildPdf argv=' + str(argv))
+
+            with open(os.path.join(Constants.cst_log, 'unoconv.out'), "w", encoding="utf-8", errors="ignore") as f_out:
+                subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
 
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildPdf convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))

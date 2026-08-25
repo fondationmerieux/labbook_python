@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 import logging
 import os
+import re
+import subprocess  # nosec B404
 
 from flask import request
 from flask_restful import Resource
@@ -615,16 +617,42 @@ class PrintByScript(Resource):
 
         # TODO get args for script
 
-        cmd = ('sh ' + Constants.cst_printer + '/' + script_name + ' > ' + Constants.cst_io + 'print.out 2>&1 &')
+        # the name comes from the URL: only a plain file name is accepted, so nothing
+        # can be appended to the command line
+        if not re.fullmatch(r"[A-Za-z0-9_.\-]{1,64}", script_name):
+            self.log.error(Logs.fileline() + ' : PrintByScript ERROR invalid script_name')
+            try:
+                details = {"result": "ERROR", "reason": "INVALID_SCRIPT_NAME"}
+                Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, "ERROR", details, "R")
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit invalid script_name')
+            return compose_ret('', Constants.cst_content_type_json, 400)
 
-        self.log.error(Logs.fileline() + ' : PrintByScript cmd=' + cmd)
-        ret = os.system(cmd)
+        script_path = os.path.join(Constants.cst_printer, script_name)
 
-        self.log.info(Logs.fileline() + ' : TRACE PrintByScript ret =' + str(ret))
-        status = "SUCCESS" if int(ret) == 0 else "ERROR"
+        if not os.path.isfile(script_path):
+            self.log.error(Logs.fileline() + ' : PrintByScript ERROR script not found path=' + script_path)
+            try:
+                details = {"result": "ERROR", "reason": "SCRIPT_NOT_FOUND", "script_name": str(script_name)}
+                Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, "ERROR", details, "R")
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit script not found')
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        out_path = os.path.join(Constants.cst_io, 'print.out')
+
+        self.log.info(Logs.fileline() + ' : PrintByScript script_path=' + script_path)
+
+        # run without a shell, output redirected as the trailing "> print.out 2>&1" did
+        with open(out_path, "w", encoding="utf-8", errors="ignore") as f:
+            proc = subprocess.Popen(["sh", script_path], stdout=f, stderr=subprocess.STDOUT,  # nosec B603
+                                    start_new_session=True)
+
+        # the script runs in the background, as the trailing "&" did: only its start is traced
+        self.log.info(Logs.fileline() + ' : TRACE PrintByScript pid =' + str(proc.pid))
         try:
-            details = {"script_name": str(script_name), "ret": int(ret)}
-            Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, status, details, "R")
+            details = {"script_name": str(script_name), "pid": int(proc.pid)}
+            Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, "SUCCESS", details, "R")
         except Exception:
             self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit success')
         return compose_ret('', Constants.cst_content_type_json)

@@ -71,6 +71,16 @@ __all__ = [
 ]
 
 
+def _is_plain_name(value, length):
+    """
+    True when `value` is a plain name: letters, digits, dot, underscore, dash.
+
+    Used on values coming from the URL before they are passed to a script, so that
+    nothing can be appended to the command line.
+    """
+    return bool(re.fullmatch(r"[A-Za-z0-9_.\-]{1,%d}" % length, str(value)))
+
+
 class SettingAgeInterval(Resource):
     log = logging.getLogger('log_services')
 
@@ -831,15 +841,31 @@ class ScriptBackup(Resource):
     @require_oauth()
     def post(self, media):
         audit_user = request.oauth_user
-        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
-               '" ' + Constants.cst_io_backup + ' > ' + Constants.cst_io + 'backup.out 2>&1 &')
 
-        self.log.error(Logs.fileline() + ' : ScriptBackup cmd=' + cmd)
-        ret = os.system(cmd)
+        if not _is_plain_name(media, 32):
+            self.log.error(Logs.fileline() + ' : ScriptBackup ERROR invalid media')
+            try:
+                details = {"result": "ERROR", "reason": "INVALID_MEDIA"}
+                Audit.insertAudit(audit_user, "ScriptBackup", "SETTING", None, "ERROR", details, "E")
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ScriptBackup ERROR audit invalid media')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        argv = ["sh", script_path, "-m", media, Constants.cst_io_backup]
+        out_path = os.path.join(Constants.cst_io, 'backup.out')
+
+        self.log.info(Logs.fileline() + ' : ScriptBackup argv=' + str(argv))
+
+        # runs in the background, as the trailing "&" did
+        with open(out_path, "w", encoding="utf-8", errors="ignore") as f:
+            subprocess.Popen(argv, stdout=f, stderr=subprocess.STDOUT, start_new_session=True)  # nosec B603
+
+        ret = 0
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptBackup ret=' + str(ret))
         try:
-            details = {"media": media, "cmd": cmd, "ret": ret, "result": "CALLED"}
+            details = {"media": media, "cmd": argv, "ret": ret, "result": "CALLED"}
             Audit.insertAudit(audit_user, "ScriptBackup", "SETTING", None, "SUCCESS", details, "E")
         except Exception:
             self.log.exception(Logs.fileline() + ' : ScriptBackup ERROR audit')
@@ -885,15 +911,27 @@ class ScriptInitMedia(Resource):
     @require_oauth()
     def post(self, media):
         audit_user = request.oauth_user
-        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
-               '" ' + Constants.cst_io_initmedia)
 
-        self.log.error(Logs.fileline() + ' : ScriptInitMedia cmd=' + cmd)
-        ret = os.system(cmd)
+        if not _is_plain_name(media, 32):
+            self.log.error(Logs.fileline() + ' : ScriptInitMedia ERROR invalid media')
+            try:
+                details = {"result": "ERROR", "reason": "INVALID_MEDIA"}
+                Audit.insertAudit(audit_user, "ScriptInitMedia", "SETTING", None, "ERROR", details, "E")
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ScriptInitMedia ERROR audit invalid media')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        argv = ["sh", script_path, "-m", media, Constants.cst_io_initmedia]
+
+        self.log.info(Logs.fileline() + ' : ScriptInitMedia argv=' + str(argv))
+
+        # this one is awaited: the caller checks the return code
+        ret = subprocess.run(argv, check=False).returncode  # nosec B603
 
         self.log.info(Logs.fileline() + ' : TRACE ScriptInitMedia ret=' + str(ret))
         try:
-            details = {"media": media, "cmd": cmd, "ret": ret, "result": "CALLED"}
+            details = {"media": media, "cmd": argv, "ret": ret, "result": "CALLED"}
             Audit.insertAudit(audit_user, "ScriptInitMedia", "SETTING", None, "SUCCESS", details, "E")
         except Exception:
             self.log.exception(Logs.fileline() + ' : ScriptInitMedia ERROR audit')
@@ -937,17 +975,32 @@ class ScriptListarchive(Resource):
                 self.log.exception(Logs.fileline() + ' : ScriptListarchive ERROR audit args missing')
             return compose_ret('1', Constants.cst_content_type_json, 400)
 
+        if not _is_plain_name(media, 32):
+            self.log.error(Logs.fileline() + ' : ScriptListarchive ERROR invalid media')
+            try:
+                details = {"result": "ERROR", "reason": "INVALID_MEDIA"}
+                Audit.insertAudit(audit_user, "ScriptListarchive", "SETTING", None, "ERROR", details, "E")
+            except Exception:
+                self.log.exception(Logs.fileline() + ' : ScriptListarchive ERROR audit invalid media')
+            return compose_ret('1', Constants.cst_content_type_json, 400)
+
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        cmd = ('sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + ' -m "' + media +
-               '" ' + Constants.cst_io_listarchive + ' > ' + Constants.cst_io + 'listarchive.out 2>&1 &')
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        argv = ["sh", script_path, "-m", media, Constants.cst_io_listarchive]
+        out_path = os.path.join(Constants.cst_io, 'listarchive.out')
 
-        self.log.error(Logs.fileline() + ' : ScriptListarchive cmd=' + cmd)
-        ret = os.system(cmd)
+        self.log.info(Logs.fileline() + ' : ScriptListarchive argv=' + str(argv))
 
-        self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive ret=' + str(ret))  # l_archive=' + str(l_archive))
+        # runs in the background, as the trailing "&" did
+        with open(out_path, "w", encoding="utf-8", errors="ignore") as f:
+            subprocess.Popen(argv, stdout=f, stderr=subprocess.STDOUT, start_new_session=True)  # nosec B603
+
+        ret = 0
+
+        self.log.info(Logs.fileline() + ' : TRACE ScriptListarchive ret=' + str(ret))
         try:
-            details = {"media": media, "cmd": cmd, "ret": ret, "result": "CALLED"}
+            details = {"media": media, "cmd": argv, "ret": ret, "result": "CALLED"}
             Audit.insertAudit(audit_user, "ScriptListarchive", "SETTING", None, "SUCCESS", details, "E")
         except Exception:
             self.log.exception(Logs.fileline() + ' : ScriptListarchive ERROR audit')
