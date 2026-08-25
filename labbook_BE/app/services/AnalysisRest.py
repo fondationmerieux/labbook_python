@@ -133,7 +133,7 @@ def save_analysis_variables(id_ana, args, audit_user, log):
                     log.exception(Logs.fileline() + ' : AnalysisDet ERROR audit insert link var')
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
-    ource eturn None
+    return None
 
 
 class AnalysisSearch(Resource):
