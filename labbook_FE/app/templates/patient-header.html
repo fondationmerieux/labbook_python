@@ -1,0 +1,100 @@
+{#
+    Patient identity and prescriber panel shown on top of the result pages.
+    Reads args["patient"] and args["doctor"].
+#}
+                <div class="row gx-3 gy-0 align-items-stretch flex-lg-nowrap">
+                    <div class="col-12 col-lg-6">
+                        <fieldset class="border rounded px-3 py-2 h-100">
+                            <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>
+                            <div class="col-lg-12">
+                                {% if args['patient'] and args['patient']['pat_code_lab'] %}
+                                <span class="pat-num">{{ args['patient']['pat_code_lab'] }}</span>
+                                {% endif %}
+                                <span class="pat-num">{% if args['patient'] %}{{ args['patient']['pat_code'] }}{% endif %}</span>
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                {% if args['patient'] and args['patient']['pat_ano'] != 4 %}
+                                <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_firstname'] }} {{ args['patient']['pat_name'] }}{% if args['patient']['pat_maiden'] %} {{ args['patient']['pat_maiden'] }}{% endif %}{% endif %}</span>
+                                {% else %}
+                                <span class="font-info">{{ _("Patient anonyme") }}.</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-12 mt-2">
+                                <span>{{ _("Né(e) le") }}&nbsp;</span>
+                                <span class="font-info">{% if args['patient'] and args['patient']['pat_birth'] %}{{ args['patient']['pat_birth']|date_format }}{% endif %}</span>
+                                <span>&nbsp;-&nbsp;</span>
+                                <span class="font-info">{% if args['patient'] %}{{ args['patient']['pat_age'] }}{% endif %}&nbsp;</span>
+                                <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_age_unit'] == 1037 %}{{ _("années") }}
+                                    {% elif args['patient']['pat_age_unit'] == 1036 %}{{ _("mois") }}
+                                    {% elif args['patient']['pat_age_unit'] == 1035 %}{{ _("semaines") }}
+                                    {% elif args['patient']['pat_age_unit'] == 1034 %}{{ _("jours") }}{% endif %}{% endif %}</span>
+                                <span>&nbsp;-&nbsp;</span>
+                                <span class="font-info">{% if args['patient'] %}{% if args['patient']['pat_sex'] == 1 %}{{ _("Masculin") }}
+                                    {% elif args['patient']['pat_sex'] == 2 %}{{ _("Féminin") }}
+                                    {% elif args['patient']['pat_sex'] == 3 %}{{ _("Inconnu") }}{% endif %}{% endif %}</span>
+                            </div>
+                            <div class="col-md-12 mt-1">
+                                {% if args['patient'] and args['patient']['pat_address'] %}
+                                <span class="font-info">{{ args['patient']['pat_address'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and args['patient']['pat_district'] %}
+                                <span class="font-info">{{ args['patient']['pat_district'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and args['patient']['pat_pbox'] %}
+                                <span class="font-info">{{ args['patient']['pat_pbox'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and args['patient']['pat_zipcode'] %}
+                                <span class="font-info">{{ args['patient']['pat_zipcode'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and args['patient']['pat_city'] %}
+                                <span class="font-info">{{ args['patient']['pat_city'] }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-12 mt-1">
+                                {% if args['patient'] and args['patient']['pat_phone1'] %}
+                                <span class="font-info">{{ args['patient']['pat_phone1'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and args['patient']['pat_phone1'] and args['patient']['pat_phone2'] %} / {% endif %}
+                                {% if args['patient'] and args['patient']['pat_phone2'] %}
+                                <span class="font-info">{{ args['patient']['pat_phone2'] }}</span>
+                                {% endif %}
+                                {% if args['patient'] and (args['patient']['pat_phone1'] or args['patient']['pat_phone2']) and args['patient']['pat_email'] %} / {% endif %}
+                                {% if args['patient'] and args['patient']['pat_email'] %}
+                                <span class="font-info">{{ args['patient']['pat_email'] }}</span>
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    {% if args['doctor'] and args['doctor']['id_data'] > 0 %}
+                    <div class="col-12 col-lg-6">
+                        <fieldset class="border rounded px-3 py-2 h-100">
+                            <legend class="w-auto legend-lbk">{{ _("Prescripteur") }}</legend>
+
+                            {% if args['doctor'] %}
+                            <div class="col-lg-12">
+                                <span class="font-info">
+                                    {{ args['doctor']['nom'] }} {{ args['doctor']['prenom'] }}
+                                    {% if args['doctor']['spe_doctor'] %} – {{ args['doctor']['spe_doctor'] }}{% endif %}
+                                    {% if args['doctor']['facility'] %} – {{ args['doctor']['facility'] }}{% endif %}
+                                </span>
+                            </div>
+
+                            {% if args['doctor']['service'] %}
+                            <div class="col-lg-12">
+                                {{ _("Service") }} : {{ args['doctor']['service'] }}
+                            </div>
+                            {% endif %}
+
+                            <div class="col-lg-12 mt-2">
+                                {% if args['doctor'].get('mobile') %}<span class="font-info">{{ args['doctor'].get('mobile') }}</span>{% endif %}
+                                {% if args['doctor'].get('mobile') and args['doctor'].get('email') %} / {% endif %}
+                                {% if args['doctor'].get('email') %}<span class="font-info">{{ args['doctor'].get('email') }}</span>{% endif %}
+                            </div>
+                            {% else %}
+                            <div class="text-muted">{{ _("Aucun prescripteur") }}</div>
+                            {% endif %}
+                        </fieldset>
+                    </div>
+                    {% endif %}
+                </div>

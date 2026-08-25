@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Adding analyses to a record is now handled by one shared function
 - Patient form saving is now handled by one shared function
 - Attached file upload and deletion are now shared by the equipment, operation and staff forms
+- Patient and prescriber panel is now shared by the result and validation pages
 - Job and audit list pages now share their DataTables labels and their action toast
 - Audit filtering and search no longer duplicate the query builders they already had
 - File and photo upload routes now share a single implementation
