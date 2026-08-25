@@ -2,7 +2,6 @@
 import logging
 import shlex
 import subprocess  # nosec B404
-import os
 
 from datetime import datetime
 from flask import request
@@ -296,11 +295,12 @@ class ProductReq(Resource):
                     cmd_split = shlex.split(cmd)
 
                     out_file = Constants.cst_path_log + 'log_script_analyzer.log'
-                    out_file = os.open(out_file, os.O_CREAT | os.O_APPEND)
 
                     self.log.info(Logs.fileline() + ' : RecordStat script analyzer cmd_split : ' + str(cmd_split))
 
-                    subprocess.Popen(cmd_split, stdout=out_file, stderr=subprocess.STDOUT)  # nosec B603
+                    # the child keeps its own handle on the file, this one is closed right after
+                    with open(out_file, "a", encoding="utf-8", errors="ignore") as f:
+                        subprocess.Popen(cmd_split, stdout=f, stderr=subprocess.STDOUT)  # nosec B603
 
         self.log.info(Logs.fileline() + ' : TRACE ProductReq')
         try:
