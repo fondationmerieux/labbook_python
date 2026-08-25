@@ -14,5 +14,6 @@
         last: "{{ _('Dernier') }}",
         next: "{{ _('Suivant') }}",
         previous: "{{ _('Précédent') }}"
-      }
+      },
+      processing: "{{ _('Chargement...') }}"
     },

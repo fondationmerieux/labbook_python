@@ -118,21 +118,7 @@ function loadItemsTable() {
         "autoWidth": true,
         "pageLength": 25,
         "order": [[1, "desc"]], // tri sur ID (col 1, cachée), inchangé
-        "language": {
-            "lengthMenu": "{{ _('Afficher _MENU_ entrées') }}",
-            "zeroRecords": "{{ _('Aucun enregistrement trouvé') }}",
-            "info": "{{ _('Affichage de _START_ à _END_ sur _TOTAL_ entrées') }}",
-            "infoEmpty": "{{ _('Aucune entrée disponible') }}",
-            "infoFiltered": "{{ _('(filtré de _MAX_ entrées au total)') }}",
-            "search": "{{ _('Rechercher') }}:",
-            "paginate": {
-                "first": "{{ _('Premier') }}",
-                "last": "{{ _('Dernier') }}",
-                "next": "{{ _('Suivant') }}",
-                "previous": "{{ _('Précédent') }}"
-            },
-            "processing": "{{ _('Chargement...') }}"
-        },
+{% include 'js/datatables_lang.js' %}
         "ajax": {
             "url": "{{ session['server_ext'] }}/services/setting/sending/list",
             "type": "POST",

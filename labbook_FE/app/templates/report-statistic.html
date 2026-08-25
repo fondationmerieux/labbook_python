@@ -38,29 +38,9 @@
                             {% endif %}
                         </div>
 
-                        {% set lite_filter_val = args.get('lite_filter', 'A') %}
-                        {% set lite_user_id_val = args.get('lite_user_id', 0) %}
 
                         <div class="form-group d-lg-flex align-items-start ms-2 mt-2">
-                            <label for="lite_filter" class="form-label text-end mt-2 me-1">{{ _("LabBook Lite") }}</label>
-                            <div>
-                                <select id="lite_filter" name="lite_filter" class="form-select form-lbk">
-                                    {% from 'macros.html' import select_lite_filter %}
-                                    {{ select_lite_filter(lite_filter_val) }}
-                                </select>
-                            </div>
-
-                            <div id="lite_user_container" class="ms-3" style="display:none">
-                                <div class="d-lg-flex align-items-start">
-                                    <label for="lite_user_id" class="form-label text-end mt-2 me-1">{{ _("Utilisateur LabBook Lite") }}</label>
-                                    <div>
-                                        <select id="lite_user_id" name="lite_user_id" class="form-select form-lbk">
-                                            {% from 'macros.html' import select_lite_user %}
-                                            {{ select_lite_user(ihm['lite_users'], lite_user_id_val) }}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+{% include 'lite-filter.html' %}
                         </div>
 
                         <div class="float-end mt-2">
@@ -653,22 +633,7 @@ $( document ).ready( function()
 {
 display_data() ;
 
-let lite_filter = $("#lite_filter").val() || "A";
-
-    if (lite_filter === "Y") {
-        $("#lite_user_container").show();
-    } else {
-        $("#lite_user_container").hide();
-    }
-
-    $("#lite_filter").on("change", function() {
-        if ($(this).val() === "Y") {
-            $("#lite_user_container").show();
-        } else {
-            $("#lite_user_container").hide();
-            $("#lite_user_id").val("");
-        }
-    });
+{% include 'js/lite_filter.js' %}
 } ) ;
 </script>
 {% endblock %}
