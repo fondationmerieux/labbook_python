@@ -11,11 +11,11 @@
         <div id="main">
             <h2 class="page-title page-title-color"><span>{{ _("Paramétrage du logo pour les documents") }}</span></h2>
             <div class="d-lg-flex ms-5">
-                <label>{{ _("Logo original") }} :</label>
+                <span class="d-inline-block">{{ _("Logo original") }} :</span>
                 <img src="{{ session['server_ext'] }}/resource/logo.png?{{ rand }}" alt="logo" class="img-fluid">
             </div>
             <div class="d-lg-flex ms-5">
-                <label>{{ _("Logo tel qu'il apparaitra dans l'entête de rapport") }}<br />{{ _("Largeur forcée à 230 pixels et conserve les proportions") }} :</label>
+                <span class="d-inline-block">{{ _("Logo tel qu'il apparaitra dans l'entête de rapport") }}<br />{{ _("Largeur forcée à 230 pixels et conserve les proportions") }} :</span>
                 <img src="{{ session['server_ext'] }}/resource/logo.png?{{ rand }}" width="230" alt="resized_logo">
             </div>
             <br />

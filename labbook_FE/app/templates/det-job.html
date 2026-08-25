@@ -231,7 +231,7 @@
                         <div class="col">
                             <select id="dhis2_api_config" class="form-select form-lbk">
                                 {% for dhs in ihm['dhs'] %}
-                                <option value="{{ dhs["dhs_ser"] }}" {% if dhs["dhs_default"] == "Y" %}selected{% endif %}>{{ dhs["dhs_name"] }}</option>
+                                <option value="{{ dhs['dhs_ser'] }}" {% if dhs["dhs_default"] == "Y" %}selected{% endif %}>{{ dhs["dhs_name"] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -306,7 +306,7 @@
                         <div class="col">
                             <select id="activity_template" class="form-select form-lbk">
                                 {% for tpl in ihm['tpl_activity'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] == "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] == "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -352,7 +352,7 @@
                         <div class="col">
                             <select id="billing_template" class="form-select form-lbk">
                                 {% for tpl in ihm['tpl_billing'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] == "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] == "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                         </div>

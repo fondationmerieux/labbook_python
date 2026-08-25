@@ -301,7 +301,7 @@
                             <label for="tpl_outsourced" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_outsourced" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_outsourced'] and ihm['tpl_outsourced']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_outsourced'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                             <input type="button" onclick="print_outsourced({{ args['record']['id_data'] }});" class="btn btn-lbk btn-{{ session['user_role']|safe }} me-3" value="{{ _('Bon de transfert') }}" id="btn_outsourced">
@@ -311,7 +311,7 @@
                             <label for="tpl_invoice" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_invoice" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_invoice'] and ihm['tpl_invoice']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_invoice'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                             {% endif %}
@@ -321,7 +321,7 @@
                             <label for="tpl_sticker" class="visually-hidden">{{ _("Modèles") }}</label>
                             <select id="tpl_sticker" class="form-select me-3 w-auto" {% if ihm['tpl_sticker'] and ihm['tpl_sticker']|length < 2 %}hidden{% endif %}>
                                 {% for tpl in ihm['tpl_sticker'] %}
-                                <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                                <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                                 {% endfor %}
                             </select>
                             <input type="button" onclick="print_sticker();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Code barre') }}">
@@ -546,7 +546,7 @@ function load_report( data )
 
                 tpl = '<select id="tpl_result" class="form-select-sm ms-2" ' + disp_tpl + ' >' +
                     {% for tpl in ihm['tpl_result'] %}
-                '<option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>' +
+                '<option value="{{ tpl.tpl_file }}" {% if tpl.tpl_default ==  "Y" %}selected{% endif %}>{{ tpl.tpl_name }}</option>' +
                     {% endfor %}
                 '</select>' ;
             }

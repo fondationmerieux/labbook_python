@@ -12,31 +12,31 @@
             <h2 class="page-title page-title-color"><span>{{ _("Général") }}</span></h2>
             <form>
                 <div class="row mt-3">
-                    <label class="form-label col-6 text-end">{{ _("Nombre de personnels dans le laboratoire") }}</label>
+                    <span class="form-label col-6 text-end">{{ _("Nombre de personnels dans le laboratoire") }}</span>
                     <div class="col mt-1">					
                         <span class="font-info">{% if args['nb_users'] %}{{ args['nb_users'] }}{% endif %}</span>    
                     </div>
                 </div>
                 <div class="row">
-                    <label class="form-label col-6 text-end"> {{ _("Nombre de manuels sauvegardés") }}</label>
+                    <span class="form-label col-6 text-end"> {{ _("Nombre de manuels sauvegardés") }}</span>
                     <div class="col mt-1">					
                         <span class="font-info">{% if args['nb_manuals'] %}{{ args['nb_manuals'] }}{% endif %}</span>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="form-label col-6 text-end"> {{ _("Date de la dernière réunion d'équipe") }}</label>
+                    <span class="form-label col-6 text-end"> {{ _("Date de la dernière réunion d'équipe") }}</span>
                     <div class="col mt-1">					
                         <span class="font-info">{% if args['meeting'] %}{{ args['meeting']['date'] }}{% endif %}</span>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="form-label col-6 text-end"> {{ _("Nombre de non-conformités en cours") }}</label>
+                    <span class="form-label col-6 text-end"> {{ _("Nombre de non-conformités en cours") }}</span>
                     <div class="col mt-1">					
                         <span class="font-info">{% if args['nb_noncompliances_open'] %}{{ args['nb_noncompliances_open'] }}{% endif %}</span>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="form-label col-6 text-end"> {{ _("Nombre de non-conformités depuis un mois") }}</label>
+                    <span class="form-label col-6 text-end"> {{ _("Nombre de non-conformités depuis un mois") }}</span>
                     <div class="col mt-1">					
                         <span class="font-info">{% if args['nb_noncompliances_month'] %}{{ args['nb_noncompliances_month'] }}{% endif %}</span>
                     </div>

@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="form-group d-lg-flex align-items-start mt-3">
-                    <label class="form-label col-3 text-end me-1">{{ _("Mode") }}</label>
+                    <span class="form-label col-3 text-end me-1">{{ _("Mode") }}</span>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="mode" id="mode_batch" value="batch"
                                {% if not args or args['analyzer']['ans_batch'] == 'Y' %}checked{% endif %}>

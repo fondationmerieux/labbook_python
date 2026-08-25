@@ -184,7 +184,7 @@
                             <input type="checkbox" id="var_show_minmax" name="var_show_minmax" class="mt-2" value="Y" {% if args['var'] and args['var'][0]['normal_min'] == 'Y' %}checked{% endif %} onChange="change_data(this);">
                         </div>
 
-                        <label class="form-label text-end mt-1 mx-3">{{ _("Souligner") }}</label>
+                        <span class="form-label text-end mt-1 mx-3">{{ _("Souligner") }}</span>
                         <label class="form-label text-end mt-1 me-3">
                             <input type="radio" id="var_highlight_Y" name="var_highlight" value="Y" {% if args['var'] and args['var'][0]['var_highlight'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
                         </label>

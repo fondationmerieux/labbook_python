@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                    <label class="form-label text-end me-1">{{ _("Reste à payer") }}</label>
+                    <span class="form-label text-end me-1">{{ _("Reste à payer") }}</span>
                     <span id="total_remain" class="font-info mt-1"></span>
                 </div>
             </form>
@@ -102,7 +102,7 @@
                 <label for="tpl_billing_status" class="visually-hidden">{{ _("Modèles") }}</label>
                 <select id="tpl_billing_status" class="form-select form-lbk me-3 w-auto" {% if ihm['tpl_billing_status'] and ihm['tpl_billing_status']|length < 2 %}hidden{% endif %}>
                     {% for tpl in ihm['tpl_billing_status'] %}
-                    <option value="{{ tpl["tpl_file"] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
+                    <option value="{{ tpl['tpl_file'] }}" {% if tpl["tpl_default"] ==  "Y" %}selected{% endif %}>{{ tpl["tpl_name"] }}</option>
                     {% endfor %}
                 </select>
                 {% endif %}

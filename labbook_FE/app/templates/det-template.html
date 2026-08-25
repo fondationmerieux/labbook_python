@@ -58,7 +58,7 @@
                                     <td class="filename"><div>{{ args['template']['tpl_file'] }}</div></td>
                                     <td class="action">
                                         <div>
-                                            <a href="#" onclick="download_file('TP', '{{ args["template"]["tpl_file"] }}', 'TPL', {{ args['id_tpl']|default(0)|tojson }});">
+                                            <a href="#" onclick="download_file('TP', '{{ args.template.tpl_file }}', 'TPL', {{ args['id_tpl']|default(0)|tojson }});">
                                         </div>
                                     </td>
                                 </tr>

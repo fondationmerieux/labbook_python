@@ -31,14 +31,14 @@
                                         <label class="form-check-label">{{ _("Présent en stock") }}</label>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">{{ _("Boîte associée") }} *</label>
+                                        <label class="form-label" for="select_storage_box">{{ _("Boîte associée") }} *</label>
                                         <select class="form-select box" id="select_storage_box" onchange="get_box_coord(event);" aria-label="{{ _('Boîte associée') }}">
                                             {% from 'macros.html' import select_storage_box %}
                                             {{ select_storage_box(ihm['l_box']['data'], 0) }}
                                         </select>
                                     </div>
                                     <div class="mb-1">
-                                        <label class="form-check-label">{{ _("Stockage boîte") }} : </label>
+                                        <span class="form-check-label">{{ _("Stockage boîte") }} : </span>
                                         <span class="box_coord"></span>
                                     </div>
                                 </div>
