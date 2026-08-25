@@ -21,7 +21,8 @@
                             <label for="dico_descr" class="form-label text-end mt-2 me-1">{{ _("Description") }}</label>
                             <div>					
                                 <textarea id="dico_descr" name="dico_descr" rows="2" cols="40" class="form-control form-lbk">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
-                                <textarea id="dico_descr_old" name="dico_descr_old" rows="2" cols="40" class="form-control form-lbk d-none">{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}</textarea>
+                                <!-- keeps the description as loaded, to detect a change on save -->
+                                <input type="hidden" id="dico_descr_old" name="dico_descr_old" value="{% if args['data_values'][0] %}{{ args['data_values'][0]['dico_descr'] }}{% endif %}">
                             </div>
                         </div>
                     </div>
