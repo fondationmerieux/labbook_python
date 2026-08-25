@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import logging
-import gettext
 import requests
 
 from datetime import datetime

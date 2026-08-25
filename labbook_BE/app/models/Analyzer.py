@@ -552,8 +552,8 @@ class Analyzer:
             specimen_id = ""
 
             if raw_qpd3:
+                # only the specimen is used below: the patient comes from the matching order
                 parts = raw_qpd3.split("^")
-                patient_id = parts[0] if len(parts) > 0 else ""
                 specimen_id = parts[1] if len(parts) > 1 else parts[0]
 
             # Initialize RSP_K11
@@ -590,8 +590,6 @@ class Analyzer:
 
             # === Fetch matching orders ===
             raw_orders = []
-
-            date_now = datetime.now().strftime("%Y%m%d%H%M%S")
 
             Analyzer.log.error(Logs.fileline() + f" : specimen_id received = '{specimen_id}'")
 

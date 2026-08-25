@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import logging
 import os
-import gettext
 import subprocess
 import csv
 import re
@@ -1238,9 +1237,9 @@ class ScriptStatus(Resource):
 
                 try:
                     # No encoding forced because script return list from system so its depend of encoding of operating system
-                    f = open(os.path.join(Constants.cst_io, 'listmedia').strip(), 'r')
-                    for media in f:
-                        l_media['media'].append(media[:-1])
+                    with open(os.path.join(Constants.cst_io, 'listmedia').strip(), 'r') as f:
+                        for media in f:
+                            l_media['media'].append(media[:-1])
 
                     l_media['media'] = l_media['media'][:-1]  # Remove last line
 
@@ -1262,9 +1261,9 @@ class ScriptStatus(Resource):
                 # read listarchive file
                 try:
                     # No encoding forced because script return list from system so its depend of encoding of operating system
-                    f = open(os.path.join(Constants.cst_io, 'listarchive').strip(), 'r')
-                    for archive in f:
-                        l_archive['archive'].append(archive[:-1])
+                    with open(os.path.join(Constants.cst_io, 'listarchive').strip(), 'r') as f:
+                        for archive in f:
+                            l_archive['archive'].append(archive[:-1])
 
                     l_archive['archive'] = l_archive['archive'][:-1]  # Remove last line
 
@@ -2335,7 +2334,6 @@ class SettingSendModelDet(Resource):
                 self.log.exception(Logs.fileline() + ' : SettingSendModelDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        action = "UPDATE"
         ret_id = id_item
 
         # Update item
@@ -2578,8 +2576,9 @@ class SettingSendList(Resource):
             try:
                 if r.get('sde_date') and hasattr(r['sde_date'], 'strftime'):
                     r['sde_date'] = r['sde_date'].strftime('%Y-%m-%d %H:%M:%S')
-            except Exception:
-                pass
+            except Exception as err:
+                # the date is returned unformatted rather than losing the whole row
+                self.log.warning(Logs.fileline() + ' : sde_date formatting failed, err=' + str(err))
 
             for k, v in list(r.items()):
                 if r[k] is None:

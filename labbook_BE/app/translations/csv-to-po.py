@@ -2,7 +2,6 @@
 import sys
 import getopt
 import logging
-import locale
 
 from datetime import datetime
 from logging.handlers import WatchedFileHandler
@@ -63,13 +62,11 @@ def conv_csv_to_po(test=False, verbose=False):
 
     # Write file with the pairs msgid /msgstr
     try:
-        f = open(os.path.join(path_po, filename_po), 'w', encoding='utf-8')
-        f.write(po)
-        f.close()
+        with open(os.path.join(path_po, filename_po), 'w', encoding='utf-8') as f:
+            f.write(po)
 
-        f2 = open(os.path.join(path_po, filename_ref), 'w', encoding='utf-8')
-        f2.write(ref)
-        f2.close()
+        with open(os.path.join(path_po, filename_ref), 'w', encoding='utf-8') as f2:
+            f2.write(ref)
 
     except Exception as err:
         log.error('csv-to-po ERROR write file, err=%s', err)

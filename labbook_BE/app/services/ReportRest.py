@@ -1,6 +1,5 @@
 import logging
 import configparser
-import gettext
 import os
 import csv
 import json

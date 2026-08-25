@@ -426,7 +426,8 @@ class AnalyzerLab29(Resource):
             ack_status = "AA" if "AA" in msg_ack else "AE" if "AE" in msg_ack else "AR"
 
             # update transaction in DB
-            ret = Analyzer.updateLab29_ACK(id_task=id_msg, id_samp=specimen_id, stat=ack_status, msg=msg_ack)
+            if not Analyzer.updateLab29_ACK(id_task=id_msg, id_samp=specimen_id, stat=ack_status, msg=msg_ack):
+                self.log.error(Logs.fileline() + ' : ERROR updateLab29_ACK failed, id_task=' + str(id_msg))
 
             has_obx = any(segment.name == "OBX" for segment in hl7_msg.children)
 

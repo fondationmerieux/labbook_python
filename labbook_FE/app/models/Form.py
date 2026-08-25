@@ -54,17 +54,14 @@ class Form:
 
                     # Collect all attributes, detect "required"
                     for key in elem:
-                        if key.startswith('attr_'):
-                            if key == 'attr_value':
-                                # Default value for the element (not used here directly)
-                                value = elem[key]
-                            else:
-                                attr_name = key.replace('attr_', '')
-                                attr_value = elem[key]
-                                attr_pair = f'{attr_name}={attr_value}'
-                                if attr_name == "required":
-                                    required = True
-                                l_attr.append(attr_pair)
+                        # attr_value holds the default value of the element, handled elsewhere
+                        if key.startswith('attr_') and key != 'attr_value':
+                            attr_name = key.replace('attr_', '')
+                            attr_value = elem[key]
+                            attr_pair = f'{attr_name}={attr_value}'
+                            if attr_name == "required":
+                                required = True
+                            l_attr.append(attr_pair)
 
                     # Include the corresponding HTML template (patient fields, etc.)
                     l_obj_html[elem['labbook_ref']] = Form.build_labbook_elem(elem['labbook_ref'], l_attr)

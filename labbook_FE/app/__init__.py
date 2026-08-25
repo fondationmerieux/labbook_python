@@ -169,8 +169,9 @@ def before_request_func():
             if (now - last_dt) > timedelta(hours=2):
                 if request.endpoint != 'disconnect':
                     return redirect(url_for('disconnect'))
-        except Exception:
-            pass
+        except Exception as err:
+            # unreadable date: the session is left alone, but it must be traceable
+            log.warning(Logs.fileline() + ' : unusable last activity date, err=' + str(err))
 
     nonce = uuid.uuid1()
 
@@ -937,8 +938,9 @@ def oauth_bounce():
         try:
             url_confirm = f"{server_int}/{redirect_name}/services/confirm-access" if redirect_name else f"{server_int}/services/confirm-access"
             requests.post(url_confirm, json={'id_user': int(user_id)}, timeout=5)
-        except requests.RequestException:
-            pass
+        except requests.RequestException as err:
+            # the BE does not need to know: the connection carries on, but the failure is traced
+            log.warning(Logs.fileline() + ' : confirm-access call failed, err=' + str(err))
 
     # Generate PKCE + state and persist in session
     verifier = base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b'=').decode('ascii')
@@ -2286,9 +2288,9 @@ def setting_backup():
         path = os.path.join(Constants.cst_io, 'backup')
 
         if os.path.exists(path) and os.stat(path).st_size > 0:
-            f = open(path, 'r')
-            for line in f:
-                pass
+            with open(path, 'r') as f:
+                for line in f:
+                    pass
 
             ret = line[:-1]
 
@@ -7341,8 +7343,9 @@ def det_job(id_item=0):
                 if 'ajb_schedule_dow' in item and item['ajb_schedule_dow'] is not None:
                     try:
                         item['ajb_schedule_dow'] = int(item['ajb_schedule_dow'])
-                    except Exception:
-                        pass
+                    except Exception as err:
+                        # the day of week is left as it came, but a bad value must not stay silent
+                        log.warning(Logs.fileline() + ' : unusable ajb_schedule_dow, err=' + str(err))
 
                 json_data['item'] = item
 

@@ -352,7 +352,6 @@ class Record:
                 return False
 
             price     = rec['prix'] - diff_price
-            remain    = rec['a_payer']
             discount  = rec['remise_pourcent']
             insurance = rec['assu_pourcent']
 

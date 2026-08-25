@@ -7,7 +7,6 @@ automation runner
 
 import time
 import logging
-from datetime import datetime
 
 from app import app as flask_app
 from app.models.Automation import Automation

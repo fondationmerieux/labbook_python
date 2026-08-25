@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import logging
-import gettext
 import shlex
 import subprocess  # nosec B404
 import os

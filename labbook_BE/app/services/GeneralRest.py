@@ -1,5 +1,4 @@
 import logging
-import gettext
 
 from datetime import datetime
 from flask import request
@@ -210,8 +209,6 @@ class DatasetByName(Resource):
                     else:
                         item[str(form_item['pfi_key'])] = str(form_item['pfi_value'])
         else:
-            args = request.get_json()
-
             if not args or ('date_beg' not in args and 'date_end' not in args):
                 self.log.error(Logs.fileline() + ' : DatasetByName args missing')
                 try:

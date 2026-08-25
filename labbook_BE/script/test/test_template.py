@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import sys
 import getopt
-import locale
 import os
 import json
 
@@ -25,8 +24,8 @@ def genere_pdf(data, template, pdf, verbose=False):
 
         print('path data_path = ' + str(data_path))
 
-        file_data = open(data_path, "r", encoding="utf-8")
-        data = file_data.read()
+        with open(data_path, "r", encoding="utf-8") as file_data:
+            data = file_data.read()
 
         print('data raw = ' + str(data))
 
@@ -45,8 +44,8 @@ def genere_pdf(data, template, pdf, verbose=False):
 
         tpl = Template(source="", filepath=tpl_path)
 
-        f = open(tmp_odt, "wb")
-        f.write(tpl.generate(o=data).render().getvalue())
+        with open(tmp_odt, "wb") as f:
+            f.write(tpl.generate(o=data).render().getvalue())
     except Exception as err:
         print('write odt with data and template, failed, err=' + str(err) + ', template=' + str(template) + ', pdf=' + str(pdf))
         return False

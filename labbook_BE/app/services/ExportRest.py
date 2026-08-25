@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 import logging
-import gettext
 import csv
 import re
 
@@ -518,8 +517,6 @@ class ExportDHIS2(Resource):
 
             l_cols = l_rows[0]  # keep first row to read l_cols of csv
 
-            idx_version = l_cols.index("version")
-
             if "version" in l_cols:
                 idx_version = l_cols.index("version")
                 version = l_rows[1][idx_version]
@@ -692,8 +689,6 @@ class ExportDHIS2Api(Resource):
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             l_cols = l_rows[0]  # keep first row to read l_cols of csv
-
-            idx_version = l_cols.index("version")
 
             if "version" in l_cols:
                 idx_version = l_cols.index("version")

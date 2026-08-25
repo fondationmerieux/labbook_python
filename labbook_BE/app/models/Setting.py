@@ -2149,7 +2149,7 @@ class Setting:
                         "file1": ("cr_%s.pdf" % rec_num, f, Constants.cst_content_type_pdf),
                         "index": (None, json.dumps(payload), Constants.cst_content_type_json)
                     },
-                    timeout=10
+                    timeout=timeout
                 )
 
             Setting.log.error(f"AMICARE RESPONSE -> status={resp.status_code} body={resp.text}")

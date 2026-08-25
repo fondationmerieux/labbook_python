@@ -7,7 +7,9 @@ import pikepdf
 import qrcode
 
 from barcode.writer import ImageWriter
+from contextlib import ExitStack
 from datetime import datetime
+from io import BytesIO
 from relatorio.templates.opendocument import Template
 from decimal import Decimal
 
@@ -57,7 +59,8 @@ class Pdf:
         # === Logo details ===
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
-        data['logo'] = (open(filepath, 'rb'), 'image/png')
+        with open(filepath, 'rb') as fh:
+            data['logo'] = (fh.read(), 'image/png')
 
         # === Label details ===
         data['label'] = {}
@@ -325,14 +328,16 @@ class Pdf:
                 # merge list of file in one PDF
                 pdf = pikepdf.Pdf.new()
 
-                for file_rec in l_file_rec:
-                    filepath = os.path.join(Constants.cst_report, file_rec)
-                    src = pikepdf.Pdf.open(filepath)
-                    pdf.pages.extend(src.pages)
+                # sources stay open until the save, then the stack closes them all
+                with ExitStack() as stack:
+                    for file_rec in l_file_rec:
+                        filepath = os.path.join(Constants.cst_report, file_rec)
+                        src = stack.enter_context(pikepdf.Pdf.open(filepath))
+                        pdf.pages.extend(src.pages)
 
-                filepath = os.path.join(path, filename)
+                    filepath = os.path.join(path, filename)
 
-                pdf.save(filepath)
+                    pdf.save(filepath)
             except Exception as err:
                 Pdf.log.error(Logs.fileline() + ' : getPdfReportGrouped failed, err=%s', err)
                 return False
@@ -383,18 +388,20 @@ class Pdf:
                 # merge list of file in one PDF
                 pdf = pikepdf.Pdf.new()
 
-                for file_rec in l_file_rec:
-                    filepath = os.path.join(Constants.cst_report, file_rec)
-                    # test if file exist
-                    if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
-                        src = pikepdf.Pdf.open(filepath)
-                        pdf.pages.extend(src.pages)
-                    else:
-                        missing += 1
+                # sources stay open until the save, then the stack closes them all
+                with ExitStack() as stack:
+                    for file_rec in l_file_rec:
+                        filepath = os.path.join(Constants.cst_report, file_rec)
+                        # test if file exist
+                        if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
+                            src = stack.enter_context(pikepdf.Pdf.open(filepath))
+                            pdf.pages.extend(src.pages)
+                        else:
+                            missing += 1
 
-                filepath = os.path.join(path, filename)
+                    filepath = os.path.join(path, filename)
 
-                pdf.save(filepath)
+                    pdf.save(filepath)
             except Exception as err:
                 Pdf.log.error(Logs.fileline() + ' : getPdfReportGlobal failed, err=%s', err)
                 return 500
@@ -789,8 +796,10 @@ class Pdf:
                 filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
 
                 data['img'] = {}
-                data['img']['code39'] = open(filepath_code39, 'rb')
-                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
+                with open(filepath_code39, 'rb') as fh:
+                    data['img']['code39'] = BytesIO(fh.read())
+                with open(filepath_qrcode, 'rb') as fh:
+                    data['img']['qrcode'] = BytesIO(fh.read())
 
                 data['rec'] = {}
                 data['rec']['num']   = str(record['num_rec'])
@@ -995,8 +1004,10 @@ class Pdf:
                 filepath_qrcode = os.path.join(Constants.cst_path_tmp, imgqrcode_name)
 
                 data['img'] = {}
-                data['img']['code39'] = open(filepath_code39, 'rb')
-                data['img']['qrcode'] = open(filepath_qrcode, 'rb')
+                with open(filepath_code39, 'rb') as fh:
+                    data['img']['code39'] = BytesIO(fh.read())
+                with open(filepath_qrcode, 'rb') as fh:
+                    data['img']['qrcode'] = BytesIO(fh.read())
 
                 data['rec'] = {}
                 data['rec']['num']   = '2021000001'
@@ -1341,7 +1352,8 @@ class Pdf:
         # === Logo details ===
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
-        data['logo'] = (open(filepath, 'rb'), 'image/png')
+        with open(filepath, 'rb') as fh:
+            data['logo'] = (fh.read(), 'image/png')
         data['signature'] = ""  # filled further when you know the validator
 
         # === Label details ===
@@ -1608,7 +1620,8 @@ class Pdf:
 
                                         Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE filesign = ' + str(filesign))
 
-                                        data['signature'] = (open(filesign, 'rb'), 'image/png')
+                                        with open(filesign, 'rb') as fh:
+                                            data['signature'] = (fh.read(), 'image/png')
                                     else:
                                         Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE no ret_sign')
                                         data['signature'] = ""
@@ -1882,7 +1895,8 @@ class Pdf:
                                 filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
 
                                 if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
-                                    data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
+                                    with open(filepath, 'rb') as fh:
+                                        data['res']['qrcode'] = (fh.read(), 'image/png')
                                 else:
                                     Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
                                     data['res']['qrcode'] = ''
@@ -1936,7 +1950,8 @@ class Pdf:
 
                             Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE filesign = ' + str(filesign))
 
-                            data['signature'] = (open(filesign, 'rb'), 'image/png')
+                            with open(filesign, 'rb') as fh:
+                                data['signature'] = (fh.read(), 'image/png')
                         else:
                             Pdf.log.error(Logs.fileline() + ' : DEBUG-TRACE no ret_sign')
                             data['signature'] = ""
@@ -2041,7 +2056,8 @@ class Pdf:
                 filepath = os.path.join(Constants.cst_path_tmp, qrc_filename)
 
                 if os.path.exists(filepath) and os.stat(filepath).st_size > 0:
-                    data['res']['qrcode'] = (open(filepath, 'rb'), 'image/png')
+                    with open(filepath, 'rb') as fh:
+                        data['res']['qrcode'] = (fh.read(), 'image/png')
                 else:
                     Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
                     data['res']['qrcode'] = ''
@@ -2176,16 +2192,16 @@ class Pdf:
 
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, Constants.cst_filedata_report)
-            file_debug = open(path_debug, "w")
 
-            file_debug.write(str(data))
+            with open(path_debug, "w") as file_debug:
+                file_debug.write(str(data))
 
             tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)
 
-            f = open(tmp_odt, "wb")
-            f.write(tpl.generate(o=data).render().getvalue())
+            with open(tmp_odt, "wb") as f:
+                f.write(tpl.generate(o=data).render().getvalue())
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildReport failed, err=' + str(err) + ' , template=' + str(template) + ', filename=' + str(filename))
             return False
@@ -2274,16 +2290,16 @@ class Pdf:
 
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, debug_filename_data)
-            file_debug = open(path_debug, "w")
 
-            file_debug.write(str(data))
+            with open(path_debug, "w") as file_debug:
+                file_debug.write(str(data))
 
             tpl_path = os.path.join(Constants.cst_template, template)
 
             tpl = Template(source="", filepath=tpl_path)
 
-            f = open(tmp_odt, "wb")
-            f.write(tpl.generate(o=data).render().getvalue())
+            with open(tmp_odt, "wb") as f:
+                f.write(tpl.generate(o=data).render().getvalue())
         except Exception as err:
             err_type = err.__class__.__name__
             err_msg = str(err)
@@ -2355,7 +2371,8 @@ class Pdf:
         # === Logo details ===
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
-        data['logo'] = (open(filepath, 'rb'), 'image/png')
+        with open(filepath, 'rb') as fh:
+            data['logo'] = (fh.read(), 'image/png')
 
         # === Label details ===
         data['label'] = Pdf.buildLabelData()
@@ -2721,7 +2738,8 @@ class Pdf:
         # === Logo details ===
         filepath = os.path.join(Constants.cst_resource, 'logo.png')
 
-        data['logo'] = (open(filepath, 'rb'), 'image/png')
+        with open(filepath, 'rb') as fh:
+            data['logo'] = (fh.read(), 'image/png')
 
         # === Label details ===
         data['label'] = Pdf.buildLabelData()
@@ -2933,7 +2951,8 @@ class Pdf:
         # Load logo
         try:
             logo_path = os.path.join(Constants.cst_resource, 'logo.png')
-            data['logo'] = (open(logo_path, 'rb'), 'image/png')
+            with open(logo_path, 'rb') as fh:
+                data['logo'] = (fh.read(), 'image/png')
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : getPdfActivityReport logo err=' + str(err))
             data['logo'] = None
