@@ -4608,16 +4608,11 @@ def biological_validation(mode='', id_rec=0):
         json_data['record'] = data
 
         # Get last record_validation
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/record/valid/' + str(id_rec)
-
-        redir = be_check_or_bounce(req)
+        valid, redir = be_get('/services/record/valid/' + str(id_rec), 'record validation')
         if redir:
             return redir
-
-        req = requests.get(url, timeout=10, headers=headers)
-
-        if req.status_code == 200:
-            json_data['record']['valid'] = data
+        if valid is not None:
+            json_data['record']['valid'] = valid
 
     # Load list results
     try:

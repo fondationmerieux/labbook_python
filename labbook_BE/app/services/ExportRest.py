@@ -281,6 +281,114 @@ def fill_dhis2_rows(l_data, l_rows, l_period, version, orgunit, storedby, rec_ty
     return l_data
 
 
+def build_dhis2_periods(args, audit_user, caller):
+    """
+    Validate the requested date range and build the list of periods to export.
+    Returns the pair (l_period, error): error is None when all went well, otherwise
+    it is the response the caller must return at once.
+    caller names the calling resource in the logs and the audit trail.
+    """
+    log = logging.getLogger('log_services')
+
+    period   = args['period']
+    l_period = []
+
+    try:
+        date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
+        date_end = datetime.strptime(args['date_end'], '%Y-%m-%d')
+    except Exception as e:
+        log.error(Logs.fileline() + ' : TRACE ' + caller + f' ERROR bad dates: {e}')
+        try:
+            details = {"result": "ERROR", "reason": "BAD_DATES", "date_beg": args.get('date_beg'),
+                       "date_end": args.get('date_end'), "error": str(e)}
+            Audit.insertAudit(audit_user, caller, "EXPORT", None, "ERROR", details, "R")
+        except Exception as err:
+            log.error(Logs.fileline() + ' : ' + caller + ' ERROR audit bad dates err=' + str(err))
+        return compose_ret('', Constants.cst_content_type_json, 409)
+
+    # build list of period
+    if period == 'W':
+        # Weekly: iterate Monday..Sunday blocks
+        cur = date_beg
+        while cur <= date_end:
+            iso_year, iso_week, _ = cur.isocalendar()
+            tmp_period = f"{iso_year}W{iso_week:02d}"
+            cur_end = cur + timedelta(days=6)
+            if cur_end > date_end:
+                cur_end = date_end
+            l_period.append([tmp_period, cur, cur_end])
+            cur = cur + timedelta(days=7)
+
+    elif period == 'M':
+        # Monthly: 1st..last day of each month
+        import calendar
+        y, m = date_beg.year, date_beg.month
+        while (y, m) <= (date_end.year, date_end.month):
+            last_dom = calendar.monthrange(y, m)[1]
+            cur_start = datetime(y, m, 1)
+            cur_end   = datetime(y, m, last_dom)
+            tmp_period = f"{y}{m:02d}"
+            l_period.append([tmp_period, cur_start, cur_end])
+            if m == 12:
+                y, m = y + 1, 1
+            else:
+                m = m + 1
+
+    elif period in ('B', 'T', 'Q', 'S', 'A'):
+        # Grouped periods; front already aligned range to group start
+        import calendar
+        span_map = {'B': 2, 'T': 3, 'Q': 4, 'S': 6, 'A': 12}
+        span = span_map[period]
+
+        y, m = date_beg.year, date_beg.month  # group start month
+        while (y, m) <= (date_end.year, date_end.month):
+            # Compute end of the group (inclusive)
+            end_month_index = (m - 1) + (span - 1)
+            y_end = y + (end_month_index // 12)
+            m_end = (end_month_index % 12) + 1
+            last_dom = calendar.monthrange(y_end, m_end)[1]
+            cur_start = datetime(y, m, 1)
+            cur_end   = datetime(y_end, m_end, last_dom)
+
+            # Build period label with new formats
+            if period == 'A':
+                # Annual: YYYY
+                tmp_period = f"{y}"
+            elif period == 'S':
+                # Semester: YYYYSn (n=1..2)
+                idx = 1 if m <= 6 else 2
+                tmp_period = f"{y}S{idx}"
+            elif period == 'T':
+                # Quarter: YYYYQn (n=1..4)
+                idx = ((m - 1) // 3) + 1
+                tmp_period = f"{y}Q{idx}"
+            elif period == 'B':
+                # Bi-monthly: YYYYiiB (ii=01..06)
+                idx = ((m - 1) // 2) + 1
+                tmp_period = f"{y}{idx:02d}B"
+            else:  # period == 'Q'
+                # Quadrimestrial: YYYYQnC (n=1..3)
+                idx = ((m - 1) // 4) + 1
+                tmp_period = f"{y}Q{idx}C"
+
+            l_period.append([tmp_period, cur_start, cur_end])
+
+            # Advance to next group start by 'span' months
+            next_index = (m - 1) + span
+            y, m = y + (next_index // 12), (next_index % 12) + 1
+
+    else:
+        log.error(Logs.fileline() + ' : TRACE ' + caller + ' ERROR wrong period : ' + Logs.clean(period))
+        try:
+            details = {"result": "ERROR", "reason": "WRONG_PERIOD", "period": str(period)}
+            Audit.insertAudit(audit_user, caller, "EXPORT", None, "ERROR", details, "R")
+        except Exception as err:
+            log.error(Logs.fileline() + ' : ' + caller + ' ERROR audit wrong period err=' + str(err))
+        return compose_ret('', Constants.cst_content_type_json, 409)
+
+    return l_period, None
+
+
 class ExportCSV(Resource):
     log = logging.getLogger('log_services')
 
@@ -353,105 +461,17 @@ class ExportDHIS2(Resource):
                 self.log.error(Logs.fileline() + ' : ExportDHIS2 ERROR audit args missing err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        period    = args['period']
         filename  = args['filename'][:-4]
         rec_type  = args['rec_type']
         lite_filter = args['lite_filter']
 
-        l_period = []
+        l_period, err = build_dhis2_periods(args, audit_user, 'ExportDHIS2')
+        if err:
+            return err
 
-        try:
-            date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
-            date_end = datetime.strptime(args['date_end'], '%Y-%m-%d')
-        except Exception as e:
-            self.log.error(Logs.fileline() + f' : TRACE ExportDHIS2 ERROR bad dates: {e}')
-            try:
-                details = {"result": "ERROR", "reason": "BAD_DATES", "date_beg": args.get('date_beg'),
-                           "date_end": args.get('date_end'), "error": str(e)}
-                Audit.insertAudit(audit_user, "ExportDHIS2", "EXPORT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ExportDHIS2 ERROR audit bad dates err=' + str(err))
-            return compose_ret('', Constants.cst_content_type_json, 409)
-
-        # build list of period
-        if period == 'W':
-            # Weekly: iterate Monday..Sunday blocks
-            cur = date_beg
-            while cur <= date_end:
-                iso_year, iso_week, _ = cur.isocalendar()
-                tmp_period = f"{iso_year}W{iso_week:02d}"
-                cur_end = cur + timedelta(days=6)
-                if cur_end > date_end:
-                    cur_end = date_end
-                l_period.append([tmp_period, cur, cur_end])
-                cur = cur + timedelta(days=7)
-
-        elif period == 'M':
-            # Monthly: 1st..last day of each month
-            import calendar
-            y, m = date_beg.year, date_beg.month
-            while (y, m) <= (date_end.year, date_end.month):
-                last_dom = calendar.monthrange(y, m)[1]
-                cur_start = datetime(y, m, 1)
-                cur_end   = datetime(y, m, last_dom)
-                tmp_period = f"{y}{m:02d}"
-                l_period.append([tmp_period, cur_start, cur_end])
-                if m == 12:
-                    y, m = y + 1, 1
-                else:
-                    m = m + 1
-
-        elif period in ('B', 'T', 'Q', 'S', 'A'):
-            # Grouped periods; front already aligned range to group start
-            import calendar
-            span_map = {'B': 2, 'T': 3, 'Q': 4, 'S': 6, 'A': 12}
-            span = span_map[period]
-
-            y, m = date_beg.year, date_beg.month  # group start month
-            while (y, m) <= (date_end.year, date_end.month):
-                # Compute end of the group (inclusive)
-                end_month_index = (m - 1) + (span - 1)
-                y_end = y + (end_month_index // 12)
-                m_end = (end_month_index % 12) + 1
-                last_dom = calendar.monthrange(y_end, m_end)[1]
-                cur_start = datetime(y, m, 1)
-                cur_end   = datetime(y_end, m_end, last_dom)
-
-                # Build period label with new formats
-                if period == 'A':
-                    # Annual: YYYY
-                    tmp_period = f"{y}"
-                elif period == 'S':
-                    # Semester: YYYYSn (n=1..2)
-                    idx = 1 if m <= 6 else 2
-                    tmp_period = f"{y}S{idx}"
-                elif period == 'T':
-                    # Quarter: YYYYQn (n=1..4)
-                    idx = ((m - 1) // 3) + 1
-                    tmp_period = f"{y}Q{idx}"
-                elif period == 'B':
-                    # Bi-monthly: YYYYiiB (ii=01..06)
-                    idx = ((m - 1) // 2) + 1
-                    tmp_period = f"{y}{idx:02d}B"
-                else:  # period == 'Q'
-                    # Quadrimestrial: YYYYQnC (n=1..3)
-                    idx = ((m - 1) // 4) + 1
-                    tmp_period = f"{y}Q{idx}C"
-
-                l_period.append([tmp_period, cur_start, cur_end])
-
-                # Advance to next group start by 'span' months
-                next_index = (m - 1) + span
-                y, m = y + (next_index // 12), (next_index % 12) + 1
-
-        else:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2 ERROR wrong period : ' + Logs.clean(period))
-            try:
-                details = {"result": "ERROR", "reason": "WRONG_PERIOD", "period": str(period)}
-                Audit.insertAudit(audit_user, "ExportDHIS2", "EXPORT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ExportDHIS2 ERROR audit wrong period err=' + str(err))
-            return compose_ret('', Constants.cst_content_type_json, 409)
+        # dates already validated above, reused to build a safe file name
+        date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
+        date_end = datetime.strptime(args['date_end'], '%Y-%m-%d')
 
         # --- BUILD DATA ---
 
@@ -620,102 +640,13 @@ class ExportDHIS2Api(Resource):
                 self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR audit args missing err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        period   = args['period']
         filename = args['filename'][:-4]
         rec_type = args['rec_type']
         lite_filter = args['lite_filter']
 
-        l_period = []
-
-        try:
-            date_beg = datetime.strptime(args['date_beg'], '%Y-%m-%d')
-            date_end = datetime.strptime(args['date_end'], '%Y-%m-%d')
-        except Exception as e:
-            self.log.error(Logs.fileline() + f' : TRACE ExportDHIS2 ERROR bad dates: {e}')
-            try:
-                details = {"result": "ERROR", "reason": "BAD_DATES"}
-                Audit.insertAudit(audit_user, "ExportDHIS2Api", "EXPORT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR audit bad dates err=' + str(err))
-            return compose_ret('', Constants.cst_content_type_json, 409)
-
-        # build list of period
-        if period == 'W':
-            # Weekly: iterate Monday..Sunday blocks
-            cur = date_beg
-            while cur <= date_end:
-                iso_year, iso_week, _ = cur.isocalendar()
-                tmp_period = f"{iso_year}W{iso_week:02d}"
-                cur_end = cur + timedelta(days=6)
-                if cur_end > date_end:
-                    cur_end = date_end
-                l_period.append([tmp_period, cur, cur_end])
-                cur = cur + timedelta(days=7)
-
-        elif period == 'M':
-            # Monthly: 1st..last day of each month
-            import calendar
-            y, m = date_beg.year, date_beg.month
-            while (y, m) <= (date_end.year, date_end.month):
-                last_dom = calendar.monthrange(y, m)[1]
-                cur_start = datetime(y, m, 1)
-                cur_end   = datetime(y, m, last_dom)
-                tmp_period = f"{y}{m:02d}"
-                l_period.append([tmp_period, cur_start, cur_end])
-                if m == 12:
-                    y, m = y + 1, 1
-                else:
-                    m = m + 1
-
-        elif period in ('B', 'T', 'Q', 'S', 'A'):
-            # Multi-month groups anchored to January; front already aligned to group start
-            import calendar
-            span_map = {'B': 2, 'T': 3, 'Q': 4, 'S': 6, 'A': 12}
-            span = span_map[period]
-
-            y, m = date_beg.year, date_beg.month  # group start month
-            while (y, m) <= (date_end.year, date_end.month):
-                # Compute date_end month of the group (inclusive)
-                end_month_index = (m - 1) + (span - 1)
-                y_end = y + (end_month_index // 12)
-                m_end = (end_month_index % 12) + 1
-                last_dom = calendar.monthrange(y_end, m_end)[1]
-                cur_start = datetime(y, m, 1)
-                cur_end   = datetime(y_end, m_end, last_dom)
-
-                if period == 'A':
-                    tmp_period = f"{y}"
-
-                elif period == 'S':
-                    idx = 1 if m <= 6 else 2
-                    tmp_period = f"{y}S{idx}"
-
-                elif period == 'T':
-                    idx = ((m - 1) // 3) + 1
-                    tmp_period = f"{y}Q{idx}"
-
-                elif period == 'B':
-                    idx = ((m - 1) // 2) + 1
-                    tmp_period = f"{y}{idx:02d}B"
-
-                elif period == 'Q':
-                    idx = ((m - 1) // 4) + 1
-                    tmp_period = f"{y}Q{idx}C"
-
-                l_period.append([tmp_period, cur_start, cur_end])
-
-                # Advance to next group start by 'span' months
-                next_index = (m - 1) + span
-                y, m = y + (next_index // 12), (next_index % 12) + 1
-
-        else:
-            self.log.error(Logs.fileline() + ' : TRACE ExportDHIS2Api ERROR wrong period : ' + Logs.clean(period))
-            try:
-                details = {"result": "ERROR", "reason": "WRONG_PERIOD", "period": str(period)}
-                Audit.insertAudit(audit_user, "ExportDHIS2Api", "EXPORT", None, "ERROR", details, "R")
-            except Exception as err:
-                self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR audit wrong period err=' + str(err))
-            return compose_ret('', Constants.cst_content_type_json, 409)
+        l_period, err = build_dhis2_periods(args, audit_user, 'ExportDHIS2Api')
+        if err:
+            return err
 
         # --- BUILD DATA ---
 

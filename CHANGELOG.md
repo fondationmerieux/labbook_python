@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Equipment metrology, maintenance contract, preventive maintenance and failure report pages now share a single template
 - New request pages, inpatient and outpatient, now share a single template
 - Epidemiological and indicator report pages now share a single template
-- DHIS2 exports, file and API, now share their common export code
+- DHIS2 exports, file and API, now share their common export code and period computation
 - Aliquot modal and its handling are now shared by the single-record and multi-record result pages
 - Front-end pages now share common helpers for their back-end calls
 - Report, outsourcing and invoice PDFs now share their patient, laboratory and label sections
@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - List pages now share a single paging links component
 - Adding analyses to a record is now handled by one shared function
 - Patient form saving is now handled by one shared function
+- Attached file upload and deletion are now shared by the equipment, operation and staff forms
 - Job and audit list pages now share their DataTables labels and their action toast
 - Audit filtering and search no longer duplicate the query builders they already had
 - File and photo upload routes now share a single implementation

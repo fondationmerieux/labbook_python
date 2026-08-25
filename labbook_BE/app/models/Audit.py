@@ -29,7 +29,7 @@ class Audit:
             '''
             params = []
 
-            sql, params = Audit._apply_filters(sql, params, filters) 
+            sql, params = Audit._apply_filters(sql, params, filters)
 
             # System calls filter (default: exclude system)
             include_system = str(filters.get("include_system") or "N").upper()
@@ -48,7 +48,7 @@ class Audit:
             for r in rows:
                 result.append(Audit._build_audit_item(r))
 
-            return result 
+            return result
         except Exception as err:
             Audit.log.error(Logs.fileline() + " : ERROR type=" + err.__class__.__name__ + " args=" + repr(getattr(err, "args", None)))
             raise

@@ -327,87 +327,9 @@ let type    = 'JF' ;
 $("#tbody_file_"+type_ref).append(tr_file) ;
 }
 
-function upload_file(type_ref, ref)
-{
-let param_form = new FormData() ;
-let input_file = $('#' + type_ref)[0] ;
+{% include 'js/upload_file.js' %}
 
-    // TEST if an file is waiting
-    if (input_file.files.length > 0)
-    {
-    console.log( "1 file to upload ") ;
-
-    param_form.append('file', input_file.files[0]) ;
-
-        return new Promise(function (resolve, reject)
-        {
-        console.log( "new promise for " + type_ref ) ;
-
-            $.ajax(
-            {
-                type : 'POST',
-                url : "{{ session['server_ext'] }}/upload-file/" + type_ref + "/" + ref,
-                dataType: 'json',
-                contentType: false,
-                processData: false,
-                data: param_form,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
-                success : function(response)
-                {
-                console.log( "success upload ") ;
-
-                resolve(response) ;
-                },
-                error: function(response)
-                {
-                console.log("ERROR upload file") ;
-
-                    $("#dial-wait").modal("hide") ;
-
-                alert("{{ _("Une erreur est survenue lors du dépot d'un fichier") }}") ;
-
-                reject(response) ;
-                }
-            } ) ;
-        } ) ;
-    }
-    else
-    {
-    console.log( "file empty upload ") ;
-
-        return new Promise(function (resolve, reject) { resolve(true) } ) ;
-    }
-}
-
-function delete_file( type_ref, id_file )
-{
-    if ( window.confirm("{{ _("Le fichier sera définitivement supprimé") }}") )
-    {
-        // popup wait
-        $("#dial-wait").off('shown.bs.modal') ;
-        $("#dial-wait").modal("show") ;
-
-        $.ajax(
-        {
-            type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
-            success: function(ret)
-            {
-            $("#dial-wait").modal("hide") ;
-            location.reload() ;
-            },
-            error: function(ret)
-            {
-            console.log("ERROR DELETE document file") ;
-            $("#dial-wait").modal("hide") ;
-            alert("{{ _("Erreur lors de la suppression d'un fichier") }}") ;
-            }
-        } ) ;
-    }
-    else
-    return false ;
-}
+{% include 'js/delete_file.js' %}
 
 function cancel()
 {

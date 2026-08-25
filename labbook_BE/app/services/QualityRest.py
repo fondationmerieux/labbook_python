@@ -3011,18 +3011,6 @@ class ProcedureDet(Resource):
 
         # shared by the update and insert calls below
         fields = {
-            'prd_name': args['prd_name'],
-            'prd_type': args['prd_type'],
-            'prd_nb_by_pack': args['prd_nb_by_pack'],
-            'prd_safe_limit': args['prd_safe_limit'],
-            'prd_supplier': args['prd_supplier'],
-            'prd_ref_supplier': args['prd_ref_supplier'],
-            'prd_conserv': args['prd_conserv'],
-            'prd_expir_oblig': args['prd_expir_oblig'],
-        }
-
-        # shared by the update and insert calls below
-        fields = {
             'id_owner': args['id_owner'],
             'reference': args['reference'],
             'title': args['title'],
@@ -3597,6 +3585,18 @@ class StockProductDet(Resource):
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StockProductDet ERROR audit 400')
             return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # shared by the update and insert calls below
+        fields = {
+            'prd_name': args['prd_name'],
+            'prd_type': args['prd_type'],
+            'prd_nb_by_pack': args['prd_nb_by_pack'],
+            'prd_safe_limit': args['prd_safe_limit'],
+            'prd_supplier': args['prd_supplier'],
+            'prd_ref_supplier': args['prd_ref_supplier'],
+            'prd_conserv': args['prd_conserv'],
+            'prd_expir_oblig': args['prd_expir_oblig'],
+        }
 
         # Update stock product
         if id_item > 0:
