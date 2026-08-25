@@ -144,11 +144,13 @@ function save_pat_and_open_hist(id_pat)
     }
 }
 
-function save_form_and_open_hist(id_pat)
+// Shared body of the two save actions below: collect the form, post it, then hand
+// the answer over to on_success. audit_label only names the action in the audit trail.
+function save_patient_form(id_pat, audit_label, log_label, on_success)
 {
 {{ args['json_save'] | safe }} ;
 
-param.pat_code = $("#pat_code").text().trim();    
+param.pat_code = $("#pat_code").text().trim();
 param.pat_agreement = $("#pat_agreement").is(":checked") ? "Y" : "N";
 
     if ({{ args.get('pat_amicare', 0)|int }} > 0) {
@@ -161,9 +163,7 @@ param.pat_agreement = $("#pat_agreement").is(":checked") ? "Y" : "N";
     $("#dial-wait").off('shown.bs.modal');
     $("#dial-wait").modal("show");
 
-    set_audit_context("{{ _("Création d'une fiche patient") }}");
-
-    if (id_pat > 0) set_audit_context("{{ _("Modification d'une fiche patient") }}");
+    set_audit_context(audit_label);
 
     $.ajax(
     {
@@ -177,16 +177,26 @@ param.pat_agreement = $("#pat_agreement").is(":checked") ? "Y" : "N";
         {
             $("#dial-wait").modal("hide");
 
-            var new_id_pat = data.id_pat || id_pat;
-            go_to_pat_hist(new_id_pat);
+            on_success(data);
         },
         error: function(data)
         {
             $("#dial-wait").modal("hide");
 
-            console.log("ERROR POST patient det (hist)");
+            console.log(log_label);
             alert("{{ _("Une erreur est survenue lors de l'enregistrement") }}");
         }
+    });
+}
+
+function save_form_and_open_hist(id_pat)
+{
+var audit_label = id_pat > 0 ? "{{ _("Modification d'une fiche patient") }}"
+                             : "{{ _("Création d'une fiche patient") }}";
+
+    save_patient_form(id_pat, audit_label, "ERROR POST patient det (hist)", function(data)
+    {
+        go_to_pat_hist(data.id_pat || id_pat);
     });
 }
 
@@ -203,56 +213,21 @@ function go_to_pat_hist(id_pat)
 
 function save_form( id_pat )
 {
-{{ args['json_save'] | safe }} ;
-
-param.pat_code = $("#pat_code").text().trim();
-param.pat_agreement = $("#pat_agreement").is(":checked") ? "Y" : "N";
-
-    if ({{ args.get('pat_amicare', 0)|int }} > 0) {
-        param.pat_amicare = {{ args.get('pat_amicare', 0)|int }};
-    } else {
-        param.pat_amicare = $("#pat_amicare").is(":checked") ? 1 : 0;
-    }
-
-    // popup wait
-    $("#dial-wait").off('shown.bs.modal') ;
-    $("#dial-wait").modal("show") ;
-
-    set_audit_context("{{ _('Enregistrement de fiche patient') }}");
-
-    $.ajax( 
+    save_patient_form(id_pat, "{{ _('Enregistrement de fiche patient') }}", "ERROR POST patient det", function(data)
     {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat,
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(param),
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
-        success: function(data)
-        {
-            $("#dial-wait").modal("hide") ;
+    id_pat = data.id_pat ;
 
-        id_pat = data.id_pat ;
-
-        {% if type_req == 'E' %}
-        window.location.href = "{{ session['server_ext'] }}/det-req-ext/Y/" + id_pat ;
-        {% elif type_req == 'I' %}
-        window.location.href = "{{ session['server_ext'] }}/det-req-int/Y/" + id_pat ;
-        {% elif type_req.startswith('A_') %}
-            {% set parts = type_req.split('_') %} 
-            window.location.href = "{{ session['server_ext'] }}/administrative-record/{{parts[1]}}/{{parts[2]}}" ;
-        {% else %}
-        window.location.href = "{{ url_for('homepage') }}";
-        {% endif %}
-        },
-        error: function(data)
-        {
-            $("#dial-wait").modal("hide") ;
-
-        console.log("ERROR POST patient det") ;
-        alert("{{ _("Une erreur est survenue lors de la modification/ajout d'un patient") }}") ;
-        }
-    } ) ;
+    {% if type_req == 'E' %}
+    window.location.href = "{{ session['server_ext'] }}/det-req-ext/Y/" + id_pat ;
+    {% elif type_req == 'I' %}
+    window.location.href = "{{ session['server_ext'] }}/det-req-int/Y/" + id_pat ;
+    {% elif type_req.startswith('A_') %}
+        {% set parts = type_req.split('_') %}
+        window.location.href = "{{ session['server_ext'] }}/administrative-record/{{parts[1]}}/{{parts[2]}}" ;
+    {% else %}
+    window.location.href = "{{ url_for('homepage') }}";
+    {% endif %}
+    });
 }
 
 function return_back()

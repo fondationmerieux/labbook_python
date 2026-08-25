@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.6.22] - 2026-08-24
+## [3.6.22] - 2026-08-25
 ### Added
 - ana_loinc and ana_code for report template
 
@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Analysis search field is now shared by the result, validation and turnaround pages
 - List pages now share a single paging links component
 - Adding analyses to a record is now handled by one shared function
+- Patient form saving is now handled by one shared function
 - Job and audit list pages now share their DataTables labels and their action toast
 - Audit filtering and search no longer duplicate the query builders they already had
 - File and photo upload routes now share a single implementation
