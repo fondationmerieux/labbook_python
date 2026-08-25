@@ -7,8 +7,7 @@ function tempAlert(msg, id_elem)
 let w_page  = $("#page").width() / 2 - 80 ; // -80 for better center
 
 let pos_elem = $("#" +id_elem).position();
-let x = pos_elem.left;
-let y = pos_elem.top - 80; // -80 for raise up a bit
+let y = pos_elem.top - 80; // -80 for raise up a bit, the toast is centered horizontally
 
 if ( y < 120 ) y = 120 ; // less than 100 it's non visible beacuse hide by menu
 
