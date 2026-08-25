@@ -39,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Attached file and photo downloads now share the same branch
 
 ### Fixed
+- Empty dates no longer display "None" in the pages
 - User-supplied values are now sanitized before being written to the logs
 - Saving an inpatient request failed when the optional bed number was left empty
 - Unclosed tag in the aliquot modal footer

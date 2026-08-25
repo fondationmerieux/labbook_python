@@ -126,7 +126,7 @@ if config_envvar in os.environ:
     else:
         os.environ['LABBOOK_URL_PREFIX'] = app.config.get('REDIRECT_NAME')
 else:
-    print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
+    log.error(Logs.fileline() + f' : no local configuration, {config_envvar} is undefined in the environment')
 
 # --- Session cookie configuration ---
 # These settings ensure the session persists across OAuth redirects,
@@ -745,7 +745,8 @@ def date_format(date_iso):
         date_tmp = datetime.strptime(date_iso, Constants.cst_isodate)
         return datetime.strftime(date_tmp, session['date_format'])
     else:
-        return
+        # empty string and not None, otherwise the template shows "None"
+        return ''
 
 
 @app.template_filter('dt_format')
@@ -754,7 +755,8 @@ def dt_format(dt_iso):
         date_tmp = datetime.strptime(dt_iso, Constants.cst_dt_HM)
         return datetime.strftime(date_tmp, session['dt_format'])
     else:
-        return
+        # empty string and not None, otherwise the template shows "None"
+        return ''
 
 
 @app.template_filter('date_now')

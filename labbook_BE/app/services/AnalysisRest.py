@@ -19,6 +19,33 @@ from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'save_analysis_variables',
+    'AnalysisSearch',
+    'AnalysisVarSearch',
+    'AnalysisList',
+    'AnalysisListFromExt',
+    'AnalysisHistoExport',
+    'AnalysisHistoList',
+    'AnalysisHistoDet',
+    'AnalysisCode',
+    'AnalysisCodeFromExt',
+    'AnalysisDet',
+    'AnalysisDetFromExt',
+    'AnalysisVarAll',
+    'AnalysisVarList',
+    'AnalysisVarDet',
+    'AnalysisTypeProd',
+    'AnalysisReq',
+    'AnalysisExport',
+    'AnalysisImport',
+    'AnalysisStatus',
+]
+
+
 def save_analysis_variables(id_ana, args, audit_user, log):
     """
     Create or update the variables attached to an analysis and their link to it.
@@ -1637,7 +1664,7 @@ class AnalysisImport(Resource):
                     else:
                         ana_whonet = 5
 
-                    id_link            = row[15]
+                    # id_link            = row[15]
                     # id_refanalyse      = row[16]
                     id_refvariable     = row[17]
                     position           = row[18]
@@ -1860,7 +1887,7 @@ class AnalysisImport(Resource):
 
                     id_link            = row[15]
                     # id_refanalyse      = row[16]
-                    id_refvariable     = row[17]
+                    # id_refvariable     = row[17]
                     position           = row[18]
                     num_var            = row[19]
 

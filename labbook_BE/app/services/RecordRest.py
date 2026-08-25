@@ -21,6 +21,30 @@ from app.models.Logs import Logs
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'RecordList',
+    'RecordListFromExt',
+    'RecordDet',
+    'RecordDetFromExt',
+    'RecordComm',
+    'RecordLast',
+    'RecordFile',
+    'RecordNext',
+    'RecordStat',
+    'RecordListAna',
+    'RecordNbEmer',
+    'RecordNbRecTech',
+    'RecordNbRecBio',
+    'RecordNbRec',
+    'RecordNbRecToday',
+    'RecordValid',
+    'RecordNumInt',
+]
+
+
 class RecordList(Resource):
     log = logging.getLogger('log_services')
 

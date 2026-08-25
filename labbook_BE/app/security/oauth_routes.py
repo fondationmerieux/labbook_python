@@ -504,6 +504,7 @@ def oauth_authorize():
         if row:
             log.debug(Logs.fileline() + " : OAUTH client has registered redirect URIs")
     except Exception:
+        # a debug trace must never break the authorization flow
         pass
 
     # Authlib handles response building (validations, state, etc.)
@@ -535,6 +536,7 @@ def oauth_token():
         status = resp.status_code
         log.debug(f"OAUTH /token response_status={status}")
     except Exception:
+        # a debug trace must never break the token response
         pass
 
     return resp

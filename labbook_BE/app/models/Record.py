@@ -4,7 +4,7 @@ import mysql.connector
 
 from app.models.Constants import Constants
 from app.models.DB import DB
-from app.models.General import *
+from app.models.General import parse_date_safe
 from app.models.Logs import Logs
 
 

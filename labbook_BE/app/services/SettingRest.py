@@ -19,6 +19,58 @@ from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'SettingAgeInterval',
+    'SettingReqServices',
+    'SettingFuncUnitDet',
+    'SettingFuncUnit',
+    'SettingLinkUnit',
+    'SettingLinkByUser',
+    'SettingPref',
+    'SettingRecNum',
+    'SettingReport',
+    'SettingBackup',
+    'ScriptBackup',
+    'ScriptGenkey',
+    'ScriptInitMedia',
+    'ScriptKeyexist',
+    'ScriptListarchive',
+    'ScriptListmedia',
+    'ScriptProgbackup',
+    'ScriptRestart',
+    'ScriptRestore',
+    'ScriptStatus',
+    'TemplateList',
+    'TemplateDet',
+    'ZipCityAdd',
+    'ZipCityDelAll',
+    'ZipCityDet',
+    'ZipCityList',
+    'ZipCitySearch',
+    'SettingStock',
+    'SettingFormList',
+    'SettingFormDet',
+    'SettingManual',
+    'SettingManualCat',
+    'SettingDHIS2List',
+    'SettingDHIS2Det',
+    'SettingSendMethodList',
+    'SettingSendMethodDet',
+    'SettingSendMethodTest',
+    'SettingSendModelList',
+    'SettingSendModelDet',
+    'SettingSendModelTest',
+    'SettingSendReport',
+    'SettingSendList',
+    'SettingSendResend',
+    'SettingOauthList',
+    'SettingOauthDet',
+]
+
+
 class SettingAgeInterval(Resource):
     log = logging.getLogger('log_services')
 
@@ -963,7 +1015,8 @@ class ScriptProgbackup(Resource):
         start_time = str(args.get('start_time', ''))
         user_pwd = args.get('user_pwd', '')
 
-        if not re.fullmatch(r"[A-Za-z0-9 _:\-./TZ]{1,64}", start_time):
+        # T and Z of the ISO format are already covered by A-Za-z
+        if not re.fullmatch(r"[A-Za-z0-9 _:\-./]{1,64}", start_time):
             self.log.error(Logs.fileline() + ' : ScriptProgbackup ERROR invalid start_time')
             try:
                 details = {"start_time": start_time, "result": "ERROR", "reason": "INVALID_START_TIME"}
@@ -2743,8 +2796,6 @@ class SettingOauthDet(Resource):
 
             # STEP 3: do update
             ok = Setting.updateSettingOauth(**params)
-
-            action = "UPDATE"
 
             if not ok:
                 self.log.error(Logs.alert() + ' : SettingOauthDet ERROR update')

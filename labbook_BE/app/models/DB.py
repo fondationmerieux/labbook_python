@@ -42,6 +42,7 @@ class DB:
                     try:
                         DB.cnx.close()
                     except Exception:
+                        # the connection is already unusable: closing it must not hide the ping error
                         pass
                     DB.cnx = None
 

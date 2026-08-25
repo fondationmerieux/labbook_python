@@ -24,6 +24,7 @@ from flask_cors import CORS
 
 from app.security.oauth_routes import bp_oauth, authorization
 
+from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Setting import Setting
 from app.models.Audit import Audit
@@ -130,7 +131,7 @@ authorization.init_app(app)
 config_envvar = 'LOCAL_SETTINGS'
 
 if config_envvar in os.environ:
-    print(("Loading local configuration from {}={}".format(config_envvar, os.environ[config_envvar])))
+    log.info(Logs.fileline() + f' : Loaded config from {config_envvar}={os.environ[config_envvar]}')
     app.config.from_envvar(config_envvar)
 
     os.environ['LABBOOK_KEY_DIR']    = Constants.cst_key
@@ -187,7 +188,7 @@ if config_envvar in os.environ:
     if 'LABBOOK_TEST_KO' in os.environ and os.environ['LABBOOK_TEST_KO']:
         log.info(Logs.fileline() + ' : LABBOOK_TEST_KO=' + str(os.environ['LABBOOK_TEST_KO']))
 else:
-    print(("No local configuration available: {} is undefined in the environment".format(config_envvar)))
+    log.error(Logs.fileline() + f' : no local configuration, {config_envvar} is undefined in the environment')
 
 with app.app_context():
     Audit.audit_trail_enabled = Setting.isAuditTrailEnabled()
@@ -540,6 +541,3 @@ api.add_resource(ZipCityList,           '/services/setting/zipcity/list')
 api.add_resource(ZipCitySearch,         '/services/setting/zipcity/search')
 
 log.info(Logs.fileline() + ' : LABBOOK_BE is ready')
-
-# if __name__ == "__main__":
-#    app.run()

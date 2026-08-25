@@ -18,7 +18,7 @@ from app.models.DB import DB
 from app.models.Logs import Logs
 from app.models.Constants import Constants
 from app.models.File import File
-from app.models.General import *
+from app.models.General import compose_ret
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
@@ -1898,7 +1898,7 @@ class Pdf:
                                     with open(filepath, 'rb') as fh:
                                         data['res']['qrcode'] = (fh.read(), 'image/png')
                                 else:
-                                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
+                                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(filepath))
                                     data['res']['qrcode'] = ''
 
                         # Add this result to list of result of this analysis
@@ -2059,7 +2059,7 @@ class Pdf:
                     with open(filepath, 'rb') as fh:
                         data['res']['qrcode'] = (fh.read(), 'image/png')
                 else:
-                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(path))
+                    Pdf.log.error(Logs.fileline() + ' :file doesnt exist path=' + str(filepath))
                     data['res']['qrcode'] = ''
 
             Various.useLangPDF()
@@ -2843,7 +2843,7 @@ class Pdf:
             ret = Record.generateBillNumber(id_rec)
 
             if not ret:
-                self.log.error(Logs.fileline() + ' : PdfBill bill number failed id_rec=%s', str(id_rec))
+                Pdf.log.error(Logs.fileline() + ' : PdfBill bill number failed id_rec=%s', str(id_rec))
                 return compose_ret('', Constants.cst_content_type_json, 500)
 
             det_record = Record.getRecord(id_rec)

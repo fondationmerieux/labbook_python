@@ -4,7 +4,8 @@ from datetime import datetime
 from flask import request
 from flask_restful import Resource
 
-from app.models.General import *
+from app.models.Constants import Constants
+from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Audit import Audit
 from app.models.Analysis import Analysis
@@ -13,6 +14,19 @@ from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
+
+
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'Test',
+    'DicoById',
+    'DefaultValue',
+    'InitVersion',
+    'NationalityList',
+    'DatasetByName',
+]
 
 
 class Test(Resource):
@@ -63,8 +77,7 @@ class DicoById(Resource):
                 dico[key] = ''
             elif key == 'label' and dico[key] != "":
                 dico[key] = _(dico[key].strip())
-            # elif key == 'short_label' and dico[key] != "":
-                # dico[key] = _(dico[key].strip())
+            # short_label is left untranslated: it is compared as a technical code elsewhere
 
         self.log.info(Logs.fileline() + ' : TRACE DicoById : ' + str(id_data))
         try:

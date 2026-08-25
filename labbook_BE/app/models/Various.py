@@ -10,6 +10,16 @@ from app.models.DB import DB
 from app.models.Logs import Logs
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'get_lang_pdf_default',
+    'get_lang_db_default',
+    'Various',
+]
+
+
 # --- Language helpers ---
 def get_lang_pdf_default():
     # lang_pdf
@@ -140,6 +150,8 @@ class Various:
         except mysql.connector.Error as e:
             Various.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
             return False
+
+        return True
 
     @staticmethod
     def updateTranslationsTable(lang):

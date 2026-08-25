@@ -1394,6 +1394,7 @@ class Setting:
                     try:
                         server.close()
                     except Exception:
+                        # the session is already broken: closing it must not hide the original error
                         pass
                 raise
 
@@ -1628,6 +1629,7 @@ class Setting:
                     try:
                         os.remove(tmp_path)
                     except Exception:
+                        # best-effort cleanup: the upload error is the one worth reporting
                         pass
                     return (False, f"Échec de l’upload média (HTTP {media_resp.status_code}) : {json.dumps(media_body)[:600]}")
 
@@ -1637,6 +1639,7 @@ class Setting:
                 try:
                     os.remove(tmp_path)
                 except Exception:
+                    # best-effort cleanup: the message was sent, a leftover temp file is harmless
                     pass
 
             # Send the template with a header document referencing the uploaded media
@@ -1975,6 +1978,7 @@ class Setting:
                     if tmp_path and os.path.exists(tmp_path):
                         os.remove(tmp_path)
                 except Exception:
+                    # best-effort cleanup: a leftover temp file must not fail the operation
                     pass
         # -------------------------------------------------
 
@@ -2071,6 +2075,7 @@ class Setting:
                 if tmp_path and os.path.exists(tmp_path):
                     os.remove(tmp_path)
             except Exception:
+                # best-effort cleanup: a leftover temp file must not fail the operation
                 pass
 
     @staticmethod
@@ -2273,6 +2278,7 @@ class Setting:
                     try:
                         server.close()
                     except Exception:
+                        # the session is already broken: closing it must not hide the original error
                         pass
                 raise
 
@@ -2433,6 +2439,7 @@ class Setting:
             try:
                 Setting.log.info(Logs.fileline() + " : WA payload=" + json.dumps(payload, ensure_ascii=False))
             except Exception:
+                # a debug trace must never prevent the message from being sent
                 pass
 
             r_msg = requests.post(msg_url, headers=headers_json, json=payload, timeout=20)
@@ -2670,6 +2677,7 @@ class Setting:
                     if tmp_path and os.path.exists(tmp_path):
                         os.remove(tmp_path)
                 except Exception:
+                    # best-effort cleanup: a leftover temp file must not fail the operation
                     pass
 
         except Exception as e:

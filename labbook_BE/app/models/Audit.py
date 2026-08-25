@@ -56,6 +56,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     # --- begin of methods for list-audit ---
@@ -212,6 +213,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     @staticmethod
@@ -245,6 +247,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     @staticmethod
@@ -268,6 +271,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     @staticmethod
@@ -305,6 +309,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     @staticmethod
@@ -357,6 +362,7 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass
 
     @staticmethod
@@ -373,4 +379,5 @@ class Audit:
             try:
                 cursor.close()
             except Exception:
+                # closing the cursor must not hide the error that led here
                 pass

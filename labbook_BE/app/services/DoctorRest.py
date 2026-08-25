@@ -15,6 +15,17 @@ from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'DoctorList',
+    'DoctorSearch',
+    'DoctorDet',
+    'DoctorExport',
+]
+
+
 class DoctorList(Resource):
     log = logging.getLogger('log_services')
 

@@ -21,6 +21,21 @@ from app.models.Setting import Setting
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'get_dhis2_orgunit_storedby',
+    'build_dhis2_list_data',
+    'fill_dhis2_rows',
+    'build_dhis2_periods',
+    'ExportCSV',
+    'ExportDHIS2',
+    'ExportDHIS2Api',
+    'ExportWhonet',
+]
+
+
 def get_dhis2_orgunit_storedby(l_cols, l_rows, id_user):
     """
     Resolve the DHIS2 'orgunit' and 'storedby' values from the epidemio spreadsheet.

@@ -2077,7 +2077,7 @@ def _execute_job_activity(job_row: dict) -> dict:
                 body = _("Aucune donnée d'activité pour la période sélectionnée.")
 
                 sender = job_row.get("ajb_created_by") or 0
-                msg_id = _send_internal_message(sender, receiver, title, body)
+                _send_internal_message(sender, receiver, title, body)
 
             except Exception:
                 Automation.log.exception(Logs.fileline() + " : activity no-data internal msg failed")

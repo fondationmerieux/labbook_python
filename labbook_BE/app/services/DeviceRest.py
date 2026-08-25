@@ -20,6 +20,21 @@ from app.models.Logs import Logs
 from app.security.oauth_routes import require_oauth
 
 
+# Names exported when this module is imported with "*" (see app/__init__.py).
+# Without __all__, "import *" also brings in this module's own imports
+# (Constants, datetime, logging...) and they leak into the caller.
+__all__ = [
+    'ConnectSetting',
+    'AnalyzerList',
+    'AnalyzerDet',
+    'AnalyzerFile',
+    'AnalyzerLab27',
+    'AnalyzerLab29',
+    'AnalyzerMsgList',
+    'AnalyzerMsgDet',
+]
+
+
 class ConnectSetting(Resource):
     log = logging.getLogger('log_services')
 
