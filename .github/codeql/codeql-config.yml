@@ -1,7 +1,0 @@
-name: "LabBook"
-
-# Third-party libraries are vendored as-is under static/vendor (Bootstrap, jQuery,
-# DataTables, moment, select2...). They are not maintained here, so their findings
-# are noise. See doc/dependencies.md for the list and the pinned versions.
-paths-ignore:
-  - labbook_FE/app/static/vendor
