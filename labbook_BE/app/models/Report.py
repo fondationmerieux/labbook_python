@@ -1165,6 +1165,44 @@ class Report:
                 parts.append(' '.join(current).strip())
             return parts
 
+        def distribute_leading_group(expr: str) -> str:
+            """
+            Rewrite "(A OR B) SUFFIX" into "A SUFFIX OR B SUFFIX".
+
+            Parentheses alone would hide the OR from split_top_level_or, and every part
+            would then be joined with AND, which no record can satisfy. Distributing what
+            follows the group falls back on the repeated form, which is handled correctly.
+            """
+            text = expr.strip()
+
+            if not text.startswith('('):
+                return expr
+
+            # find the parenthesis closing the leading group
+            depth = 0
+            close = -1
+            for pos, char in enumerate(text):
+                if char == '(':
+                    depth += 1
+                elif char == ')':
+                    depth -= 1
+                    if depth == 0:
+                        close = pos
+                        break
+
+            if close < 0:
+                Report.log.error("Unbalanced parenthesis in formula=%s", expr)
+                return expr
+
+            inner = text[1:close].strip()
+            suffix = text[close + 1:].strip()
+
+            # nothing to distribute, or no OR to protect: leave the formula untouched
+            if not suffix or len(split_top_level_or(inner)) < 2:
+                return expr
+
+            return OR.join(f'{part} {suffix}'.strip() for part in split_top_level_or(inner))
+
         def parse_dictionary_token(dict_token: str) -> str:
             """
             [dictName.code] -> numeric value via existing Report.ParseDictVar
@@ -1309,6 +1347,7 @@ class Report:
             return {"exists_subqueries": []}
 
         formula = normalize_spaces(formula)
+        formula = distribute_leading_group(formula)
         or_groups = split_top_level_or(formula)
 
         exists_subqueries = []
@@ -1434,8 +1473,13 @@ class Report:
                         continue
 
                     else:
-                        Report.log.error(f"Unsupported operator after variable: {tokens[i+1]}")
-                        break
+                        # "$_123" alone, as documented in doc/dhis2.md: the result only has to
+                        # exist, no value comparison. The next token (ON(...), CAT(...), AND...)
+                        # is handled on the following pass and injected into this atom.
+                        atom = '(' + AND.join(base_conditions) + ')'
+                        group_state["where_atoms"].append(atom)
+                        i += 1
+                        continue
 
                 elif token.startswith('{'):
                     # Merge tokens until closing '}' to support "{391, 344}" split as "{391," + "344}"

@@ -39,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Attached file and photo downloads now share the same branch
 
 ### Fixed
+- DHIS2 count ignored a formula without comparison, such as `$_203 ON('B157')`
+- DHIS2 count returned zero for a parenthesized OR group, such as `($_198 < 1 OR $_198 > 6) ON('B153')`
 - Media and script names are now validated, and external commands no longer go through a shell
 - Empty dates no longer display "None" in the pages
 - User-supplied values are now sanitized before being written to the logs

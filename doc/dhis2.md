@@ -69,6 +69,20 @@ CAT(SEX_F,AGE[18-65]) : Selects the analyses in the records concerning female pa
 
 ON('CODE_OF_ANALYSIS1','CODE_OF_ANALYSIS2',...) : Selects the analyses whose code corresponds to this list 
 
+### Scope of ON(...) and CAT(...) with an OR
+
+`ON(...)` and `CAT(...)` apply to the part that precedes them, not to the whole formula.
+In `$_198 < 1 OR $_198 > 6 ON('B153')` the code B153 only restricts `$_198 > 6`, so the
+first part is counted on every analysis and the total is too high.
+
+To apply them to the whole formula, enclose the OR group in parentheses:
+
+    ($_198 < 1 OR $_198 > 6) ON('B153')
+
+Repeating them in each part gives the same result:
+
+    $_198 < 1 ON('B153') OR $_198 > 6 ON('B153')
+
 
 ## LIST OF SAMPLING TYPES
 
