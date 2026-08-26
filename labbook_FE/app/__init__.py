@@ -3508,7 +3508,9 @@ def enter_result(id_rec=0, anchor=''):
                             else:
                                 type_res = ''
 
-                    # get unit label
+                    # get unit label, empty when the result type carries no unit
+                    res['unit'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite']), 'result unit')
                     if redir:
                         return redir
@@ -3519,6 +3521,8 @@ def enter_result(id_rec=0, anchor=''):
                             res['unit'] = unit['label']
 
                     # get unit2 label
+                    res['unit2'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite2']), 'result unit2')
                     if redir:
                         return redir
@@ -4444,6 +4448,8 @@ def technical_validation(id_rec=0, anchor=''):
                         res['res_label'] = res['valeur']
 
                     # get unit label
+                    res['unit'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite']), 'result unit')
                     if redir:
                         return redir
@@ -4455,6 +4461,8 @@ def technical_validation(id_rec=0, anchor=''):
                             res['unit'] = unit['label']
 
                     # get unit2 label
+                    res['unit2'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite2']), 'result unit2')
                     if redir:
                         return redir
@@ -4683,6 +4691,8 @@ def biological_validation(mode='', id_rec=0):
                         res['res_label'] = res['valeur']
 
                     # get unit label
+                    res['unit'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite']), 'result unit')
                     if redir:
                         return redir
@@ -4694,6 +4704,8 @@ def biological_validation(mode='', id_rec=0):
                             res['unit'] = unit['label']
 
                     # get unit2 label
+                    res['unit2'] = ''
+
                     data, redir = be_get('/services/dico/id/' + str(res['unite2']), 'result unit2')
                     if redir:
                         return redir

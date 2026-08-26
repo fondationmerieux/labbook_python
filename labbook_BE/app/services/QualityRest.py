@@ -1443,11 +1443,8 @@ class EquipmentDet(Resource):
             'serial': args['serial'],
             'inventory': args['inventory'],
             'incharge': args['incharge'],
-            'manual': args['manual'],
-            'procedur': args['procedur'],
-            'calibration': args['calibration'],
-            'contract': args['contract'],
-            'date_endcontract': args['date_endcontract'],
+            # manual, procedur, calibration, contract and date_endcontract are not sent by
+            # the front end and are absent from the SQL statements: they stay out of here
             'date_receipt': args['date_receipt'],
             'date_buy': args['date_buy'],
             'date_onduty': args['date_onduty'],

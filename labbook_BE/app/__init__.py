@@ -261,7 +261,9 @@ api.add_resource(AnalysisListFromExt,   '/services/external/analysis/list')
 api.add_resource(AnalysisHistoList,     '/services/analysis/historic/list')
 api.add_resource(AnalysisHistoExport,   '/services/analysis/historic/export')
 api.add_resource(AnalysisHistoDet,      '/services/analysis/historic/details')
-api.add_resource(AnalysisReq,           '/services/analysis/list/req/<int:id_rec>/type/<string:type_ana>', '/services/analysis/list/req', '/services/analysis/delete/req/<int:id_req>')
+api.add_resource(AnalysisReq,           '/services/analysis/list/req/<int:id_rec>/type/<string:type_ana>',
+                                        '/services/analysis/list/req',
+                                        '/services/analysis/delete/req/<int:id_req>')
 api.add_resource(AnalysisSearch,        '/services/analysis/search/<string:type>')
 api.add_resource(AnalysisStatus,        '/services/analysis/status')
 api.add_resource(AnalysisVarSearch,     '/services/analysis/variable/search')
