@@ -851,7 +851,7 @@ class ScriptBackup(Resource):
                 self.log.exception(Logs.fileline() + ' : ScriptBackup ERROR audit invalid media')
             return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup).strip()
         argv = ["sh", script_path, "-m", media, Constants.cst_io_backup]
         out_path = os.path.join(Constants.cst_io, 'backup.out')
 
@@ -921,7 +921,7 @@ class ScriptInitMedia(Resource):
                 self.log.exception(Logs.fileline() + ' : ScriptInitMedia ERROR audit invalid media')
             return compose_ret('1', Constants.cst_content_type_json, 400)
 
-        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup).strip()
         argv = ["sh", script_path, "-m", media, Constants.cst_io_initmedia]
 
         self.log.info(Logs.fileline() + ' : ScriptInitMedia argv=' + str(argv))
@@ -986,7 +986,7 @@ class ScriptListarchive(Resource):
 
         os.environ['LABBOOK_USER_PWD'] = args['user_pwd']
 
-        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup)
+        script_path = os.path.join(Constants.cst_path_script, Constants.cst_script_backup).strip()
         argv = ["sh", script_path, "-m", media, Constants.cst_io_listarchive]
         out_path = os.path.join(Constants.cst_io, 'listarchive.out')
 

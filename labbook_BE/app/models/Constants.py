@@ -43,8 +43,9 @@ class Constants:
     cst_path_log    = '/home/apps/logs/'
 
     cst_script_user     = 'user_labbook'
-    cst_script_backup   = 'backup.sh '
-    cst_script_analyzer = 'analyzer.sh '
+    # no trailing space: these are file names, joined to a directory to build a path
+    cst_script_backup   = 'backup.sh'
+    cst_script_analyzer = 'analyzer.sh'
 
     # CMD LIST for backup & restore
     cst_io_backup      = 'backup'
