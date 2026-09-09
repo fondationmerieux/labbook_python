@@ -29,8 +29,10 @@ RUN yum update -y && yum install -y \
     httpd \
     mod_ssl \
     sshpass \
-    unoconv \
+    python3-pip \
     libreoffice-headless \
+    libreoffice-pyuno \
+    libreoffice-writer \
     logrotate \
     mysql-community-client
 
@@ -44,6 +46,7 @@ RUN set -eux \
     && python3.11 -m pip install --upgrade pip \
     && python3.11 -m pip install --no-cache-dir --ignore-installed setuptools \
     && python3.11 -m pip install --no-cache-dir supervisor pipenv \
+    && /usr/bin/python3 -m pip install --no-cache-dir unoserver \
     && mkdir -p /home/supervisor/log /home/supervisor/tmp \
                /home/apps/labbook_FE/labbook_FE \
                /home/apps/labbook_BE/labbook_BE

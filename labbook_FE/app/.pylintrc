@@ -1,0 +1,44 @@
+# Pylint configuration, kept next to the code so it survives make devbuild.
+# Run it from this directory, inside the container venv: cd .../app && pylint .
+#
+# Values here mirror ~/.flake8 where the two tools overlap.
+
+[MAIN]
+recursive = y
+
+# _ is installed in the builtins by langDB.install() (gettext), pylint cannot see it
+additional-builtins = _
+
+[FORMAT]
+max-line-length = 180
+
+[MESSAGES CONTROL]
+# Style only, deliberately silenced:
+#   logging-not-lazy          log lines are built with +, a project-wide choice
+#   missing-*-docstring       docstrings are written where they help, not everywhere
+#   broad-exception-caught    the except Exception blocks are deliberate and documented
+#   invalid-name              naming style, not a defect
+#   too-many-*, too-few-*     arbitrary size thresholds on working code
+#   no-else-return            readability preference
+#
+# Deliberately kept, even though they are noisy families:
+#   import-outside-toplevel   often hides a circular import
+#   duplicate-code            SonarCloud grades the project on it
+disable =
+    logging-not-lazy,
+    missing-module-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    broad-exception-caught,
+    invalid-name,
+    too-many-return-statements,
+    too-many-branches,
+    too-many-nested-blocks,
+    too-many-statements,
+    too-many-locals,
+    too-many-arguments,
+    too-many-instance-attributes,
+    too-many-public-methods,
+    too-few-public-methods,
+    too-many-lines,
+    no-else-return

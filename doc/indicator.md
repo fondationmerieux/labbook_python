@@ -55,9 +55,13 @@ If `nb_res = 4`, then the following must be defined:
   - Invalid example:
     - `$_284
 
-  - If the formula starts with `AND`, the first part uses the first `sample_type` and the second part uses the second `sample_type`.  
-    If both parts use the same `sample_type`, you must write it as `[serial_of_first_sample_type, serial_of_second_sample_type]`.  
-  - With keyword `OR`, the `sample_type` will be shared by both parts of the formula.  
+  - **How many entries in `sample_type_xxx`: count the `AND` and the `OR` of the formula, then add 1.**
+    Each part of the formula consumes one entry, taken in order, so repeat the same serial when the
+    parts share a sample type.  
+    - `$_284 > 0` : no operator, so 1 entry, `[138]`  
+    - `$_7 >= 0.7 AND $_7 <= 1.4` : 1 operator, so 2 entries, `[138,138]`  
+    - `$_7 >= 0.7 AND $_7 <= 1.4 OR $_7 >= 0.6 AND $_7 <= 1.1` : 3 operators, so 4 entries, `[138,138,138,138]`  
+  - Too few entries and the indicator fails to compute, with `IndexError` in the log.  
   - If `formula_xxx` is empty, then `res_label_xxx` will be considered as a separator title and `sample_type_xxx` is not required.  
 
 - **sample_type_xxx** : serial corresponding to the type of sample used in the formula.  

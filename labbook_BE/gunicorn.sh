@@ -142,7 +142,7 @@ export LABBOOK_OAUTH_FE_SECRET="$(
 alembic upgrade head >> ${LOGS_PERM}/alembic.out 2>&1
 
 # preload libreoffice
-unoconv --listener >> ${LOGS_PERM}/unoconv.out 2>&1 &
+/usr/bin/python3 -m unoserver.server >> ${LOGS_PERM}/unoserver.out 2>&1 &
 
 # Gunicorn is installed in the virtual environment
 # When started by supervisord, exec is necessary for the signals to reach gunicorn.

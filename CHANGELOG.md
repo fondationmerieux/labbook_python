@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.23] - 2026-09-09
+### Changed
+- ODT to PDF conversion now uses unoserver instead of unoconv
+- Analysis code added to OBR-4 in the analyzer query reply
+
 ## [3.6.22] - 2026-08-25
 ### Added
 - ana_loinc and ana_code for report template

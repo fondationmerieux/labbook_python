@@ -1,84 +1,110 @@
 # -*- coding:utf-8 -*-
 import sys
+import ast
 import getopt
-import os
 import json
+import os
+import subprocess
 
 from relatorio.templates.opendocument import Template
 
-# locale.setlocale(locale.LC_TIME, 'fr_FR.UTF-8')
+TMP_DIR = '/home/apps/labbook_BE/labbook_BE/tmp/'
+
+# Pdf.py drops the data of every generated report here, as a Python repr
+DATA_DUMP = '/storage/resource/template/data_template_report'
 
 
-def genere_pdf(data, template, pdf, verbose=False):
-    ret_sc = True
+def load_data(data_path, verbose=False):
+    """Read the data file: the Python repr written by Pdf.py, or plain JSON."""
+    with open(data_path, "r", encoding="utf-8") as file_data:
+        raw = file_data.read()
 
-    tmp_odt = os.path.join('/home/apps/labbook_BE/labbook_BE/tmp/', pdf)
-    out_pdf = os.path.join('/home/apps/labbook_BE/labbook_BE/tmp/', pdf + '.pdf')
+    # Pdf.py writes str(data), which json cannot read: bytes for the logo,
+    # single quotes, Python None. ast reads it as it is written.
+    try:
+        data = ast.literal_eval(raw)
+    except (ValueError, SyntaxError):
+        data = json.loads(raw)
 
-    print('path tmp_odt = ' + str(tmp_odt))
-    print('path out_pdf = ' + str(out_pdf))
+    if verbose:
+        print('data keys = ' + str(sorted(data)))
+
+    return data
+
+
+def genere_pdf(data_path, template, pdf, verbose=False):
+    tmp_odt = os.path.join(TMP_DIR, pdf)
+    out_pdf = os.path.join(TMP_DIR, pdf + '.pdf')
+
+    for label, path in (('data', data_path), ('template', template)):
+        if not os.path.isfile(path):
+            print('%s file not found: %s' % (label, path))
+            return False
+
+    if verbose:
+        print('data     = ' + data_path)
+        print('template = ' + template)
+        print('tmp_odt  = ' + tmp_odt)
+        print('out_pdf  = ' + out_pdf)
 
     # read file data
     try:
-        data_path = data
-
-        print('path data_path = ' + str(data_path))
-
-        with open(data_path, "r", encoding="utf-8") as file_data:
-            data = file_data.read()
-
-        print('data raw = ' + str(data))
-
-        data = json.loads(data)
-        
-        print('data json = ' + str(data))
+        data = load_data(data_path, verbose)
     except Exception as err:
-        print('read file data, failed, err=' + str(err) + ', data_path=' + str(data_path))
+        print('read file data failed, err=' + str(err) + ', data_path=' + str(data_path))
         return False
 
     # write odt with data and template
     try:
-        tpl_path = template
-
-        print('path tpl_path = ' + str(tpl_path))
-
-        tpl = Template(source="", filepath=tpl_path)
+        tpl = Template(source="", filepath=template)
 
         with open(tmp_odt, "wb") as f:
             f.write(tpl.generate(o=data).render().getvalue())
     except Exception as err:
-        print('write odt with data and template, failed, err=' + str(err) + ', template=' + str(template) + ', pdf=' + str(pdf))
+        print('write odt with data and template failed, err=' + str(err) + ', template=' + str(template))
         return False
 
-    # convert odt to pdf via openoffice
+    # convert odt to pdf via unoserver
+    # a list, not a shell line: a file name can never extend the command
+    argv = ["unoconvert", "--convert-to", "pdf",
+            "--input-filter", "writer8",
+            "--filter-option", "SelectPdfVersion=1",
+            tmp_odt, out_pdf]
+
+    if verbose:
+        print('convert argv = ' + str(argv))
+
     try:
-        cmd = ('unoconv -e SelectPdfVersion=1 -f pdf -o ' + out_pdf + ' ' + tmp_odt + ' > ' + '/home/apps/labbook_BE/labbook_BE/tmp/' + 'unoconv.out 2>&1')
-
-        print('convert odt to pdf cmd=' + cmd)
-        os.system(cmd)
-
-        file_exists = os.path.exists(out_pdf + '.pdf')
-
-        # if file ends by .pdf remove it
-        if file_exists:
-            print('remove .pdf from ' + out_pdf + '.pdf')
-            import shutil
-
-            shutil.move(out_pdf + '.pdf', out_pdf)
+        result = subprocess.run(argv, capture_output=True, text=True, check=False)  # nosec B603
     except Exception as err:
-        print('convert odt to PDF failed, err=' + str(err) + ', template=' + str(template) + ', pdf=' + str(pdf))
+        print('convert odt to PDF failed, err=' + str(err) + ', template=' + str(template))
         return False
 
-    return ret_sc
+    if result.returncode != 0:
+        print('unoconvert returned %d' % result.returncode)
+        print(result.stdout.strip())
+        print(result.stderr.strip())
+        return False
+
+    if not os.path.isfile(out_pdf) or os.path.getsize(out_pdf) == 0:
+        print('no PDF produced: ' + out_pdf)
+        return False
+
+    print('PDF written: %s (%d bytes)' % (out_pdf, os.path.getsize(out_pdf)))
+
+    return True
 
 
 def usage():
-    print("Usage : %s [-h|--help] [-v|--verbose] [-d|--data path_data] [-t|--template path_template] [-p|--pdf path_pdf]" % sys.argv[0])
+    print("Usage : %s [-h|--help] [-v|--verbose] [-d|--data path_data] [-t|--template path_template] [-p|--pdf name_pdf]" % sys.argv[0])
     print("   -h : help")
-    print("   -t : path of data input")
-    print("   -t : path of template input")
-    print("   -p : name of PDF output without .pdf")
+    print("   -d : path of data input, default " + DATA_DUMP)
+    print("   -t : path of template input (.odt)")
+    print("   -p : name of PDF output without .pdf, written under " + TMP_DIR)
     print("   -v : verbose mode")
+    print("")
+    print("The data file is the one Pdf.py writes on every generated report.")
+    print("Generate one report from the GUI, then iterate on the template here.")
 
 
 def main():
@@ -90,8 +116,7 @@ def main():
         sys.exit(2)
 
     verbose  = False
-    statut   = 1
-    data     = ""
+    data     = DATA_DUMP
     template = ""
     pdf      = ""
 
@@ -111,10 +136,12 @@ def main():
             usage()
             sys.exit(2)
 
-    if genere_pdf(data, template, pdf, verbose):
-        statut = 0
+    if not template or not pdf:
+        print("-t and -p are required")
+        usage()
+        sys.exit(2)
 
-    sys.exit(statut)
+    sys.exit(0 if genere_pdf(data, template, pdf, verbose) else 1)
 
 
 if __name__ == "__main__":

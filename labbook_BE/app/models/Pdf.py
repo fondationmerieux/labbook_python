@@ -33,6 +33,25 @@ class Pdf:
     log = logging.getLogger('log_db')
 
     @staticmethod
+    def short_data(data):
+        """Return a copy of the report data with byte blobs replaced by their size.
+
+        The logo and the barcodes are raw PNG bytes: logging them as they are adds
+        tens of thousands of characters to log_db.log for every generated report.
+        The debug file written next to these traces still holds the full data.
+        """
+        if isinstance(data, bytes):
+            return '<%d bytes>' % len(data)
+        if isinstance(data, dict):
+            return {key: Pdf.short_data(value) for key, value in data.items()}
+        if isinstance(data, list):
+            return [Pdf.short_data(value) for value in data]
+        if isinstance(data, tuple):
+            return tuple(Pdf.short_data(value) for value in data)
+
+        return data
+
+    @staticmethod
     def getPdfBillList(l_datas, date_beg, date_end, tpl_file, filename):
         """Build a PDF bill list
 
@@ -2189,7 +2208,7 @@ class Pdf:
 
         # write odt with data and template
         try:
-            Pdf.log.error(Logs.fileline() + ' : buildReport data = ' + str(data))
+            Pdf.log.info(Logs.fileline() + ' : buildReport data = ' + str(Pdf.short_data(data)))
 
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, Constants.cst_filedata_report)
@@ -2210,22 +2229,15 @@ class Pdf:
         # convert odt to pdf via openoffice
         try:
             # a list, not a shell line: a file name can never extend the command
-            argv = ["unoconv", "-e", "SelectPdfVersion=1", "-f", "pdf", "-o", out_pdf, tmp_odt]
+            argv = ["unoconvert", "--convert-to", "pdf",
+                    "--input-filter", "writer8",
+                    "--filter-option", "SelectPdfVersion=1",
+                    tmp_odt, out_pdf]
 
             Pdf.log.info(Logs.fileline() + ' : buildReport argv=' + str(argv))
 
-            with open(os.path.join(Constants.cst_log, 'unoconv.out'), "w", encoding="utf-8", errors="ignore") as f_out:
+            with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
-
-            if id_rec > 0:
-                file_exists = os.path.exists(out_pdf + '.pdf')
-
-                # if file ends by .pdf remove it
-                if file_exists:
-                    Pdf.log.error(Logs.fileline() + ' : buildReport remove .pdf from ' + out_pdf + '.pdf')
-                    import shutil
-
-                    shutil.move(out_pdf + '.pdf', out_pdf)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildReport convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
             return False
@@ -2290,7 +2302,7 @@ class Pdf:
 
         # write odt with data and template
         try:
-            Pdf.log.error(Logs.fileline() + ' : type = ' + str(type) + ' | buildPdf data = ' + str(data))
+            Pdf.log.info(Logs.fileline() + ' : type = ' + str(type) + ' | buildPdf data = ' + str(Pdf.short_data(data)))
 
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, debug_filename_data)
@@ -2313,11 +2325,14 @@ class Pdf:
         # convert odt to pdf via openoffice
         try:
             # a list, not a shell line: a file name can never extend the command
-            argv = ["unoconv", "-e", "SelectPdfVersion=1", "-f", "pdf", "-o", out_pdf, tmp_odt]
+            argv = ["unoconvert", "--convert-to", "pdf",
+                    "--input-filter", "writer8",
+                    "--filter-option", "SelectPdfVersion=1",
+                    tmp_odt, out_pdf]
 
             Pdf.log.info(Logs.fileline() + ' : buildPdf argv=' + str(argv))
 
-            with open(os.path.join(Constants.cst_log, 'unoconv.out'), "w", encoding="utf-8", errors="ignore") as f_out:
+            with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
 
         except Exception as err:

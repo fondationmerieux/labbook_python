@@ -615,6 +615,7 @@ class Analyzer:
                     sex = 'M' if order['pat_sex'] == 1 else 'F' if order['pat_sex'] == 2 else 'U'
                     specimen = order['code']
                     test_code = order['ana_loinc'] if order['ana_loinc'] else order['ana_code']
+                    lis_code  = order['ana_code']
                     test_name = order['ana_name']
                     status = "NW"
 
@@ -638,7 +639,7 @@ class Analyzer:
                     obr = rsp.add_segment("OBR")
                     obr.obr_1 = "1"
                     obr.obr_2 = specimen
-                    obr.obr_4 = f"{test_code}^{test_name}"
+                    obr.obr_4 = f"{test_code}^{test_name}^^{lis_code}"
 
                 except Exception as e:
                     Analyzer.log.error(Logs.fileline() + f" : ERROR processing sample: {str(e)}")
