@@ -50,6 +50,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+{% include 'js/format_date.js' %}
 $("#search_patient").select2(
 {
     placeholder: "{{ _("Cliquer pour commencer une recherche") }}",
@@ -103,7 +104,7 @@ var code = "" ;
 var info = "" ;
 
     if (repo.ddn)
-    info += repo.ddn + " " ; // TODO change format date ?
+    info += format_date(repo.ddn) + " " ;
 
     if (repo.age && repo.age_unit)
     {

@@ -22,7 +22,16 @@
                 <div class="form-group d-lg-flex align-items-start mt-3">
                     <label for="script" class="form-label col-3 text-end mt-2 me-1">{{ _("Script") }}</label>
                     <div>					
-                        <input type="text" name="script" id="script" value="{{ args['printer']['prt_script'] }}" class="form-control form-lbk">	
+                        <select name="script" id="script" class="form-select form-lbk">
+                            <option value=""></option>
+                            {% for name in ihm['l_script'] %}
+                            <option value="{{ name }}" {% if args['printer']['prt_script'] == name %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                            {# the configured script may have been deleted: keep it visible instead of silently changing the printer #}
+                            {% if args['printer']['prt_script'] and args['printer']['prt_script'] not in ihm['l_script'] %}
+                            <option value="{{ args['printer']['prt_script'] }}" selected>{{ args['printer']['prt_script'] }} ({{ _("fichier absent") }})</option>
+                            {% endif %}
+                        </select>
                     </div>
                 </div>
 

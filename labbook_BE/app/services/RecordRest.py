@@ -1032,7 +1032,7 @@ class RecordDetFromExt(Resource):
                                                 id_dos=id_rec,
                                                 ref_analyse=tmp_ana['id_data'],
                                                 prix=ana_price,
-                                                paye=5,  # TODO useless column ?
+                                                paye=5,  # not paid: the flag is never read back, billing works on the record total
                                                 urgent=ana['ana_emer'],
                                                 demande=ana['ana_req'],
                                                 outsourced=ana['ana_out'])
@@ -1069,7 +1069,7 @@ class RecordDetFromExt(Resource):
                                                         id_dos=id_rec,
                                                         ref_analyse=tmp_ana['produit_biologique'],
                                                         prix=ana_act_price,
-                                                        paye=5,  # TODO useless column ?
+                                                        paye=5,  # not paid: the flag is never read back, billing works on the record total
                                                         urgent=5,
                                                         demande=4,
                                                         outsourced='N')

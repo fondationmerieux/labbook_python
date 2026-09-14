@@ -4,6 +4,8 @@ import os
 import re
 import subprocess  # nosec B404
 
+from datetime import date
+
 from flask import request
 from flask_restful import Resource
 
@@ -12,6 +14,7 @@ from app.models.Constants import Constants
 from app.models.Audit import Audit
 from app.models.Pdf import Pdf
 from app.models.Logs import Logs
+from app.models.Quality import Quality
 from app.models.Report import Report
 from app.models.Setting import Setting
 from app.models.File import File
@@ -610,12 +613,57 @@ class PdfActivityReport(Resource):
 class PrintByScript(Resource):
     log = logging.getLogger('log_services')
 
+    # Values handed to the print script, as environment variables. The name on the left is
+    # what the script reads, the one on the right the column it comes from. Adding an entry
+    # here is enough to expose a new value, no script has to change.
+    print_variables = {
+        'PRINT_ALIQUOT_ID':             'sal_ser',
+        'PRINT_ALIQUOT_DATE':           'sal_date',
+        'PRINT_PATHOGEN':               'sal_pathogen',
+        'PRINT_SAMPLE_TYPE':            'type_label',
+        'PRINT_PATIENT_CODE':           'pat_code',
+        'PRINT_PATIENT_LAB_CODE':       'pat_code_lab',
+        'PRINT_PATIENT_NAME':           'pat_name',
+        'PRINT_PATIENT_FIRSTNAME':      'pat_firstname',
+        'PRINT_RECORD_NUMBER':          'rec_num_long',
+        'PRINT_RECORD_INTERNAL_NUMBER': 'rec_num_int',
+        'PRINT_PRESCRIPTION_DATE':      'rec_date_prescr',
+        'PRINT_TEST_CODE':              'ana_code',
+        'PRINT_TEST_NAME':              'ana_name',
+        'PRINT_TEST_LOINC':             'ana_loinc',
+        'PRINT_STORAGE_ROOM':           'sro_label',
+        'PRINT_STORAGE_CHAMBER':        'sch_label',
+        'PRINT_STORAGE_COMPARTMENT':    'sco_label',
+        'PRINT_STORAGE_BOX':            'sbo_label',
+        'PRINT_STORAGE_POSITION':       'sal_coordinates',
+    }
+
+    @staticmethod
+    def build_print_env(aliquot):
+        """Turns an aliquot row into the environment the script reads.
+
+        Every value becomes a string, a missing one an empty string, so the script never has
+        to test whether a variable exists.
+        """
+        env = os.environ.copy()
+
+        for name, column in PrintByScript.print_variables.items():
+            value = aliquot.get(column) if aliquot else None
+
+            if value is None:
+                env[name] = ''
+            elif isinstance(value, date):
+                # covers date and datetime, the latter being a date
+                env[name] = value.strftime('%d/%m/%Y')
+            else:
+                env[name] = str(value)
+
+        return env
+
     @require_oauth()
     def post(self, script_name):
         audit_user = request.oauth_user
-        # args = request.get_json() or {}
-
-        # TODO get args for script
+        args = request.get_json(silent=True) or {}
 
         # the name comes from the URL: only a plain file name is accepted, so nothing
         # can be appended to the command line
@@ -641,6 +689,25 @@ class PrintByScript(Resource):
                 self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit script not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        # The caller names what is being printed. Nothing else is read from the body, so the
+        # same endpoint can later serve another kind of label.
+        id_aliquot = args.get('sal_ser', 0)
+
+        aliquot = None
+
+        if id_aliquot:
+            aliquot = Quality.getStorageAliquotForPrint(id_aliquot)
+
+            if not aliquot:
+                self.log.error(Logs.fileline() + ' : PrintByScript ERROR aliquot not found id=' + str(id_aliquot))
+                try:
+                    details = {"result": "ERROR", "reason": "ALIQUOT_NOT_FOUND", "sal_ser": str(id_aliquot)}
+                    Audit.insertAudit(audit_user, "PrintByScript", "PDF", None, "ERROR", details, "R")
+                except Exception:
+                    self.log.exception(Logs.fileline() + ' : PrintByScript ERROR audit aliquot not found')
+                return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # a fixed name overwritten at every call, as backup.out and listmedia.out are
         out_path = os.path.join(Constants.cst_io, 'print.out')
 
         self.log.info(Logs.fileline() + ' : PrintByScript script_path=' + script_path)
@@ -648,6 +715,7 @@ class PrintByScript(Resource):
         # run without a shell, output redirected as the trailing "> print.out 2>&1" did
         with open(out_path, "w", encoding="utf-8", errors="ignore") as f:
             proc = subprocess.Popen(["sh", script_path], stdout=f, stderr=subprocess.STDOUT,  # nosec B603
+                                    env=PrintByScript.build_print_env(aliquot),
                                     start_new_session=True)
 
         # the script runs in the background, as the trailing "&" did: only its start is traced

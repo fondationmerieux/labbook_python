@@ -84,6 +84,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
+{% include 'js/format_date.js' %}
 var id_user = {{ session['user_id']|safe }};
 var basePatFormHtml = null;
 var basePatFormHtmlNoScript = null;
@@ -172,7 +173,7 @@ var code = "" ;
 var info = "" ;
 
     if (repo.ddn)
-    info += repo.ddn + " " ; // TODO change format date ?
+    info += format_date(repo.ddn) + " " ;
 
 var display = $(
     "<div class='select2-result-repository clearfix'>" +

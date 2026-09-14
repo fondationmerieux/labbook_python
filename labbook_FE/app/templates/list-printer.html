@@ -25,6 +25,46 @@
                 </div>
             </div>
 
+            <h6 class="mt-4">{{ _("Scripts déposés") }}</h6>
+            {% if args['l_script'] %}
+            <table class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>{{ _("Action") }}</th>
+                        <th>{{ _("Fichier") }}</th>
+                        <th>{{ _("Taille") }}</th>
+                        <th>{{ _("Déposé le") }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for script in args['l_script'] %}
+                    <tr>
+                        <td>
+                            <nav class="nav-item dropdown">
+                                <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                <div class="dropdown-menu nav-style menu-act-drop">
+                                    <a class="dropdown-item menu-act-item"
+                                       href="{{ session['server_ext'] }}/download-file/type/PR/name/{{ script['name'] }}/ref/TPL/0">
+                                        {{ _("Télécharger") }}
+                                    </a>
+                                    <a class="dropdown-item menu-act-item" href="#"
+                                       onclick="deletePrinterScript('{{ script['name'] }}'); return false;">
+                                        {{ _("Supprimer") }}
+                                    </a>
+                                </div>
+                            </nav>
+                        </td>
+                        <td>{{ script['name'] }}</td>
+                        <td>{{ script['size'] }}</td>
+                        <td>{{ script['date'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>{{ _("Aucun script déposé.") }}</p>
+            {% endif %}
+
             <br />
 
             <table id="printerTable" class="display table table-striped" style="width:100%">
@@ -155,6 +195,37 @@ function delete_item(id_item)
             alert("{{ _("Une erreur s'est produite lors de la suppression.") }}");
         });
     }
+}
+
+/**
+ * Deletes an uploaded printer script. The route refuses when a printer still uses it.
+ */
+function deletePrinterScript(name)
+{
+    if (!confirm("{{ _('Supprimer ce script ?') }}")) {
+        return;
+    }
+
+    fetch("{{ session['server_ext'] }}/delete-file/PR/" + encodeURIComponent(name), {
+        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}" }
+    })
+    .then(response => response.json().then(data => ({ status: response.status, data: data })))
+    .then(result => {
+        if (result.status === 409) {
+            showPrinterToast("{{ _('Script utilisé par') }} : " + result.data.used_by.join(", "), "error");
+            return;
+        }
+
+        if (result.data.success) {
+            location.reload();
+        } else {
+            showPrinterToast("{{ _('Erreur lors de la suppression.') }}", "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error during delete:", error);
+        showPrinterToast("{{ _('Erreur lors de la suppression.') }}", "error");
+    });
 }
 
 /**

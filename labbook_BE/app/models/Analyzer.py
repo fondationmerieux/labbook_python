@@ -254,6 +254,15 @@ class Analyzer:
         elif pat['pat_sex'] == 2:
             pat_sex = 'F'
 
+        # Urgency is held by the request line of the analysis inside the record, in
+        # sigl_04_data, where the value 4 means urgent as the record screens read it.
+        priority = "R"
+
+        req_ana = Analysis.getAnalysisRequest(id_rec, samp['samp_id_ana'])
+
+        if req_ana and req_ana['urgent'] == 4:
+            priority = "S"
+
         l_analyzer = Analyzer.getAnalyzerList()
 
         for analyzer in l_analyzer:
@@ -307,8 +316,10 @@ class Analyzer:
                 pid_segment.pid_6  = pat['pat_maiden'] or ''  # Maiden name
                 pid_segment.pid_7  = pat_birth            # Datetime of birth.
                 pid_segment.pid_8  = pat_sex              # Sex : "F"emale, "M"ale, "O"ther, "U"nknown, "A"mbigous, "N"ot app
-                pid_segment.pid_11 = "Street^Other^City^Zip"  # Address TODO
-                pid_segment.pid_13 = "Phone^Email"            # Home phone number and email
+                # Address, phone and email are not sent: no analyzer reads them, and the
+                # address is typed in a text area, whose line breaks would cut the segment.
+                pid_segment.pid_11 = ""
+                pid_segment.pid_13 = ""
                 pid_segment.pid_28 = ""                   # Nationality
 
                 try:
@@ -349,8 +360,7 @@ class Analyzer:
                 # Timing quantity segment
                 tq1_segment = order_group.add_segment('TQ1')
                 tq1_segment.tq1_1 = "1"
-                tq1_segment.tq1_9 = "R"  # priority : "R"outine, "S"tat with highest priority.
-                # TODO emergency ?
+                tq1_segment.tq1_9 = priority  # priority : "R"outine, "S"tat with highest priority.
 
                 try:
                     tq1_segment.validate()
@@ -487,29 +497,17 @@ class Analyzer:
             return False
 
     @staticmethod
-    def saveResult(msg):
-
-        hl7_msg = 'TODO'  # parse_message(msg)
-
-        Analyzer.log.info(Logs.fileline() + ' : DEBUG hl7_msg received = ' + str(hl7_msg))
-
-        # Result.updateResultDemo()
-
-        return True
-
-    @staticmethod
-    def getAnalyzerMsgList(args):
+    def getAnalyzerMsgList():
         cursor = DB.cursor()
 
-        if args:
-            # TODO
-            Analyzer.log.info(Logs.fileline() + ' : DEBUG TODO args getAnalyzerMsgList')
-
+        # analyzer_msg grows with every exchange and nothing purges it, so the newest
+        # messages only are returned: they are the ones the screen is opened for.
         req = ('select anm_ser, anm_date, anm_date_upd, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, '
                'ifnull(ans_name, "") as analyzer_name, ifnull(ans_id, "") as analyzer_id, anm_tot '
                'from analyzer_msg '
                'left join analyzer_setting on anm_ans=ans_ser '
-               'order by anm_date desc')
+               'order by anm_date desc '
+               'limit 1000')
 
         cursor.execute(req,)
 

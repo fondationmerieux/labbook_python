@@ -471,7 +471,7 @@ class ResultValid(Resource):
             type_validation = 252  # Biological result
             stat_rec = 256         # Biological record
 
-            # TODO USELESS 03/01/2024, we leave time to try record_validation
+            # kept: the report reads it back through getResultValidation
             if args['comm_valid']:
                 comment = args['comm_valid']
             else:

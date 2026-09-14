@@ -6811,7 +6811,26 @@ def list_printer():
     session['current_page'] = 'list-printer'
     session.modified = True
 
-    json_data = {}
+    json_data = {'l_script': []}
+
+    # Scripts already uploaded, so the operator sees what a printer can be pointed at
+    try:
+        path = Constants.cst_printer
+        for filename in sorted(os.listdir(path)):
+            full_path = os.path.join(path, filename)
+
+            if os.path.isdir(full_path) or not filename.endswith('.sh'):
+                continue
+
+            stat = os.stat(full_path)
+
+            json_data['l_script'].append({
+                'name': filename,
+                'size': stat.st_size,
+                'date': datetime.fromtimestamp(stat.st_mtime).strftime('%d/%m/%Y %H:%M'),
+            })
+    except Exception:
+        log.exception(Logs.fileline() + ' : load printer scripts failed')
 
     return render_template('list-printer.html', args=json_data, rand=secrets.randbelow(1000))
 
@@ -6847,6 +6866,17 @@ def det_printer(id_printer=0):
             json_data['printer'] = data
 
     json_data['id_printer'] = id_printer
+
+    # Scripts available for the dropdown
+    json_ihm['l_script'] = []
+
+    try:
+        path = Constants.cst_printer
+        for filename in sorted(os.listdir(path)):
+            if not os.path.isdir(os.path.join(path, filename)) and filename.endswith('.sh'):
+                json_ihm['l_script'].append(filename)
+    except Exception:
+        log.exception(Logs.fileline() + ' : load printer scripts failed')
 
     return render_template('det-printer.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -7768,10 +7798,11 @@ def download_file(type='', filename='', type_ref='', ref=''):
     # FPH  => Form Patient History
     # IN   => INDICATOR spreadsheet
     # TP   => template odt
+    # PR   => printer script
     # AA   => audit archive
 
     allowed_types = {'PY': 'PY', 'JF': 'JF', 'PH': 'PH', 'RP': 'RP', 'RLT': 'RLT', 'RPC': 'RPC', 'DH': 'DH', 'DHU': 'DHU',
-                     'BILU': 'BILU', 'ACTU': 'ACTU', 'EP': 'EP', 'FP': 'FP', 'FPH': 'FPH', 'IN': 'IN', 'TP': 'TP', 'AA': 'AA'}
+                     'BILU': 'BILU', 'ACTU': 'ACTU', 'EP': 'EP', 'FP': 'FP', 'FPH': 'FPH', 'IN': 'IN', 'TP': 'TP', 'PR': 'PR', 'AA': 'AA'}
 
     allowed_types_ref = {
         'GEN', 'MEET', 'PROC', 'MSG', 'CTRL', 'REC', 'FORM', 'MANU', 'LABO', 'TPL',
@@ -7951,6 +7982,9 @@ def download_file(type='', filename='', type_ref='', ref=''):
         generated_name = filename
     elif validated_type == 'TP':
         filepath = Constants.cst_template
+        generated_name = filename
+    elif validated_type == 'PR':
+        filepath = Constants.cst_printer
         generated_name = filename
     elif validated_type == 'AA':
         filepath = Constants.cst_audit
@@ -8512,6 +8546,7 @@ def delete_file(type='', filename=''):
     # FP  => Form Patient
     # FPH => Form Patient Hist
     # TP  => template odt
+    # PR  => printer script
 
     if type == 'DH':
         base_dir = Constants.cst_dhis2
@@ -8519,6 +8554,8 @@ def delete_file(type='', filename=''):
         base_dir = Constants.cst_form_pat
     elif type == 'TP':
         base_dir = Constants.cst_template
+    elif type == 'PR':
+        base_dir = Constants.cst_printer
     else:
         # type inconnu → on ne fait rien
         log.error(Logs.fileline() + ' : delete-file invalid file type')
@@ -8530,6 +8567,24 @@ def delete_file(type='', filename=''):
         if not safe_name:
             log.error(Logs.fileline() + ' : delete-file invalid filename (empty after sanitize)')
             return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+        # A printer script still referenced by a printer is kept: removing it would break
+        # that printer without anything showing until someone tries to print.
+        if type == 'PR':
+            resp = ensure_be_token()
+            if resp:
+                return resp
+
+            printers, redir = be_post('/services/quality/printer/list', {}, 'printer list')
+            if redir:
+                return redir
+
+            used_by = [p['prt_name'] for p in (printers or {}).get('data', [])
+                       if (p.get('prt_script') or '') == safe_name]
+
+            if used_by:
+                log.error(Logs.fileline() + ' : delete-file printer script still used by ' + ', '.join(used_by))
+                return json.dumps({'success': False, 'used_by': used_by}), 409, {'ContentType': 'application/json'}
 
         # Build absolute path and prevent path traversal
         base_dir_abs = os.path.abspath(base_dir)

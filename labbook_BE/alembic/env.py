@@ -7,6 +7,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import default_settings
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -15,25 +17,12 @@ config = context.config
 # fron the host env
 section = config.config_ini_section
 
-if os.environ.get("LABBOOK_DB_USER"):
-    DB_USER = os.environ.get("LABBOOK_DB_USER")
-else:
-    DB_USER = "root"  # TODO load from default_setting.py
-
-if os.environ.get("LABBOOK_DB_PWD"):
-    DB_PWD = os.environ.get("LABBOOK_DB_PWD")
-else:
-    DB_PWD = "root"  # TODO load from default_setting.py
-
-if os.environ.get("LABBOOK_DB_NAME"):
-    DB_NAME = os.environ.get("LABBOOK_DB_NAME")
-else:
-    DB_NAME = "SIGL"  # TODO load from default_setting.py
-
-if os.environ.get("LABBOOK_DB_HOST"):
-    DB_HOST = os.environ.get("LABBOOK_DB_HOST")
-else:
-    DB_HOST = "10.88.0.1"  # TODO load from default_setting.py
+# Same rule as the application: the environment wins, default_settings otherwise, so the
+# values live in one place only.
+DB_USER = os.environ.get("LABBOOK_DB_USER") or default_settings.DB_USER
+DB_PWD  = os.environ.get("LABBOOK_DB_PWD") or default_settings.DB_PWD
+DB_NAME = os.environ.get("LABBOOK_DB_NAME") or default_settings.DB_NAME
+DB_HOST = os.environ.get("LABBOOK_DB_HOST") or default_settings.DB_HOST
 
 config.set_section_option(section, "DB_USER", DB_USER)
 config.set_section_option(section, "DB_PWD", DB_PWD)

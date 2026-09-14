@@ -1939,8 +1939,6 @@ class Pdf:
                 for validator in l_validators:
 
                     id_user = validator['user']
-                    """ TODO USELESS 03/01/2024 we try record_validation
-                    comment = validator['comment']"""
 
                     if id_user != id_user_p:
                         ret_user = User.getUserDetails(id_user)
@@ -1977,10 +1975,6 @@ class Pdf:
                             data['signature'] = ""
 
                         id_user_p = id_user
-
-                    """ TODO USELESS 03/01/2024 we try record_validation
-                    if comment:
-                        res_comm = comment.split("\n")"""
 
                 # who make technical validation
                 l_tech_validators = Result.getListValidators(id_rec, Constants.cst_tech_vld)

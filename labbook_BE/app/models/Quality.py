@@ -1841,6 +1841,43 @@ class Quality:
         return cursor.fetchone()
 
     @staticmethod
+    def getStorageAliquotForPrint(id_item):
+        """Everything a label may need about one aliquot.
+
+        getStorageAliquot() is kept for the screens: it holds the identifiers, not the labels.
+        This one resolves the analysis, the record and the storage hierarchy, so a print script
+        receives readable values rather than internal serials.
+        """
+        cursor = DB.cursor()
+
+        req = ('select sal_ser, sal_date, sal_pathogen, sal_coordinates, '
+               'ifnull(dico.label, "") as type_label, '
+               'ifnull(pat.code, "") as pat_code, ifnull(pat.code_patient, "") as pat_code_lab, '
+               'ifnull(pat.nom, "") as pat_name, ifnull(pat.prenom, "") as pat_firstname, '
+               'if(rec_setting.rstg_period=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, '
+               'rec.rec_num_int, rec.date_prescription as rec_date_prescr, '
+               'ifnull(ana.code, "") as ana_code, ifnull(ana.nom, "") as ana_name, '
+               'ifnull(ana.ana_loinc, "") as ana_loinc, '
+               'ifnull(sro_label, "") as sro_label, ifnull(sch_label, "") as sch_label, '
+               'ifnull(sco_label, "") as sco_label, ifnull(sbo_label, "") as sbo_label '
+               'from storage_aliquot '
+               'LEFT JOIN storage_box sbo ON sal_box = sbo_ser '
+               'LEFT JOIN storage_compartment ON sbo_compartment = sco_ser '
+               'LEFT JOIN storage_chamber ON sco_chamber = sch_ser '
+               'LEFT JOIN storage_room ON sch_room = sro_ser '
+               'LEFT JOIN sigl_03_data pat ON sal_patient = pat.id_data '
+               'LEFT JOIN sigl_01_data samp ON sal_sample = samp.id_data '
+               'LEFT JOIN sigl_dico_data dico ON dico.id_data = ifnull(samp.type_prel, sal_type) '
+               'LEFT JOIN sigl_02_data rec ON samp.id_dos = rec.id_data '
+               'LEFT JOIN sigl_05_data ana ON samp.samp_id_ana = ana.id_data '
+               'LEFT JOIN record_setting AS rec_setting ON rec_setting.rstg_ser=1 '
+               'where sal_ser=%s')
+
+        cursor.execute(req, (id_item,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertStorageAliquot(**params):
         try:
             cursor = DB.cursor()

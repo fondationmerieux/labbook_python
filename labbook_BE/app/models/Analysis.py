@@ -676,6 +676,21 @@ class Analysis:
             return False
 
     @staticmethod
+    def getAnalysisRequest(id_rec, ref_ana):
+        """Request line of one analysis inside one record, where its urgency is held."""
+        cursor = DB.cursor()
+
+        req = ('select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande, '
+               'req_outsourced as outsourced '
+               'from sigl_04_data '
+               'where id_dos=%s and ref_analyse=%s '
+               'order by id_data desc limit 1')
+
+        cursor.execute(req, (id_rec, ref_ana,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def getLastAnalysisReqByRefAna(ref_ana):
         cursor = DB.cursor()
 

@@ -475,6 +475,14 @@ class AnalyzerLab29(Resource):
                         if obs_id and len(obs_id) <= 10:
                             lb_code = obs_id
 
+                        # IHE LAW flags supplemental observations with S_OTHER in OBX-3.4:
+                        # pipetting time, calibration id, QC state, technical limits and the
+                        # like. They carry a final status but are not analyte results.
+                        obx_3 = obs_id.split("^")
+                        if len(obx_3) > 3 and obx_3[3].strip().upper() == "S_OTHER":
+                            self.log.info(Logs.fileline() + f" : SKIPPED supplemental observation: {obs_id}")
+                            continue
+
                         # Filter only final results
                         if obs_status == "F":
                             ret = Analyzer.insertAnalyzerResult(
@@ -511,9 +519,8 @@ class AnalyzerMsgList(Resource):
     @require_oauth()
     def post(self):
         audit_user = request.oauth_user
-        args = request.get_json()
 
-        l_msg = Analyzer.getAnalyzerMsgList(args)
+        l_msg = Analyzer.getAnalyzerMsgList()
 
         if not l_msg:
             self.log.info(Logs.fileline() + ' : TRACE AnalyzerMsgList not found')

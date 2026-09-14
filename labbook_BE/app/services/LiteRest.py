@@ -5,7 +5,6 @@ import os
 import base64
 import shutil
 import uuid
-import json
 
 from datetime import datetime
 from flask import request
@@ -527,32 +526,13 @@ class LiteSetupLoad(Resource):
             "analysis_validation": VALIDATION_TABLE_SCHEMA
         }
 
-        # TODO for DEBUG during test
-        from decimal import Decimal
-        from datetime import date, datetime
         import base64
-
-        def safe_json_default(obj):
-            if isinstance(obj, Decimal):
-                return float(obj)
-            elif isinstance(obj, (datetime, date)):
-                return obj.isoformat()
-            elif isinstance(obj, bytes):
-                try:
-                    return obj.decode("utf-8")
-                except UnicodeDecodeError:
-                    return base64.b64encode(obj).decode("ascii")
-            return str(obj)
 
         # add logo.png for PDF report
         import os
         with open(os.path.join(Constants.cst_resource, "logo.png"), "rb") as f:
             encoded_logo = base64.b64encode(f.read()).decode("ascii")
             setup["logo_base64"] = encoded_logo
-
-        json_str = json.dumps(setup, ensure_ascii=True, default=safe_json_default)
-        size_bytes = len(json_str.encode("utf-8"))
-        self.log.info(Logs.fileline() + f' : DEBUG size setup : {size_bytes} bytes')
 
         self.log.info(Logs.fileline() + f' : LiteSetupLoad OK for login "{login}"')
         return compose_ret(setup, Constants.cst_content_type_json)

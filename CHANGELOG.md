@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.24] - 2026-09-14
+### Added
+- Printer settings list the uploaded scripts, with download and delete
+
+### Changed
+- Orders sent to an analyzer now carry the urgency of the analysis instead of always routine
+- Alembic reads the database settings from default_settings, as the application already does
+
+### Fixed
+- Aliquot label printing now passes the aliquot values to the script, see doc/print_aliquot.md
+- Supplemental analyzer observations (IHE LAW S_OTHER) are no longer stored as results
+
 ## [3.6.23] - 2026-09-09
 ### Changed
 - ODT to PDF conversion now uses unoserver instead of unoconv
@@ -396,7 +408,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [3.5.8] - 2025-04-07
 ### Added
-- mechanism for launching an aliquot label printing script (TODO deciding which values to send)
+- mechanism for launching an aliquot label printing script
 - new directory /storage/resource/printer for printing script
 - setting for LabBook Lite
 - new profile role : agent for LabBook Lite only
