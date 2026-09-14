@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+import shutil
 import logging
 import subprocess  # nosec B404
 import barcode
@@ -2252,7 +2253,9 @@ class Pdf:
             with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
 
-            os.replace(work_pdf, out_pdf)
+            # move, not replace: the report directory is a mounted volume, so the
+            # two paths may sit on different file systems
+            shutil.move(work_pdf, out_pdf)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildReport convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
             return False
@@ -2363,7 +2366,9 @@ class Pdf:
             with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
 
-            os.replace(work_pdf, out_pdf)
+            # move, not replace: the report directory is a mounted volume, so the
+            # two paths may sit on different file systems
+            shutil.move(work_pdf, out_pdf)
 
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildPdf convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
