@@ -12,6 +12,7 @@ from contextlib import ExitStack
 from datetime import datetime
 from io import BytesIO
 from relatorio.templates.opendocument import Template
+from werkzeug.utils import secure_filename
 from decimal import Decimal
 
 from app.models.Analysis import Analysis
@@ -2183,8 +2184,9 @@ class Pdf:
 
         # filename comes from the URL and must never reach a command line. The conversion
         # works on a name built here, and the result is renamed afterwards.
-        # the time keeps two editions of the same record from working on the same file
-        work_name = 'report_%d_%s' % (id_rec, datetime.now().strftime('%H%M%S%f'))
+        # nothing coming from the caller may take part in it, the process and the time
+        # being enough to keep two runs from working on the same file
+        work_name = 'report_%d_%s' % (os.getpid(), datetime.now().strftime('%H%M%S%f'))
 
         tmp_odt = os.path.join(Constants.cst_path_tmp, work_name)
         work_pdf = tmp_odt + '.pdf'
@@ -2202,17 +2204,20 @@ class Pdf:
 
             password = data['pat']['code']
 
+        # the name is written on disk, so it is reduced to a plain file name. The names in
+        # use are UUID or built from a record number, none of them loses anything here.
+        safe_name = secure_filename(filename or '')
+
+        if not safe_name:
+            Pdf.log.error(Logs.fileline() + ' : buildReport ERROR unusable filename=' + str(filename))
+            return False
+
         if id_rec > 0:
             out_base = Constants.cst_report
-            out_pdf = os.path.join(out_base, filename)
+            out_pdf = os.path.join(out_base, safe_name)
         else:
             out_base = Constants.cst_path_tmp
-            out_pdf = os.path.join(out_base, filename + '.pdf')
-
-        # the name may hold anything, it only has to stay inside its own directory
-        if not os.path.realpath(out_pdf).startswith(os.path.realpath(out_base) + os.sep):
-            Pdf.log.error(Logs.fileline() + ' : buildReport ERROR filename outside its directory, filename=' + str(filename))
-            return False
+            out_pdf = os.path.join(out_base, safe_name + '.pdf')
 
         # write odt with data and template
         try:
@@ -2298,17 +2303,19 @@ class Pdf:
         # filename comes from the caller, sometimes straight from an URL, and must never
         # reach a command line. The conversion works on a name built here, and the result
         # is renamed afterwards. The time keeps two runs from working on the same file.
-        work_name = '%s_%s' % (type.lower(), datetime.now().strftime('%H%M%S%f'))
+        work_name = 'pdf_%d_%s' % (os.getpid(), datetime.now().strftime('%H%M%S%f'))
 
         tmp_odt = os.path.join(Constants.cst_path_tmp, work_name)
         work_pdf = tmp_odt + '.pdf'
 
-        out_pdf = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
+        # same rule as buildReport: the name written on disk is a plain file name
+        safe_name = secure_filename(filename or '')
 
-        # the name may hold anything, it only has to stay inside its own directory
-        if not os.path.realpath(out_pdf).startswith(os.path.realpath(Constants.cst_path_tmp) + os.sep):
-            Pdf.log.error(Logs.fileline() + ' : buildPdf ERROR filename outside its directory, filename=' + str(filename))
+        if not safe_name:
+            Pdf.log.error(Logs.fileline() + ' : buildPdf ERROR unusable filename=' + str(filename))
             return False
+
+        out_pdf = os.path.join(Constants.cst_path_tmp, safe_name + '.pdf')
 
         if type == 'STI':
             debug_filename_data = Constants.cst_filedata_sticker
