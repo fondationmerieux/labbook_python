@@ -2181,7 +2181,14 @@ class Pdf:
 
         """
 
-        tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
+        # filename comes from the URL and must never reach a command line. The conversion
+        # works on a name built here, and the result is renamed afterwards.
+        # the time keeps two editions of the same record from working on the same file
+        work_name = 'report_%d_%s' % (id_rec, datetime.now().strftime('%H%M%S%f'))
+
+        tmp_odt = os.path.join(Constants.cst_path_tmp, work_name)
+        work_pdf = tmp_odt + '.pdf'
+
         report_pwd = 'N'
         password = ''
 
@@ -2196,9 +2203,16 @@ class Pdf:
             password = data['pat']['code']
 
         if id_rec > 0:
-            out_pdf = os.path.join(Constants.cst_report, filename)
+            out_base = Constants.cst_report
+            out_pdf = os.path.join(out_base, filename)
         else:
-            out_pdf = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
+            out_base = Constants.cst_path_tmp
+            out_pdf = os.path.join(out_base, filename + '.pdf')
+
+        # the name may hold anything, it only has to stay inside its own directory
+        if not os.path.realpath(out_pdf).startswith(os.path.realpath(out_base) + os.sep):
+            Pdf.log.error(Logs.fileline() + ' : buildReport ERROR filename outside its directory, filename=' + str(filename))
+            return False
 
         # write odt with data and template
         try:
@@ -2226,12 +2240,14 @@ class Pdf:
             argv = ["unoconvert", "--convert-to", "pdf",
                     "--input-filter", "writer8",
                     "--filter-option", "SelectPdfVersion=1",
-                    tmp_odt, out_pdf]
+                    tmp_odt, work_pdf]
 
             Pdf.log.info(Logs.fileline() + ' : buildReport argv=' + str(argv))
 
             with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
+
+            os.replace(work_pdf, out_pdf)
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildReport convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
             return False
@@ -2279,9 +2295,20 @@ class Pdf:
             bool: True for success, False otherwise.
         """
 
-        tmp_odt = os.path.join(Constants.cst_path_tmp, filename)
+        # filename comes from the caller, sometimes straight from an URL, and must never
+        # reach a command line. The conversion works on a name built here, and the result
+        # is renamed afterwards. The time keeps two runs from working on the same file.
+        work_name = '%s_%s' % (type.lower(), datetime.now().strftime('%H%M%S%f'))
+
+        tmp_odt = os.path.join(Constants.cst_path_tmp, work_name)
+        work_pdf = tmp_odt + '.pdf'
 
         out_pdf = os.path.join(Constants.cst_path_tmp, filename + '.pdf')
+
+        # the name may hold anything, it only has to stay inside its own directory
+        if not os.path.realpath(out_pdf).startswith(os.path.realpath(Constants.cst_path_tmp) + os.sep):
+            Pdf.log.error(Logs.fileline() + ' : buildPdf ERROR filename outside its directory, filename=' + str(filename))
+            return False
 
         if type == 'STI':
             debug_filename_data = Constants.cst_filedata_sticker
@@ -2322,12 +2349,14 @@ class Pdf:
             argv = ["unoconvert", "--convert-to", "pdf",
                     "--input-filter", "writer8",
                     "--filter-option", "SelectPdfVersion=1",
-                    tmp_odt, out_pdf]
+                    tmp_odt, work_pdf]
 
             Pdf.log.info(Logs.fileline() + ' : buildPdf argv=' + str(argv))
 
             with open(os.path.join(Constants.cst_log, 'unoconvert.out'), "w", encoding="utf-8", errors="ignore") as f_out:
                 subprocess.run(argv, stdout=f_out, stderr=subprocess.STDOUT, check=False)  # nosec B603
+
+            os.replace(work_pdf, out_pdf)
 
         except Exception as err:
             Pdf.log.error(Logs.fileline() + ' : buildPdf convert odt to PDF failed, err=%s , template=%s, filename=%s', err, str(template), str(filename))
