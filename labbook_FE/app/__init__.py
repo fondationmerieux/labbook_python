@@ -350,6 +350,33 @@ def be_get(path, what):
     return None, None
 
 
+def get_result_type(res):
+    """
+    Return the short label of the result type of `res`, and the redirect of be_get.
+
+    The three result pages, entry, technical and biological validation, all start with
+    this step, it lived three times in the file.
+    """
+    type_res = ''
+
+    if res['type_resultat']:
+        data, redir = be_get('/services/dico/id/' + str(res['type_resultat']), 'result type')
+
+        if redir:
+            return '', redir
+
+        if data is not None:
+            type_res = data
+
+            # get short_label (without prefix "dico_") in type_res
+            if type_res and type_res['short_label'].startswith("dico_"):
+                type_res = type_res['short_label'][5:]
+            else:
+                type_res = ''
+
+    return type_res, None
+
+
 def be_post(path, payload, what):
     """
     POST `payload` to `path` on the BE. Same contract as be_get: returns the
@@ -3500,20 +3527,10 @@ def enter_result(id_rec=0, anchor=''):
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
-                    type_res = ''
+                    type_res, redir = get_result_type(res)
 
-                    if res['type_resultat']:
-                        data, redir = be_get('/services/dico/id/' + str(res['type_resultat']), 'result type')
-                        if redir:
-                            return redir
-                        if data is not None:
-                            type_res = data
-
-                            # get short_label (without prefix "dico_") in type_res
-                            if type_res and type_res['short_label'].startswith("dico_"):
-                                type_res = type_res['short_label'][5:]
-                            else:
-                                type_res = ''
+                    if redir:
+                        return redir
 
                     # get unit label, empty when the result type carries no unit
                     res['unit'] = ''
@@ -4429,20 +4446,10 @@ def technical_validation(id_rec=0, anchor=''):
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
-                    type_res = ''
+                    type_res, redir = get_result_type(res)
 
-                    if res['type_resultat']:
-                        data, redir = be_get('/services/dico/id/' + str(res['type_resultat']), 'result type')
-                        if redir:
-                            return redir
-                        if data is not None:
-                            type_res = data
-
-                            # get short_label (without prefix "dico_") in type_res
-                            if type_res and type_res['short_label'].startswith("dico_"):
-                                type_res = type_res['short_label'][5:]
-                            else:
-                                type_res = ''
+                    if redir:
+                        return redir
 
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
@@ -4667,20 +4674,10 @@ def biological_validation(mode='', id_rec=0):
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
-                    type_res = ''
+                    type_res, redir = get_result_type(res)
 
-                    if res['type_resultat']:
-                        data, redir = be_get('/services/dico/id/' + str(res['type_resultat']), 'result type')
-                        if redir:
-                            return redir
-                        if data is not None:
-                            type_res = data
-
-                            # get short_label (without prefix "dico_") in type_res
-                            if type_res and type_res['short_label'].startswith("dico_"):
-                                type_res = type_res['short_label'][5:]
-                            else:
-                                type_res = ''
+                    if redir:
+                        return redir
 
                     # get result label if a value has been entered
                     if type_res and res['valeur']:
