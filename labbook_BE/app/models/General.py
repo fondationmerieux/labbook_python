@@ -1,9 +1,12 @@
 # -*- coding:utf-8 -*-
+import base64
 import json
+from datetime import date, datetime
+from decimal import Decimal
+
+from flask import make_response
 
 from app.models.Constants import Constants
-from datetime import datetime
-from flask import make_response
 
 
 def compose_ret(ret, type=Constants.cst_content_type_plain, http_code=200, ensure_ascii=True):
@@ -33,10 +36,6 @@ def compose_ret_ascii(ret, http_code=200):
 
 
 def safe_json_default(obj):
-    from decimal import Decimal
-    from datetime import date, datetime
-    import base64
-
     if isinstance(obj, Decimal):
         return float(obj)
     elif isinstance(obj, (datetime, date)):

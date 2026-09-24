@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
+import inspect
 
 
 class Logs:
 
     @staticmethod
     def alert():
-        import inspect
-
         callerframerecord = inspect.stack()[1]
 
         frame = callerframerecord[0]
@@ -16,8 +15,6 @@ class Logs:
 
     @staticmethod
     def fileline():
-        import inspect
-
         callerframerecord = inspect.stack()[1]
 
         frame = callerframerecord[0]

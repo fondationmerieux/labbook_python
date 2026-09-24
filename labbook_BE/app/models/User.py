@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
+import hashlib
 import logging
+import os
+
 import mysql.connector
 
 from app.models.Constants import Constants
@@ -217,7 +220,7 @@ class User:
         return cursor.fetchall()
 
     @staticmethod
-    def getUserRoleList(type='', l_exclude=[], genuine='N'):
+    def getUserRoleList(type='', l_exclude=None, genuine='N'):
         cursor = DB.cursor()
 
         cond = ' order by label '
@@ -583,8 +586,6 @@ class User:
     @staticmethod
     def getPasswordDB(pwd, salt=''):
         # password hash (TODO by Bcrypt)
-        import hashlib
-        import os
 
         if not salt:
             salt = hashlib.sha1(os.urandom(32)).hexdigest()

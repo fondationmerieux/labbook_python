@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 import logging
+from datetime import date, datetime
+
 import mysql.connector
 
-from datetime import datetime, date
 from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
@@ -82,7 +83,7 @@ class Result:
         return cursor.fetchall()
 
     @staticmethod
-    def getResultRecord(id_rec, empty=True, link_fam=[]):
+    def getResultRecord(id_rec, empty=True, link_fam=None):
         cursor = DB.cursor()
 
         cond = ''

@@ -1,26 +1,29 @@
 # -*- coding:utf-8 -*-
+import calendar
+import csv
+import hashlib
 import json
 import logging
-import calendar
-import re
-import csv
 import os
+import re
 import shutil
-import hashlib
-
-from pathlib import Path
-from datetime import datetime, date, time, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from io import StringIO
+from pathlib import Path
 
+import requests
+
+from app.models.Audit import Audit
 from app.models.Constants import Constants
 from app.models.DB import DB
-from app.models.Audit import Audit
 from app.models.Export import Export
-from app.models.Setting import Setting
-from app.models.Pdf import Pdf
-from app.models.User import User
-from app.models.Report import Report
+from app.models.File import File
 from app.models.Logs import Logs
+from app.models.Pdf import Pdf
+from app.models.Quality import Quality
+from app.models.Report import Report
+from app.models.Setting import Setting
+from app.models.User import User
 from app.models.Various import Various
 
 # map schedule kind to month span
@@ -1539,8 +1542,8 @@ def _execute_job_dhis2_send(job_row: dict) -> dict:
 
     resp_text = ''
     try:
-        import requests
-        resp = requests.post(url, data=csv_buf.getvalue(), headers=headers, auth=auth)
+        # without a timeout the call waits forever when DHIS2 does not answer
+        resp = requests.post(url, data=csv_buf.getvalue(), headers=headers, auth=auth, timeout=60)
         resp_text = str(resp.text)
 
         if resp.status_code == 200:
@@ -2501,7 +2504,6 @@ def _execute_job_activity(job_row: dict) -> dict:
 def _send_internal_message(sender_id: int, receiver_id: int, title: str, body: str) -> int:
     """Send message in internal_messaging table via Quality model."""
     try:
-        from app.models.Quality import Quality  # lazy import to avoid cycles
         msg_id = Quality.insertMessage(id_user=sender_id, receiver=receiver_id, title=title, message=body)
         if msg_id > 0:
             Automation.log.info(Logs.fileline() + " : internal message sent to user_id=" + str(receiver_id) + " msg_id=" + str(msg_id))
@@ -2537,8 +2539,6 @@ def _ensure_file_record(generated_name: str,
         Automation.log.exception(Logs.fileline() + " : _ensure_file_record select")
 
     try:
-        from app.models.File import File
-
         storage_row = File.getFileStorage(1)
         if not storage_row or not storage_row.get('id_data') or not storage_row.get('path'):
             Automation.log.error(Logs.fileline() + " : _ensure_file_record no storage row")
@@ -2590,8 +2590,6 @@ def _attach_file_to_message(message_id: int,
             Automation.log.error(Logs.fileline() + " : _attach_file_to_message no file_id")
             return
 
-        from app.models.File import File
-
         link_params = {
             'id_owner': sender_id,
             'id_ext': message_id,
@@ -2618,7 +2616,7 @@ def _execute_job_ssh(job_row: dict) -> dict:
 
     try:
         rc = os.system(cmd + " > /storage/io/ntp_status.out 2>&1")
-        with open("/storage/io/ntp_status.out", "r") as f:
+        with open("/storage/io/ntp_status.out", "r", encoding="utf-8") as f:
             content = f.read().strip()
         synced = 1 if rc == 0 else 0
 

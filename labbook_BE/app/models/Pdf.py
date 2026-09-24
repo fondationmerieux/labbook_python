@@ -1,34 +1,35 @@
 # -*- coding:utf-8 -*-
+import logging
 import os
 import shutil
-import logging
 import subprocess  # nosec B404
+from contextlib import ExitStack
+from datetime import datetime
+from decimal import Decimal
+from io import BytesIO
+
 import barcode
 import pdfkit
 import pikepdf
 import qrcode
-
+import tomli
 from barcode.writer import ImageWriter
-from contextlib import ExitStack
-from datetime import datetime
-from io import BytesIO
 from relatorio.templates.opendocument import Template
 from werkzeug.utils import secure_filename
-from decimal import Decimal
 
 from app.models.Analysis import Analysis
-from app.models.DB import DB
-from app.models.Logs import Logs
 from app.models.Constants import Constants
+from app.models.DB import DB
 from app.models.File import File
 from app.models.General import compose_ret
+from app.models.Logs import Logs
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Setting import Setting
-from app.models.Various import Various
 from app.models.User import User
+from app.models.Various import Various
 
 
 class Pdf:
@@ -453,6 +454,8 @@ class Pdf:
         Various.useLangPDF()
 
         # Width 47px <=> 1cm, Height 47px <=> 1cm
+        # the HTML below is a template, its lines are not cut to fit a width
+        # pylint: disable=line-too-long
         header = """\
                 <style>
                 .ft_lab_name
@@ -680,7 +683,9 @@ class Pdf:
 
         """
 
-        from jinja2 import Template
+        # jinja2 Template, not the relatorio one imported at the top, and only for this
+        # method
+        from jinja2 import Template  # pylint: disable=import-outside-toplevel, redefined-outer-name, reimported
 
         # 1 - load default QRC template
         tpl = Setting.getDefaultTemplate('QRC')
@@ -691,8 +696,6 @@ class Pdf:
 
         # 2 - render template with data
         try:
-            import tomli
-
             filepath = os.path.join(Constants.cst_template, tpl['tpl_file'])
 
             with open(filepath, "rb") as f:
@@ -1545,25 +1548,23 @@ class Pdf:
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
                           "in_report": "Y", "formatting": "N", "valueConv": "", "unitConv": ""}
 
-        """
-        [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_code': CODE, 'ana_loinc': LOINC_CODE,
-                       'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N,
-                       'ana_with_one_result': Y/N
-                       'l_res': [{'label': VAR_NAME,
-                                  'value': RESULT_VALUE,
-                                  'unit': UNIT_RESULT_VALUE,
-                                  'references': RANGE_VALUE,
-                                  'prev_date': PREVIOUS_DATE,
-                                  'prev_val': PREVIOUS_VALUE,
-                                  'prev_unit': PREVIOUS_UNIT,
-                                  'bold_value': BOLD_VALUE,
-                                  'highlight': highlight,
-                                  'in_report': in_report,
-                                  'formatting': formatting,
-                                  'valueConv': RESULT_VALUE_CONVERTED,
-                                  'unitConv': UNIT_RESULT_VALUE_CONVERTED,}] }
-        }]
-        """
+        # [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_code': CODE, 'ana_loinc': LOINC_CODE,
+        #                'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N,
+        #                'ana_with_one_result': Y/N
+        #                'l_res': [{'label': VAR_NAME,
+        #                           'value': RESULT_VALUE,
+        #                           'unit': UNIT_RESULT_VALUE,
+        #                           'references': RANGE_VALUE,
+        #                           'prev_date': PREVIOUS_DATE,
+        #                           'prev_val': PREVIOUS_VALUE,
+        #                           'prev_unit': PREVIOUS_UNIT,
+        #                           'bold_value': BOLD_VALUE,
+        #                           'highlight': highlight,
+        #                           'in_report': in_report,
+        #                           'formatting': formatting,
+        #                           'valueConv': RESULT_VALUE_CONVERTED,
+        #                           'unitConv': UNIT_RESULT_VALUE_CONVERTED,}] }
+        # }]
 
         # temp var for build l_data
         tmp_ana = analysis.copy()
@@ -1851,7 +1852,8 @@ class Pdf:
                                     res['precision2'] = 2
 
                                 try:
-                                    tmp_res['valueConv'] = round(eval(res['formule_unite2'].replace('$', str(val))), res['precision2'])
+                                    # the formula comes from the referential, written by the laboratory
+                                    tmp_res['valueConv'] = round(eval(res['formule_unite2'].replace('$', str(val))), res['precision2'])  # pylint: disable=eval-used
                                 except Exception:
                                     Pdf.log.error(Logs.fileline() + ' : ERROR convert to formula2, valueConv=' + str(tmp_res['valueConv']))
                                     tmp_res['valueConv'] = ''
@@ -2081,20 +2083,18 @@ class Pdf:
             Various.useLangPDF()
 
         # samples
-        """
-        [{'sample': {'date': DATE,
-                     'type': LABEL,
-                     'qty': NUMBER,
-                     'stat': LABEL,
-                     'sampler': STRING,
-                     'date_receipt': DATE,
-                     'comm': STRING,
-                     'location': LABEL,
-                     'location_det': STRING,
-                     'storage': STRING,
-                     'code': STRING}
-        }]
-        """
+        # [{'sample': {'date': DATE,
+        #              'type': LABEL,
+        #              'qty': NUMBER,
+        #              'stat': LABEL,
+        #              'sampler': STRING,
+        #              'date_receipt': DATE,
+        #              'comm': STRING,
+        #              'location': LABEL,
+        #              'location_det': STRING,
+        #              'storage': STRING,
+        #              'code': STRING}
+        # }]
 
         data['samples'] = []
         sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",
@@ -2227,7 +2227,7 @@ class Pdf:
             # write data sticker in a file for debugging or testing
             path_debug = os.path.join(Constants.cst_template, Constants.cst_filedata_report)
 
-            with open(path_debug, "w") as file_debug:
+            with open(path_debug, "w", encoding="utf-8") as file_debug:
                 file_debug.write(str(data))
 
             tpl_path = os.path.join(Constants.cst_template, template)
@@ -2336,9 +2336,10 @@ class Pdf:
             Pdf.log.info(Logs.fileline() + ' : type = ' + str(type) + ' | buildPdf data = ' + str(Pdf.short_data(data)))
 
             # write data sticker in a file for debugging or testing
-            path_debug = os.path.join(Constants.cst_template, debug_filename_data)
+            # the five callers of buildPdf cover the five types tested above
+            path_debug = os.path.join(Constants.cst_template, debug_filename_data)  # pylint: disable=possibly-used-before-assignment
 
-            with open(path_debug, "w") as file_debug:
+            with open(path_debug, "w", encoding="utf-8") as file_debug:
                 file_debug.write(str(data))
 
             tpl_path = os.path.join(Constants.cst_template, template)
@@ -2632,20 +2633,18 @@ class Pdf:
             Various.useLangPDF()
 
         # samples
-        """
-        [{'sample': {'date': DATE,
-                     'type': LABEL,
-                     'qty': NUMBER,
-                     'stat': LABEL,
-                     'sampler': STRING,
-                     'date_receipt': DATE,
-                     'comm': STRING,
-                     'location': LABEL,
-                     'location_det': STRING,
-                     'storage': STRING,
-                     'code': STRING}
-        }]
-        """
+        # [{'sample': {'date': DATE,
+        #              'type': LABEL,
+        #              'qty': NUMBER,
+        #              'stat': LABEL,
+        #              'sampler': STRING,
+        #              'date_receipt': DATE,
+        #              'comm': STRING,
+        #              'location': LABEL,
+        #              'location_det': STRING,
+        #              'storage': STRING,
+        #              'code': STRING}
+        # }]
 
         data['samples'] = []
         sample = {"date": "", "type": "", "qty": '0', "stat": "", "sampler": "", "date_receipt": "",

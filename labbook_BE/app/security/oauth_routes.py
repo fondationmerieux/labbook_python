@@ -1,4 +1,10 @@
 # app/security/oauth_routes.py
+#
+# The grant classes below extend Authlib ones. Its method names for the parameters differ
+# from ours, and the token validator of the library takes one argument less, so pylint sees
+# signatures that do not match their parent. The request and query_client parameters also
+# carry the same names as the module level ones, on purpose.
+# pylint: disable=arguments-renamed, arguments-differ, attribute-defined-outside-init, redefined-outer-name
 import logging
 import time
 import os
@@ -22,6 +28,9 @@ log = logging.getLogger('log_services')
 
 # OAuth routes and helpers for the BE side.
 bp_oauth = Blueprint('oauth', __name__)
+
+# Identifier of the front end client, fixed by labbook_FE/gunicorn.sh.
+FE_CLIENT_ID = 'labbook-FE'
 
 
 # ===== DB Helpers =====
@@ -82,8 +91,17 @@ def query_client(client_id):
     debug_uris = [p.strip() for p in (row.get('oacl_redirect_uris') or '').replace('\r', '\n').split('\n') if p.strip()]
     log.debug(Logs.fileline() + f" : OAUTH load-client id={client_id!r} allowed_uris_count={len(debug_uris)}")
 
-    # Prefer environment-provided secret (shared with FE) over DB value
+    # The environment secret is the one shared with the front end, and it belongs to that
+    # client alone. Any other client authenticates with the secret held in the database,
+    # otherwise it would be compared against the front end one and always refused.
     env_secret = (os.environ.get('LABBOOK_OAUTH_FE_SECRET') or '').strip()
+
+    if row['oacl_token_endpoint_auth_method'] == 'none':
+        secret = None
+    elif row['oacl_client_id'] == FE_CLIENT_ID:
+        secret = env_secret or (row.get('oacl_client_secret') or None)
+    else:
+        secret = row.get('oacl_client_secret') or None
 
     class Client:
         # Static attributes read by Authlib
@@ -94,9 +112,8 @@ def query_client(client_id):
         response_types = (row.get('oacl_response_types') or 'code').split()
         scope = row.get('oacl_scope') or ''
         redirect_uris = [p.strip() for p in (row['oacl_redirect_uris'] or '').replace('\r', '\n').split('\n') if p.strip()]
-        # client_secret = row['oacl_client_secret'] or None
-        # Priority: env secret > DB secret; never log this value.
-        client_secret = None if row['oacl_token_endpoint_auth_method'] == 'none' else (env_secret or (row.get('oacl_client_secret') or None))
+        # Never log this value.
+        client_secret = secret
 
         def check_redirect_uri(self, redirect_uri):
             """Accept if the URI path matches one of the configured paths."""
@@ -303,7 +320,8 @@ class AuthorizationCodeGrantPKCE(grants.AuthorizationCodeGrant):
         """
         method = code_obj.oaco_code_challenge_method
         challenge = code_obj.oaco_code_challenge
-        return CodeChallenge(method).verify(code_verifier, challenge)
+        # verify is resolved at runtime by Authlib, pylint does not see it
+        return CodeChallenge(method).verify(code_verifier, challenge)  # pylint: disable=no-member
 
 
 def _auth_none(query_client, request):

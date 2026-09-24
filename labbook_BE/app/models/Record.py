@@ -166,11 +166,6 @@ class Record:
         if date_end:
             filter_cond += ' and rec.rec_date_receipt <= "' + date_end + '" '
 
-        """
-        # Prescriber list
-        if id_pres > 0:
-            filter_cond += ' and rec.med_prescripteur=' + str(id_pres) + ' '"""
-
         # struct : stat, urgent, num_dos, id_data, rec_date_receipt, code, nom, prenom, id_pat
         req = ('select rec.id_data as id_rec '
                'from sigl_02_data as rec '

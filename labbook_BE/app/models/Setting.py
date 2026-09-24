@@ -1,23 +1,25 @@
 # -*- coding:utf-8 -*-
+import base64
+import binascii
+import json
 import logging
-import mysql.connector
+import os
+import re
 import smtplib
 import socket
 import ssl
-import json
-import requests
-import binascii
-import os
 import time
-import pikepdf
-import base64
-
+from datetime import datetime
 from email.message import EmailMessage
+
+import mysql.connector
+import pikepdf
+import requests
 from mailjet_rest import Client
 
+from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
-from app.models.Constants import Constants
 from app.models.Patient import Patient
 
 
@@ -1039,6 +1041,11 @@ class Setting:
                 "LEFT JOIN sending_method_whatsapp w ON w.sdw_sdi = m.sdi_ser "
                 "WHERE m.sdi_ser = %s AND m.sdi_type = 'W' LIMIT 1"
             )
+
+        else:
+            # the type comes from the URL, anything else than S, M or W has no query
+            Setting.log.error(Logs.fileline() + ' : getSendingMethodDet unknown type=' + str(type))
+            return None
 
         cursor.execute(req, (id_item,))
 
@@ -2081,8 +2088,8 @@ class Setting:
     @staticmethod
     def sendAmicare(method, pat_code, file_path, filename, rec_num, id_user):
         try:
-            from app import AMICARE_CONFIG
-            from datetime import datetime
+            # imported here and not at the top, app/__init__.py loads this file itself
+            from app import AMICARE_CONFIG  # pylint: disable=import-outside-toplevel
 
             if not AMICARE_CONFIG or not AMICARE_CONFIG.get('enabled'):
                 return (False, ("AmiCare désactivé"))
@@ -2693,7 +2700,6 @@ class Setting:
         """
         if not tpl:
             return ''
-        import re
 
         def repl(m):
             key = (m.group(1) or '').strip()

@@ -1,20 +1,20 @@
+import decimal
 import logging
-
 from datetime import datetime
+
 from flask import request
 from flask_restful import Resource
 
+from app.models.Analysis import Analysis
+from app.models.Audit import Audit
 from app.models.Constants import Constants
 from app.models.General import compose_ret
 from app.models.Logs import Logs
-from app.models.Audit import Audit
-from app.models.Analysis import Analysis
 from app.models.Patient import Patient
 from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -205,6 +205,9 @@ class DatasetByName(Resource):
         audit_user = request.oauth_user
         args = request.get_json()
 
+        # a name outside the four known ones fills nothing, the answer below is a 404
+        l_items = None
+
         if name == 'patient':
             l_items = Patient.getDataset()
 
@@ -235,8 +238,9 @@ class DatasetByName(Resource):
             date_beg = datetime.strptime(args['date_beg'], Constants.cst_dt_HM)
             date_end = datetime.strptime(args['date_end'], Constants.cst_dt_HM)
 
+        # the dates are set for every name but 'patient', which never enters here
         if name == 'record':
-            l_items = Record.getDataset(date_beg, date_end)
+            l_items = Record.getDataset(date_beg, date_end)  # pylint: disable=possibly-used-before-assignment
         elif name == 'analysis':
             l_items = Analysis.getDataset(date_beg, date_end)
         elif name == 'result':
@@ -252,8 +256,6 @@ class DatasetByName(Resource):
             except Exception as err:
                 self.log.error(Logs.fileline() + ' : DatasetByName ERROR audit not found err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 404)
-
-        import decimal
 
         Various.useLangDB()
 

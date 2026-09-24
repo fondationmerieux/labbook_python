@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
-import pikepdf
 import os
 
+import mysql.connector
+import pikepdf
 from pikepdf import Page
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
 
 from app.models.Constants import Constants
 from app.models.DB import DB

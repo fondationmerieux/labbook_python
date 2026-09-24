@@ -52,4 +52,3 @@ def run_forever(poll_sec: int = POLL_SEC) -> None:
 
 if __name__ == "__main__":
     run_forever()
-

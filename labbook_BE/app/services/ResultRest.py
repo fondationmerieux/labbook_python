@@ -486,13 +486,6 @@ class ResultValid(Resource):
                 self.log.error(Logs.fileline() + ' : ResultValid ERROR audit type_valid err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 500)
 
-        """ 16/03/2023 seems useless
-        link_fam = []
-
-        if 'link_fam' in args and args['link_fam']:
-            link_fam = args['link_fam']
-        """
-
         id_valid_list = []
         id_file = None
 
@@ -960,9 +953,8 @@ class ResultFromExt(Resource):
                     # Get dictionary entries using class Dict
                     short_label = dico_type.get("short_label", "")
 
-                    if short_label.startswith("dico_"):
-                        dict_name = short_label[5:]  # remove "dico_"
-                        dict_entries = Dict.getDictDetails(dict_name)
+                    dict_name = short_label[5:]  # remove "dico_"
+                    dict_entries = Dict.getDictDetails(dict_name)
                     possible_values = []
                     for entry in dict_entries:
                         possible_values.append({

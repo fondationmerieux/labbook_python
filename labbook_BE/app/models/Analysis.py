@@ -12,7 +12,7 @@ class Analysis:
     log = logging.getLogger('log_db')
 
     @staticmethod
-    def getAnalysisSearch(text, type="A", status=4, link_fam=[]):
+    def getAnalysisSearch(text, type="A", status=4, link_fam=None):
         """Search in analysis table
 
         This function is call by search field on analyze or search form on setting analyze page

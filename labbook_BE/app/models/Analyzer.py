@@ -1,16 +1,16 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
 import os
-import tomli
-
 from datetime import datetime
+
+import mysql.connector
+import tomli
 from hl7apy.core import Message
 
+from app.models.Analysis import Analysis
 from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
-from app.models.Analysis import Analysis
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record

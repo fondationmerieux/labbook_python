@@ -1,14 +1,13 @@
 # -*- coding:utf-8 -*-
-import logging
-import mysql.connector
 import gettext
+import logging
 
+import mysql.connector
 from flask import request
 
 from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports

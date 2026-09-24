@@ -1,25 +1,26 @@
 # -*- coding:utf-8 -*-
-import logging
+import calendar
 import csv
+import logging
 import re
-
 from datetime import datetime, timedelta
+from io import StringIO
+from pathlib import Path
+
+import requests
 from flask import request
 from flask_restful import Resource
-from pathlib import Path
-from io import StringIO
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
 from app.models.Audit import Audit
-from app.models.Various import Various
+from app.models.Constants import Constants
 from app.models.Export import Export
-from app.models.Report import Report
+from app.models.General import compose_ret
 from app.models.Logs import Logs
-from app.models.User import User
+from app.models.Report import Report
 from app.models.Setting import Setting
+from app.models.User import User
+from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -335,7 +336,6 @@ def build_dhis2_periods(args, audit_user, caller):
 
     elif period == 'M':
         # Monthly: 1st..last day of each month
-        import calendar
         y, m = date_beg.year, date_beg.month
         while (y, m) <= (date_end.year, date_end.month):
             last_dom = calendar.monthrange(y, m)[1]
@@ -350,7 +350,6 @@ def build_dhis2_periods(args, audit_user, caller):
 
     elif period in ('B', 'T', 'Q', 'S', 'A'):
         # Grouped periods; front already aligned range to group start
-        import calendar
         span_map = {'B': 2, 'T': 3, 'Q': 4, 'S': 6, 'A': 12}
         span = span_map[period]
 
@@ -770,9 +769,8 @@ class ExportDHIS2Api(Resource):
         auth = (login, pwd)
 
         try:
-            import requests
-
-            resp = requests.post(url, data=csv_data.getvalue(), headers=headers, auth=auth)
+            # without a timeout the call waits forever when DHIS2 does not answer
+            resp = requests.post(url, data=csv_data.getvalue(), headers=headers, auth=auth, timeout=60)
 
             # 3 - analyze the return
             if resp.status_code == 200:

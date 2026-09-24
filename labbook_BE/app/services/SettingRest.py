@@ -1322,7 +1322,7 @@ class ScriptStatus(Resource):
             # No encoding forced because script return list from system so its depend of encoding of operating system
             last_line = ''
 
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 for line in f:
                     last_line = line
 
@@ -1343,7 +1343,7 @@ class ScriptStatus(Resource):
 
                 try:
                     # No encoding forced because script return list from system so its depend of encoding of operating system
-                    with open(os.path.join(Constants.cst_io, 'listmedia').strip(), 'r') as f:
+                    with open(os.path.join(Constants.cst_io, 'listmedia').strip(), 'r', encoding='utf-8') as f:
                         for media in f:
                             l_media['media'].append(media[:-1])
 
@@ -1367,7 +1367,7 @@ class ScriptStatus(Resource):
                 # read listarchive file
                 try:
                     # No encoding forced because script return list from system so its depend of encoding of operating system
-                    with open(os.path.join(Constants.cst_io, 'listarchive').strip(), 'r') as f:
+                    with open(os.path.join(Constants.cst_io, 'listarchive').strip(), 'r', encoding='utf-8') as f:
                         for archive in f:
                             l_archive['archive'].append(archive[:-1])
 
@@ -2686,9 +2686,9 @@ class SettingSendList(Resource):
                 # the date is returned unformatted rather than losing the whole row
                 self.log.warning(Logs.fileline() + ' : sde_date formatting failed, err=' + str(err))
 
-            for k, v in list(r.items()):
-                if r[k] is None:
-                    r[k] = ''
+            for key, value in list(r.items()):
+                if r[key] is None:
+                    r[key] = ''
 
         self.log.info(Logs.fileline() + ' : SettingSendList count=' + str(len(rows)))
         try:
@@ -2822,7 +2822,10 @@ class SettingOauthDet(Resource):
             'oacl_token_endpoint_auth_method': 'none',
             'oacl_is_active': 'Y',
         }
-        params = {k: args.get(k, defaults.get(k)) for k in wanted}
+        params = {}
+
+        for key in wanted:
+            params[key] = args.get(key, defaults.get(key))
 
         # STEP 2: protect the built-in FE client against any modification
         if id_item > 0:

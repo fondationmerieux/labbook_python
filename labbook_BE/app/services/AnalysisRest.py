@@ -1,23 +1,23 @@
 # -*- coding:utf-8 -*-
+import csv
 import logging
 import os
-
+from csv import reader
 from datetime import datetime
+from pathlib import Path
+
 from flask import request
 from flask_restful import Resource
-from pathlib import Path
-from csv import reader
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
-from app.models.Audit import Audit
 from app.models.Analysis import Analysis
-from app.models.Record import Record
+from app.models.Audit import Audit
+from app.models.Constants import Constants
 from app.models.DB import DB
+from app.models.General import compose_ret
 from app.models.Logs import Logs
+from app.models.Record import Record
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -396,8 +396,6 @@ class AnalysisHistoExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'analyzes_' + str(today) + '.csv'
@@ -1422,8 +1420,6 @@ class AnalysisExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'analyzes_' + str(today) + '.csv'

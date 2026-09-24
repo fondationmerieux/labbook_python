@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
 import logging
-import mysql.connector
+import random
 import uuid
 
+import mysql.connector
+
+from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Logs import Logs
-from app.models.Constants import Constants
 
 
 class Patient:
@@ -410,8 +412,6 @@ class Patient:
 
     @staticmethod
     def newPatientCode(length=5, prefix=""):
-        import random
-
         # Format by defaut 5 alphanumeric characters without zero
 
         chars   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

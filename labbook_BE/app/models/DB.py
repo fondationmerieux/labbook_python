@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
-import mysql.connector
 import logging
 import re
 
+import mysql.connector
 from flask import current_app
+
 from app.exception.DBException import DBException
 from app.models.Constants import Constants
 from app.models.Logs import Logs
@@ -64,7 +65,7 @@ class DB:
 
         except Exception as e:
             DB.log.critical(Logs.fileline() + ' : open_cnx() error: %s ', e)
-            raise DBException(repr(e))
+            raise DBException(repr(e)) from e
 
     @staticmethod
     def insertDbStatus(**params):
@@ -98,7 +99,7 @@ class DB:
     def read_config_file(file_path):
         config = {}
 
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
 
             matches = re.findall(Constants.cst_keyvalue_pattern, content)

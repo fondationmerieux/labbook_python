@@ -1,29 +1,28 @@
 # -*- coding:utf-8 -*-
-import logging
-import bcrypt
-import os
 import base64
+import logging
+import os
 import shutil
 import uuid
-
 from datetime import datetime
+
+import bcrypt
 from flask import request
 from flask_restful import Resource
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
-from app.models.Logs import Logs
-from app.models.Audit import Audit
-from app.models.Lite import Lite
 from app.models.Analysis import Analysis
+from app.models.Audit import Audit
+from app.models.Constants import Constants
 from app.models.File import File
+from app.models.General import compose_ret
+from app.models.Lite import Lite
+from app.models.Logs import Logs
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -526,10 +525,7 @@ class LiteSetupLoad(Resource):
             "analysis_validation": VALIDATION_TABLE_SCHEMA
         }
 
-        import base64
-
         # add logo.png for PDF report
-        import os
         with open(os.path.join(Constants.cst_resource, "logo.png"), "rb") as f:
             encoded_logo = base64.b64encode(f.read()).decode("ascii")
             setup["logo_base64"] = encoded_logo

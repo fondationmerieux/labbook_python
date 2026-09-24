@@ -161,7 +161,9 @@ class Form:
         """
         Build simple cosmetic elements (titles, static text, etc.).
         """
-        from flask_babel import gettext as _
+        # imported here and not at the top, _ is installed as a builtin by LabBook and a
+        # module level import would hide it everywhere else in this file
+        from flask_babel import gettext as _  # pylint: disable=import-outside-toplevel
 
         elem = ''
         label = _(label)
@@ -174,11 +176,15 @@ class Form:
         return elem
 
     @staticmethod
-    def build_labbook_elem(id, l_attr=[]):
+    def build_labbook_elem(id, l_attr=None):
         """
         Build predefined LabBook patient elements by including existing templates.
         l_attr is passed through Jinja "with" to customize attributes.
         """
+        # a list written in the signature is created once and shared by every call
+        if l_attr is None:
+            l_attr = []
+
         elem = ''
 
         if id in ('pat_ano', 'pat_code_lab', 'pat_code', 'pat_name', 'pat_midname', 'pat_maiden', 'pat_firstname',
@@ -194,11 +200,19 @@ class Form:
         return elem
 
     @staticmethod
-    def build_input_elem(type, id, label, value='', l_options=[], l_attr=[]):
+    def build_input_elem(type, id, label, value='', l_options=None, l_attr=None):
         """
         Build HTML for generic input elements (select, radio, text, textarea, number, date, datetime-local).
         The HTML is a Jinja "with" block including the correct template.
         """
+        # a list written in the signature is created once and shared by every call, and
+        # both are written into the template as text, so they must stay empty lists
+        if l_options is None:
+            l_options = []
+
+        if l_attr is None:
+            l_attr = []
+
         elem = ''
 
         if type == 'select':
@@ -360,7 +374,9 @@ class Form:
         history_js = ''
 
         try:
-            from flask_babel import gettext as _
+            # imported here and not at the top, _ is installed as a builtin by LabBook and
+            # a module level import would hide it everywhere else in this file
+            from flask_babel import gettext as _  # pylint: disable=import-outside-toplevel
 
             form_elements = form_toml.get('description', {}).get('form_element', [])
 

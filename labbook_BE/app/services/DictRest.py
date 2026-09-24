@@ -1,23 +1,22 @@
 # -*- coding:utf-8 -*-
-import logging
-import re
 import csv
+import logging
 import os
-
+import re
 from datetime import datetime
-from flask import request
-from flask_restful import Resource
 from pathlib import Path
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
+from flask import request
+from flask_restful import Resource
+
 from app.models.Audit import Audit
+from app.models.Constants import Constants
 from app.models.DB import DB
 from app.models.Dict import Dict
+from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports

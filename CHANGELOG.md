@@ -8,6 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.25] - 2026-09-24
+### Fixed
+- Report sending message is now readable on the biological validation page, where it stood on the dark banner
+- The link to download the file came back on the template page, it had disappeared in 3.6.22
+- A third party client could never obtain a token, its secret was compared against the one of the front end
+- The DHIS2 export no longer waits forever (timeout 60sec) when the remote server does not answer
+
 ## [3.6.24] - 2026-09-14
 ### Added
 - Printer settings list the uploaded scripts, with download and delete

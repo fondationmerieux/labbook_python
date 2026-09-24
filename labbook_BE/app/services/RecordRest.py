@@ -1,25 +1,24 @@
 # -*- coding:utf-8 -*-
 import logging
-
 from datetime import datetime
-from flask import request
-from flask_restful import Resource
 from decimal import Decimal
 
-from app.models.Audit import Audit
+from flask import request
+from flask_restful import Resource
+
 from app.models.Analysis import Analysis
-from app.models.General import compose_ret
+from app.models.Audit import Audit
 from app.models.Constants import Constants
 from app.models.Doctor import Doctor
 from app.models.File import File
+from app.models.General import compose_ret
+from app.models.Logs import Logs
 from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
 from app.models.Various import Various
-from app.models.Logs import Logs
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -31,7 +30,6 @@ __all__ = [
     'RecordDetFromExt',
     'RecordComm',
     'RecordLast',
-    'RecordFile',
     'RecordNext',
     'RecordStat',
     'RecordListAna',
@@ -1409,32 +1407,6 @@ class RecordLast(Resource):
         except Exception as err:
             self.log.error(Logs.fileline() + ' : RecordLast ERROR audit success err=' + str(err))
         return compose_ret(record, Constants.cst_content_type_json, 200)
-
-
-class RecordFile(Resource):
-    log = logging.getLogger('log_services')
-
-    @require_oauth()
-    def get(self, id_rec):
-        audit_user = request.oauth_user
-        l_files = Record.getRecordFile(id_rec)
-
-        if not l_files:
-            self.log.error(Logs.fileline() + ' : TRACE RecordFile not found')
-
-        for files in l_files:
-            # Replace None by empty string
-            for key, value in list(files.items()):
-                if files[key] is None:
-                    files[key] = ''
-
-        self.log.info(Logs.fileline() + ' : TRACE RecordFile')
-        try:
-            details = {"result": "SUCCESS", "id_rec": int(id_rec), "count": len(l_files) if l_files else 0}
-            Audit.insertAudit(audit_user, "RecordFile", "RECORD", int(id_rec), "SUCCESS", details, "R")
-        except Exception as err:
-            self.log.error(Logs.fileline() + ' : RecordFile ERROR audit success err=' + str(err))
-        return compose_ret(l_files, Constants.cst_content_type_json)
 
 
 class RecordNext(Resource):

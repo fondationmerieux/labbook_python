@@ -30,32 +30,34 @@
 # - BE communication helpers
 # - Jinja context injection and filters
 # =============================================================================
-
 # ###########################################
 #   Imports
 # ###########################################
 
-import os
-import logging
-import requests
-import json
-import uuid
-import secrets
 import base64
+import hashlib
+import json
+import logging
+import os
+import pathlib
 import re
+import secrets
+import time
 import tomllib
-
+import uuid
+from datetime import date, datetime, timedelta
 from logging.handlers import WatchedFileHandler
-from datetime import datetime, date, timedelta
 from urllib.parse import quote, urlencode
+
+import requests
+import tomli
+from flask import Flask, Response, current_app, jsonify, redirect, render_template, render_template_string, request, send_file, session, url_for
+from flask_babel import Babel
 from werkzeug.utils import secure_filename
 
-from flask import Flask, render_template, render_template_string, request, session, redirect, send_file, Response, url_for, jsonify, current_app
-from flask_babel import Babel
-
-from app.models.Logs import Logs
 from app.models.Constants import Constants
 from app.models.Form import Form
+from app.models.Logs import Logs
 
 LANGUAGES = {
     'fr_FR': 'French',
@@ -197,7 +199,7 @@ EU_FORMAT_LANGS = {'fr_FR', 'en_GB', 'es', 'ar', 'km', 'lo', 'mg', 'pt'}
 
 @app.context_processor
 def locale():
-    lang = app.config.get('BABEL_DEFAULT_LOCALE')
+    lang = app.config.get('BABEL_DEFAULT_LOCALE')  # pylint: disable=redefined-outer-name
     if session and 'lang' in session:
         lang = session['lang']
         log.info(Logs.fileline() + ' : lang = ' + lang)
@@ -380,7 +382,7 @@ def get_locale():
     - Stores the selected language in session.
     """
     log.info(Logs.fileline() + ' : LANG = ' + str(os.environ['LANG']))
-    lang = request.accept_languages.best_match(list(LANGUAGES.keys()), default='fr_FR')
+    lang = request.accept_languages.best_match(list(LANGUAGES.keys()), default='fr_FR')  # pylint: disable=redefined-outer-name
     if not session or 'lang' not in session:
         session['lang'] = lang
         session.modified = True
@@ -637,19 +639,19 @@ def get_user_data(login, be_headers=None):
             return redir
 
         if req.status_code == 200:
-            json = req.json()
+            json_data = req.json()
 
-            session['user_id']        = json['id_data']
-            session['user_role']      = json['role_type']
-            session['user_id_role']   = json['role_pro']
-            session['user_name']      = json['username']
-            session['user_firstname'] = json['firstname']
-            session['user_lastname']  = json['lastname']
-            session['user_locale']    = json['locale']
-            session['user_side_account'] = json['side_account']
-            session['color_1']        = json['pro_color_1']
-            session['color_2']        = json['pro_color_2']
-            session['text_color']     = json['pro_text_color']
+            session['user_id']        = json_data['id_data']
+            session['user_role']      = json_data['role_type']
+            session['user_id_role']   = json_data['role_pro']
+            session['user_name']      = json_data['username']
+            session['user_firstname'] = json_data['firstname']
+            session['user_lastname']  = json_data['lastname']
+            session['user_locale']    = json_data['locale']
+            session['user_side_account'] = json_data['side_account']
+            session['color_1']        = json_data['pro_color_1']
+            session['color_2']        = json_data['pro_color_2']
+            session['text_color']     = json_data['pro_text_color']
             session.modified = True
 
     except requests.exceptions.RequestException:
@@ -689,11 +691,11 @@ def get_user_data(login, be_headers=None):
                 return redir
 
             if req.status_code == 200:
-                json = req.json()
+                json_data = req.json()
 
                 session['user_link_fam'] = []
 
-                for data in json:
+                for data in json_data:
                     session['user_link_fam'].append(data['id_fam'])
 
                 session.modified = True
@@ -722,12 +724,12 @@ def get_software_settings(be_headers=None):
             return redir
 
         if req.status_code == 200:
-            json = req.json()
+            json_data = req.json()
 
-            session['record_period'] = json['rstg_period']
-            session['record_format'] = json['rstg_format']
-            session['samp_mask'] = json['rstg_samp_mask']
-            session['samp_regex'] = json['rstg_samp_regex']
+            session['record_period'] = json_data['rstg_period']
+            session['record_format'] = json_data['rstg_format']
+            session['samp_mask'] = json_data['rstg_samp_mask']
+            session['samp_regex'] = json_data['rstg_samp_regex']
             session.modified = True
 
     except requests.exceptions.RequestException:
@@ -766,12 +768,12 @@ def dt_format(dt_iso):
 
 
 @app.template_filter('date_now')
-def date_now(date_now):
+def date_now(value):  # pylint: disable=unused-argument
     return datetime.strftime(date.today(), "%Y-%m-%d")
 
 
 @app.template_filter('datetime_now')
-def datetime_now(datetime_now):
+def datetime_now(value):  # pylint: disable=unused-argument
     return datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M")
 
 
@@ -1104,7 +1106,7 @@ def api():
 
 # switch language
 @app.route('/lang/<string:lang>')
-def lang(lang='fr_FR'):
+def lang(lang='fr_FR'):  # pylint: disable=redefined-outer-name
     session['lang'] = lang
     session['lang_select'] = LANG_SELECT.get(lang, 'FR')
 
@@ -1211,7 +1213,9 @@ def homepage(login=''):
         path = os.path.join(Constants.cst_io, 'backup')
 
         if os.path.exists(path) and os.stat(path).st_size > 0:
-            with open(path, 'r') as f:
+            line = ''
+
+            with open(path, 'r', encoding='utf-8') as f:
                 for line in f:
                     pass
 
@@ -1226,7 +1230,6 @@ def homepage(login=''):
 
     # difference between now and last_backup_ok
     try:
-        import pathlib
 
         f = pathlib.Path(Constants.cst_io + 'last_backup_ok')
 
@@ -2296,7 +2299,9 @@ def setting_backup():
         path = os.path.join(Constants.cst_io, 'backup')
 
         if os.path.exists(path) and os.stat(path).st_size > 0:
-            with open(path, 'r') as f:
+            line = ''
+
+            with open(path, 'r', encoding='utf-8') as f:
                 for line in f:
                     pass
 
@@ -2311,7 +2316,6 @@ def setting_backup():
 
     # get modification time from last_backup_ok
     try:
-        import pathlib
 
         f = pathlib.Path(Constants.cst_io + 'last_backup_ok')
 
@@ -2484,7 +2488,6 @@ def preview_form(type_form='', filename=''):
     # ------------------------------------------------------------------
     if type_form == 'PAT-HIST':
         try:
-            import tomli
 
             # Validate and sanitize filename
             safe_name = secure_filename(filename or '')
@@ -3490,6 +3493,10 @@ def enter_result(id_rec=0, anchor=''):
             json_data['list_res'] = req.json()
 
             # Get result answer
+            # res is read further down, outside this block, a record without any
+            # result would leave it undefined
+            res = None
+
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
@@ -4415,6 +4422,10 @@ def technical_validation(id_rec=0, anchor=''):
             json_data['list_res'] = req.json()
 
             # Get result answer
+            # res is read further down, outside this block, a record without any
+            # result would leave it undefined
+            res = None
+
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
@@ -4649,6 +4660,10 @@ def biological_validation(mode='', id_rec=0):
             log.error(Logs.fileline() + ' : list_res = ' + str(json_data['list_res']))
 
             # Get result answer
+            # res is read further down, outside this block, a record without any
+            # result would leave it undefined
+            res = None
+
             if json_data['list_res']:
                 for res in json_data['list_res']:
                     # load result types
@@ -7370,14 +7385,13 @@ def det_job(id_item=0):
                 except Exception:
                     item_raw = req.text
 
-                import json as pyjson
                 if isinstance(item_raw, dict):
                     item = item_raw
                 elif isinstance(item_raw, list):
                     item = item_raw[0] if item_raw else {}
                 elif isinstance(item_raw, str):
                     try:
-                        item = pyjson.loads(item_raw) if item_raw.strip() else {}
+                        item = json.loads(item_raw) if item_raw.strip() else {}
                     except Exception:
                         item = {}
                 else:
@@ -7410,7 +7424,6 @@ def det_job(id_item=0):
     # - when editing, take it from the item (ajb_type)
     # - when creating, accept ?type= in querystring (optional)
     try:
-        from flask import request
         json_data['type_item'] = (json_data['item'].get('ajb_type')
                                   if isinstance(json_data['item'], dict) else None) \
                                  or request.args.get('type', '') \
@@ -7944,7 +7957,7 @@ def download_file(type='', filename='', type_ref='', ref=''):
                     '/services/file/report/' + quote(validated_generated_name, safe='') +
                     '/copy/' + quote(validated_copy_name, safe='')
                 )
-                req = requests.post(url, json={}, headers=headers)
+                req = requests.post(url, timeout=10, json={}, headers=headers)
 
                 redir = be_check_or_bounce(req)
                 if redir:
@@ -8039,9 +8052,6 @@ def store_uploaded_file(type_ref, id_ref, label, allowed_types_ref, filepath):
 
         # random name kind like VOOZANOO
         # PHP version : md5( mt_rand() . mt_rand() .microtime() )
-        import pathlib
-        import time
-        import hashlib
         generated_name = hashlib.md5((original_name + str(int(round(time.time() * 1000)))).encode('utf-8')).hexdigest()
         hash_name      = hashlib.md5((original_name).encode('utf-8')).hexdigest()
 

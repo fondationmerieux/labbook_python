@@ -1,10 +1,18 @@
 # Pylint configuration, kept next to the code so it survives make devbuild.
-# Run it from this directory, inside the container venv: cd .../app && pylint .
+# Run it from this directory, inside the container venv:
+#   cd .../app && pylint $(find . -name '*.py' | sort)
+# Passing the directory instead lints only __init__.py, recursive discovery stops
+# at a package.
 #
 # Values here mirror ~/.flake8 where the two tools overlap.
 
 [MAIN]
 recursive = y
+
+# messages_pybabel.py is generated, csv-to-po.py is a standalone helper, neither is
+# application code. ignore-paths is used rather than ignore, it also applies to files
+# named on the command line.
+ignore-paths = .*messages_pybabel.*,.*csv-to-po.*
 
 # _ is installed in the builtins by langDB.install() (gettext), pylint cannot see it
 additional-builtins = _
@@ -12,33 +20,81 @@ additional-builtins = _
 [FORMAT]
 max-line-length = 180
 
+[SIMILARITIES]
+# Four identical lines, the default, flags two loops that merely look alike. Twelve
+# is real copy and paste. Imports and function headers are left out, they repeat by
+# nature.
+min-similarity-lines = 12
+ignore-imports = yes
+ignore-signatures = yes
+
+[VARIABLES]
+# value is the discarded half of "for key, value in list(data.items())", a loop written
+# all over the services to replace None by an empty string. flake8 stays silent on loop
+# variables, pylint does not.
+dummy-variables-rgx = _|dummy|unused|value
+
 [MESSAGES CONTROL]
 # Style only, deliberately silenced:
 #   logging-not-lazy          log lines are built with +, a project-wide choice
+#   logging-fstring-*         same thing written with an f-string
 #   missing-*-docstring       docstrings are written where they help, not everywhere
 #   broad-exception-caught    the except Exception blocks are deliberate and documented
 #   invalid-name              naming style, not a defect
+#   redefined-builtin         type, id and dict are used as argument names throughout
+#   superfluous-parens        parentheses kept for readability on long conditions
 #   too-many-*, too-few-*     arbitrary size thresholds on working code
-#   no-else-return            readability preference
+#   no-else-*                 readability preference
+#   simplifiable-if-*         rewriting suggestion, not a defect
+#   chained-comparison        rewriting suggestion, not a defect
+#   consider-using-min/max    rewriting suggestion, not a defect
+#   use-dict-literal          rewriting suggestion, not a defect
+#   consider-using-in         rewriting suggestion, not a defect
+#   consider-using-f-string   rewriting suggestion, not a defect
+#   fixme                     the TODO left in the code are tracked elsewhere
+#   unused-argument           many are imposed by an interface, Flask or Authlib
+#   consider-using-with       every subprocess.Popen here is meant to keep running
+#                             in the background, with would wait for it to finish
 #
 # Deliberately kept, even though they are noisy families:
 #   import-outside-toplevel   often hides a circular import
 #   duplicate-code            SonarCloud grades the project on it
+#   unused-variable           often the sign of a forgotten line
+#   wrong-import-order        convention only, but cheap to respect
 disable =
     logging-not-lazy,
+    logging-fstring-interpolation,
     missing-module-docstring,
     missing-class-docstring,
     missing-function-docstring,
     broad-exception-caught,
     invalid-name,
+    redefined-builtin,
+    superfluous-parens,
+    consider-using-in,
+    consider-using-f-string,
+    consider-using-with,
+    unused-argument,
+    fixme,
     too-many-return-statements,
     too-many-branches,
     too-many-nested-blocks,
     too-many-statements,
     too-many-locals,
     too-many-arguments,
+    too-many-positional-arguments,
+    too-many-boolean-expressions,
     too-many-instance-attributes,
     too-many-public-methods,
     too-few-public-methods,
     too-many-lines,
-    no-else-return
+    no-else-return,
+    no-else-continue,
+    no-else-break,
+    no-else-raise,
+    simplifiable-if-statement,
+    simplifiable-if-expression,
+    chained-comparison,
+    consider-using-min-builtin,
+    consider-using-max-builtin,
+    use-dict-literal

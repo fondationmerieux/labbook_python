@@ -1,19 +1,19 @@
 # -*- coding:utf-8 -*-
+import csv
 import logging
-import requests
-
 from datetime import datetime
+
+import requests
 from flask import request
 from flask_restful import Resource
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
 from app.models.Audit import Audit
-from app.models.Patient import Patient
+from app.models.Constants import Constants
+from app.models.General import compose_ret
 from app.models.Logs import Logs
+from app.models.Patient import Patient
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -157,8 +157,6 @@ class PatientListExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'patients_' + str(today) + '.csv'
@@ -593,7 +591,8 @@ class PatientDet(Resource):
         return compose_ret(res, Constants.cst_content_type_json)
 
     def create_amicare_account(self, args, id_pat):
-        from app import AMICARE_CONFIG
+        # imported here and not at the top, app/__init__.py loads this file itself
+        from app import AMICARE_CONFIG  # pylint: disable=import-outside-toplevel
         if args.get('pat_amicare') != 1:
             return
 

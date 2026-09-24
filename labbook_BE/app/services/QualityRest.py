@@ -1,19 +1,19 @@
 # -*- coding:utf-8 -*-
+import csv
 import logging
-
 from datetime import datetime
+
 from flask import request
 from flask_restful import Resource
 
-from app.models.General import compose_ret
-from app.models.Constants import Constants
 from app.models.Audit import Audit
+from app.models.Constants import Constants
+from app.models.File import File
+from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Quality import Quality
-from app.models.File import File
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
-
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
 # Without __all__, "import *" also brings in this module's own imports
@@ -549,8 +549,6 @@ class ConformityExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'nonconformity_' + str(today) + '.csv'
@@ -748,8 +746,6 @@ class ControlIntExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'control_int_' + str(today) + '.csv'
@@ -978,8 +974,6 @@ class ControlIntResExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'control_int_' + str(id_ctrl) + '_' + str(today) + '.csv'
@@ -1041,8 +1035,6 @@ class ControlExtExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'control_ext_' + str(today) + '.csv'
@@ -1274,8 +1266,6 @@ class ControlExtResExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'control_ext_' + str(id_ctrl) + '_' + str(today) + '.csv'
@@ -1386,10 +1376,6 @@ class EquipmentDet(Resource):
         for key, value in list(item.items()):
             if item[key] is None:
                 item[key] = ''
-
-        """
-        if item['date_endcontract']:
-            item['date_endcontract'] = datetime.strftime(item['date_endcontract'], Constants.cst_isodate)"""
 
         if item['date_receipt']:
             item['date_receipt'] = datetime.strftime(item['date_receipt'], Constants.cst_isodate)
@@ -1784,8 +1770,6 @@ class EquipmentExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'equipment_' + str(today) + '.csv'
@@ -1888,8 +1872,6 @@ class EqpFailureExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'eqp_failure_' + str(today) + '.csv'
@@ -2054,8 +2036,6 @@ class EqpMetrologyExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'eqp_metrology_' + str(today) + '.csv'
@@ -2216,8 +2196,6 @@ class EqpPreventExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'eqp_preventive_maintenance_' + str(today) + '.csv'
@@ -2382,8 +2360,6 @@ class EqpContractExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'eqp_maintenance_contract_' + str(today) + '.csv'
@@ -2715,8 +2691,6 @@ class ManualExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'manual_' + str(today) + '.csv'
@@ -2964,8 +2938,6 @@ class MeetingExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'meeting_' + str(today) + '.csv'
@@ -3217,8 +3189,6 @@ class ProcedureExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'procedure_' + str(today) + '.csv'
@@ -3315,8 +3285,6 @@ class StaffExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'staff_' + str(today) + '.csv'
@@ -4119,8 +4087,6 @@ class StockExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'stock_' + str(today) + '.csv'
@@ -4199,8 +4165,6 @@ class StockProductsExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'stock_products_' + str(today) + '.csv'
@@ -4274,8 +4238,6 @@ class StockSuppliesExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'stock_supplies_' + str(today) + '.csv'
@@ -4339,8 +4301,6 @@ class StockUsesExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'stock_uses_' + str(today) + '.csv'
@@ -5461,8 +5421,6 @@ class SupplierExport(Resource):
 
         # write csv file
         try:
-            import csv
-
             today = datetime.now().strftime("%Y%m%d")
 
             filename = 'supplier_' + str(today) + '.csv'
@@ -5782,12 +5740,6 @@ class MessageUnread(Resource):
             nb_msg = res['nb_msg']
 
         self.log.info(Logs.fileline() + ' : TRACE MessageUnread nb_msg=' + str(nb_msg))
-        """ Flood to much
-        try:
-            details = {"result": "SUCCESS", "id_user": int(id_user)}
-            Audit.insertAudit(audit_user, "MessageUnread", "MESSAGE", None, "SUCCESS", details, "R")
-        except Exception:
-            self.log.exception(Logs.fileline() + ' : MessageUnread ERROR audit success')"""
         return compose_ret(nb_msg, Constants.cst_content_type_json)
 
 

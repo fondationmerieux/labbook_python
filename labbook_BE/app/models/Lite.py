@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 import logging
+from datetime import datetime
+
 import mysql.connector
 
-from datetime import datetime
 from app.models.DB import DB
 from app.models.Logs import Logs
 
