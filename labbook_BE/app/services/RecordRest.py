@@ -584,6 +584,12 @@ class RecordDetFromExt(Resource):
                 # generate a code
                 patient['pat_code'] = Patient.newPatientCode()
 
+                # only an age given: store an estimated birth date flagged as approximate
+                if not patient['pat_birth']:
+                    patient['pat_birth'] = Patient.estimateBirth(patient['pat_age'], patient['pat_age_unit'])
+                    if patient['pat_birth']:
+                        patient['pat_date_approx'] = 4
+
                 # insert new patient
                 id_pat = Patient.insertPatient(id_owner=0,
                                                anonyme=patient['pat_anonymous'],

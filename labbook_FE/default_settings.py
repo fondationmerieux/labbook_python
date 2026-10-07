@@ -1,3 +1,3 @@
 # -*- coding:utf-8 -*-
 
-APP_VERSION = '3.6.25'
+APP_VERSION = '3.6.26'

@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.26] - 2026-10-01
+### Added
+- Analyses HIV and HBV viral load of the Roche cobas 5800 in the analysis repository
+
+### Changed
+- Estimated birth date stored when only an age is entered
+
+### Fixed
+- Patient age on reports is now exact
+- External patients with an age in months or weeks are no longer duplicated
+
 ## [3.6.25] - 2026-09-24
 ### Fixed
 - Report sending message is now readable on the biological validation page, where it stood on the dark banner

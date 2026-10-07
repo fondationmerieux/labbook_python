@@ -897,23 +897,15 @@ class Pdf:
                     data['pat']['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
 
                     # calc age
-                    today = datetime.now()
-                    born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
+                    born = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate).date()
 
-                    age = (today - born).days
+                    data['pat']['age_days'] = str((datetime.now().date() - born).days)
 
-                    data['pat']['age_days'] = str(age)
+                    age, unit = Patient.computeAge(born)
 
-                    if age >= 365:
-                        data['pat']['age']  = str(today.year - born.year)
-                        data['pat']['age_unit'] = _('ans')
-                    elif age > 0 and age <= 31:
-                        data['pat']['age']  = str((today - born).days)
-                        data['pat']['age_unit'] = _('jours')
-                    elif today.month - born.month > 0:
-                        tmp_age = int((today - born).days / 28)
-                        data['pat']['age']  = str(tmp_age)
-                        data['pat']['age_unit'] = _('mois')
+                    if age is not None:
+                        data['pat']['age']      = str(age)
+                        data['pat']['age_unit'] = {1037: _('ans'), 1036: _('mois'), 1034: _('jours')}[unit]
                 elif pat['pat_age']:
                     data['pat']['age'] = str(pat['pat_age'])
 
@@ -1266,23 +1258,15 @@ class Pdf:
             pat_data['birth'] = datetime.strftime(pat['pat_birth'], Constants.cst_date_eu)
 
             # calc age
-            today = datetime.now()
-            born  = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate)
+            born = datetime.strptime(str(pat['pat_birth']), Constants.cst_isodate).date()
 
-            age = (today - born).days
+            pat_data['age_days'] = str((datetime.now().date() - born).days)
 
-            pat_data['age_days'] = str(age)
+            age, unit = Patient.computeAge(born)
 
-            if age >= 365:
-                pat_data['age']  = str(today.year - born.year)
-                pat_data['age_unit'] = _('ans')
-            elif age > 0 and age <= 31:
-                pat_data['age']  = str((today - born).days)
-                pat_data['age_unit'] = _('jours')
-            elif today.month - born.month > 0:
-                tmp_age = int((today - born).days / 28)
-                pat_data['age']  = str(tmp_age)
-                pat_data['age_unit'] = _('mois')
+            if age is not None:
+                pat_data['age']      = str(age)
+                pat_data['age_unit'] = {1037: _('ans'), 1036: _('mois'), 1034: _('jours')}[unit]
         elif pat['pat_age']:
             pat_data['age'] = str(pat['pat_age'])
 

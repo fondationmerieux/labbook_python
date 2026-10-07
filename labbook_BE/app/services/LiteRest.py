@@ -618,6 +618,12 @@ class LiteDataRecovery(Resource):
                 else:
                     pat['ddn'] = None
 
+                # only an age given: store an estimated birth date flagged as approximate
+                if not pat['ddn']:
+                    pat['ddn'] = Patient.estimateBirth(pat['age'], pat['unite'])
+                    if pat['ddn']:
+                        pat['ddn_approx'] = 4
+
                 if existing:
                     same_age = str(existing['age']) == str(pat.get('pat_age'))
                     same_sex = str(existing['sexe']) == str(pat.get('pat_sex'))

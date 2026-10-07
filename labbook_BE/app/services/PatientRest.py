@@ -427,6 +427,12 @@ class PatientDet(Resource):
                 if key not in args:
                     args[key] = value
 
+            # only an age given: store an estimated birth date flagged as approximate
+            if not args['pat_birth']:
+                args['pat_birth'] = Patient.estimateBirth(args['pat_age'], args['pat_age_unit'])
+                if args['pat_birth']:
+                    args['pat_birth_approx'] = 4
+
             ret = Patient.updatePatient(id=id_pat,
                                         id_owner=args['id_user'],
                                         anonyme=args['pat_ano'],
@@ -522,6 +528,12 @@ class PatientDet(Resource):
             for key, value in default_values.items():
                 if key not in args:
                     args[key] = value
+
+            # only an age given: store an estimated birth date flagged as approximate
+            if not args['pat_birth']:
+                args['pat_birth'] = Patient.estimateBirth(args['pat_age'], args['pat_age_unit'])
+                if args['pat_birth']:
+                    args['pat_birth_approx'] = 4
 
             ret = Patient.insertPatient(id_owner=args['id_user'],
                                         anonyme=args['pat_ano'],

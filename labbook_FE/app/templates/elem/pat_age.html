@@ -2,3 +2,35 @@
 <div>
     <input name="pat_age" id="pat_age" type="text" value="{{ args['pat_age'] }}" maxlength="3" class="form-control form-lbk" style="width:60px;" min="0" max="150" {% for attr in l_attr %}{{ attr }} {% endfor %}>
 </div>
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+$(document).on("change", "#pat_age, #pat_age_unit", function()
+{
+// after age change estimate birth date and mark it approximate
+var age  = parseInt( $("#pat_age").val(), 10 ) ;
+var unit = $("#pat_age_unit").val() ;
+
+    if ( !$("#pat_birth").length || isNaN(age) || age <= 0 )
+        return ;
+
+var born = new Date( $("#date_current").val() || new Date().toISOString().slice(0, 10) ) ;
+var day  = born.getUTCDate() ;
+
+    if ( unit == "1034" )
+        born.setUTCDate( day - age ) ;
+    else if ( unit == "1035" )
+        born.setUTCDate( day - age * 7 ) ;
+    else if ( unit == "1036" || unit == "1037" )
+    {
+        born.setUTCMonth( born.getUTCMonth() - (unit == "1036" ? age : age * 12) ) ;
+
+        // day missing in target month (31 March - 1 month): take its last day
+        if ( born.getUTCDate() != day )
+            born.setUTCDate(0) ;
+    }
+    else
+        return ;
+
+    $("#pat_birth").val( born.toISOString().slice(0, 10) ) ;
+    $("input[name='pat_birth_approx'][value='4']").prop("checked", true) ;
+} ) ;
+</script>

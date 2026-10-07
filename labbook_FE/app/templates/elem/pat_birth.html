@@ -7,33 +7,32 @@
 $("#pat_birth").change(function() 
 {
 // after date change calculate age and put unit
-var age_start = $("#pat_birth").val() ;
-var age_end   = $("#date_current").val() ;
+var born  = new Date( $("#pat_birth").val() ) ;
+var today = new Date( $("#date_current").val() || new Date().toISOString().slice(0, 10) ) ;
 
-// end - start returns difference in milliseconds 
-var diff = new Date(Date.parse(age_end) - Date.parse(age_start));
+    if ( isNaN(born) || isNaN(today) || born > today )
+        return ;
 
-var age = Math.abs(diff.getUTCFullYear() - 1970);
+// complete months elapsed, dates are parsed as UTC
+var months = (today.getUTCFullYear() - born.getUTCFullYear()) * 12 + today.getUTCMonth() - born.getUTCMonth() ;
 
-    if ( age >= 1 )
+    if ( today.getUTCDate() < born.getUTCDate() )
+        months-- ;
+
+    if ( months >= 12 )
     {
-        $("#pat_age").val( age ) ;
+        $("#pat_age").val( Math.floor(months / 12) ) ;
         $("#pat_age_unit").val("1037") ;
+    }
+    else if ( months >= 1 )
+    {
+        $("#pat_age").val( months ) ;
+        $("#pat_age_unit").val("1036") ;
     }
     else
     {
-    var days = diff/1000/60/60/24;
-
-        if (days >= 28)
-        {
-        $("#pat_age").val( (days / 30).toFixed(0) ) ;
-        $("#pat_age_unit").val("1036") ;
-        }
-        else
-        {
-        $("#pat_age").val( (days).toFixed(0) ) ;
+        $("#pat_age").val( Math.round((today - born) / 86400000) ) ;
         $("#pat_age_unit").val("1034") ;
-        }
     }
 } ) ; 
 </script>

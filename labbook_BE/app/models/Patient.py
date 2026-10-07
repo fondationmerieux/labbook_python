@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
+import calendar
 import logging
 import random
 import uuid
+from datetime import date, timedelta
 
 import mysql.connector
 
@@ -161,6 +163,49 @@ class Patient:
         return cursor.fetchone()
 
     @staticmethod
+    def estimateBirth(age, unit, today=None):
+        """Return a birth date estimated from an age and its unit (1034 days to 1037 years), or None."""
+        try:
+            age  = int(age)
+            unit = int(unit)
+        except (TypeError, ValueError):
+            return None
+
+        if age <= 0:
+            return None
+
+        today = today or date.today()
+
+        if unit == 1034:
+            return today - timedelta(days=age)
+        if unit == 1035:
+            return today - timedelta(weeks=age)
+        if unit in (1036, 1037):
+            months = age if unit == 1036 else age * 12
+            year, month = divmod(today.year * 12 + today.month - 1 - months, 12)
+            month += 1
+            return date(year, month, min(today.day, calendar.monthrange(year, month)[1]))
+
+        return None
+
+    @staticmethod
+    def computeAge(born, today=None):
+        """Return (age, unit) from a birth date in years, else months, else days, or (None, None) if in the future."""
+        today = today or date.today()
+
+        if born > today:
+            return None, None
+
+        months = (today.year - born.year) * 12 + today.month - born.month - (today.day < born.day)
+
+        if months >= 12:
+            return months // 12, 1037
+        if months >= 1:
+            return months, 1036
+
+        return (today - born).days, 1034
+
+    @staticmethod
     def getFormItems(id_pat):
         cursor = DB.cursor()
 
@@ -302,8 +347,6 @@ class Patient:
     def getPatientByIdentity(name, fname, sex, birth, age, age_unit):
         cursor = DB.cursor()
 
-        cond = ''
-
         if sex == 'M':
             sex = 1
         elif sex == 'F':
@@ -311,31 +354,29 @@ class Patient:
         else:
             sex = 3
 
-        if birth:
-            cond = ' and ddn="' + str(birth) + '"'
+        if age_unit == 'D':
+            age_unit = 1034
+        elif age_unit == 'W':
+            age_unit = 1035
+        elif age_unit == 'M':
+            age_unit = 1036
         else:
-            if age_unit == 'D':
-                age_unit = 1034
-            elif age_unit == 'M':
-                age_unit = 1035
-            elif age_unit == 'W':
-                age_unit = 1036
-            else:
-                age_unit = 1037
+            age_unit = 1037
 
-            cond = ' and age=' + str(age) + ' and unite=' + str(age_unit)
-
-        if not cond:
-            return {}
+        if birth:
+            cond = ' and ddn=%(birth)s'
+        else:
+            cond = ' and age=%(age)s and unite=%(age_unit)s'
 
         req = ('select id_data, id_owner, anonyme, code, code_patient, nom, prenom, ddn, sexe, '
                'adresse, cp, ville, tel, pat_phone2, profession, '
                'nom_jf, quartier, bp, ddn_approx, age, unite, '
                'pat_midname, pat_nation, pat_resident, pat_blood_group, pat_blood_rhesus, pat_agreement '
                'from sigl_03_data '
-               'where nom=%s and prenom=%s and sexe=%s ' + cond)
+               'where nom=%(name)s and prenom=%(fname)s and sexe=%(sex)s ' + cond)
 
-        cursor.execute(req, (name, fname, sex))
+        cursor.execute(req, {'name': name, 'fname': fname, 'sex': sex, 'birth': birth, 'age': age,
+                             'age_unit': age_unit})
 
         return cursor.fetchone()
 
