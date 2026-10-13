@@ -88,9 +88,10 @@ class Setting:
     def getReportSetting():
         cursor = DB.cursor()
 
-        req = ('select id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, entete, commentaire, report_pwd '
-               'from sigl_param_cr_data '
-               'order by id_data desc limit 1')
+        req = ('select rps_user as id_owner, rps_date as sys_creation_date, rps_date_upd as sys_last_mod_date, '
+               'rps_user_upd as sys_last_mod_user, rps_header as entete, rps_comment as commentaire, rps_pwd as report_pwd '
+               'from report_setting '
+               'order by rps_ser desc limit 1')
 
         cursor.execute(req)
 
@@ -101,10 +102,10 @@ class Setting:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('update sigl_param_cr_data '
-                           'set sys_last_mod_user=%(id_owner)s, sys_last_mod_date=NOW(), '
-                           'entete=%(header)s, commentaire=%(comment)s, report_pwd=%(report_pwd)s '
-                           'where id_data=1', params)
+            cursor.execute('update report_setting '
+                           'set rps_user_upd=%(id_owner)s, rps_date_upd=NOW(), '
+                           'rps_header=%(header)s, rps_comment=%(comment)s, rps_pwd=%(report_pwd)s '
+                           'where rps_ser=1', params)
 
             Setting.log.info(Logs.fileline())
 

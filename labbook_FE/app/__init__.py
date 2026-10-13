@@ -5049,6 +5049,75 @@ def report_indicator(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
     return render_template('report-epid-indi.html', report_type='indicator', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
 
+# Page : register of records and results
+@app.route('/report-register')
+@app.route('/report-register/<string:date_beg>/<string:date_end>/<int:id_fam>/<string:type_rec>')
+def report_register(date_beg='', date_end='', id_fam=0, type_rec='A'):
+    log.info(Logs.fileline() + ' : TRACE report register')
+
+    if not test_session():
+        log.info(Logs.fileline() + ' : TRACE Labbook report register => disconnect')
+        session.clear()
+        return index()
+
+    if not has_permission('REGISTER_184'):
+        log.info(Logs.fileline() + ' : TRACE report register => permission denied')
+        return redirect(url_for('homepage'))
+
+    session['current_page'] = 'report-register'
+    session.modified = True
+
+    resp = ensure_be_token()
+    if resp:
+        return resp
+
+    json_ihm  = {}
+    json_data = {}
+
+    # Load analysis families
+    json_ihm['type_ana'] = []
+    data, redir = be_get('/services/dict/det/famille_analyse', 'analysis type')
+    if redir:
+        return redir
+    if data is not None:
+        json_ihm['type_ana'] = data
+
+    if type_rec not in ('A', 'E', 'I'):
+        type_rec = 'A'
+
+    # Search only when criteria are given, default period is the current month
+    search = bool(date_beg and date_end)
+
+    if not date_beg:
+        date_beg = datetime.strftime(date.today().replace(day=1), Constants.cst_isodate)
+
+    if not date_end:
+        date_end = datetime.strftime(date.today(), Constants.cst_isodate)
+
+    json_data['date_beg'] = date_beg
+    json_data['date_end'] = date_end
+    json_data['id_fam']   = id_fam
+    json_data['type_rec'] = type_rec
+    json_data['search']   = search
+    json_data['edited']   = datetime.strftime(datetime.now(), '%d/%m/%Y %H:%M')
+    json_data['register'] = {}
+
+    if search:
+        payload = {'date_beg': date_beg + " 00:00",
+                   'date_end': date_end + " 23:59",
+                   'id_fam': id_fam,
+                   'type_rec': type_rec if type_rec != 'A' else '',
+                   'link_fam': session['user_link_fam']}
+
+        data, redir = be_post('/services/report/register', payload, 'report register')
+        if redir:
+            return redir
+        if data is not None:
+            json_data['register'] = data
+
+    return render_template('report-register.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+
+
 # Page : pivot table
 @app.route('/pivot-table')
 def pivot_table():

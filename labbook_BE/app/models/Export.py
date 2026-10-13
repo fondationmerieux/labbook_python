@@ -568,8 +568,8 @@ class Export:
         # Number of meeting on a period
         elif key == 'NB_MEETING':
             req = ('select count(*) as value '
-                   'from sigl_reunion_data '
-                   'where (sys_creation_date between %s and %s)')
+                   'from meeting '
+                   'where (mee_date between %s and %s)')
 
             cursor.execute(req, (date_beg, date_end))
 

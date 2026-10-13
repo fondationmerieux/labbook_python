@@ -21,7 +21,7 @@
 | pip                     | 25.2.0    | MIT          |           | x       | x       |
 | pipenv                  | 2025.0.1  | MIT          |           | x       | x       |
 | requests                | 2.34.2    | Apache 2.0   |           | x       | x       |
-| urllib3                 | 2.7.0     | MIT          |           | x       |         |
+| urllib3                 | 2.8.0     | MIT          |           | x       |         |
 | pip-audit               | 2.10.1    | Apache 2.0   |           | x       | x       |
 | tomli                   | 2.4.1     | MIT          |           | x       | x       |
 | Werkzeug                | 3.1.8     | BSD          |           | x       | x       |

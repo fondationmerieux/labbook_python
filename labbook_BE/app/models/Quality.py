@@ -15,10 +15,11 @@ class Quality:
     def getLastMeeting():
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, '
-               'date, organisateur_id as id_promoter, type_reu as type, cr as report '
-               'from sigl_reunion_data '
-               'order by date desc limit 1')
+        req = ('select mee_ser as id_data, mee_user as id_owner, mee_date as sys_creation_date, '
+               'mee_date_upd as sys_last_mod_date, mee_user_upd as sys_last_mod_user, '
+               'mee_date_meeting as date, mee_organizer as id_promoter, mee_type as type, mee_report as report '
+               'from meeting '
+               'order by mee_date_meeting desc limit 1')
 
         cursor.execute(req)
 
@@ -964,30 +965,36 @@ class Quality:
         cursor = DB.cursor()
 
         filter_cond = ' prs_ser > 0 and prs_cancel="N" and prs_remove="N" '
+        params = []
 
         if not args:
             limit = 'LIMIT 1000'
         else:
             if 'limit' in args and args['limit'] > 0:
-                limit = 'LIMIT ' + str(args['limit'])
+                limit = 'LIMIT ' + str(int(args['limit']))
             else:
                 limit = 'LIMIT 500'
 
             # filter conditions
             if 'prod_name' in args and args['prod_name']:
-                filter_cond += ' and prd_name LIKE "%' + str(args['prod_name']) + '%" '
+                filter_cond += ' and prd_name LIKE %s '
+                params.append('%' + str(args['prod_name']) + '%')
 
             if 'prod_type' in args and args['prod_type'] > 0:
-                filter_cond += ' and prd_type = ' + str(args['prod_type'])
+                filter_cond += ' and prd_type = %s '
+                params.append(args['prod_type'])
 
             if 'prod_conserv' in args and args['prod_conserv'] > 0:
-                filter_cond += ' and prd_conserv = ' + str(args['prod_conserv'])
+                filter_cond += ' and prd_conserv = %s '
+                params.append(args['prod_conserv'])
 
             if 'prod_lessor' in args and args['prod_lessor']:
-                filter_cond += ' and prs_lessor LIKE "%' + str(args['prod_lessor']) + '%" '
+                filter_cond += ' and prs_lessor LIKE %s '
+                params.append('%' + str(args['prod_lessor']) + '%')
 
             if 'prod_local' in args and args['prod_local'] > 0:
-                filter_cond += ' and prs_prl = ' + str(args['prod_local'])
+                filter_cond += ' and prs_prl = %s '
+                params.append(args['prod_local'])
 
         req = ('select prs_ser, prs_prd, prd_name, prd_nb_by_pack, prs_nb_pack, '
                'sum(pru_nb_pack) as pru_nb_pack, prd_safe_limit, prd_expir_oblig, prs_prl, prl_name, '
@@ -1004,7 +1011,7 @@ class Quality:
                'group by prd_name, prl_name '
                'order by prd_name asc, prl_name asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2202,11 +2209,11 @@ class Quality:
     def getMeetingList():
         cursor = DB.cursor()
 
-        req = ('select meet.id_data, meet.date as date_meeting, meet.type_reu as type_id, '
-               'u1.initiale as promoter, meet.cr as report, d1.label as type '
-               'from sigl_reunion_data as meet '
-               'left join sigl_user_data as u1 on u1.id_data=meet.organisateur_id '
-               'left join sigl_dico_data as d1 on d1.id_data=meet.type_reu '
+        req = ('select meet.mee_ser as id_data, meet.mee_date_meeting as date_meeting, meet.mee_type as type_id, '
+               'u1.initiale as promoter, meet.mee_report as report, d1.label as type '
+               'from meeting as meet '
+               'left join sigl_user_data as u1 on u1.id_data=meet.mee_organizer '
+               'left join sigl_dico_data as d1 on d1.id_data=meet.mee_type '
                'order by date_meeting desc ')
 
         cursor.execute(req)
@@ -2217,12 +2224,13 @@ class Quality:
     def getMeeting(id_item):
         cursor = DB.cursor()
 
-        req = ('select meet.id_data ,meet.id_owner, meet.date as date_meeting, meet.type_reu as type, '
+        req = ('select meet.mee_ser as id_data, meet.mee_user as id_owner, meet.mee_date_meeting as date_meeting, '
+               'meet.mee_type as type, '
                'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as promoter, '
-               'meet.organisateur_id as promoter_id, cr as report '
-               'from sigl_reunion_data as meet '
-               'left join sigl_user_data as u1 on u1.id_data=meet.organisateur_id '
-               'where meet.id_data=%s')
+               'meet.mee_organizer as promoter_id, meet.mee_report as report '
+               'from meeting as meet '
+               'left join sigl_user_data as u1 on u1.id_data=meet.mee_organizer '
+               'where meet.mee_ser=%s')
 
         cursor.execute(req, (id_item,))
 
@@ -2233,9 +2241,9 @@ class Quality:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_reunion_data '
-                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, date, type_reu, '
-                           'organisateur_id, cr) '
+            cursor.execute('insert into meeting '
+                           '(mee_user, mee_date, mee_date_upd, mee_user_upd, mee_date_meeting, mee_type, '
+                           'mee_organizer, mee_report) '
                            'values '
                            '(%(id_owner)s, NOW(), NOW(), %(id_owner)s, %(date_meeting)s, %(type)s, '
                            '%(promoter)s, %(report)s)', params)
@@ -2252,9 +2260,10 @@ class Quality:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('update sigl_reunion_data '
-                           'set date=%(date_meeting)s , type_reu=%(type)s, organisateur_id=%(promoter)s, cr=%(report)s '
-                           'where id_data=%(id_data)s', params)
+            cursor.execute('update meeting '
+                           'set mee_date_meeting=%(date_meeting)s , mee_type=%(type)s, mee_organizer=%(promoter)s, '
+                           'mee_report=%(report)s '
+                           'where mee_ser=%(id_data)s', params)
 
             Quality.log.info(Logs.fileline())
 
@@ -2268,8 +2277,8 @@ class Quality:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('delete from sigl_reunion_data '
-                           'where id_data=%s', (id_item,))
+            cursor.execute('delete from meeting '
+                           'where mee_ser=%s', (id_item,))
 
             Quality.log.info(Logs.fileline())
 

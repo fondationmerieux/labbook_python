@@ -30,6 +30,7 @@ __all__ = [
     'ReportBilling',
     'ReportToday',
     'ReportTodayExport',
+    'ReportRegister',
 ]
 
 
@@ -909,3 +910,58 @@ class ReportTodayExport(Resource):
         except Exception as err:
             self.log.error(Logs.fileline() + ' : ReportTodayExport ERROR audit success err=' + str(err))
         return compose_ret('', Constants.cst_content_type_json)
+
+
+class ReportRegister(Resource):
+    log = logging.getLogger('log_services')
+
+    # Maximum number of results read for one register
+    limit = 20000
+
+    @require_oauth()
+    def post(self):
+        audit_user = request.oauth_user
+        args = request.get_json()
+
+        if not args or 'date_beg' not in args or 'date_end' not in args:
+            self.log.error(Logs.fileline() + ' : ReportRegister ERROR args missing')
+            try:
+                details = {"result": "ERROR", "reason": "ARGS_MISSING", "missing": ["date_beg", "date_end"]}
+                Audit.insertAudit(audit_user, "ReportRegister", "REPORT", None, "ERROR", details, "R")
+            except Exception as err:
+                self.log.error(Logs.fileline() + ' : ReportRegister ERROR audit args missing err=' + str(err))
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
+        try:
+            id_fam = int(args.get('id_fam', 0) or 0)
+        except Exception:
+            id_fam = 0
+
+        type_rec = args.get('type_rec', '')
+        link_fam = args.get('link_fam', []) or []
+
+        # One more row than the limit to know if the register is truncated
+        l_rows = Report.getRegisterRows(args['date_beg'], args['date_end'], id_fam, type_rec, link_fam, self.limit + 1)
+
+        truncated = len(l_rows) > self.limit
+
+        l_rec = Report.buildRegister(l_rows[:self.limit])
+
+        # Last record may be incomplete when truncated
+        if truncated and l_rec:
+            l_rec.pop()
+
+        data = {'l_rec': l_rec,
+                'nb_ext': sum(1 for rec in l_rec if rec['type_rec'] == 'E'),
+                'nb_hosp': sum(1 for rec in l_rec if rec['type_rec'] == 'H'),
+                'truncated': 'Y' if truncated else 'N'}
+
+        self.log.info(Logs.fileline() + ' : TRACE ReportRegister')
+        try:
+            details = {"result": "SUCCESS",
+                       "date_beg": args.get("date_beg"), "date_end": args.get("date_end"), "id_fam": id_fam,
+                       "type_rec": type_rec, "link_fam": link_fam, "count": len(l_rec), "truncated": data['truncated']}
+            Audit.insertAudit(audit_user, "ReportRegister", "REPORT", None, "SUCCESS", details, "R")
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : ReportRegister ERROR audit success err=' + str(err))
+        return compose_ret(data, Constants.cst_content_type_json)

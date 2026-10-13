@@ -3,6 +3,7 @@ import logging
 
 from app.models.DB import DB
 from app.models.Setting import Setting
+from app.models.Various import Various
 
 
 AND = ' and '
@@ -499,6 +500,143 @@ class Report:
         cursor.execute(req, (date_beg, date_end,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def getRegisterRows(date_beg, date_end, id_fam, type_rec, link_fam, limit):
+        cursor = DB.cursor()
+
+        params = {'date_beg': date_beg, 'date_end': date_end, 'limit': limit}
+
+        cond = ''
+
+        if id_fam > 0:
+            cond += ' and ref.famille=%(id_fam)s '
+            params['id_fam'] = id_fam
+
+        # 183 = external, 184 = hospitalized
+        if type_rec == 'E':
+            cond += ' and rec.type=183 '
+        elif type_rec == 'I':
+            cond += ' and rec.type=184 '
+
+        # Functional unit: restrict to the families linked to the user
+        if link_fam:
+            cond += ' and ref.famille in (' + ','.join(str(int(fam)) for fam in link_fam) + ') '
+
+        # One row per result, with the last validation of the result to know if it is biologically validated
+        req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.rec_num_int, rec.service_interne as service, '
+               'if(rec_setting.rstg_period=1070, if(rec_setting.rstg_format=1072,substring(rec.num_dos_mois from 7), '
+               'rec.num_dos_mois), if(rec_setting.rstg_format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
+               'pat.code as pat_code, pat.code_patient as pat_code_lab, pat.nom as pat_name, pat.prenom as pat_firstname, '
+               'pat.ddn as pat_birth, pat.age as pat_age, pat.unite as pat_age_unit, pat.sexe as pat_sex, '
+               'req.id_data as id_req, ref.nom as ana_name, ref.abbr as ana_abbr, '
+               '(select min(samp.samp_date) from sigl_01_data as samp '
+               'where samp.id_dos=rec.id_data and samp.samp_id_ana=req.ref_analyse) as samp_date, '
+               'var.libelle as var_name, res.valeur as value, unit.label as unit, '
+               'if(type_res.short_label like "dico_%%", "Y", "N") as is_dico, val.label as value_label, '
+               'vld.type_validation as type_vld, vld.date_validation as date_vld '
+               'from sigl_02_data as rec '
+               'inner join sigl_03_data as pat on pat.id_data=rec.id_patient '
+               'inner join sigl_04_data as req on req.id_dos=rec.id_data '
+               'inner join sigl_05_data as ref on ref.id_data=req.ref_analyse '
+               'inner join sigl_09_data as res on res.id_analyse=req.id_data '
+               'inner join sigl_07_data as var on var.id_data=res.ref_variable '
+               'inner join sigl_05_07_data as link on link.id_refvariable=var.id_data and link.id_refanalyse=ref.id_data '
+               'left join sigl_dico_data as type_res on type_res.id_data=var.type_resultat '
+               'left join sigl_dico_data as val on type_res.short_label like "dico_%%" and val.id_data=res.valeur '
+               'left join sigl_dico_data as unit on unit.id_data=var.unite '
+               'left join sigl_10_data as vld on vld.id_data=(select max(id_data) from sigl_10_data where id_resultat=res.id_data) '
+               'left join record_setting as rec_setting on rec_setting.rstg_ser=1 '
+               'where rec.rec_date_receipt between %(date_beg)s and %(date_end)s and var.type_resultat != 265 '
+               'and var.var_in_report="Y" ' + cond +
+               'order by rec.rec_date_receipt asc, rec.id_data asc, req.id_data asc, link.position asc '
+               'limit %(limit)s')
+
+        cursor.execute(req, params)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def formatRegisterAge(row):
+        """Birth date if known, otherwise age with its unit"""
+        if row['pat_birth']:
+            return row['pat_birth'].strftime('%d/%m/%Y')
+
+        if row['pat_age']:
+            unit = {1037: _("ans"), 1036: _("mois"), 1035: _("semaines"), 1034: _("jours")}.get(row['pat_age_unit'], '')
+            return (str(row['pat_age']) + ' ' + unit).strip()
+
+        return ''
+
+    @staticmethod
+    def buildRegister(l_rows):
+        """Group result rows by record then by analysis, and format each line for display"""
+        Various.useLangDB()
+
+        l_rec = []
+        rec   = {}
+        ana   = {}
+
+        for row in l_rows:
+            # New record
+            if not rec or rec['id_rec'] != row['id_rec']:
+                rec = {'id_rec': row['id_rec'],
+                       'type_rec': 'E' if row['type_rec'] == 183 else 'H',
+                       'rec_num': row['rec_num'] or '',
+                       'rec_num_int': row['rec_num_int'] or '',
+                       'pat_code': row['pat_code'] or '',
+                       'pat_code_lab': row['pat_code_lab'] or '',
+                       'pat_name': ((row['pat_name'] or '') + ' ' + (row['pat_firstname'] or '')).strip(),
+                       'pat_age': Report.formatRegisterAge(row),
+                       'pat_sex': {1: 'M', 2: 'F'}.get(row['pat_sex'], ''),
+                       'date_vld': None,
+                       'l_ana': []}
+
+                if rec['type_rec'] == 'E':
+                    rec['service'] = _("Externe")
+                else:
+                    rec['service'] = row['service'] or _("Hospitalisé")
+
+                l_rec.append(rec)
+                ana = {}
+
+            # New analysis: abbreviation first, otherwise name cut at 25 characters
+            if not ana or ana['id_req'] != row['id_req']:
+                name = row['ana_abbr'] or row['ana_name'] or ''
+
+                if not row['ana_abbr'] and len(name) > 25:
+                    name = name[:25] + '…'
+
+                ana = {'id_req': row['id_req'],
+                       'name': name,
+                       'samp_date': row['samp_date'].strftime('%d/%m/%Y %H:%M') if row['samp_date'] else '',
+                       'l_res': []}
+
+                rec['l_ana'].append(ana)
+
+            # Only biologically validated results are shown, others are replaced by a dash
+            value = '—'
+            unit  = ''
+
+            if row['type_vld'] == 252 and row['value'] not in (None, '', '1013'):
+                if row['is_dico'] == 'Y':
+                    label = row['value_label']
+                    if label:
+                        value = _(label.strip())
+                else:
+                    value = row['value']
+                    unit  = row['unit'] or ''
+
+                # Last biological validation date of the record
+                if not rec['date_vld'] or row['date_vld'] > rec['date_vld']:
+                    rec['date_vld'] = row['date_vld']
+
+            ana['l_res'].append({'name': row['var_name'] or '', 'value': value, 'unit': unit})
+
+        for rec in l_rec:
+            rec['date_vld'] = rec['date_vld'].strftime('%d/%m/%Y') if rec['date_vld'] else '—'
+
+        return l_rec
 
     @staticmethod
     def getIdValueForFormula(dict_name, code):

@@ -223,7 +223,10 @@ class PdfReportGeneric(Resource):
                 self.log.exception(Logs.fileline() + ' : PdfReportGeneric ERROR audit')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        ret = Pdf.getPdfReportGeneric(args['html'], args['filename'])
+        orientation = 'Landscape' if args.get('orientation') == 'Landscape' else 'Portrait'
+        with_date   = args.get('with_date', 'Y') != 'N'
+
+        ret = Pdf.getPdfReportGeneric(args['html'], args['filename'], orientation, with_date)
 
         if not ret:
             self.log.error(Logs.fileline() + ' : PdfReportGeneric failed')
@@ -237,6 +240,9 @@ class PdfReportGeneric(Resource):
         self.log.info(Logs.fileline() + ' : TRACE PdfReportGeneric')
         try:
             details = {"filename": str(args.get("filename"))}
+            # Search criteria of the report, when given (register)
+            if args.get("criteria"):
+                details["criteria"] = args["criteria"]
             Audit.insertAudit(audit_user, "PdfReportGeneric", "PDF", None, "SUCCESS", details, "R")
         except Exception:
             self.log.exception(Logs.fileline() + ' : PdfReportGeneric ERROR audit success')

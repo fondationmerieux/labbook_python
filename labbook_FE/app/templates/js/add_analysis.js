@@ -29,7 +29,7 @@ function add_analysis()
         let param_ana = '{ "id_owner":' + id_user + ', ' +
             '"id_rec":' + id_rec  + ', ' +
             '"id_ana":' + list_id_ana[i] + ', ' +
-            '"price":0, ' +
+            '"price":null, ' +
             '"paid": 5, ' +
             '"emer": 5, ' +
             '"outsourced":"N", ' +

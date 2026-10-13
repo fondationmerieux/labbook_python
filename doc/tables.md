@@ -25,17 +25,13 @@
 | sigl_15_data                     | DHIS2        | epidemiological surveillance details       |
 | sigl_dico_data                   | DICTIONARY   | dictionary                                 |
 | sigl_equipement_data             | EQUIPMENT    | equipment details                          |
-| sigl_evtlog_data                 | LOG          | event log                                  |
 | sigl_file_data                   | FILE         | file metadata (path, hash...)              |
 | sigl_fournisseurs_data           | SUPPLIER     | supplier                                   |
 | sigl_manuels_data                | MANUAL       | manual                                     |
 | sigl_non_conformite_data         | CONFORMITY   | non conformity                             |
-| sigl_param_cr_data               | SETTINGS     | report parameters                          |
 | sigl_pj_role                     | USER         | user role                                  |
 | sigl_pj_sequence                 | -            | last sequence numbers                      |
 | sigl_procedures_data             | PROCEDURE    | procedure                                  |
-| sigl_reunion_data                | MEETING      | meeting                                    |
-| sigl_storage_data                | FILE         | file storage paths                         |
 | sigl_user_data                   | USER         | users                                      |
 | age_interval_setting             | SETTINGS     | age ranges parameter                       |
 | alembic_version                  | -            | alembic migration version                  |
@@ -61,6 +57,8 @@
 | eqp_photo_file                   | FILE         | equipment photo                            |
 | eqp_preventive_maintenance       | EQUIPMENT    | preventive maintenance                     |
 | eqp_preventive_maintenance_file  | FILE         | preventive maintenance file                |
+| event_log                        | LOG          | event log                                  |
+| file_storage                     | FILE         | file storage paths                         |
 | form_setting                     | SETTINGS     | structure of form fields                   |
 | functionnal_unit                 | SETTINGS     | functional unit                            |
 | functionnal_unit_link            | SETTINGS     | link functional units                      |
@@ -72,6 +70,7 @@
 | lite_users                       | SETTINGS     | associate user with Lite config            |
 | manual_file                      | FILE         | manual file                                |
 | manual_setting                   | SETTINGS     | manual settings                            |
+| meeting                          | MEETING      | meeting                                    |
 | meeting_file                     | FILE         | meeting file                               |
 | nationality                      | DICTIONARY   | list of nationalities                      |
 | patient_form_item                | PATIENT      | dynamic patient data fields                |
@@ -88,6 +87,7 @@
 | record_file_deleted              | FILE         | deleted attached file                      |
 | record_setting                   | SETTINGS     | record number parameters                   |
 | record_validation                | RECORD       | comment on biological validation           |
+| report_setting                   | SETTINGS     | report parameters                          |
 | requesting_services              | SETTINGS     | list of requesting services                |
 | sample_destock                   | ALIQUOT      | destocked aliquot                          |
 | sending_event                    | SENDING      | sending event log                          |

@@ -79,10 +79,10 @@ class File:
             File.log.error(Logs.fileline() + ' : ERROR getFileDocList type_ref=' + str(type_ref))
             return []
 
-        req = ('select file.id_data as id_data, file.original_name as name, file.path as dir, storage.path as storage, '
+        req = ('select file.id_data as id_data, file.original_name as name, file.path as dir, storage.fst_path as storage, '
                'file.generated_name as gen_name '
-               'from ' + tablename + ' as valise, sigl_file_data as file, sigl_storage_data as storage '
-               'where file.id_data=valise.id_file and storage.id_data=file.id_storage and valise.id_ext=%s '
+               'from ' + tablename + ' as valise, sigl_file_data as file, file_storage as storage '
+               'where file.id_data=valise.id_file and storage.fst_ser=file.id_storage and valise.id_ext=%s '
                'order by id_data desc ')
 
         cursor.execute(req, (id_ref,))
@@ -312,9 +312,9 @@ class File:
     def getFileStorage(id_storage):
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, path '
-               'from sigl_storage_data '
-               'where id_data=%s')
+        req = ('select fst_ser as id_data, fst_user as id_owner, fst_path as path '
+               'from file_storage '
+               'where fst_ser=%s')
 
         cursor.execute(req, (id_storage,))
 
@@ -324,9 +324,9 @@ class File:
     def getLastFileStorage():
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, path '
-               'from sigl_storage_data '
-               'order by id_data desc limit 1')
+        req = ('select fst_ser as id_data, fst_user as id_owner, fst_path as path '
+               'from file_storage '
+               'order by fst_ser desc limit 1')
 
         cursor.execute(req)
 
@@ -337,8 +337,8 @@ class File:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_storage_data '
-                           '(id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, path) '
+            cursor.execute('insert into file_storage '
+                           '(fst_user, fst_date, fst_date_upd, fst_user_upd, fst_path) '
                            'values '
                            '(0, NOW(), NOW(), 0, %(path)s)', params)
 

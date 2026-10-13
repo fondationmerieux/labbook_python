@@ -215,6 +215,16 @@ class Record:
         return cursor.fetchone()
 
     @staticmethod
+    def getRecordIdByNum(num_rec):
+        cursor = DB.cursor()
+
+        cursor.execute('select id_data from sigl_02_data where num_dos_an = %s or num_dos_mois = %s '
+                       'order by id_data desc limit 1', (num_rec, num_rec))
+        row = cursor.fetchone()
+
+        return row['id_data'] if row else 0
+
+    @staticmethod
     def getRecordListAnalysis(id_rec):
         cursor = DB.cursor()
 
@@ -346,9 +356,9 @@ class Record:
                 Record.log.error(Logs.fileline() + ' : ' + 'getRecord ERROR not found with id = ' + str(id_rec))
                 return False
 
-            price     = rec['prix'] - diff_price
-            discount  = rec['remise_pourcent']
-            insurance = rec['assu_pourcent']
+            price     = (rec['prix'] or 0) - diff_price
+            discount  = rec['remise_pourcent'] or 0
+            insurance = rec['assu_pourcent'] or 0
 
             if discount > 0 and insurance > 0:
                 remain = (price - (price * discount / 100)) * (100 - insurance) / 100

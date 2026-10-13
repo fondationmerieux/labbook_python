@@ -373,10 +373,14 @@ function export_data()
 let prod_name    = $("#name").val()      ;
 let prod_type    = $("#prod_type").val() ;
 let prod_conserv = $("#prod_conserv").val() ;
+let prod_lessor  = $("#lessor").val()       ;
+let prod_local   = $("#prod_local").val()   ;
 
 let param = '{ "prod_name":"' + prod_name + '", ' +
               '"prod_type":' + prod_type  + ', ' +
-              '"prod_conserv":' + prod_conserv  + '}' ;
+              '"prod_conserv":' + prod_conserv  + ', ' +
+              '"prod_lessor":"' + prod_lessor + '", ' +
+              '"prod_local":' + prod_local + '}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

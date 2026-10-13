@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.27] - 2026-10-13
+### Added
+- Register of records and results, exported as a PDF
+
+### Changed
+- Rename tables `sigl_evtlog_data`, `sigl_param_cr_data`, `sigl_storage_data` and `sigl_reunion_data` and their columns
+
+### Fixed
+- Invoice template now shows the discount and its percentage
+- Analyses added from result entry and validation pages are now priced on the invoice
+- Analyzers can now send the record number (long format, yearly or monthly) instead of a sample code
+- Analyzer results for a tube shared by several analyses now fill in each analysis, not only one
+- Stock table export now applies the lessor and location filters, with a location column
+
 ## [3.6.26] - 2026-10-01
 ### Added
 - Analyses HIV and HBV viral load of the Roche cobas 5800 in the analysis repository

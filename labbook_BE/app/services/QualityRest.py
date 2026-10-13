@@ -4035,7 +4035,7 @@ class StockExport(Resource):
 
         args['limit'] = 50000  # for overpassed default limit
 
-        l_data = [['prs_ser', 'name', 'nb_pack', 'nb_total', 'type', 'conserv', 'supplier']]
+        l_data = [['prs_ser', 'name', 'nb_pack', 'nb_total', 'type', 'conserv', 'supplier', 'local']]
         dict_data = Quality.getStockList(args)
 
         Various.useLangDB()
@@ -4073,6 +4073,7 @@ class StockExport(Resource):
                 else:
                     data.append('')
                 data.append(d['supplier'])
+                data.append(d['prl_name'])
 
                 l_data.append(data)
 

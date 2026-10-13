@@ -175,7 +175,7 @@ class Pdf:
         return True
 
     @staticmethod
-    def getPdfReportGeneric(html_part, filename=''):
+    def getPdfReportGeneric(html_part, filename='', orientation='Portrait', with_date=True):
         """Build a Generic PDF Report
 
         This function is call by report statistic, report epidemio, report indicator, report activity,
@@ -184,6 +184,8 @@ class Pdf:
         Args:
             html_part (string): html string.
             filename  (string): filename.
+            orientation (string): Portrait or Landscape.
+            with_date (bool): add the date of the day to the filename.
 
         Returns:
             bool: True for success, False otherwise.
@@ -195,7 +197,10 @@ class Pdf:
         date_now = datetime.now()
         today    = date_now.strftime(Constants.cst_date_ymd)
 
-        filename = filename + '_' + today + '.pdf'
+        if with_date:
+            filename = filename + '_' + today
+
+        filename = filename + '.pdf'
 
         # Get format header
         pdfpref = Pdf.getPdfPref()
@@ -207,7 +212,10 @@ class Pdf:
 
         page_header = Pdf.getPdfHeader(full_header)
 
-        page_body = ('<div style="width:1000px;">' + html_part + '</div>')
+        # Landscape A4 is wider
+        width = '1400px' if orientation == 'Landscape' else '1000px'
+
+        page_body = ('<div style="width:' + width + ';">' + html_part + '</div>')
 
         page_footer = '</div>'
 
@@ -215,6 +223,7 @@ class Pdf:
 
         options = {'--encoding': 'utf-8',
                    'page-size': 'A4',
+                   'orientation': orientation,
                    'margin-top': '12mm',
                    'margin-right': '0mm',
                    'margin-bottom': '0mm',
@@ -224,6 +233,12 @@ class Pdf:
                    'load-error-handling': 'ignore',
                    'load-media-error-handling': 'ignore',
                    'disable-javascript': None}
+
+        # Keep the content away from the paper edge for printing
+        if orientation == 'Landscape':
+            options['margin-right']  = '10mm'
+            options['margin-bottom'] = '10mm'
+            options['margin-left']   = '10mm'
 
         try:
             pdfkit.from_string(form_cont, path + filename, options=options)
@@ -661,8 +676,9 @@ class Pdf:
 
         cursor = DB.cursor()
 
-        req = ('select id_owner, sys_creation_date, sys_last_mod_date, sys_last_mod_user, entete, commentaire, report_pwd '
-               'from sigl_param_cr_data '
+        req = ('select rps_user as id_owner, rps_date as sys_creation_date, rps_date_upd as sys_last_mod_date, '
+               'rps_user_upd as sys_last_mod_user, rps_header as entete, rps_comment as commentaire, rps_pwd as report_pwd '
+               'from report_setting '
                'limit 1')
 
         cursor.execute(req)

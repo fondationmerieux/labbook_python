@@ -256,6 +256,27 @@ class Product:
         return 0
 
     @staticmethod
+    def getSampleIdsByRecordVar(id_rec, id_samp=0):
+        """
+        Map code_var -> id_data of the sample whose analysis holds this variable, for one record.
+        The sample id_samp comes first, so it keeps the variables of its own analysis.
+        """
+        cursor = DB.cursor()
+
+        cursor.execute('select ref_var.code_var, samp.id_data from sigl_01_data as samp '
+                       'inner join sigl_05_07_data as var_pos on var_pos.id_refanalyse = samp.samp_id_ana '
+                       'inner join sigl_07_data as ref_var on ref_var.id_data = var_pos.id_refvariable '
+                       'where samp.id_dos = %s '
+                       'order by samp.id_data = %s desc, samp.id_data asc limit 1000', (id_rec, id_samp))
+
+        # First sample wins when a variable appears in several analyses
+        samples = {}
+        for row in cursor.fetchall():
+            samples.setdefault(row['code_var'], row['id_data'])
+
+        return samples
+
+    @staticmethod
     def getLastSampleCode(samp_regex):
         try:
             samp_regex = (samp_regex or '').strip()

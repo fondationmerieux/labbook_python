@@ -1,0 +1,215 @@
+{% extends "skeleton.html" %}
+{% block title %}{{ _("Registre") }}{% endblock %}
+
+{% set register = args['register'] %}
+{% set ns = namespace(fam_label=_("Toutes")) %}
+{% for type_ana in ihm['type_ana'] %}
+    {% if type_ana['id_data'] == args['id_fam'] %}{% set ns.fam_label = type_ana['label'] %}{% endif %}
+{% endfor %}
+{% if args['type_rec'] == 'E' %}
+    {% set type_label = _("Externe") %}
+{% elif args['type_rec'] == 'I' %}
+    {% set type_label = _("Interne") %}
+{% else %}
+    {% set type_label = _("Tous") %}
+{% endif %}
+
+{% block content %}
+<div id="content">
+    <div class="inner">
+        <div id="main">
+            <h2 class="page-title page-title-color"><span>{{ _("Registre") }}</span></h2>
+            <form autocomplete="off">
+                <fieldset class="border mx-1 p-1 p-lg-2">
+                    <legend class="legend-lbk">{{ _("Rechercher") }}</legend>
+                    <div class="form-group d-lg-flex align-items-start ms-lg-3">
+                        <label for="date_beg" class="form-label text-end text-nowrap mt-2 me-1">{{ _("Date du") }}</label>
+                        <div>
+                            <input id="date_beg" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_beg'] }}">
+                        </div>
+                        <label for="date_end" class="form-label text-end mx-lg-1 mt-2">{{ _("au") }}</label>
+                        <div>
+                            <input id="date_end" class="form-control form-lbk cnx_trigger" type="date" maxlength="10" size="10" value="{{ args['date_end'] }}">
+                        </div>
+                        <label for="id_fam" class="form-label text-end text-nowrap ms-lg-3 mt-2 me-1">{{ _("Famille d'analyse") }}</label>
+                        <div>
+                            <select id="id_fam" class="form-select form-lbk">
+                                {% from 'macros.html' import select_type_ana %}
+                                {{ select_type_ana(ihm['type_ana'], args['id_fam']) }}
+                            </select>
+                        </div>
+                        <label for="type_rec" class="form-label text-end text-nowrap ms-lg-3 mt-2 me-1">{{ _("Type dossier") }}</label>
+                        <div>
+                            <select id="type_rec" class="form-select form-lbk">
+                                {% from 'macros.html' import select_type_record %}
+                                {{ select_type_record(args['type_rec'], False) }}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="float-end mt-2">
+                        <button type="button" onclick="reset_filter();return false;" class="btn btn-lbk btn-{{ session['user_role']|safe }}"><i class="bi bi-x-circle pe-1"></i><span>{{ _("Réinitialiser") }}</span></button>
+                        <button type="button" onclick="filter_data();return false;" id="btn_search" class="btn btn-lbk btn-{{ session['user_role']|safe }} cnx_trigger"><i class="bi bi-search pe-1"></i><span>{{ _("Rechercher") }}</span></button>
+                    </div>
+                </fieldset>
+            </form>
+
+            {% if args['search'] %}
+            <div class="row border mx-1 mt-3 p-2">
+                {% if register and register['l_rec'] %}
+                    {% if register['truncated'] == 'Y' %}
+                <div class="alert alert-warning">{{ _("Affichage limité, le registre est tronqué. Affinez la période ou la famille.") }}</div>
+                    {% endif %}
+                <div id="html_report">
+                    <h3 class="text-center" style="margin-top:0;text-align:center;">{{ _("REGISTRE DES DOSSIERS ET RÉSULTATS DE LABORATOIRE") }}</h3>
+                    <p class="text-center mb-1" style="text-align:center;">
+                        {{ _("Période du") }} {{ args['date_beg'][8:10] }}/{{ args['date_beg'][5:7] }}/{{ args['date_beg'][:4] }}
+                        {{ _("au") }} {{ args['date_end'][8:10] }}/{{ args['date_end'][5:7] }}/{{ args['date_end'][:4] }}
+                        · {{ _("Famille d'analyse") }} : {{ ns.fam_label }} · {{ _("Type dossier") }} : {{ type_label }}
+                    </p>
+                    <p class="text-center mb-1" style="text-align:center;">
+                        {{ _("Nombre de dossiers") }} : {{ register['nb_ext'] }} {{ _("externes") }} / {{ register['nb_hosp'] }} {{ _("hospitalisés") }}
+                        · {{ _("Édité par") }} : {{ session['user_firstname'] }} {{ session['user_lastname'] }}, {{ args['edited'] }}
+                    </p>
+                    <table class="table table-striped table-hover col-lg-12 table-lbk" style="border:0;width:100%;border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Date") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("N° dossier") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Nom et prénom") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Âge / DDN") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Sexe") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Service") }}</th>
+                                <th class="text-center font-info" style="border:0;text-align:center;padding:2px 4px;">{{ _("Analyses et résultats") }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for rec in register['l_rec'] %}
+                            {# One line per analysis title and one per result, identity cells span all of them #}
+                            {% set nb_lines = rec['l_ana']|length + rec['l_ana']|sum(attribute='l_res', start=[])|length %}
+                            {% for ana in rec['l_ana'] %}
+                            <tr>
+                                {% if loop.first %}
+                                <td rowspan="{{ nb_lines }}" class="text-center align-top" style="border:0;vertical-align:top;text-align:center;padding:2px 4px;">{{ rec['date_vld'] }}</td>
+                                <td rowspan="{{ nb_lines }}" class="align-top" style="border:0;vertical-align:top;padding:2px 4px;">
+                                    {{ _("N° dossier") }} {{ rec['rec_num'] }}<br />
+                                    {{ _("N° dossier labo") }} : {{ rec['rec_num_int'] or '_' }}<br />
+                                    {{ _("Code patient labo") }} : {{ rec['pat_code_lab'] }}<br />
+                                    {{ _("Code patient") }} : {{ rec['pat_code'] }}
+                                </td>
+                                <td rowspan="{{ nb_lines }}" class="align-top" style="border:0;vertical-align:top;padding:2px 4px;">{{ rec['pat_name'] }}</td>
+                                <td rowspan="{{ nb_lines }}" class="text-center align-top" style="border:0;vertical-align:top;text-align:center;padding:2px 4px;">{{ rec['pat_age'] }}</td>
+                                <td rowspan="{{ nb_lines }}" class="text-center align-top" style="border:0;vertical-align:top;text-align:center;padding:2px 4px;">{{ rec['pat_sex'] }}</td>
+                                <td rowspan="{{ nb_lines }}" class="text-center align-top" style="border:0;vertical-align:top;text-align:center;padding:2px 4px;">{{ rec['service'] }}</td>
+                                {% endif %}
+                                <td class="fw-bold" style="border:0;font-weight:bold;padding:2px 4px;">{{ ana['name'] }}{% if ana['samp_date'] %} · {{ _("prélevé le") }} {{ ana['samp_date'] }}{% endif %}</td>
+                            </tr>
+                                {% for res in ana['l_res'] %}
+                            <tr>
+                                <td style="border:0;padding:2px 4px;">{{ res['name'] }} : {{ res['value'] }} {{ res['unit'] }}</td>
+                            </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">{{ _("Aucun dossier ne correspond aux critères de recherche.") }}</div>
+                {% endif %}
+            </div>
+
+            <div class="float-end mt-3 mb-5">
+                {% if has_permission("REGISTER_185") %}
+                <input type="button" onclick="download_register();" class="btn btn-lbk btn-{{ session['user_role']|safe }}" value="{{ _('Télécharger le registre') }}" {% if not register or not register['l_rec'] %}disabled{% endif %}>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div><!-- close content -->
+{% endblock %}
+
+{% block add_script %}
+<script type="text/javascript" nonce="{{ session['nonce'] }}">
+function filter_data()
+{
+let date_beg = $("#date_beg").val() ;
+let date_end = $("#date_end").val() ;
+let id_fam   = $("#id_fam").val() || "0" ;
+let type_rec = $("#type_rec").val() || "A" ;
+
+    if ( !date_beg || !date_end )
+    {
+    alert("{{ _("Veuillez renseigner la période") }}") ;
+    return ;
+    }
+
+    $("#dial-wait").modal("show") ;
+
+window.location = "{{ session['server_ext'] }}/report-register/" + date_beg + "/" + date_end + "/" + id_fam + "/" + type_rec ;
+}
+
+function reset_filter()
+{
+    $("#date_beg").val("") ;
+    $("#date_end").val("") ;
+    $("#id_fam").val("0") ;
+    $("#type_rec").val("A") ;
+}
+
+$(".cnx_trigger").keyup( function(event)
+{
+    if (event.which == 13)
+    {
+    event.preventDefault() ;
+    $("#btn_search").click() ;
+    }
+} ) ;
+
+function download_register()
+{
+// Family label without accents nor special characters to keep a valid file name
+let family   = "{{ ns.fam_label }}".normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "_") ;
+let filename = "Registre_" + family + "_{{ args['date_beg']|replace('-', '') }}_{{ args['date_end']|replace('-', '') }}" ;
+
+// Borders only in the PDF, as in the other reports
+let html_report = $("#html_report")[0].outerHTML.replaceAll("border:0", "border:1px solid #000") ;
+
+var param = JSON.stringify( { "html": html_report,
+                              "filename": filename,
+                              "orientation": "Landscape",
+                              "with_date": "N",
+                              "criteria": { "date_beg": "{{ args['date_beg'] }}",
+                                            "date_end": "{{ args['date_end'] }}",
+                                            "id_fam": {{ args['id_fam'] }},
+                                            "type_rec": "{{ args['type_rec'] }}" } } ) ;
+
+    $("#dial-wait").off('shown.bs.modal') ;
+    $("#dial-wait").modal("show") ;
+
+    $.ajax(
+    {
+        type: "POST",
+        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: param,
+        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        success: function(ret)
+        {
+        $("#dial-wait").modal("hide") ;
+
+        download_file( "PY", filename + ".pdf", "GEN", 0 ) ;
+        },
+        error: function(ret)
+        {
+        $("#dial-wait").modal("hide") ;
+
+        alert("{{ _("Erreur lors de la génération du fichier") }}") ;
+        }
+    } ) ;
+}
+</script>
+{% endblock %}

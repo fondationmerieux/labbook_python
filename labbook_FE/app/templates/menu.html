@@ -66,9 +66,14 @@
                     {% endif %}
 
                     <!-- Dropdown Report -->
-                    {% if has_permission_by_ser([26,27,28,29,30,31,32,33,34,35,36,37]) %}
+                    {% if has_permission_by_ser([26,27,28,29,30,31,32,33,34,35,36,37,184]) %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarReport" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ _("Rapports") }}</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarReport">
+                        {% if has_permission("REGISTER_184") %}
+                        <li>
+                            <a class="dropdown-item" href="{{ session['server_ext'] }}/report-register">{{ _("Registre") }}</a>
+                        </li>
+                        {% endif %}
                         {% if has_permission("REPORT_26") %}
                         <li>
                             <a class="dropdown-item" href="{{ session['server_ext'] }}/report-activity">{{ _("Rapport activité") }}</a>
@@ -426,11 +431,14 @@
             {% endif %}
 
             <!-- Dropdown Report -->
-            {% if has_permission_by_ser([26,27,28,29,30,31,32,33,34,35,36,37]) %}
+            {% if has_permission_by_ser([26,27,28,29,30,31,32,33,34,35,36,37,184]) %}
                 <li class="nav-cust-btn nav-item dropdown btn-report">
                     <a class="nav-link dropdown-toggle report" href="#" id="navbarreport" data-bs-toggle="dropdown">
                     </a>
                     <div class="dropdown-menu report-content nav-style menu-choice-desktop" style="padding:0;">
+                        {% if has_permission("REGISTER_184") %}
+                        <a class="dropdown-item" href="{{ session['server_ext'] }}/report-register">{{ _("Registre") }}</a>
+                        {% endif %}
                         {% if has_permission("REPORT_26") %}
                         <a class="dropdown-item" href="{{ session['server_ext'] }}/report-activity">{{ _("Rapport activité") }}</a>
                         {% endif %}

@@ -56,8 +56,8 @@ class Various:
         try:
             cursor = DB.cursor()
 
-            cursor.execute('insert into sigl_evtlog_data '
-                           '(id_owner, evt_datetime, evt_type, evt_name, message) '
+            cursor.execute('insert into event_log '
+                           '(evl_user, evl_date, evl_type, evl_name, evl_message) '
                            'values '
                            '(%(id_user)s, NOW(), %(type)s, %(name)s, %(message)s)', params)
 

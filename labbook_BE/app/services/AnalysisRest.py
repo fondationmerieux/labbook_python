@@ -1054,10 +1054,25 @@ class AnalysisReq(Resource):
                     self.log.exception(Logs.fileline() + ' : AnalysisReq ERROR audit ana missing')
                 return compose_ret('', Constants.cst_content_type_json, 400)
 
+            # price None: computed here like at record creation, then added to the record bill
+            price = ana['price']
+
+            if price is None:
+                ref_ana   = Analysis.getAnalysis(ana['id_ana'])
+                record    = Record.getRecord(ana['id_rec'])
+                price_act = int(Various.getDefaultValue('prix_acte')['value'])
+                hosp_bill = int(Various.getDefaultValue('facturation_pat_hosp')['value'])
+
+                price = price_act * ref_ana['cote_valeur'] if ref_ana and ref_ana['cote_valeur'] else 0
+
+                # No bill if internal record and hosp bill pref set to 0
+                if record and record['type'] == 184 and not hosp_bill:
+                    price = 0
+
             ret = Analysis.insertAnalysisReq(id_owner=ana['id_owner'],
                                              id_dos=ana['id_rec'],
                                              ref_analyse=ana['id_ana'],
-                                             prix=ana['price'],
+                                             prix=price,
                                              paye=ana['paid'],
                                              urgent=ana['emer'],
                                              demande=ana['req'],
@@ -1071,6 +1086,10 @@ class AnalysisReq(Resource):
                 except Exception:
                     self.log.exception(Logs.fileline() + ' : AnalysisReq ERROR audit insert')
                 return compose_ret('', Constants.cst_content_type_json, 500)
+
+            # negative diff adds the price to the record total and remain
+            if ana['price'] is None and price > 0 and not Record.removeRecordBill(ana['id_rec'], -price):
+                self.log.error(Logs.fileline() + ' : AnalysisReq ERROR update record bill')
 
             res = {}
             res['id_req'] = ret

@@ -12,7 +12,7 @@ from app.models.General import compose_ret
 from app.models.Constants import Constants
 from app.models.Audit import Audit
 from app.models.Analyzer import Analyzer
-# from app.models.Record import Record
+from app.models.Record import Record
 from app.models.Product import Product
 # from app.models.User import User
 # from app.models.DB import DB
@@ -418,12 +418,22 @@ class AnalyzerLab29(Resource):
 
             # Resolve the specimen ID to an internal id_data if possible
             resolved_id = Product.resolveProductId(raw_specimen_id)
+            # Each result goes to the sample of the record whose analysis holds its variable
+            samples_by_var = {}
             if resolved_id:
                 specimen_id = resolved_id
                 self.log.info(Logs.fileline() + f' : INFO specimen_id resolved to id_data = {specimen_id}')
+                product = Product.getProductDet(resolved_id)
+                if product:
+                    samples_by_var = Product.getSampleIdsByRecordVar(product['id_rec'], resolved_id)
             else:
                 specimen_id = raw_specimen_id  # fallback to original value
-                self.log.warning(Logs.fileline() + f' : WARNING specimen_id not found as id_data or code: {raw_specimen_id}')
+                id_rec = Record.getRecordIdByNum(raw_specimen_id)
+                if id_rec:
+                    samples_by_var = Product.getSampleIdsByRecordVar(id_rec)
+                    self.log.info(Logs.fileline() + f' : INFO specimen_id is record number, id_rec = {id_rec}')
+                else:
+                    self.log.warning(Logs.fileline() + f' : WARNING specimen_id not found as id_data, code or record number: {raw_specimen_id}')
 
             test_id = hl7_msg.OBR.obr_4.value if hasattr(hl7_msg, 'OBR') else "UNKNOWN"
             self.log.info(Logs.fileline() + ' : DEBUG test_id  = ' + str(test_id))
@@ -485,10 +495,11 @@ class AnalyzerLab29(Resource):
 
                         # Filter only final results
                         if obs_status == "F":
+                            samp = samples_by_var.get(lb_code, specimen_id)
                             ret = Analyzer.insertAnalyzerResult(
                                 ans_ser=analyzer['ans_ser'],
                                 code=obs_id,
-                                samp=specimen_id,
+                                samp=samp,
                                 value=obs_value,
                                 unit=obs_unit,
                                 lb_code=lb_code

@@ -82,11 +82,13 @@
     {% endfor %}
 {%- endmacro %}
 
-{% macro select_type_record() -%}
-    <option value="A" selected=""></option>
-    <option value="E">{{ _("Externe") }}</option>
-    <option value="I">{{ _("Interne") }}</option>
-    <option value="C">{{ _("Garde") }}</option>
+{% macro select_type_record(type_selected='A', with_custody=True) -%}
+    <option value="A" {% if type_selected == 'A' %}selected{% endif %}></option>
+    <option value="E" {% if type_selected == 'E' %}selected{% endif %}>{{ _("Externe") }}</option>
+    <option value="I" {% if type_selected == 'I' %}selected{% endif %}>{{ _("Interne") }}</option>
+    {% if with_custody %}
+    <option value="C" {% if type_selected == 'C' %}selected{% endif %}>{{ _("Garde") }}</option>
+    {% endif %}
 {%- endmacro %}
 
 {% macro select_sex(l_dict_sex, type_selected) -%}

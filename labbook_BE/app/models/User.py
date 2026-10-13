@@ -29,7 +29,7 @@ class User:
         if not res or res['nb_user'] != 1:
             return False
 
-        # save in sigl_evtlog_data this connection
+        # save in event_log this connection
         req = ('select id_data '
                'from sigl_user_data '
                'where status = "' + Constants.cst_user_active + '" and username=%s and password=%s')
@@ -572,12 +572,12 @@ class User:
 
         limit = ' limit 50000'
 
-        req = ('select e.id_owner as id_user, COALESCE(u.username, "") as username, e.evt_datetime as date, '
-               'e.evt_name as event, e.message '
-               'from sigl_evtlog_data as e '
-               'left join sigl_user_data as u on u.id_data=e.id_owner '
-               'where (e.evt_datetime between %s and %s) and e.evt_type=17 '
-               'order by e.evt_datetime ' + limit)
+        req = ('select e.evl_user as id_user, COALESCE(u.username, "") as username, e.evl_date as date, '
+               'e.evl_name as event, e.evl_message as message '
+               'from event_log as e '
+               'left join sigl_user_data as u on u.id_data=e.evl_user '
+               'where (e.evl_date between %s and %s) and e.evl_type=17 '
+               'order by e.evl_date ' + limit)
 
         cursor.execute(req, (date_beg, date_end,))
 
