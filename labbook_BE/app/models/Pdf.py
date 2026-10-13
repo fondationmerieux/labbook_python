@@ -210,7 +210,7 @@ class Pdf:
         if pdfpref and pdfpref['entete'] == 1069:
             full_header = False
 
-        page_header = Pdf.getPdfHeader(full_header)
+        page_header = Pdf.getPdfHeader(full_header, fixed_height=(orientation != 'Landscape'))
 
         # Landscape A4 is wider
         width = '1400px' if orientation == 'Landscape' else '1000px'
@@ -452,7 +452,7 @@ class Pdf:
         return 200
 
     @staticmethod
-    def getPdfHeader(full_header, report_status='&nbsp;'):
+    def getPdfHeader(full_header, report_status='&nbsp;', fixed_height=True):
         """Start HTML page for PDF document
 
         This function is call by ??? template
@@ -460,6 +460,7 @@ class Pdf:
         Args:
             full_header     (bool): full header or not.
             report_status (string): status of report (optional).
+            fixed_height    (bool): page height fixed to one portrait A4, False to follow the content.
 
         Returns:
             bool: True for success, False otherwise.
@@ -621,6 +622,10 @@ class Pdf:
                 }
                 </style>
                 <div style='padding-top:0px;padding-left:50px;padding-right:50px;padding-bottom:50px;width:1000px;height:1410px;border:0px;font-family:arial;background-color:#FFF;color:black;font-size:20px;'>"""
+
+        # A fixed portrait height adds a blank page in landscape
+        if not fixed_height:
+            header = header.replace('height:1410px;', '', 1)
 
         head_logo = '<img src="' + Constants.cst_resource + 'logo.png" max-width="230px;" width="230px;" alt="">'
 
