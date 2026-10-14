@@ -152,6 +152,7 @@ class Dict:
 
         filter_cond = ''
         trans       = ''
+        params      = []
 
         if not args:
             limit = 'LIMIT 2000'
@@ -164,32 +165,37 @@ class Dict:
 
             if get_lang_db_default() == 'fr_FR':
                 if 'name' in args and args['name']:
-                    filter_cond += ' and dico_name LIKE "%' + str(args['name']) + '%" '
+                    filter_cond += ' and dico_name LIKE %s '
+                    params.append('%' + str(args['name']) + '%')
 
                 if 'label' in args and args['label']:
-                    filter_cond += ' and label LIKE "%' + str(args['label']) + '%" '
+                    filter_cond += ' and label LIKE %s '
+                    params.append('%' + str(args['label']) + '%')
             else:
                 # Single JOIN that can serve both name and label conditions
                 trans = ('left join translations as tr on tr.tra_lang="' + str(get_lang_db_default()) + '" '
                          'and tr.tra_ref=id_data ')
 
                 if 'name' in args and args['name']:
-                    filter_cond += (' and ( (tr.tra_type="dict_name" and tr.tra_text LIKE "%' + str(args['name']) + '%") '
-                                    'or dico_name LIKE "%' + str(args['name']) + '%") ')
+                    filter_cond += (' and ( (tr.tra_type="dict_name" and tr.tra_text LIKE %s) '
+                                    'or dico_name LIKE %s) ')
+                    params.extend(['%' + str(args['name']) + '%'] * 2)
 
-                    if 'label' in args and args['label']:
-                        filter_cond += (' and ( (tr.tra_type="dict_label" and tr.tra_text LIKE "%' + str(args['label']) + '%") '
-                                        'or label LIKE "%' + str(args['label']) + '%") ')
+                if 'label' in args and args['label']:
+                    filter_cond += (' and ( (tr.tra_type="dict_label" and tr.tra_text LIKE %s) '
+                                    'or label LIKE %s) ')
+                    params.extend(['%' + str(args['label']) + '%'] * 2)
 
-                        if 'code' in args and args['code']:
-                            filter_cond += ' and code LIKE "%' + str(args['code']) + '%" '
+            if 'code' in args and args['code']:
+                filter_cond += ' and code LIKE %s '
+                params.append('%' + str(args['code']) + '%')
 
         req = ('select id_data, dico_name as name, dico_descr '
                'from sigl_dico_data ' + trans +
                'where ' + filter_cond +
                'group by dico_name order by dico_name asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -198,13 +204,15 @@ class Dict:
         cursor = DB.cursor()
 
         cond = ''
+        params = []
 
         if dico_name:
-            cond = ' where dico_name="' + str(dico_name) + '"'
+            cond = ' where dico_name=%s'
+            params.append(str(dico_name))
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
                'from sigl_dico_data ' + cond + ' order by dico_name')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()

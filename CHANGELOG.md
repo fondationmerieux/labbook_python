@@ -21,6 +21,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Analyzers can now send the record number (long format, yearly or monthly) instead of a sample code
 - Analyzer results for a tube shared by several analyses now fill in each analysis, not only one
 - Stock table export now applies the lessor and location filters, with a location column
+- Patient history data export now applies the phone and sex filters, and is no longer limited to 50,000 patients
+- Manual list data export now applies the search filters
+- Doctor and analysis history data exports are no longer limited, analysis history code filter now respects the period
 
 ## [3.6.26] - 2026-10-01
 ### Added

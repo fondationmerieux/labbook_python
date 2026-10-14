@@ -171,19 +171,22 @@ class Analyzer:
     def listTask(stat, tot=''):
         cursor = DB.cursor()
 
-        cond = ' anm_stat = "' + stat + '"'
+        cond = ' anm_stat = %s'
+        params = [stat]
 
         if not stat:
             cond = ' anm_stat != NULL'
+            params = []
 
         if tot:
-            cond += ' and anm_tot="' + str(tot) + '"'
+            cond += ' and anm_tot=%s'
+            params.append(str(tot))
 
         req = ('select anm_ser, anm_date, anm_date_upd, anm_id_samp, anm_stat, anm_msg_sent, anm_msg_recv, anm_ans, anm_tot '
                'from analyzer_msg '
                'where ' + cond + ' order by anm_date')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

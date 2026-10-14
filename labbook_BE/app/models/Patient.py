@@ -25,7 +25,9 @@ class Patient:
         if not args:
             limit = 'LIMIT 100000'
         else:
-            if 'limit' in args and args['limit'] > 0:
+            if 'limit' in args and args['limit'] is None:
+                limit = ''  # no limit, used by export
+            elif 'limit' in args and args['limit'] > 0:
                 limit = 'LIMIT ' + str(args['limit'])
             else:
                 limit = 'LIMIT 5000'
@@ -325,9 +327,11 @@ class Patient:
         cond = ''
 
         if code:
-            cond = 'code="' + str(code) + '"'
+            cond = 'code=%s'
+            value = str(code)
         elif code_lab:
-            cond = 'code_patient="' + str(code_lab) + '"'
+            cond = 'code_patient=%s'
+            value = str(code_lab)
 
         if not cond:
             return {}
@@ -339,7 +343,7 @@ class Patient:
                'from sigl_03_data '
                'where ' + cond)
 
-        cursor.execute(req)
+        cursor.execute(req, (value,))
 
         return cursor.fetchone()
 

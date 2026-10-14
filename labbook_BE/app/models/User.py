@@ -223,32 +223,30 @@ class User:
     def getUserRoleList(type='', l_exclude=None, genuine='N'):
         cursor = DB.cursor()
 
-        cond = ' order by label '
+        l_cond = []
+        params = []
 
         if type:
-            cond = ' where type="' + str(type) + '"' + cond
+            l_cond.append('type=%s')
+            params.append(str(type))
 
         if l_exclude:
-            if not type:
-                cond = ' where type not in ('
-            else:
-                cond = cond + ' and type not in ('
-
-            for exclude in l_exclude:
-                cond += '"' + str(exclude) + '",'
-
-            # inversed string then replace last , by ) then re-inversed string
-            cond = cond[::-1].replace(',', ')', 1)[::-1]
+            l_cond.append('type not in (' + ','.join(['%s'] * len(l_exclude)) + ')')
+            params.extend([str(exclude) for exclude in l_exclude])
 
         if genuine == 'Y':
-            cond = cond + ' and pro_genuine="Y" '
+            l_cond.append('pro_genuine="Y"')
+
+        cond = ''
+        if l_cond:
+            cond = ' where ' + ' and '.join(l_cond)
 
         req = ('select pro_ser, pro_role as id_role, name, pro_label as label, type, pro_genuine, pro_color_1, '
                'pro_color_2, pro_text_color '
                'from profile_role '
-               'inner join sigl_pj_role on id_role=pro_role ' + cond)
+               'inner join sigl_pj_role on id_role=pro_role ' + cond + ' order by label ')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -478,6 +476,7 @@ class User:
         cursor = DB.cursor()
 
         filter_cond = 'u.role_type != "X" '
+        params = [Constants.cst_isodate]
 
         if not args:
             limit = 'LIMIT 500'
@@ -487,32 +486,37 @@ class User:
             limit = 'LIMIT 500'
             # filter conditions
             if 'login' in args and args['login']:
-                filter_cond += ' and u.username LIKE "%' + args['login'] + '%" '
+                filter_cond += ' and u.username LIKE %s '
+                params.append('%' + args['login'] + '%')
 
             if 'firstname' in args and args['firstname']:
-                filter_cond += ' and u.firstname LIKE "%' + args['firstname'] + '%" '
+                filter_cond += ' and u.firstname LIKE %s '
+                params.append('%' + args['firstname'] + '%')
 
             if 'lastname' in args and args['lastname']:
-                filter_cond += ' and u.lastname LIKE "%' + args['lastname'] + '%" '
+                filter_cond += ' and u.lastname LIKE %s '
+                params.append('%' + args['lastname'] + '%')
 
             if 'status' in args and args['status']:
-                stat = 'u.status="' + str(args['status']) + '" '
-
                 # Keep compatibility with old delete user
                 if args['status'] == Constants.cst_user_inactive:
                     stat = '(u.status="' + Constants.cst_user_inactive + '" or u.status="' + Constants.cst_user_deleted + '")'
+                else:
+                    stat = 'u.status=%s '
+                    params.append(str(args['status']))
 
                 filter_cond += ' and ' + stat + ' '
             else:
                 filter_cond += ' and u.status="' + Constants.cst_user_active + '" '  # keep active users by default
 
             if 'role_pro' in args and args['role_pro']:
-                filter_cond += ' and u.role_pro=' + str(args['role_pro']) + ' '
+                filter_cond += ' and u.role_pro=%s '
+                params.append(args['role_pro'])
 
         req = ('select u.id_data, u.id_owner, u.username, u.firstname, u.lastname, u.status as stat, '
                'u.initiale as initial, u.ddn as birth, u.adresse as address, u.tel as phone, u.email, '
                'u.darrive as arrived, u.position as position, dict.label as section, u.deval as last_eval, '
-               'date_format(u.creation_date, "' + Constants.cst_isodate + '") as date_create, r.label as role, '
+               'date_format(u.creation_date, %s) as date_create, r.label as role, '
                'u.oauth_provider_id_user as id_origin, COALESCE(u2.username, "") as origin, u.role_type, u.role_pro, '
                'pro.pro_label as pro_label '
                'from sigl_user_data as u '
@@ -523,7 +527,7 @@ class User:
                'where ' + filter_cond +
                'group by u.id_data order by u.creation_date asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -550,11 +554,14 @@ class User:
 
         cond = 'status="' + Constants.cst_user_active + '" '
 
+        params = []
+
         for word in l_words:
             cond = (cond +
-                    ' and (lastname like "' + word + '%" or '
-                    'firstname like "' + word + '%" or '
-                    'username like "' + word + '%") ')
+                    ' and (lastname like %s or '
+                    'firstname like %s or '
+                    'username like %s) ')
+            params.extend([word + '%'] * 3)
 
         limit = ' limit 1000'
 
@@ -562,7 +569,7 @@ class User:
                'from sigl_user_data '
                'where ' + cond + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

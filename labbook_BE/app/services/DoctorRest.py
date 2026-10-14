@@ -241,7 +241,7 @@ class DoctorExport(Resource):
         if not args:
             args = {}
 
-        args['limit'] = 50000  # for overpassed default limit
+        args['limit'] = None  # no limit for export
 
         l_data = [['id_data', 'id_owner', 'code', 'lastname', 'firstname', 'zipcity', 'city',
                    'facility', 'spe', 'spe_id', 'phone', 'mobile', 'fax', 'email', 'title',

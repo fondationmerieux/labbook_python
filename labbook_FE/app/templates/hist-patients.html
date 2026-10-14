@@ -257,11 +257,15 @@ let code      = $("#code").val()      ;
 let code_lab  = $("#code_lab").val()  ;
 let lastname  = $("#lastname").val()  ;
 let firstname = $("#firstname").val() ;
+let phone     = $("#phone").val()     ;
+let sex       = $("#sex").val()       ;
 
 let param = '{ "code":"' + code + '", ' +
             '"code_lab":"' + code_lab + '", ' +
             '"lastname":"' + lastname  + '", ' +
-            '"firstname":"' + firstname  + '"}' ;
+            '"firstname":"' + firstname  + '", ' +
+            '"phone":"' + phone  + '", ' +
+            '"sex":"' + sex  + '"}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;

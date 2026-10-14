@@ -525,14 +525,17 @@ class Quality:
 
         cond = 'nom is not NULL '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (nom like "%' + word + '%") ')
+            cond = (cond + ' and (nom like %s) ')
+            params.extend(['%' + word + '%'] * 1)
 
         req = ('select nom as field_value, id_data '
                'from sigl_equipement_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -1106,14 +1109,17 @@ class Quality:
 
         cond = 'fournisseur_nom is not NULL '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (fournisseur_nom like "%' + word + '%") ')
+            cond = (cond + ' and (fournisseur_nom like %s) ')
+            params.extend(['%' + word + '%'] * 1)
 
         req = ('select fournisseur_nom as field_value, id_data '
                'from sigl_fournisseurs_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -1125,14 +1131,17 @@ class Quality:
 
         cond = 'prd_ser > 0 '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (prd_name like "%' + word + '%") ')
+            cond = (cond + ' and (prd_name like %s) ')
+            params.extend(['%' + word + '%'] * 1)
 
         req = ('select prd_name as field_value, prd_ser as id_item '
                'from product_details '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -1239,14 +1248,17 @@ class Quality:
         cursor = DB.cursor()
 
         filter_cond = ' '
+        params = []
 
         if args:
             # filter conditions
             if 'prod_name' in args and args['prod_name']:
-                filter_cond += ' and prd_name LIKE "%' + str(args['prod_name']) + '%" '
+                filter_cond += ' and prd_name LIKE %s '
+                params.append('%' + str(args['prod_name']) + '%')
 
             if 'prod_local' in args and args['prod_local'] > 0:
-                filter_cond += ' and prs_prl = ' + str(args['prod_local'])
+                filter_cond += ' and prs_prl = %s '
+                params.append(args['prod_local'])
 
         req = ('select prs_ser, prd_name, prs_date, prs_nb_pack, prs_prl, prl_name '
                'from product_supply '
@@ -1255,7 +1267,7 @@ class Quality:
                'where prs_empty="N" and prs_cancel="N" and prs_remove="N" ' + filter_cond + ' ' +
                'order by prd_name asc, prl_name asc')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2001,14 +2013,17 @@ class Quality:
 
         cond = 'fournisseur_nom is not NULL '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (fournisseur_nom like "%' + word + '%") ')
+            cond = (cond + ' and (fournisseur_nom like %s) ')
+            params.extend(['%' + word + '%'] * 1)
 
         req = ('select fournisseur_nom as field_value, id_data '
                'from sigl_fournisseurs_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2086,14 +2101,17 @@ class Quality:
         cursor = DB.cursor()
 
         filter_cond = ' manu.titre != "" '
+        params = []
 
         if args:
             # filter conditions
             if 'title' in args and args['title']:
-                filter_cond += ' and manu.titre LIKE "%' + str(args['title']) + '%" '
+                filter_cond += ' and manu.titre LIKE %s '
+                params.append('%' + str(args['title']) + '%')
 
             if 'man_mas' in args and args['man_mas'] > 0:
-                filter_cond += ' and manu.man_mas = ' + str(args['man_mas'])
+                filter_cond += ' and manu.man_mas = %s '
+                params.append(args['man_mas'])
 
         req = ('select manu.id_data, manu.titre as title, mas_name, manu.reference, '
                'u1.initiale as writer, u2.initiale as auditor, u3.initiale as approver, '
@@ -2107,7 +2125,7 @@ class Quality:
                'where ' + filter_cond + ' ' +
                'order by title asc ')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2119,15 +2137,18 @@ class Quality:
 
         cond = '(titre is not NULL or reference is not NULL) '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
+            cond = (cond + ' and (titre like %s or reference like %s) ')
+            params.extend(['%' + word + '%'] * 2)
 
         req = ('select CONCAT(titre, IF(reference is not NULL and reference != "", CONCAT(" / ref: ",reference), "")) '
                'as field_value, id_data '
                'from sigl_manuels_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2313,15 +2334,18 @@ class Quality:
 
         cond = '(titre is not NULL or reference is not NULL) '
 
+        params = []
+
         for word in l_words:
-            cond = (cond + ' and (titre like "%' + word + '%" or reference like "%' + word + '%") ')
+            cond = (cond + ' and (titre like %s or reference like %s) ')
+            params.extend(['%' + word + '%'] * 2)
 
         req = ('select CONCAT(titre, IF(reference is not NULL and reference != "", CONCAT(" / ref: ",reference), "")) '
                'as field_value, id_data '
                'from sigl_procedures_data '
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -2446,9 +2470,11 @@ class Quality:
         info_doc  = ''
         table_doc = ''
         cond      = ''
+        params    = [type_trace]
 
         if args['user_id']:
-            cond += ' and u1.id_data=' + str(args['user_id']) + ' '
+            cond += ' and u1.id_data=%s '
+            params.append(args['user_id'])
 
         if type_trace == 'PROC':
             info_doc  = 'proc.titre as doc_name, proc_file.sys_creation_date as doc_date '
@@ -2456,7 +2482,8 @@ class Quality:
                          'inner join sigl_procedures_data as proc on proc.id_data=proc_file.id_ext ')
 
             if args['doc_name']:
-                cond += ' and proc.titre like "%' + args['doc_name'] + '%" '
+                cond += ' and proc.titre like %s '
+                params.append('%' + args['doc_name'] + '%')
         else:
             Quality.log.info(Logs.fileline() + ': WRONG type_trace : ' + str(type_trace))
             return []
@@ -2467,7 +2494,7 @@ class Quality:
                'inner join sigl_user_data as u1 on u1.id_data=trd_user '
                'where trd_type=%s ' + cond + 'order by trd_last_access desc')
 
-        cursor.execute(req, (type_trace,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

@@ -497,15 +497,17 @@ class Setting:
         cursor = DB.cursor()
 
         cond = ''
+        params = []
 
         if type:
-            cond = 'where tpl_type="' + type + '" '
+            cond = 'where tpl_type=%s '
+            params.append(type)
 
         req = ('select tpl_ser as id_item, tpl_name, tpl_type, tpl_default, tpl_file '
                'from template_setting ' + cond +
                'order by tpl_name, tpl_type asc ')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

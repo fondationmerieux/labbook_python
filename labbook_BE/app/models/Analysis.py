@@ -116,24 +116,27 @@ class Analysis:
 
         l_words = text.split(' ')
 
-        cond  = 'var.libelle is not NULL '
-        trans = ''
+        cond   = 'var.libelle is not NULL '
+        trans  = ''
+        params = []
 
         if get_lang_db_default() == 'fr_FR':
             for word in l_words:
-                cond = (cond + ' and (var.libelle like "%' + word + '%") ')
+                cond = (cond + ' and (var.libelle like %s) ')
+                params.append('%' + word + '%')
         else:
             trans = ('left join translations as tr on tr.tra_lang="' + str(get_lang_db_default()) + '" and '
                      'tr.tra_type="var_name" and tr.tra_ref=var.id_data ')
 
             for word in l_words:
-                cond = (cond + ' and (tr.tra_text like "%' + word + '%") ')
+                cond = (cond + ' and (tr.tra_text like %s) ')
+                params.append('%' + word + '%')
 
         req = ('select var.libelle as field_value, var.id_data '
                'from sigl_07_data as var ' + trans +
                'where ' + cond + ' order by field_value asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -737,6 +740,7 @@ class Analysis:
 
         filter_cond = ''
         trans       = ''
+        params      = []
 
         if not args:
             limit = 'LIMIT 2000'
@@ -748,27 +752,30 @@ class Analysis:
             filter_cond += ' '  # remove deleted analyzes by default
             # filter conditions
             if 'status' in args and args['status'] > 0:
-                filter_cond += ' ana.actif=' + str(args['status']) + ' '
+                filter_cond += ' ana.actif=%s '
+                params.append(args['status'])
             else:
                 filter_cond += ' ana.actif=4 '  # keep only activated analyzes by default
 
             if get_lang_db_default() == 'fr_FR':
                 if 'name' in args and args['name']:
-                    filter_cond += (' and (ana.nom LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] +
-                                    '%" or ana.ana_loinc LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
+                    filter_cond += ' and (ana.nom LIKE %s or ana.code LIKE %s or ana.ana_loinc LIKE %s or ana.abbr LIKE %s) '
+                    params.extend(['%' + args['name'] + '%'] * 4)
             else:
                 if 'name' in args and args['name']:
                     trans = ('left join translations as tr on tr.tra_lang="' + str(get_lang_db_default()) + '" and '
                              'tr.tra_type="ana_name" and tr.tra_ref=ana.id_data ')
 
-                    filter_cond += (' and (tr.tra_text LIKE "%' + args['name'] + '%" or ana.code LIKE "%' + args['name'] +
-                                    '%" or ana.ana_loinc LIKE "%' + args['name'] + '%" or ana.abbr LIKE "%' + args['name'] + '%") ')
+                    filter_cond += ' and (tr.tra_text LIKE %s or ana.code LIKE %s or ana.ana_loinc LIKE %s or ana.abbr LIKE %s) '
+                    params.extend(['%' + args['name'] + '%'] * 4)
 
             if 'type_ana' in args and args['type_ana'] > 0:
-                filter_cond += ' and ana.famille=' + str(args['type_ana']) + ' '
+                filter_cond += ' and ana.famille=%s '
+                params.append(args['type_ana'])
 
             if 'type_prod' in args and args['type_prod'] > 0:
-                filter_cond += ' and ana.type_prel=' + str(args['type_prod']) + ' '
+                filter_cond += ' and ana.type_prel=%s '
+                params.append(args['type_prod'])
 
         req = ('select ana.id_data, ana.code, ana.ana_loinc, ana.nom as name, ana.abbr, ana.actif as stat, '
                'dico.label as type_ana, samp.nom as product, ana.produit_biologique as id_prod '
@@ -778,7 +785,7 @@ class Analysis:
                'where ' + filter_cond +
                'group by ana.code order by ana.code asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -791,23 +798,25 @@ class Analysis:
         limit    = 'LIMIT 500'
         date_beg = args['date_beg']
         date_end = args['date_end']
+        params   = [date_beg, date_end]
 
-        if 'limit' in args and args['limit'] > 0:
-            limit = 'LIMIT ' + str(args['limit'])
+        if 'limit' in args and args['limit'] is None:
+            limit = ''  # no limit, used by export
+        elif 'limit' in args and args['limit'] > 0:
+            limit = 'LIMIT ' + str(int(args['limit']))
 
         # filter conditions
         if 'name' in args and args['name']:
-            filter_cond += ' and (ref.nom LIKE "%' + args['name'] + '%" or ref.abbr LIKE "%' + args['name'] + '%") '
+            filter_cond += ' and (ref.nom LIKE %s or ref.abbr LIKE %s) '
+            params.extend(['%' + args['name'] + '%'] * 2)
 
         if 'code' in args and args['code']:
-            filter_cond += (
-                f' and (ref.code LIKE "%{args["code"]}%") '
-                f'or (ref.abbr LIKE "%{args["code"]}%") '
-                f'or (ref.ana_loinc LIKE "%{args["code"]}%") '
-            )
+            filter_cond += ' and (ref.code LIKE %s or ref.abbr LIKE %s or ref.ana_loinc LIKE %s) '
+            params.extend(['%' + args['code'] + '%'] * 3)
 
         if 'type_ana' in args and args['type_ana'] > 0:
-            filter_cond += ' and ref.famille=' + str(args['type_ana']) + ' '
+            filter_cond += ' and ref.famille=%s '
+            params.append(args['type_ana'])
 
         req = ('select ref.id_data, ref.code, ref.ana_loinc, dict.label as fam_name, ref.nom as name '
                'from sigl_02_data as rec '
@@ -817,7 +826,7 @@ class Analysis:
                'where (rec.rec_date_receipt between %s and %s) and ref.actif=4 ' + filter_cond +
                'group by ref.code order by ref.code asc ' + limit)
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

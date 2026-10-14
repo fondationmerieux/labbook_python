@@ -349,7 +349,7 @@ class AnalysisHistoExport(Resource):
                 self.log.exception(Logs.fileline() + ' : AnalysisHistoExport ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
 
-        args['limit'] = 50000  # for overpassed default limit
+        args['limit'] = None  # no limit for export
 
         l_analyzes = Analysis.getAnalyzesHistoList(args)
 

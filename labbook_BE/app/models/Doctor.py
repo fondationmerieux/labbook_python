@@ -15,30 +15,38 @@ class Doctor:
         cursor = DB.cursor()
 
         filter_cond = ' pres.nom is not NULL '
+        params = []
 
         if not args:
             limit = 'LIMIT 500'
         else:
-            if 'limit' in args and args['limit'] > 0:
-                limit = 'LIMIT ' + str(args['limit'])
+            if 'limit' in args and args['limit'] is None:
+                limit = ''  # no limit, used by export
+            elif 'limit' in args and args['limit'] > 0:
+                limit = 'LIMIT ' + str(int(args['limit']))
             else:
                 limit = 'LIMIT 500'
 
             # filter conditions
             if 'code' in args and args['code']:
-                filter_cond += ' and pres.code LIKE "%' + args['code'] + '%" '
+                filter_cond += ' and pres.code LIKE %s '
+                params.append('%' + args['code'] + '%')
 
             if 'lastname' in args and args['lastname']:
-                filter_cond += ' and pres.nom LIKE "%' + args['lastname'] + '%" '
+                filter_cond += ' and pres.nom LIKE %s '
+                params.append('%' + args['lastname'] + '%')
 
             if 'firstname' in args and args['firstname']:
-                filter_cond += ' and pres.prenom LIKE "%' + args['firstname'] + '%" '
+                filter_cond += ' and pres.prenom LIKE %s '
+                params.append('%' + args['firstname'] + '%')
 
             if 'service' in args and args['service']:
-                filter_cond += ' and pres.service LIKE "%' + args['service'] + '%" '
+                filter_cond += ' and pres.service LIKE %s '
+                params.append('%' + args['service'] + '%')
 
             if 'city' in args and args['city']:
-                filter_cond += ' and pres.ville LIKE "%' + args['city'] + '%" '
+                filter_cond += ' and pres.ville LIKE %s '
+                params.append('%' + args['city'] + '%')
 
         req = ('select pres.id_data, pres.id_owner, pres.code, pres.nom as lastname, pres.prenom as firstname, '
                'pres.doc_zipcity, pres.ville as city, pres.etablissement as facility, pres.specialite as spe_id, '
@@ -49,7 +57,7 @@ class Doctor:
                'where ' + filter_cond +
                'order by lastname asc, firstname asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -60,12 +68,14 @@ class Doctor:
         l_words = text.split(' ')
 
         cond = 'doctor.id_data > 0'
+        params = []
 
         for word in l_words:
             cond = (cond +
-                    ' and (doctor.nom like "' + word + '%" or '
-                    'doctor.prenom like "' + word + '%" or '
-                    'doctor.code like "' + word + '%") ')
+                    ' and (doctor.nom like %s or '
+                    'doctor.prenom like %s or '
+                    'doctor.code like %s) ')
+            params.extend([word + '%'] * 3)
 
         req = ('SELECT TRIM(CONCAT(TRIM(COALESCE(doctor.code, ""))," - ",'
                'TRIM(COALESCE(doctor.nom, ""))," ",TRIM(COALESCE(doctor.prenom, ""))," - ",'
@@ -75,7 +85,7 @@ class Doctor:
                'left join sigl_dico_data as dict on dict.id_data=doctor.specialite '
                'where ' + cond + ' order by doctor.nom asc limit 1000')
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

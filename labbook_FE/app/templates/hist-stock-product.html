@@ -297,62 +297,6 @@ var id_user = {{ session['user_id']|safe}} ;
     }
 }
 
-/*
-function export_data()
-{
-let prod_name    = $("#name").val()      ;
-let prod_type    = $("#prod_type").val() ;
-let prod_conserv = $("#prod_conserv").val() ;
-
-let param = '{ "prod_name":"' + prod_name + '", ' +
-              '"prod_type":' + prod_type  + ', ' +
-              '"prod_conserv":' + prod_conserv  + '}' ;
-
-    // popup wait
-    $("#dial-wait").off('shown.bs.modal') ;
-    $("#dial-wait").modal("show") ;
-    
-    $.ajax( 
-    {
-        type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export",
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
-        success: function(ret)
-        {
-            $("#dial-wait").modal("hide") ;
-        
-        let today = new Date();
-
-        let month = today.getMonth() + 1 ;
-
-        if (month < 10) month = '0' + month ;
-
-        let day = today.getDate() ;
-
-        if (day < 10) day = '0' + day ;
-
-        today = today.getFullYear() + '' + month + '' + day ;
-
-        let filename = "stock_" + today + ".csv" ;
-
-        download_file( "PY", filename, "GEN", 0 ) ;
-        },
-        error: function(ret)
-        {
-            $("#dial-wait").modal("hide") ;
-
-            if (ret.status == 404)
-            alert("{{ _("Aucun prescripteur à exporter !") }}") ;
-            else
-            alert("{{ _("Erreur lors de la génération du fichier") }}") ;
-        }
-    } ) ;
-}
-*/
-
 function return_back()
 {
 window.history.back() ;

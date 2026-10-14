@@ -157,14 +157,17 @@ class Record:
         cursor = DB.cursor()
 
         filter_cond = ' '
+        params = []
 
         limit = 'LIMIT 1000'
         # filter conditions
         if date_beg:
-            filter_cond += ' and rec.rec_date_receipt >= "' + date_beg + '" '
+            filter_cond += ' and rec.rec_date_receipt >= %s '
+            params.append(date_beg)
 
         if date_end:
-            filter_cond += ' and rec.rec_date_receipt <= "' + date_end + '" '
+            filter_cond += ' and rec.rec_date_receipt <= %s '
+            params.append(date_end)
 
         # struct : stat, urgent, num_dos, id_data, rec_date_receipt, code, nom, prenom, id_pat
         req = ('select rec.id_data as id_rec '
@@ -172,7 +175,7 @@ class Record:
                'where rec.statut = 256 ' + filter_cond +
                'group by rec.id_data order by rec.rec_date_receipt asc ' + limit)
 
-        cursor.execute(req)
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -505,9 +508,9 @@ class Record:
         # Number of records validated today
         req = ('select count(*) as nb_rec_today '
                'from sigl_02_data '
-               'where statut=256 and num_dos_jour like "' + str(num_today) + '%"')
+               'where statut=256 and num_dos_jour like %s')
 
-        cursor.execute(req)
+        cursor.execute(req, (str(num_today) + '%',))
 
         return cursor.fetchone()
 

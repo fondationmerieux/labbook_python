@@ -23,6 +23,7 @@ class Result:
         # filter conditions
         date_beg = args['date_beg']
         date_end = args['date_end']
+        params   = [date_beg, date_end]
 
         # NULL (5 sometimes) or 4 in base
         if 'emer_ana' in args and args['emer_ana'] == 4:
@@ -30,15 +31,18 @@ class Result:
 
         # Analysis family
         if 'type_ana' in args and args['type_ana'] > 0:
-            filter_cond += ' and fam.id_data=' + str(args['type_ana']) + ' '
+            filter_cond += ' and fam.id_data=%s '
+            params.append(args['type_ana'])
 
         # Analysis specific
         if 'id_ana' in args and args['id_ana'] > 0:
-            filter_cond += ' and req.ref_analyse=' + str(args['id_ana']) + ' '
+            filter_cond += ' and req.ref_analyse=%s '
+            params.append(args['id_ana'])
 
         # Code patient
         if 'code_pat' in args and args['code_pat']:
-            filter_cond += ' and (pat.code_patient like "%' + str(args['code_pat']) + '%" or pat.code like "%' + str(args['code_pat']) + '%") '
+            filter_cond += ' and (pat.code_patient like %s or pat.code like %s) '
+            params.extend(['%' + str(args['code_pat']) + '%'] * 2)
 
         # Without valid result
         if 'valid_res' in args and args['valid_res'] > 0:
@@ -46,17 +50,8 @@ class Result:
 
         # Functionnal unit link with analyzes families
         if 'link_fam' in args and args['link_fam']:
-            cond_link_fam = ''
-            # prepare list for sql
-            for id_fam in args['link_fam']:
-                if not cond_link_fam:
-                    cond_link_fam = '('
-
-                cond_link_fam = cond_link_fam + str(id_fam) + ','
-
-            if cond_link_fam:
-                cond_link_fam = cond_link_fam[:-1] + ')'
-                filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
+            filter_cond += ' and ref.famille in (' + ','.join(['%s'] * len(args['link_fam'])) + ') '
+            params.extend(args['link_fam'])
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, rec.id_patient, '
                'ref.nom as nom, fam.label as famille, res.id_data as id_res, res.valeur as valeur, ref_var.*, '
@@ -78,7 +73,7 @@ class Result:
                'where (rec.rec_date_receipt between %s and %s) ' + filter_cond +
                'order by nom asc, id_dos asc, id_ana asc, position asc ' + limit)
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

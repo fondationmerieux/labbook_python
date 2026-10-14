@@ -299,9 +299,11 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if service_int:
-            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+            cond += ' and rec.service_interne like %s '
+            params.append(str(service_int) + '%')
 
         lf = lite_filter.upper()
         if lf == 'N':
@@ -317,7 +319,7 @@ class Report:
                'where (rec.rec_date_receipt between %s and %s) ' + cond +
                ' group by pat.age order by age asc')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -326,9 +328,11 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if service_int:
-            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+            cond += ' and rec.service_interne like %s '
+            params.append(str(service_int) + '%')
 
         lf = lite_filter.upper()
         if lf == 'N':
@@ -344,7 +348,7 @@ class Report:
                'where (date_prescription between %s and %s) ' + cond +
                ' group by doctor.id_data order by lastname asc, firstname asc')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -410,9 +414,11 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if service_int:
-            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+            cond += ' and rec.service_interne like %s '
+            params.append(str(service_int) + '%')
 
         lf = lite_filter.upper()
         if lf == 'N':
@@ -428,7 +434,7 @@ class Report:
                'where (rec.rec_date_receipt between %s and %s) ' + cond +
                ' order by pat.sexe asc, rec.type asc, rec_custody asc')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -437,9 +443,11 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if service_int:
-            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+            cond += ' and rec.service_interne like %s '
+            params.append(str(service_int) + '%')
 
         req = ('select pat.sexe as sex, rec.type, rec_custody '
                'from sigl_02_data as rec '
@@ -449,7 +457,7 @@ class Report:
                'where (rec.rec_date_receipt between %s and %s) and ana.cote_unite != "PB" ' + cond +
                ' order by pat.sexe asc, rec.type asc, rec_custody asc')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -477,9 +485,11 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if service_int:
-            cond += ' and rec.service_interne like "' + str(service_int) + '%" '
+            cond += ' and rec.service_interne like %s '
+            params.append(str(service_int) + '%')
 
         req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.rec_date_receipt as rec_date, ref.nom as analysis, dict_fam.label as family, '
                'if(rec_setting.rstg_period=1070, if(rec_setting.rstg_format=1072,substring(rec.num_dos_mois from 7), '
@@ -497,7 +507,7 @@ class Report:
                'where (rec.rec_date_receipt between %s and %s) ' + cond +
                ' group by req.id_data order by rec.id_data asc limit 7000')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 
@@ -944,18 +954,22 @@ class Report:
         cursor = DB.cursor()
 
         cond = ''
+        params = [date_beg, date_end]
 
         if rec_num:
-            cond += (' and (rec.num_dos_an LIKE "%' + str(rec_num) + '%" or rec.num_dos_mois LIKE "%' +
-                     str(rec_num) + '%" or rec.rec_num_int LIKE "%' + str(rec_num) + '%") ')
+            cond += ' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s) '
+            params.extend(['%' + str(rec_num) + '%'] * 3)
 
         if id_ana:
-            cond += ' and req.ref_analyse=' + str(id_ana) + ' '
+            cond += ' and req.ref_analyse=%s '
+            params.append(id_ana)
         elif type_ana:
-            cond += ' and fam.id_data=' + str(type_ana) + ' '
+            cond += ' and fam.id_data=%s '
+            params.append(type_ana)
 
         if code_pat:
-            cond += ' and (pat.code like "' + str(code_pat) + '%" or pat.code_patient like "' + str(code_pat) + '%") '
+            cond += ' and (pat.code like %s or pat.code_patient like %s) '
+            params.extend([str(code_pat) + '%'] * 2)
 
         # LabBook Lite filter on record
         lf = (lite_filter or 'A').upper()
@@ -987,7 +1001,7 @@ class Report:
                'where (rec.rec_date_receipt between %s and %s) and ana.cote_unite != "PB" and rec.statut=256 ' + cond +
                ' order by rec.id_data desc')
 
-        cursor.execute(req, (date_beg, date_end,))
+        cursor.execute(req, tuple(params))
 
         return cursor.fetchall()
 

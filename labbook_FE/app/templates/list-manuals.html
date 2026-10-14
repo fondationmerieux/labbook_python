@@ -257,7 +257,11 @@ window.location.href = "{{ session['server_ext'] }}/det-manual/0";
 
 function export_data()
 {
-var param = '{}' ;
+let title   = $("#title").val()   ;
+let man_mas = $("#man_mas").val() ;
+
+let param = '{ "title":"' + title + '", ' +
+              '"man_mas":' + man_mas + '}' ;
 
     // popup wait
     $("#dial-wait").off('shown.bs.modal') ;
