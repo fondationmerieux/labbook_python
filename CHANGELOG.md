@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.28] - 2026-10-21
+### Security
+- certifi updated, the compromised eMudhra root certificates are removed
+- urllib3 no longer held on the 2.8 branch
+
 ## [3.6.27] - 2026-10-13
 ### Added
 - Register of records and results, exported as a PDF
