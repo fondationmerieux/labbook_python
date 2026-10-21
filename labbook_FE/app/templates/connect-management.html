@@ -18,6 +18,17 @@
                 <ul>
                     <li><strong>{{ _("Version") }} :</strong> <span id="connect-version">{{ args['version'] }}</span></li>
                     <li><strong>{{ _("Plugins chargés") }} :</strong> <span id="plugin-list">{{ args['analyzers_loaded'] }}</span></li>
+                    <li><strong>{{ _("Façade FHIR") }} :</strong> <span id="fhir-state">
+                        {% if args['fhir_state'] == 'ready' %}
+                            <i class="bi bi-circle-fill text-success"></i> {{ _("prête") }}
+                        {% elif args['fhir_state'] == 'not configured' %}
+                            <i class="bi bi-circle-fill text-danger"></i> {{ _("non paramétrée, fichier fhir.toml absent dans Connect") }}
+                        {% elif args['fhir_state'] == 'no token' %}
+                            <i class="bi bi-circle-fill text-danger"></i> {{ _("LabBook ne délivre pas de jeton, voir le journal de Connect") }}
+                        {% else %}
+                            <i class="bi bi-circle-fill text-secondary"></i> {{ _("Connect ne répond pas") }}
+                        {% endif %}
+                    </span></li>
                 </ul>
 
                 <!-- Input field for LabBook Connect URL -->

@@ -8,6 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.29] - 2026-10-21
+### Added
+- New table `external_ref` linking external system references to LabBook data
+- New column `var_loinc` on the analysis-variable link, LOINC code of a result variable
+- Return LOINC codes of the analysis and of each result variable in the external result service
+- Find an analysis by its LOINC code when the LabBook code is missing
+- OAuth client labbook-connect-fhir created by the migration, with a secret of its own for each laboratory
+- State of the Connect FHIR facade shown on the Connect management screen
+
+### Fixed
+- Patient sex not stored on a record from an external system
+- Patient missing on a record from an external system
+- Prescriber missing on a record from an external system
+- Empty record left behind when an analysis of an external request is unknown
+
 ## [3.6.28] - 2026-10-21
 ### Security
 - certifi updated, the compromised eMudhra root certificates are removed

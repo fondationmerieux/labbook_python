@@ -173,6 +173,22 @@ class Analysis:
         return cursor.fetchone()
 
     @staticmethod
+    def getAnalysisByLoinc(loinc):
+        cursor = DB.cursor()
+
+        req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
+               'ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, ana.type_analyse, ana.actif, '
+               'CONCAT(samp.code, " ", COALESCE(samp.nom, "")) as product_label, ana.ana_whonet, ana.ana_ast, '
+               'ana.ana_lite, ana.ana_loinc '
+               'from sigl_05_data as ana '
+               'left join sigl_05_data as samp on samp.id_data=ana.produit_biologique '
+               'where ana.ana_loinc=%s limit 1')
+
+        cursor.execute(req, (loinc,))
+
+        return cursor.fetchone()
+
+    @staticmethod
     def insertAnalysis(**params):
         try:
             if 'test' in params and params['test'] == 'Y':
@@ -426,7 +442,7 @@ class Analysis:
                'normal_max as max, commentaire as comment, type_resultat as type_res, unite2 as unit2, '
                'formule_unite2 as formula2, formule as formula, var.accuracy as accu, precision2 as accu2, '
                'link.position as pos, link.num_var as num_var, link.obligatoire as oblig, link.var_whonet, '
-               'link.var_qrcode, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, '
+               'link.var_qrcode, link.var_loinc, link.id_data as id_link, d1.label as unit_label, var.id_data as id_item, '
                'var.code_var, var.var_show_minmax, var.var_highlight, var.var_in_report '
                'from sigl_07_data' + mode_test + ' as var '
                'inner join sigl_05_07_data' + mode_test + ' as link on link.id_refvariable=var.id_data '
@@ -609,7 +625,7 @@ class Analysis:
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
-               'var_qrcode '
+               'var_qrcode, var_loinc '
                'from sigl_05_07_data '
                'where id_refanalyse=%s')
 
@@ -629,10 +645,10 @@ class Analysis:
 
             cursor.execute('insert into sigl_05_07_data' + mode_test +
                            '(id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
-                           'var_qrcode) '
+                           'var_qrcode, var_loinc) '
                            'values '
                            '(%(id_owner)s, %(id_refana)s, %(id_refvar)s, %(var_pos)s, %(var_num)s, %(oblig)s, '
-                           '%(var_whonet)s, %(var_qrcode)s)', params)
+                           '%(var_whonet)s, %(var_qrcode)s, %(var_loinc)s)', params)
 
             Analysis.log.info(Logs.fileline())
 
@@ -653,7 +669,7 @@ class Analysis:
 
             cursor.execute('update sigl_05_07_data' + mode_test +
                            'set id_owner=%(id_owner)s, position=%(var_pos)s, num_var=%(var_num)s, obligatoire=%(oblig)s, '
-                           'var_whonet=%(var_whonet)s, var_qrcode=%(var_qrcode)s '
+                           'var_whonet=%(var_whonet)s, var_qrcode=%(var_qrcode)s, var_loinc=%(var_loinc)s '
                            'where id_data=%(id_data)s', params)
 
             Analysis.log.info(Logs.fileline())
@@ -943,7 +959,7 @@ class Analysis:
                'ana.cote_unite, ana.cote_valeur, ana.commentaire, ana.produit_biologique, ana.type_prel, '
                'ana.type_analyse, ana.actif, ana.ana_whonet, ana.ana_ast, ana.ana_lite, link.id_data as id_link, '
                'link.id_refanalyse, link.id_refvariable, link.position, link.num_var, link.obligatoire, link.var_whonet, '
-               'link.var_qrcode, var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, '
+               'link.var_qrcode, link.var_loinc, var.id_data as id_var, var.libelle, var.description, var.unite, var.normal_min, '
                'var.normal_max, var.commentaire as var_comm, var.type_resultat, var.unite2, var.formule_unite2, '
                'var.formule, var.accuracy, var.precision2, var.code_var, var.var_show_minmax, var.var_highlight,'
                'var.var_in_report '

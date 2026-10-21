@@ -2070,6 +2070,18 @@ def connect_management():
     else:
         json_data['analyzers_loaded'] = ''
 
+    # Load state of the FHIR facade of Connect
+    if cos_url:
+        try:
+            url = json_data['cos_url'] + '/connect/test_fhir'
+            req = requests.get(url, timeout=10)
+            json_data['fhir_state'] = req.text.strip()
+
+        except requests.exceptions.RequestException:
+            log.exception(Logs.fileline() + ' : requests get FHIR facade state in Connect failed, url=%s', url)
+    else:
+        json_data['fhir_state'] = ''
+
     return render_template('connect-management.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
 

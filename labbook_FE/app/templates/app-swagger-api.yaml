@@ -142,7 +142,7 @@ paths:
                     rec_date:
                       type: string
                       format: date-time
-                      description: datetime of receipt, (format YYYY-MM-DD HH:MM:SS)
+                      description: datetime of receipt, (format YYYY-MM-DDTHH:MM)
                     rec_date_prescr:
                       type: string
                       format: date
@@ -169,7 +169,7 @@ paths:
                     rec_parcel_date:
                       allOf:
                         - $ref: '#/components/schemas/DateTimeOrEmpty'
-                      description: datetime of receipt of parcel, (format YYYY-MM-DD HH:MM:SS)
+                      description: datetime of receipt of parcel, (format YYYY-MM-DDTHH:MM)
                     rec_invoice_discount:
                       type: string
                       description: |
@@ -493,6 +493,22 @@ paths:
                       type: string
                       description: prescriber's email
                       default: ""
+                external:
+                  type: object
+                  description: references of the calling system, kept apart from the laboratory's own data
+                  properties:
+                    system:
+                      type: string
+                      description: name of the external system sending the request, for example OPENMRS
+                      default: ""
+                    record:
+                      type: string
+                      description: reference of the request in the external system, rejected if already used
+                      default: ""
+                    patient:
+                      type: string
+                      description: reference of the patient in the external system, searched before pat_code
+                      default: ""
                 ana_list:
                   type: array
                   items:
@@ -543,11 +559,11 @@ paths:
                       samp_date:
                         allOf:
                           - $ref: '#/components/schemas/DateTimeOrEmpty'
-                        description: datetime of sampling, (format YYYY-MM-DD HH:MM:SS)
+                        description: datetime of sampling, (format YYYY-MM-DDTHH:MM)
                       samp_date_receipt:
                         allOf:
                           - $ref: '#/components/schemas/DateTimeOrEmpty'
-                        description: datetime of receipt sample, (format YYYY-MM-DD HH:MM:SS)
+                        description: datetime of receipt sample, (format YYYY-MM-DDTHH:MM)
                       samp_type:
                         type: string
                         description: |
@@ -627,6 +643,10 @@ paths:
             application/json:
               schema:
                 type: integer
+        400:
+          description: missing or invalid data
+        409:
+          description: external reference already used
   /external/patient/list:
     post:
       security: [ { OAuth2: [ external/patient ] } ]
@@ -782,6 +802,9 @@ paths:
                         name:
                           type: string
                           description: Analysis name
+                        loinc:
+                          type: string
+                          description: LOINC code of the analysis
                         variables:
                           type: array
                           items:
@@ -796,6 +819,9 @@ paths:
                               code_var:
                                 type: string
                                 description: Technical variable code
+                              loinc:
+                                type: string
+                                description: LOINC code of the result variable
                               label:
                                 type: string
                                 description: Variable label

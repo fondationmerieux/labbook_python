@@ -324,7 +324,8 @@ class Patient:
     def getPatientByCode(code, code_lab):
         cursor = DB.cursor()
 
-        cond = ''
+        cond  = ''
+        value = ''
 
         if code:
             cond = 'code=%s'

@@ -25,8 +25,10 @@ class Record:
             limit = 'LIMIT 4000'
             # filter conditions
             if 'num_rec' in args and args['num_rec']:
-                filter_cond += (' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s or rec.rec_num_lite LIKE %s) ')
+                filter_cond += (' and (rec.num_dos_an LIKE %s or rec.num_dos_mois LIKE %s or rec.rec_num_int LIKE %s or rec.rec_num_lite LIKE %s'
+                                ' or rec.id_data in (select exr_ref_int from external_ref where exr_type_int="RECORD" and exr_ref_ext=%s)) ')
                 params.extend(['%' + args['num_rec'] + '%'] * 4)  # Adding num_rec value for all 3 LIKE conditions
+                params.append(args['num_rec'])                    # Reference of an external system, exact match
 
             if 'stat_work' in args and args['stat_work']:
                 raw = args['stat_work']

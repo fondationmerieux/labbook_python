@@ -58,6 +58,7 @@
 | eqp_preventive_maintenance       | EQUIPMENT    | preventive maintenance                     |
 | eqp_preventive_maintenance_file  | FILE         | preventive maintenance file                |
 | event_log                        | LOG          | event log                                  |
+| external_ref                     | EXCHANGE     | external system references to LabBook data |
 | file_storage                     | FILE         | file storage paths                         |
 | form_setting                     | SETTINGS     | structure of form fields                   |
 | functionnal_unit                 | SETTINGS     | functional unit                            |

@@ -927,6 +927,7 @@ class ResultFromExt(Resource):
                     "ref_ana": res['ref_ana'],
                     "id_ana": id_ana,
                     "name": res['nom'],
+                    "loinc": res['ana_loinc'] if res.get('ana_loinc') else '',
                     "variables": []
                 }
 
@@ -966,6 +967,7 @@ class ResultFromExt(Resource):
                 "id_res": res["id_res"],
                 "id_var": res["id_data"],
                 "code_var": res["code_var"],
+                "loinc": res["var_loinc"] if res.get("var_loinc") else '',
                 "label": res["libelle"],
                 "value": value,
                 "unit": unit_label

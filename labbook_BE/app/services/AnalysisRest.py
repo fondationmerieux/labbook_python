@@ -96,7 +96,8 @@ def save_analysis_variables(id_ana, args, audit_user, log):
                                                  var_num=var['var_num'],
                                                  oblig=var['var_oblig'],
                                                  var_whonet=var['var_whonet'],
-                                                 var_qrcode=var['var_qrcode'])
+                                                 var_qrcode=var['var_qrcode'],
+                                                 var_loinc=var.get('var_loinc', ''))
 
                 if ret <= 0:
                     log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')
@@ -113,7 +114,8 @@ def save_analysis_variables(id_ana, args, audit_user, log):
                                                  var_num=var['var_num'],
                                                  oblig=var['var_oblig'],
                                                  var_whonet=var['var_whonet'],
-                                                 var_qrcode=var['var_qrcode'])
+                                                 var_qrcode=var['var_qrcode'],
+                                                 var_loinc=var.get('var_loinc', ''))
 
                 if ret is False:
                     log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR update link var to analysis')
@@ -148,7 +150,8 @@ def save_analysis_variables(id_ana, args, audit_user, log):
                                              var_num=var['var_num'],
                                              oblig=var['var_oblig'],
                                              var_whonet=var['var_whonet'],
-                                             var_qrcode=var['var_qrcode'])
+                                             var_qrcode=var['var_qrcode'],
+                                             var_loinc=var.get('var_loinc', ''))
 
             if ret <= 0:
                 log.info(Logs.fileline() + ' : TRACE AnalysisDet ERROR insert link var to analysis')

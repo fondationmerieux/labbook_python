@@ -1285,6 +1285,18 @@ float            : none;
 padding          : inherit;
 }
 
+.form-section-lbk
+{
+font-size        : 0.8rem;
+font-weight      : bold;
+letter-spacing   : 0.05rem;
+text-transform   : uppercase;
+color            : #6c757d;
+border-bottom    : 1px solid #dee2e6;
+padding-bottom   : 0.25rem;
+margin-bottom    : 0.25rem;
+}
+
 .color-T
 {
 color : #00ADEE;

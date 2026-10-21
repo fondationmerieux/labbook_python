@@ -435,6 +435,15 @@ class MyBearerTokenValidator(BearerTokenValidator):
             role = session.get('user_role')
             user_id = session.get('user_id')
 
+            if not login:
+                # A calling program has no session, the audit trail then names the
+                # OAuth client it connects with instead of leaving the author empty
+                client_id = tok.get('oato_client_id') or ''
+                client    = _load_client(client_id) if client_id else None
+
+                login   = client_id
+                display = (client.get('oacl_client_name') if client else '') or client_id
+
             request.oauth_user = {
                 "usr_login": login,
                 "usr_display": display,

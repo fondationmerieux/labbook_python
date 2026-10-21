@@ -10,6 +10,7 @@ from app.models.Analysis import Analysis
 from app.models.Audit import Audit
 from app.models.Constants import Constants
 from app.models.Doctor import Doctor
+from app.models.External import External
 from app.models.File import File
 from app.models.General import compose_ret
 from app.models.Logs import Logs
@@ -518,12 +519,73 @@ class RecordDetFromExt(Resource):
         hosp_bill = Various.getDefaultValue('facturation_pat_hosp')
         hosp_bill = int(hosp_bill['value'])  # 1 or 0
 
+        # --- EXTERNAL REFERENCE ---
+        # References of the external system, kept in external_ref, never in a field filled by the laboratory
+        ext_system  = args['external'].get('system', '') if 'external' in args else ''
+        ext_ref     = args['external'].get('record', '') if 'external' in args else ''
+        ext_pat_ref = args['external'].get('patient', '') if 'external' in args else ''
+
+        if ext_system and ext_ref and External.getIdByRef(ext_system, 'RECORD', ext_ref) > 0:
+            self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR external reference already used')
+            err = {"error": "external reference already used"}
+            try:
+                details = {"result": "ERROR", "reason": "EXTERNAL_REF_ALREADY_USED",
+                           "system": str(ext_system), "ref": str(ext_ref)}
+                Audit.insertAudit(audit_user, "RecordDetFromExt", "RECORD", None, "ERROR", details, "C")
+            except Exception as err2:
+                self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit external ref err=' + str(err2))
+            return compose_ret(err, Constants.cst_content_type_json, 409)
+
+        # --- ANALYSIS CHECK ---
+        # Analyses are resolved before anything is written: an unknown one used to leave
+        # an empty record, and sometimes a patient and a prescriber, behind it
+        d_ana_found = {}
+
+        for ana in args['ana_list']:
+            if not ana.get('ana_code') and not ana.get('ana_loinc'):
+                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR ana_list missing args')
+                err = {"error": "missing ana_code and ana_loinc"}
+                try:
+                    details = {"result": "ERROR", "reason": "ANA_CODE_MISSING"}
+                    Audit.insertAudit(audit_user, "RecordDetFromExt", "RECORD", None, "ERROR", details, "C")
+                except Exception as err2:
+                    self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit ana_code missing err=' + str(err2))
+                return compose_ret(err, Constants.cst_content_type_json, 400)
+
+            if ana['ana_code']:
+                tmp_ana = Analysis.getAnalysisByCode(ana['ana_code'])
+                ana_ref = ana['ana_code']
+            else:
+                # The external system knows the analysis by its LOINC code only
+                tmp_ana = Analysis.getAnalysisByLoinc(ana['ana_loinc'])
+                ana_ref = ana['ana_loinc']
+
+                if tmp_ana:
+                    ana['ana_code'] = tmp_ana['code']
+
+            if not tmp_ana:
+                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR analysis not found with code : ' + Logs.clean(ana_ref))
+                err = {"error": "analysis not found with code = " + str(ana_ref)}
+                try:
+                    details = {"result": "ERROR", "reason": "ANALYSIS_NOT_FOUND", "ana_code": str(ana_ref)}
+                    Audit.insertAudit(audit_user, "RecordDetFromExt", "RECORD", None, "ERROR", details, "C")
+                except Exception as err2:
+                    self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit analysis not found err=' + str(err2))
+                return compose_ret(err, Constants.cst_content_type_json, 404)
+
+            d_ana_found[ana['ana_code']] = tmp_ana
+
         # --- PATIENT ---
         patient = args['patient']
         id_pat  = 0
 
-        # check if patient exists by code
-        pat = Patient.getPatientByCode(patient['pat_code'], patient['pat_code_lab'])
+        # check if patient is already linked to the external system, then by code
+        id_pat_ext = External.getIdByRef(ext_system, 'PATIENT', ext_pat_ref) if ext_system and ext_pat_ref else 0
+
+        if id_pat_ext > 0:
+            pat = Patient.getPatient(id_pat_ext)
+        else:
+            pat = Patient.getPatientByCode(patient['pat_code'], patient['pat_code_lab'])
 
         if not pat:
             if not (patient['pat_name'] and patient['pat_firstname'] and patient['pat_sex']) and \
@@ -552,6 +614,13 @@ class RecordDetFromExt(Resource):
                 patient['pat_date_approx'] = 4
             else:
                 patient['pat_date_approx'] = 5
+
+            if patient['pat_sex'] == 'M':
+                patient['pat_sex'] = 1
+            elif patient['pat_sex'] == 'F':
+                patient['pat_sex'] = 2
+            else:
+                patient['pat_sex'] = 3
 
             if patient['pat_age_unit'] == 'D':
                 patient['pat_age_unit'] = 1034
@@ -628,6 +697,9 @@ class RecordDetFromExt(Resource):
                     except Exception as err2:
                         self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit insert patient err=' + str(err2))
                     return compose_ret(err, Constants.cst_content_type_json, 500)
+            else:
+                # Patient found on its identity, keep its id for the record and the external link
+                id_pat = pat['id_data']
         else:
             id_pat = pat['id_data']
 
@@ -755,6 +827,9 @@ class RecordDetFromExt(Resource):
                         except Exception as err2:
                             self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit insert doctor err=' + str(err2))
                         return compose_ret(err, Constants.cst_content_type_json, 500)
+                else:
+                    # Prescriber found on its identity, keep its id for the record
+                    id_doc = doc['id_data']
         else:
             id_doc = doc['id_data']
 
@@ -986,27 +1061,8 @@ class RecordDetFromExt(Resource):
                 l_type_prel.append(elem)
 
         for ana in l_ana:
-            if not ana['ana_code']:
-                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR ana_list missing args')
-                err = {"error": "missing ana_code"}
-                try:
-                    details = {"result": "ERROR", "reason": "ANA_CODE_MISSING", "id_rec": int(id_rec)}
-                    Audit.insertAudit(audit_user, "RecordDetFromExt", "RECORD", int(id_rec), "ERROR", details, "C")
-                except Exception as err2:
-                    self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit ana_code missing err=' + str(err2))
-                return compose_ret(err, Constants.cst_content_type_json, 400)
-
-            tmp_ana = Analysis.getAnalysisByCode(ana['ana_code'])
-
-            if not tmp_ana:
-                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR analysis not found with code : ' + Logs.clean(ana['ana_code']))
-                err = {"error": "analysis not found with code = " + str(ana['ana_code'])}
-                try:
-                    details = {"result": "ERROR", "reason": "ANALYSIS_NOT_FOUND", "ana_code": str(ana.get('ana_code')), "id_rec": int(id_rec)}
-                    Audit.insertAudit(audit_user, "RecordDetFromExt", "RECORD", int(id_rec), "ERROR", details, "C")
-                except Exception as err2:
-                    self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit analysis not found err=' + str(err2))
-                return compose_ret(err, Constants.cst_content_type_json, 404)
+            # The analysis was resolved before the record was created
+            tmp_ana = d_ana_found[ana['ana_code']]
 
             # calc price
             ana_price = price_act * tmp_ana['cote_valeur']
@@ -1299,6 +1355,15 @@ class RecordDetFromExt(Resource):
             except Exception as err2:
                 self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit update stat err=' + str(err2))
             return compose_ret(err, Constants.cst_content_type_json, 500)
+
+        # Link the external references to the new record and to its patient
+        if ext_system and ext_ref:
+            if External.insertRef(user=0, system=ext_system, ref=ext_ref, object='RECORD', id=id_rec) <= 0:
+                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertRef record')
+
+        if ext_system and ext_pat_ref and id_pat_ext <= 0:
+            if External.insertRef(user=0, system=ext_system, ref=ext_pat_ref, object='PATIENT', id=id_pat) <= 0:
+                self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertRef patient')
 
         self.log.info(Logs.fileline() + ' : TRACE RecordDetFromExt')
         try:

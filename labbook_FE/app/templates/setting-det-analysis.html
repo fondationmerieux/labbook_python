@@ -135,7 +135,8 @@
                         </div>
                     </div>
 
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-12 form-section-lbk mt-4">{{ _("Libellés et codes") }}</div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_label" class="form-label col-2 text-end mt-2 me-1">{{ _("Libellé") }} *</label>
                         <div>					
                             <input type="text" name="var_label" id="var_label" value="{% if args['var'] %}{{ args['var'][0]['label'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:300px;" onChange="change_data(this);">			
@@ -144,13 +145,23 @@
                         <div>					
                             <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if has_permission("SETTING_47") %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
                         </div>
+                        <label for="var_loinc" class="form-label col-1 text-end mt-2 me-1">{{ _("LOINC") }}</label>
+                        <div>
+                            <input type="text" name="var_loinc" id="var_loinc" value="{% if args['var'] %}{{ args['var'][0]['var_loinc'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" style="width:120px;">
+                        </div>
                         <label for="var_id" class="form-label col-1 text-end mt-2 me-1">{{ _("Id") }}</label>
                         <div>					
                             <input type="text" name="var_id" id="var_id" value="{% if args['var'] %}{{ args['var'][0]['id_data'] }}{% endif %}" class="form-control form-lbk" readonly style="width:90px;">			
                         </div>
                     </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
+                        <label for="var_descr" class="form-label col-2 text-end mt-2 me-1">{{ _("Description") }}</label>
+                        <div>					
+                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
+                        </div>
+                    </div>
+                    <div class="col-12 form-section-lbk mt-4">{{ _("Résultat") }}</div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_type_res" class="form-label col-2 text-end mt-2 me-1">{{ _("Type de résultat") }} *</label>
                         <div class="form-group d-lg-flex align-items-start">					
                             <select name="var_type_res" id="var_type_res" class="group-det-var form-select" onChange="change_data(this);">
@@ -161,44 +172,8 @@
                             </select>
                             <button type="button" onclick="det_dict();" id="btn_det_dict" title="{{ _("Détails de ce dictionnaire") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-1"><i class="bi bi-question-square" /></i></button>
                         </div>
-                        <label for="var_descr" class="form-label col-2 text-end mt-2 me-1">{{ _("Description") }}</label>
-                        <div>					
-                            <input type="text" name="var_descr" id="var_descr" value="{% if args['var'] %}{{ args['var'][0]['descr'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
-                        </div>
                     </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
-                        <label for="var_min" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale min.") }}</label>
-                        <div>					
-                            <input type="text" name="var_min" id="var_min" value="{% if args['var'] %}{{ args['var'][0]['normal_min'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
-                        </div>
-                        <label for="var_max" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale max.") }}</label>
-                        <div>					
-                            <input type="text" name="var_max" id="var_max" value="{% if args['var'] %}{{ args['var'][0]['normal_max'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
-                        </div>
-                    </div>
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
-
-                        <label for="var_show_minmax" class="form-label col-2 text-end mt-1 me-1">{{ _("Affichage min./max.") }}</label>
-                        <div>
-                            <input type="checkbox" id="var_show_minmax" name="var_show_minmax" class="mt-2" value="Y" {% if args['var'] and args['var'][0]['normal_min'] == 'Y' %}checked{% endif %} onChange="change_data(this);">
-                        </div>
-
-                        <span class="form-label text-end mt-1 mx-3">{{ _("Souligner") }}</span>
-                        <label class="form-label text-end mt-1 me-3">
-                            <input type="radio" id="var_highlight_Y" name="var_highlight" value="Y" {% if args['var'] and args['var'][0]['var_highlight'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
-                        </label>
-                        <label class="form-label text-end mt-1 me-3">
-                            <input type="radio" id="var_highlight_N" name="var_highlight" value="N" {% if not args['var'] or args['var'][0]['var_highlight'] == 'N' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
-                        </label>
-                        
-                        <label for="var_in_report" class="form-label col-2 text-end mt-1 ms-1 me-1">{{ _("Dans le compte rendu") }}</label>
-                        <div>
-                            <input type="checkbox" id="var_in_report" name="var_in_report" class="mt-2" value="Y" {% if (args['var']|default([])|first|default({})).get('var_in_report', 'Y') != 'N' %}checked{% endif %} onChange="change_data(this);">
-                        </div>
-                    </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_formula" class="form-label col-2 text-end mt-2 me-1">{{ _("Formule") }}</label>
                         <div>					
                             <input type="text" name="var_formula" id="var_formula" value="{% if args['var'] %}{{ args['var'][0]['formula'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
@@ -215,8 +190,7 @@
                         <label for=var_accu" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision") }}</label>
                         <input type="number" name="var_accu" id="var_accu" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
                     </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_formula2" class="form-label col-2 text-end mt-2 me-1">{{ _("Formule de conversion unité 2") }}</label>
                         <div>					
                             <input type="text" name="var_formula2" id="var_formula2" value="{% if args['var'] %}{{ args['var'][0]['formula2'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">
@@ -233,19 +207,44 @@
                         <label for="var_accu2" class="form-label col-1 text-end mt-2 me-1">{{ _("Précision 2") }}</label>
                         <input type="number" name="var_accu2" id="var_accu2" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['accu2'] }}{% endif %}" class="group-det-var form-control form-lbk"  style="width:80px;" onChange="change_data(this);">			
                     </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_num" class="form-label col-2 text-end mt-2 me-1">{{ _("Num. var pour la formule") }}</label>
                         <input type="number" name="var_num" id="var_num" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['num_var'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
+                    </div>
+                    <div class="col-12 form-section-lbk mt-4">{{ _("Valeurs normales") }}</div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
+                        <label for="var_min" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale min.") }}</label>
+                        <div>					
+                            <input type="text" name="var_min" id="var_min" value="{% if args['var'] %}{{ args['var'][0]['normal_min'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
+                        </div>
+                        <label for="var_max" class="form-label col-2 text-end mt-2 me-1">{{ _("Valeur normale max.") }}</label>
+                        <div>					
+                            <input type="text" name="var_max" id="var_max" value="{% if args['var'] %}{{ args['var'][0]['normal_max'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);">			
+                        </div>
+                    </div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
+                        <label for="var_show_minmax" class="form-label col-2 text-end mt-1 me-1">{{ _("Affichage min./max.") }}</label>
+                        <div>
+                            <input type="checkbox" id="var_show_minmax" name="var_show_minmax" class="mt-2" value="Y" {% if args['var'] and args['var'][0]['normal_min'] == 'Y' %}checked{% endif %} onChange="change_data(this);">
+                        </div>
+                        <span class="form-label text-end mt-1 mx-3">{{ _("Souligner") }}</span>
+                        <label class="form-label text-end mt-1 me-3">
+                            <input type="radio" id="var_highlight_Y" name="var_highlight" value="Y" {% if args['var'] and args['var'][0]['var_highlight'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
+                        </label>
+                        <label class="form-label text-end mt-1 me-3">
+                            <input type="radio" id="var_highlight_N" name="var_highlight" value="N" {% if not args['var'] or args['var'][0]['var_highlight'] == 'N' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
+                        </label>
+                    </div>
+                    <div class="col-12 form-section-lbk mt-4">{{ _("Affichage et échanges") }}</div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label for="var_pos" class="form-label col-2 text-end mt-2 me-1">{{ _("Position affichage") }}</label>
                         <input type="number" name="var_pos" id="var_pos" min="0" step="1" value="{% if args['var'] %}{{ args['var'][0]['pos'] }}{% endif %}" class="group-det-var form-control form-lbk" style="width:80px;" onChange="change_data(this);">
-                    </div>
-
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
-                        <label for="var_comment" class="form-label col-2 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
-                        <div>					
-                            <textarea id="var_comment" name="var_comment" rows="3" cols="30" class="group-det-var form-control form-lbk" onChange="change_data(this);">{% if args['var'] %}{{ args['var'][0]['comment'] }}{% endif %}</textarea>
+                        <label for="var_in_report" class="form-label col-2 text-end mt-1 ms-1 me-1">{{ _("Dans le compte rendu") }}</label>
+                        <div>
+                            <input type="checkbox" id="var_in_report" name="var_in_report" class="mt-2" value="Y" {% if (args['var']|default([])|first|default({})).get('var_in_report', 'Y') != 'N' %}checked{% endif %} onChange="change_data(this);">
                         </div>
+                    </div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Résultat obligatoire") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" id="var_oblig_4" name="var_oblig" value="4" {% if args['var'] and args['var'][0]['oblig'] == 4 %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
@@ -260,8 +259,6 @@
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
-                    </div>
-                    <div class="col-12 form-group d-lg-flex align-items-start mt-3">
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Générer un code QR") }}</label>
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" id="var_qrcode_Y" name="var_qrcode" value="Y" {% if args['var'] and args['var'][0]['var_qrcode'] == 'Y' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
@@ -269,6 +266,12 @@
                         <label class="form-label text-end mt-2 me-3">
                             <input type="radio" id="var_qrcode_N" name="var_qrcode" value="N" {% if not args['var'] or args['var'][0]['var_qrcode'] == 'N' %} checked="checked" {% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
+                    </div>
+                    <div class="col-12 form-group d-lg-flex align-items-start mt-2">
+                        <label for="var_comment" class="form-label col-2 text-end mt-2 me-1">{{ _("Commentaires") }}</label>
+                        <div>					
+                            <textarea id="var_comment" name="var_comment" rows="3" cols="30" class="group-det-var form-control form-lbk" onChange="change_data(this);">{% if args['var'] %}{{ args['var'][0]['comment'] }}{% endif %}</textarea>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -349,7 +352,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "var_show_minmax":"N", "var_highlight":"N", "var_in_report":"Y", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
+var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "var_show_minmax":"N", "var_highlight":"N", "var_in_report":"Y", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "var_loinc":"", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
 var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
 var ind_sel_var = {% if args['var'] %}1{% else %}0{% endif %} ;
@@ -438,6 +441,7 @@ let id_var = $(e.currentTarget).val();
                 tmp_struct_var.oblig      = 5 ;
                 tmp_struct_var.var_whonet = 5 ;
                 tmp_struct_var.var_qrcode = "N" ;
+                tmp_struct_var.var_loinc  = "" ;
                 tmp_struct_var.num_var    = 0 ;
                 tmp_struct_var.pos        = 0 ;
                 tmp_struct_var.id_link    = 0 ;
@@ -697,6 +701,7 @@ ind_sel_var = id_item ;
 
 $("#var_label").val( det_var.label ) ;
 $("#var_code").val( det_var.code_var ) ;
+$("#var_loinc").val( det_var.var_loinc ) ;
 $("#var_descr").val( det_var.descr ) ;
 $("#var_id").val( det_var.id_data ) ;
 $("#var_type_res").val( det_var.type_res ) ;
@@ -828,6 +833,8 @@ let id_elem = elem.id ;
                 data_vars[i].label = val_elem ;
                 else if (id_elem == "var_code")
                 data_vars[i].code_var = val_elem ;
+                else if (id_elem == "var_loinc")
+                data_vars[i].var_loinc = val_elem ;
                 else if (id_elem == "var_descr")
                 data_vars[i].descr = val_elem ; 
                 else if (id_elem == "var_type_res")
@@ -1053,6 +1060,7 @@ var msg = "" ;
                     var_oblig    = data_vars[i].oblig    ;
                     var_whonet   = data_vars[i].var_whonet ;
                     var_qrcode   = data_vars[i].var_qrcode ;
+                    var_loinc    = $.trim( data_vars[i].var_loinc ) ;
                     var_num      = data_vars[i].num_var  ;
                     var_pos      = data_vars[i].pos      ;
                     id_link      = data_vars[i].id_link  ;
@@ -1085,6 +1093,7 @@ var msg = "" ;
                                       '"var_oblig":' + var_oblig + ', ' +
                                       '"var_whonet":' + var_whonet + ', ' +
                                       '"var_qrcode":"' + var_qrcode + '", ' +
+                                      '"var_loinc":"' + var_loinc + '", ' +
                                       '"var_num":' + var_num + ', ' +
                                       '"var_pos":' + var_pos + ', ' +
                                       '"id_link":' + id_link + ', ' +
