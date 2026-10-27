@@ -12,6 +12,10 @@ class Doctor:
 
     @staticmethod
     def getDoctorList(args):
+        """
+        Read the prescribers of sigl_08_data with their speciality, ordered by name.
+        args: code, lastname, firstname, service, city, limit (500 by default, None for no limit).
+        """
         cursor = DB.cursor()
 
         filter_cond = ' pres.nom is not NULL '
@@ -63,6 +67,13 @@ class Doctor:
 
     @staticmethod
     def getDoctorSearch(text):
+        """
+        Search prescribers for a select field: every word must start the name, first name or code,
+        limited to 1000.
+
+        Returns:
+            list: id_doctor and field_value ('code - name first name - speciality - facility').
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -91,6 +102,9 @@ class Doctor:
 
     @staticmethod
     def getDoctor(id_doctor):
+        """
+        Read one prescriber with its speciality.
+        """
         cursor = DB.cursor()
 
         req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
@@ -108,6 +122,12 @@ class Doctor:
 
     @staticmethod
     def getDoctorByCode(code):
+        """
+        Read one prescriber by its code.
+
+        Returns:
+            dict or None: prescriber, an empty dict when code is empty, None when not found.
+        """
         cursor = DB.cursor()
 
         if not code:
@@ -128,6 +148,9 @@ class Doctor:
 
     @staticmethod
     def getDoctorByIdentity(name, firstname):
+        """
+        Read the first prescriber with exactly this name and first name.
+        """
         cursor = DB.cursor()
 
         req = ('select doctor.id_data as id_data, doctor.id_owner as id_owner, doctor.code as code, doctor.nom as nom, '
@@ -145,6 +168,12 @@ class Doctor:
 
     @staticmethod
     def insertDoctor(**params):
+        """
+        Insert a prescriber in sigl_08_data. A missing doc_agreement is stored as 'N'.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -168,6 +197,12 @@ class Doctor:
 
     @staticmethod
     def updateDoctor(**params):
+        """
+        Update a prescriber of sigl_08_data. A missing doc_agreement is stored as 'N'.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -190,6 +225,12 @@ class Doctor:
 
     @staticmethod
     def deleteDoctor(id_item):
+        """
+        Delete one prescriber, the records keep its id.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

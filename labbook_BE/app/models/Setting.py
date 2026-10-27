@@ -28,6 +28,9 @@ class Setting:
 
     @staticmethod
     def getPrefList():
+        """
+        Read every preference of sigl_06_data.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, identifiant, label, value '
@@ -40,6 +43,12 @@ class Setting:
 
     @staticmethod
     def updatePref(id_owner, key, value):
+        """
+        Set the value of one preference, by its key (identifiant), and its owner.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -56,6 +65,9 @@ class Setting:
 
     @staticmethod
     def getRecNumSetting():
+        """
+        Read the record and sample numbering setting (record_setting, a single row).
+        """
         cursor = DB.cursor()
 
         req = ('select rstg_ser, rstg_user, rstg_date, rstg_date_upd, rstg_user_upd, rstg_period, rstg_format, '
@@ -69,6 +81,12 @@ class Setting:
 
     @staticmethod
     def updateRecNumSetting(**params):
+        """
+        Update the record and sample numbering setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -86,6 +104,9 @@ class Setting:
 
     @staticmethod
     def getReportSetting():
+        """
+        Read the report setting (report_setting, a single row).
+        """
         cursor = DB.cursor()
 
         req = ('select rps_user as id_owner, rps_date as sys_creation_date, rps_date_upd as sys_last_mod_date, '
@@ -99,6 +120,12 @@ class Setting:
 
     @staticmethod
     def updateReportSetting(**params):
+        """
+        Update the report setting: header, comment and PDF password.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -116,6 +143,9 @@ class Setting:
 
     @staticmethod
     def getStickerSetting():
+        """
+        Read the sticker setting.
+        """
         cursor = DB.cursor()
 
         req = ('select sts_ser, sts_width, sts_height, sts_margin_top, sts_margin_bottom, '
@@ -129,6 +159,12 @@ class Setting:
 
     @staticmethod
     def updateStickerSetting(**params):
+        """
+        Update the sticker setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -147,6 +183,9 @@ class Setting:
 
     @staticmethod
     def getAgeInterval():
+        """
+        Read every age interval of age_interval_setting.
+        """
         cursor = DB.cursor()
 
         req = ('select ais_ser, ais_rank, ais_lower_bound, ais_upper_bound '
@@ -159,6 +198,12 @@ class Setting:
 
     @staticmethod
     def insertAgeInterval(**params):
+        """
+        Insert a age interval in age_interval_setting.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -175,6 +220,12 @@ class Setting:
 
     @staticmethod
     def updateAgeInterval(**params):
+        """
+        Update a age interval of age_interval_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -192,6 +243,12 @@ class Setting:
 
     @staticmethod
     def deleteAgeInterval(ais_ser):
+        """
+        Delete one age interval of age_interval_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -207,6 +264,9 @@ class Setting:
 
     @staticmethod
     def getReqServices():
+        """
+        Read every requesting service of requesting_services.
+        """
         cursor = DB.cursor()
 
         req = ('select rqs_ser, rqs_rank, rqs_name '
@@ -219,6 +279,12 @@ class Setting:
 
     @staticmethod
     def insertReqServices(**params):
+        """
+        Insert a requesting service in requesting_services.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -235,6 +301,12 @@ class Setting:
 
     @staticmethod
     def updateReqServices(**params):
+        """
+        Update a requesting service of requesting_services.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -251,6 +323,12 @@ class Setting:
 
     @staticmethod
     def deleteReqServices(rqs_ser):
+        """
+        Delete one requesting service of requesting_services.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -266,6 +344,9 @@ class Setting:
 
     @staticmethod
     def getFuncUnitDet(id_unit):
+        """
+        Read one functional unit.
+        """
         cursor = DB.cursor()
 
         req = ('select fun_ser, fun_rank, fun_name '
@@ -278,6 +359,9 @@ class Setting:
 
     @staticmethod
     def getFuncUnit():
+        """
+        Read every functional unit.
+        """
         cursor = DB.cursor()
 
         req = ('select fun_ser, fun_rank, fun_name '
@@ -290,6 +374,9 @@ class Setting:
 
     @staticmethod
     def getNbFuncUnitLink(fun_ser, ful_type):
+        """
+        Count the links of a functional unit of one type ('U' users, 'F' families).
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_link '
@@ -303,6 +390,12 @@ class Setting:
 
     @staticmethod
     def insertFuncUnit(**params):
+        """
+        Insert a functional unit.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -319,6 +412,12 @@ class Setting:
 
     @staticmethod
     def updateFuncUnit(**params):
+        """
+        Update a functional unit.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -335,6 +434,12 @@ class Setting:
 
     @staticmethod
     def deleteFuncUnit(fun_ser):
+        """
+        Delete a functional unit with its links.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -352,6 +457,10 @@ class Setting:
 
     @staticmethod
     def getLinkUnit(type, id_unit):
+        """
+        Read the users ('U', with their role) or families ('F') of a functional unit,
+        with the other units they belong to.
+        """
         cursor = DB.cursor()
 
         req = ''
@@ -377,6 +486,12 @@ class Setting:
 
     @staticmethod
     def getListLinkUnit(type, id_unit):
+        """
+        Read the ids linked to a functional unit for one type.
+
+        Returns:
+            list: ids (ful_ref).
+        """
         cursor = DB.cursor()
 
         ret = []
@@ -397,6 +512,12 @@ class Setting:
 
     @staticmethod
     def insertLinkUnit(**params):
+        """
+        Link a user or a family to a functional unit.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -413,6 +534,12 @@ class Setting:
 
     @staticmethod
     def deleteLinkUnit(type, id_unit, ref):
+        """
+        Remove one link of a functional unit.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -429,6 +556,12 @@ class Setting:
     @staticmethod
     def getLinkByUser(id_user):
         # get list of ful_fun matching with id_user
+        """
+        Read the families of the functional units a user belongs to.
+
+        Returns:
+            list: rows, empty when the user belongs to no unit.
+        """
         cursor = DB.cursor()
 
         req = ('select ful_fun '
@@ -466,6 +599,9 @@ class Setting:
 
     @staticmethod
     def getBackupSetting():
+        """
+        Read the backup setting (backup_setting, a single row).
+        """
         cursor = DB.cursor()
 
         req = ('select bks_ser, bks_start_time '
@@ -478,6 +614,12 @@ class Setting:
 
     @staticmethod
     def updateBackupSetting(**params):
+        """
+        Update the backup start time.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -494,6 +636,9 @@ class Setting:
 
     @staticmethod
     def getTemplateList(type=''):
+        """
+        Read the document templates, of one type or all of them.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -513,6 +658,9 @@ class Setting:
 
     @staticmethod
     def getTemplate(id_item):
+        """
+        Read one document template.
+        """
         cursor = DB.cursor()
 
         req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
@@ -525,6 +673,9 @@ class Setting:
 
     @staticmethod
     def getTemplateByFile(tpl_file):
+        """
+        Read the first template using this file.
+        """
         cursor = DB.cursor()
 
         req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
@@ -537,6 +688,9 @@ class Setting:
 
     @staticmethod
     def getDefaultTemplate(type):
+        """
+        Read the default template of a type.
+        """
         cursor = DB.cursor()
 
         req = ('select tpl_ser, tpl_name, tpl_type, tpl_default, tpl_file '
@@ -549,6 +703,12 @@ class Setting:
 
     @staticmethod
     def insertTemplate(**params):
+        """
+        Insert a document template.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -570,6 +730,12 @@ class Setting:
 
     @staticmethod
     def updateTemplate(**params):
+        """
+        Update a document template.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -591,6 +757,12 @@ class Setting:
 
     @staticmethod
     def deleteTemplate(id_item):
+        """
+        Delete one document template, its file is kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -606,6 +778,12 @@ class Setting:
 
     @staticmethod
     def UndefaultTemplate(**params):
+        """
+        Clear the default flag of every template of a type, before setting a new default.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -622,6 +800,12 @@ class Setting:
 
     @staticmethod
     def insertZipCity(**params):
+        """
+        Insert a zip code and city.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -637,6 +821,12 @@ class Setting:
 
     @staticmethod
     def deleteAllZipCity():
+        """
+        Empty the zip_city table.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -651,6 +841,9 @@ class Setting:
 
     @staticmethod
     def getZipCity(id_item):
+        """
+        Read one zip code and city.
+        """
         cursor = DB.cursor()
 
         req = ('select zic_ser, zic_zip, zic_city '
@@ -663,6 +856,10 @@ class Setting:
 
     @staticmethod
     def getZipCityList(args):
+        """
+        Read the zip codes and cities, ordered by zip code.
+        args: limit.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' zic_ser > 0 '
@@ -714,6 +911,9 @@ class Setting:
 
     @staticmethod
     def getStockSetting():
+        """
+        Read the stock setting (expiry warning and alert).
+        """
         cursor = DB.cursor()
 
         req = ('select sos_ser, sos_expir_warning, sos_expir_alert '
@@ -726,6 +926,12 @@ class Setting:
 
     @staticmethod
     def updateStockSetting(**params):
+        """
+        Update the stock setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -742,6 +948,12 @@ class Setting:
 
     @staticmethod
     def insertStockLocal(**params):
+        """
+        Insert a stock place in product_local.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -758,6 +970,12 @@ class Setting:
 
     @staticmethod
     def updateStockLocal(**params):
+        """
+        Update a stock place.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -775,6 +993,12 @@ class Setting:
 
     @staticmethod
     def deleteStockLocal(prl_ser):
+        """
+        Delete a stock place, its supplies are moved to place 0.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -793,6 +1017,9 @@ class Setting:
 
     @staticmethod
     def getSettingFormList():
+        """
+        Read the configurable form fields, ordered by rank.
+        """
         cursor = DB.cursor()
 
         req = ('select fos_ser, fos_name, fos_type, fos_ref, fos_stat '
@@ -806,6 +1033,12 @@ class Setting:
 
     @staticmethod
     def updateFormSetting(**params):
+        """
+        Set the status of a configurable form field.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -822,6 +1055,9 @@ class Setting:
 
     @staticmethod
     def getManualSetting():
+        """
+        Read every quality manual section of manual_setting.
+        """
         cursor = DB.cursor()
 
         req = ('select mas_ser, mas_rank, mas_name '
@@ -834,6 +1070,12 @@ class Setting:
 
     @staticmethod
     def insertManualSetting(**params):
+        """
+        Insert a quality manual section in manual_setting.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -850,6 +1092,12 @@ class Setting:
 
     @staticmethod
     def updateManualSetting(**params):
+        """
+        Update a quality manual section of manual_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -866,6 +1114,12 @@ class Setting:
 
     @staticmethod
     def deleteManualSetting(mas_ser):
+        """
+        Delete one quality manual section of manual_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -881,6 +1135,9 @@ class Setting:
 
     @staticmethod
     def getManualCategory():
+        """
+        Read the quality manual sections, used as categories.
+        """
         cursor = DB.cursor()
 
         req = ('select mas_ser, mas_name, mas_rank '
@@ -893,6 +1150,9 @@ class Setting:
 
     @staticmethod
     def getDHIS2List():
+        """
+        Read every DHIS2 server, passwords included.
+        """
         cursor = DB.cursor()
 
         req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_url, dhs_default '
@@ -905,6 +1165,9 @@ class Setting:
 
     @staticmethod
     def getDHIS2Det(id_item):
+        """
+        Read one DHIS2 server, password included.
+        """
         cursor = DB.cursor()
 
         req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_pwd, dhs_url, dhs_default '
@@ -917,6 +1180,9 @@ class Setting:
 
     @staticmethod
     def getDefaultDHIS2Det():
+        """
+        Read the default DHIS2 server.
+        """
         cursor = DB.cursor()
 
         req = ('select dhs_ser, dhs_user, dhs_name, dhs_login, dhs_pwd, dhs_url, dhs_default '
@@ -929,6 +1195,12 @@ class Setting:
 
     @staticmethod
     def insertDHIS2Det(**params):
+        """
+        Insert a DHIS2 server.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -949,6 +1221,12 @@ class Setting:
 
     @staticmethod
     def updateDHIS2Det(**params):
+        """
+        Update a DHIS2 server.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -966,6 +1244,12 @@ class Setting:
 
     @staticmethod
     def deleteDHIS2Det(id_item):
+        """
+        Delete one DHIS2 server.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -981,6 +1265,12 @@ class Setting:
 
     @staticmethod
     def UndefaultDHIS2Det():
+        """
+        Clear the default flag of every DHIS2 server, before setting a new default.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -997,6 +1287,9 @@ class Setting:
 
     @staticmethod
     def getSendingMethodList():
+        """
+        Read every sending method with its SMTP, Mailjet or WhatsApp fields, secrets included.
+        """
         cursor = DB.cursor()
 
         req = ('SELECT sdi_ser, sdi_type, sdi_name, sdi_default, sdi_date, sdi_user '
@@ -1009,6 +1302,13 @@ class Setting:
 
     @staticmethod
     def getSendingMethodDet(type, id_item):
+        """
+        Read one sending method with the fields of its type, secrets included.
+        type: 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+
+        Returns:
+            dict or None: method, None for an unknown type or when not found.
+        """
         cursor = DB.cursor()
 
         if type == 'S':
@@ -1056,6 +1356,13 @@ class Setting:
 
     @staticmethod
     def insertSendingMethodDet(**params):
+        """
+        Insert a sending method and the row of its type. A default method clears the default flag
+        of every other method, whatever its type.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1147,6 +1454,12 @@ class Setting:
 
     @staticmethod
     def updateSendingMethodDet(**params):
+        """
+        Update a sending method and the row of its type, same default rule as on insert.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1299,6 +1612,13 @@ class Setting:
 
     @staticmethod
     def deleteSendingMethodDet(type, id_item):
+        """
+        Delete a sending method and the row of its type.
+        type: 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1323,6 +1643,12 @@ class Setting:
 
     @staticmethod
     def testSmtpMethod(id_item, to_addr=None, subject=None, body_text=None):
+        """
+        Send a test email with an SMTP method.
+
+        Returns:
+            tuple: (ok, message), message explaining a failure.
+        """
         if not to_addr:
             to_addr = Constants.cst_email_test
 
@@ -1423,6 +1749,12 @@ class Setting:
 
     @staticmethod
     def testMailjetMethod(id_item, to_addr=None, subject=None, html_part=None):
+        """
+        Send a test email with a Mailjet method.
+
+        Returns:
+            tuple: (ok, message).
+        """
         if not to_addr:
             to_addr = Constants.cst_email_test
 
@@ -1511,6 +1843,12 @@ class Setting:
 
     @staticmethod
     def testWhatsappMethod(id_item, to_phone=None, template_name=None, lang='fr'):
+        """
+        Send a test WhatsApp template message with a WhatsApp method.
+
+        Returns:
+            tuple: (ok, message).
+        """
         try:
             cursor = DB.cursor()
             cursor.execute(
@@ -1695,6 +2033,9 @@ class Setting:
     # Simple normalization to E.164 FR if necessary
     @staticmethod
     def normalize_fr_e164(n: str) -> str:
+        """
+        Turn a French phone number (0..., 0033...) into the E.164 format (+33...), other numbers are left as is.
+        """
         n = (n or "").strip().replace(" ", "").replace(".", "").replace("-", "").replace("(", "").replace(")", "")
         if n.startswith("+"):
             return n
@@ -1707,6 +2048,9 @@ class Setting:
     @staticmethod
     def decode_token(x):
         # MySQL VARBINARY -> bytes -> str
+        """
+        Read a token stored as bytes, hex text or plain text as a plain string, '' when empty.
+        """
         if isinstance(x, (bytes, bytearray, memoryview)):
             try:
                 return bytes(x).decode('utf-8')
@@ -1726,6 +2070,9 @@ class Setting:
 
     @staticmethod
     def getSendingModelList():
+        """
+        Read every message model.
+        """
         cursor = DB.cursor()
 
         req = ('SELECT mdl_ser, mdl_type, mdl_displayname, mdl_name, mdl_lang, mdl_default, mdl_date, mdl_user '
@@ -1738,6 +2085,10 @@ class Setting:
 
     @staticmethod
     def getSendingModelDet(type, id_item):
+        """
+        Read one message model of a type.
+        type: 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+        """
         cursor = DB.cursor()
 
         req = ('SELECT mdl_ser, mdl_type, mdl_displayname, mdl_name, mdl_lang, mdl_text, '
@@ -1751,6 +2102,12 @@ class Setting:
 
     @staticmethod
     def insertSendingModelDet(**params):
+        """
+        Insert a message model. A default model clears the default flag of the others of its type.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1793,6 +2150,12 @@ class Setting:
 
     @staticmethod
     def updateSendingModelDet(**params):
+        """
+        Update a message model, same default rule as on insert.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1830,6 +2193,12 @@ class Setting:
 
     @staticmethod
     def deleteSendingModelDet(type, id_item):
+        """
+        Delete one message model of a type.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1874,17 +2243,35 @@ class Setting:
     @staticmethod
     def send_test_smtp(method_id, to_email, subject, body_text):
         # Delegate to low-level tester; return boolean
+        """
+        Send a test email through an SMTP method.
+
+        Returns:
+            bool: True when sent.
+        """
         ok, _ = Setting.testSmtpMethod(method_id, to_addr=to_email, subject=subject, body_text=body_text)
         return ok
 
     @staticmethod
     def send_test_mailjet(method_id, to_email, subject, html_body):
         # Provide HTML; TextPart can be None
+        """
+        Send a test email through a Mailjet method.
+
+        Returns:
+            bool: True when sent.
+        """
         ok, _ = Setting.testMailjetMethod(method_id, to_addr=to_email, subject=subject, html_part=html_body)
         return ok
 
     @staticmethod
     def send_test_whatsapp(method_id, to_phone, template_name, lang='fr'):
+        """
+        Send a test WhatsApp template message.
+
+        Returns:
+            bool: True when sent.
+        """
         ok, _ = Setting.testWhatsappMethod(method_id, to_phone=to_phone, template_name=template_name, lang=lang)
         return ok
 
@@ -1927,6 +2314,13 @@ class Setting:
 
     @staticmethod
     def sendReport(**params):
+        """
+        Send a report PDF to a recipient: method_type 'A' uploads it to AmiCare directly, otherwise the
+        method and model given send it by SMTP, Mailjet or WhatsApp and the attempt is recorded in sending_event.
+
+        Returns:
+            tuple: (ok, message), message explaining a failure.
+        """
         cursor = DB.cursor()
 
         rec_num  = params.get('rec_num')
@@ -2090,6 +2484,12 @@ class Setting:
 
     @staticmethod
     def sendAmicare(method, pat_code, file_path, filename, rec_num, id_user):
+        """
+        Upload a report PDF to the AmiCare account of a patient.
+
+        Returns:
+            tuple: (ok, message).
+        """
         try:
             # imported here and not at the top, app/__init__.py loads this file itself
             from app import AMICARE_CONFIG  # pylint: disable=import-outside-toplevel
@@ -2470,6 +2870,12 @@ class Setting:
 
     @staticmethod
     def insert_sending_event(cursor, params):
+        """
+        Record a sending attempt in sending_event.
+
+        Returns:
+            int: new id.
+        """
         payload = {
             "method_type": params.get('method_type'),
             "method_id":   params.get('method_id'),
@@ -2501,6 +2907,9 @@ class Setting:
     @staticmethod
     def update_sending_event_success(cursor, sde_ser, id_user):
         # Update sending_event row to state S (sent)
+        """
+        Mark a sending attempt as sent.
+        """
         cursor.execute("""
             UPDATE sending_event
             SET sde_state='S', sde_sent=NOW(), sde_user=%s
@@ -2510,6 +2919,9 @@ class Setting:
     @staticmethod
     def update_sending_event_fail(cursor, sde_ser, error_text, id_user):
         # Update sending_event row to state F (failed)
+        """
+        Mark a sending attempt as failed with its error.
+        """
         cursor.execute("""
             UPDATE sending_event
             SET sde_state='F', sde_error=%s, sde_user=%s
@@ -2538,6 +2950,9 @@ class Setting:
 
     @staticmethod
     def getSendingEvent(sde_ser):
+        """
+        Read one sending attempt.
+        """
         cursor = DB.cursor()
         cursor.execute(
             "SELECT sde_ser, sde_date, sde_sent, sde_user, sde_rec_num, sde_type, "
@@ -2705,6 +3120,9 @@ class Setting:
             return ''
 
         def repl(m):
+            """
+            Return the value of a {{key}} placeholder of the template, '' when unknown.
+            """
             key = (m.group(1) or '').strip()
             val = ctx.get(key)
             return '' if val is None else str(val)
@@ -2714,6 +3132,9 @@ class Setting:
 
     @staticmethod
     def getSettingOauthList():
+        """
+        Read every OAuth client, client secrets included.
+        """
         cursor = DB.cursor()
 
         req = ('SELECT oacl_ser, oacl_client_id, oacl_client_secret, oacl_client_name, '
@@ -2729,6 +3150,9 @@ class Setting:
 
     @staticmethod
     def getSettingOauth(id_item):
+        """
+        Read one OAuth client, client secret included.
+        """
         cursor = DB.cursor()
 
         req = ('SELECT * FROM oauth2_client WHERE oacl_ser=%s LIMIT 1')
@@ -2739,6 +3163,12 @@ class Setting:
 
     @staticmethod
     def insertSettingOauth(**params):
+        """
+        Insert an OAuth client in oauth2_client.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2762,6 +3192,12 @@ class Setting:
 
     @staticmethod
     def updateSettingOauth(**params):
+        """
+        Update an OAuth client, the labbook-FE client is never changed.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2789,6 +3225,12 @@ class Setting:
 
     @staticmethod
     def deleteSettingOauth(id_item):
+        """
+        Delete an OAuth client, the labbook-FE client is never deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

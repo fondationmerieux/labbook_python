@@ -13,6 +13,9 @@ class Lite:
 
     @staticmethod
     def getLiteSetupList():
+        """
+        Read the LabBook Lite setups with their number of users, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select lite_ser, lite_name, lite_login, lite_pwd, COUNT(u.litu_user) AS nb_user, lite_report_pwd '
@@ -27,6 +30,9 @@ class Lite:
 
     @staticmethod
     def getLiteSetup(id_item):
+        """
+        Read one LabBook Lite setup.
+        """
         cursor = DB.cursor()
 
         req = ('select lite_ser, lite_name, lite_login, lite_pwd, lite_report_pwd '
@@ -39,6 +45,12 @@ class Lite:
 
     @staticmethod
     def insertLiteSetup(**params):
+        """
+        Insert a LabBook Lite setup, pwd already hashed with bcrypt.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -56,6 +68,12 @@ class Lite:
 
     @staticmethod
     def updateLiteSetup(**params):
+        """
+        Update a LabBook Lite setup, pwd already hashed with bcrypt.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -73,6 +91,12 @@ class Lite:
 
     @staticmethod
     def deleteLiteSetup(id_item):
+        """
+        Delete a LabBook Lite setup, its user links are kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -88,6 +112,12 @@ class Lite:
 
     @staticmethod
     def getLiteUsers(id_lite):
+        """
+        Read the ids of the users linked to a LabBook Lite setup.
+
+        Returns:
+            list: user ids, empty on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -105,6 +135,12 @@ class Lite:
 
     @staticmethod
     def insertLiteUsers(id_lite, users):
+        """
+        Replace the users linked to a LabBook Lite setup by the ones given.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -127,6 +163,12 @@ class Lite:
 
     @staticmethod
     def getLiteSetupByLogin(login):
+        """
+        Read the LabBook Lite setup of a login, with its password hash, to check the phone access.
+
+        Returns:
+            dict or None: setup, None when not found or on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -139,6 +181,12 @@ class Lite:
 
     @staticmethod
     def getLiteUsersByIds(user_ids):
+        """
+        Read the users allowed on the phone, password hashes included for the offline login. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         if not user_ids:
             return []
 
@@ -160,6 +208,12 @@ class Lite:
 
     @staticmethod
     def getLiteAnalysis():
+        """
+        Read the analyses enabled for LabBook Lite and every sampling act (code starting with PB). Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = """
                   SELECT id_data, code, nom as `name`, abbr, famille as `family`,
@@ -177,6 +231,12 @@ class Lite:
 
     @staticmethod
     def getLiteLinksAnalysisVar(ana_ids):
+        """
+        Read the links between these analyses and their variables. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         if not ana_ids:
             return []
 
@@ -197,6 +257,12 @@ class Lite:
 
     @staticmethod
     def getLiteVAnalysisVarByIds(variable_ids):
+        """
+        Read these variables. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         if not variable_ids:
             return []
 
@@ -219,6 +285,12 @@ class Lite:
 
     @staticmethod
     def getLiteAnalysisByIds(ids):
+        """
+        Read these analyses, used for the sampling acts of the Lite analyses. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         if not ids:
             return []
 
@@ -240,6 +312,12 @@ class Lite:
 
     @staticmethod
     def getLiteDictionary():
+        """
+        Read every dictionary value. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = """
                   SELECT id_data, dico_name, label, short_label,
@@ -255,6 +333,12 @@ class Lite:
 
     @staticmethod
     def getLitePatients():
+        """
+        Read every patient of the laboratory, with no filter. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = """
                   SELECT
@@ -277,6 +361,12 @@ class Lite:
 
     @staticmethod
     def getLitePrescribers():
+        """
+        Read every prescriber. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = """
                   SELECT
@@ -297,6 +387,12 @@ class Lite:
 
     @staticmethod
     def getLitePreferences():
+        """
+        Read every preference of sigl_06_data. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = """
                   SELECT id_data, identifiant as `key`, label, value
@@ -311,6 +407,12 @@ class Lite:
 
     @staticmethod
     def getLiteNationalities():
+        """
+        Read the nationalities, ordered by name. Sent to the phone by LiteSetupLoad.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             req = "SELECT nat_ser, nat_name, nat_code FROM nationality order by nat_name"
             with DB.cursor() as cursor:
@@ -322,6 +424,12 @@ class Lite:
 
     @staticmethod
     def parse_date(date_str):
+        """
+        Parse a date sent by the phone as DD/MM/YYYY.
+
+        Returns:
+            date or None: None when the text does not match.
+        """
         try:
             return datetime.strptime(date_str, "%d/%m/%Y").date()
         except Exception as e:
@@ -330,6 +438,12 @@ class Lite:
 
     @staticmethod
     def parse_datetime(datetime_str):
+        """
+        Parse a date and time sent by the phone, as YYYY-MM-DD HH:MM:SS or DD/MM/YYYY HH:MM.
+
+        Returns:
+            datetime or None: None when no format matches.
+        """
         for fmt in ("%Y-%m-%d %H:%M:%S", "%d/%m/%Y %H:%M"):
             try:
                 return datetime.strptime(datetime_str, fmt)
@@ -339,6 +453,13 @@ class Lite:
 
     @staticmethod
     def insertLiteRecord(rec, new_patient_id, lite_user_id):
+        """
+        Insert a record created on the phone in sigl_02_data, billing fields set to 0.
+        rec: record fields sent by the phone, numbers already computed by the caller.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

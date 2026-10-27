@@ -407,6 +407,18 @@ class ExportCSV(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Write a CSV content built by the caller to the tmp directory.
+
+        Body:
+            filename (str): file name, characters other than letters, digits, '.', '_' and '-' are replaced.
+            csv_str (str): file content.
+
+        Returns:
+            200: empty body.
+            400: filename or csv_str missing.
+            500: file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -460,6 +472,25 @@ class ExportDHIS2(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export aggregated data for DHIS2 to a CSV file, one value per data element and period.
+
+        Body:
+            date_beg (str): first day, YYYY-MM-DD.
+            date_end (str): last day, YYYY-MM-DD.
+            period (str): W week, M month, B two months, T quarter, Q four months, S semester, A year.
+            filename (str): spreadsheet in the DHIS2 directory, or LIST_* for a predefined export.
+            id_user (int): user asking for the export.
+            rec_type (str): 'E' external records, 'I' internal, anything else for both.
+            lite_filter (str): 'A' all records, 'N' without LabBook Lite, 'Y' LabBook Lite only.
+
+        Returns:
+            200: file written to tmp/dhis2_<name>_<dates>_<rec>_<lite>.csv, empty body.
+            400: a field is missing or the file name is invalid.
+            404: no data over the period.
+            409: dates invalid, unknown period, or spreadsheet without version or with a wrong one.
+            500: spreadsheet empty or file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -633,6 +664,28 @@ class ExportDHIS2Api(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Send the same data as ExportDHIS2 directly to a DHIS2 server (dataValueSets).
+
+        Body:
+            date_beg (str): first day, YYYY-MM-DD.
+            date_end (str): last day, YYYY-MM-DD.
+            period (str): W week, M month, B two months, T quarter, Q four months, S semester, A year.
+            filename (str): spreadsheet in the DHIS2 directory, or LIST_* for a predefined export.
+            id_user (int): user asking for the export.
+            rec_type (str): 'E' external records, 'I' internal, anything else for both.
+            lite_filter (str): 'A' all records, 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            dhs_ser (int): DHIS2 server setting id.
+            dry_run (str): 'Y' asks DHIS2 to check the data without saving it.
+
+        Returns:
+            DHIS2 answer with its own status code, 200 when accepted.
+            400: a field is missing or the file name is invalid.
+            404: no data over the period.
+            405: DHIS2 server setting not found.
+            409: dates invalid, unknown period, or spreadsheet without version or with a wrong one.
+            500: spreadsheet empty or DHIS2 server unreachable.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -806,6 +859,20 @@ class ExportWhonet(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the antibiotic susceptibility results of biologically validated records to a WHONET
+        tab-separated file.
+
+        Body:
+            date_beg (str): start, YYYY-MM-DD HH:MM, on the record receipt date.
+            date_end (str): end, YYYY-MM-DD HH:MM.
+
+        Returns:
+            200: file written to tmp/whonet_<date_beg>_<date_end>.txt, empty body.
+            400: date_beg or date_end missing.
+            404: no result over the period.
+            500: file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

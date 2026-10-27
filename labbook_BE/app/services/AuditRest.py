@@ -33,7 +33,24 @@ class AuditList(Resource):
 
     @require_oauth()
     def post(self):
-        """Return latest audit trail entries as JSON list for DataTables server-side."""
+        """
+        Return latest audit trail entries as JSON list for DataTables server-side.
+        System entries are left out unless filter_include_system is 'Y'.
+
+        Body (all optional):
+            start (int): first row, 0 by default.
+            length (int): number of rows, 25 by default.
+            draw: DataTables counter, sent back as is.
+            order (list): DataTables order, column 1 descending by default.
+            search (dict): DataTables search, its value is searched in every column.
+            filter_date_start, filter_date_end, filter_user, filter_role, filter_status, filter_ip,
+            filter_resource, filter_context (str): column filters.
+            filter_include_system (str): 'Y' or 'N' (default).
+
+        Returns:
+            200: draw, recordsTotal, recordsFiltered and data.
+            500: database read failed.
+        """
         try:
             args = request.get_json(silent=True) or {}
 
@@ -115,6 +132,17 @@ class AuditDet(Resource):
 
     @require_oauth()
     def get(self, aud_ser):
+        """
+        Return one audit trail entry.
+
+        Args:
+            aud_ser (int): audit entry id.
+
+        Returns:
+            200: entry fields.
+            404: entry not found.
+            500: database read failed.
+        """
         try:
             data = Audit.getAuditById(aud_ser)
         except Exception:
@@ -136,7 +164,21 @@ class AuditCreate(Resource):
 
     @require_oauth()
     def post(self):
-        """Create a new audit event."""
+        """
+        Create a new audit event, the user is read from the body, not from the token.
+
+        Body:
+            action (str): event name.
+            resource_type, resource_id, status (optional): what the event is about and its outcome.
+            details (dict or str, optional): stored as JSON.
+            user_login, user_display, user_role (str, optional): user who triggered the event.
+            event_type (str, optional): 'C', 'R', 'U', 'D' or 'E' (default).
+
+        Returns:
+            200: aud_ser of the new entry.
+            400: body is not a JSON object, or action missing.
+            500: insertion failed.
+        """
         data = request.get_json(force=True, silent=True)
         if not isinstance(data, dict):
             self.log.error(Logs.fileline() + " : AuditCreate ERROR invalid payload")
@@ -185,6 +227,19 @@ class AuditExportATNA(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the audit trail of a period to an ATNA XML file (RFC 3881 messages).
+
+        Body:
+            date_beg (str): first day, YYYY-MM-DD.
+            date_end (str): last day, YYYY-MM-DD, included.
+
+        Returns:
+            200: filename of the file written to the tmp directory, to fetch with AuditDownloadATNA.
+            400: date missing or not in YYYY-MM-DD.
+            404: no entry over the period.
+            500: database read or file write failed.
+        """
         data = request.get_json(silent=True) or {}
 
         date_beg = data.get('date_beg')
@@ -318,6 +373,17 @@ class AuditDownloadATNA(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, filename):
+        """
+        Send a file written by AuditExportATNA.
+
+        Args:
+            filename (str): file name in the tmp directory.
+
+        Returns:
+            200: XML file as an attachment.
+            404: file not found.
+            500: file could not be sent.
+        """
         base_path = Constants.cst_path_tmp
         fullpath = os.path.join(base_path, filename)
 
@@ -340,6 +406,20 @@ class AuditArchive(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Archive the audit trail of a period to a JSONL file, one entry per line, then purge it if asked.
+
+        Body:
+            date_beg (str): first day, YYYY-MM-DD.
+            date_end (str): last day, YYYY-MM-DD, included.
+            purge (str, optional): 'Y' deletes the archived entries, 'N' (default) keeps them.
+
+        Returns:
+            200: filename, archived_rows and purged_rows, file written to the tmp directory.
+            400: date missing or not in YYYY-MM-DD.
+            404: no entry over the period.
+            500: database read, file write or purge failed. A failed purge leaves the file written.
+        """
         audit_user = request.oauth_user
         data = request.get_json(silent=True) or {}
 
@@ -453,6 +533,18 @@ class AuditArchiveDownload(Resource):
 
     @require_oauth()
     def get(self, filename):
+        """
+        Send a file written by AuditArchive.
+
+        Args:
+            filename (str): file name in the tmp directory, without any path.
+
+        Returns:
+            200: JSONL file as an attachment.
+            400: file name holds a path.
+            404: file not found.
+            500: file could not be sent.
+        """
         base_path = Constants.cst_path_tmp
 
         # Basic filename hardening (no path traversal)

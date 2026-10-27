@@ -2,6 +2,7 @@
 import base64
 import logging
 import os
+import re
 import shutil
 import uuid
 from datetime import datetime
@@ -36,11 +37,25 @@ __all__ = [
 ]
 
 
+def is_safe_report_filename(filename):
+    """
+    Tell whether a report file name sent by the phone can be used as is in the upload directory:
+    no path separator and no leading dot, so it cannot point outside that directory.
+    """
+    return bool(filename) and re.fullmatch(r'[A-Za-z0-9_-][A-Za-z0-9._-]*', filename) is not None
+
+
 class LiteSetupList(Resource):
     log = logging.getLogger('log_services')
 
     @require_oauth()
     def post(self):
+        """
+        Return the LabBook Lite setups.
+
+        Returns:
+            200: data, list of setups.
+        """
         audit_user = request.oauth_user
         l_setup = Lite.getLiteSetupList()
 
@@ -67,6 +82,16 @@ class LiteSetupDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one LabBook Lite setup with the ids of its users.
+
+        Args:
+            id_item (int): setup id.
+
+        Returns:
+            200: setup fields, user ids in lite_users.
+            404: setup not found.
+        """
         audit_user = request.oauth_user
         item = Lite.getLiteSetup(id_item)
 
@@ -97,6 +122,24 @@ class LiteSetupDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a LabBook Lite setup and its users.
+
+        Args:
+            id_item (int): setup id, 0 to create.
+
+        Body:
+            name (str): setup name.
+            login (str): login typed in the phone application.
+            pwd (str): password, hashed with bcrypt, required on update too.
+            report_pwd (str): password of the PDF reports.
+            users (list): ids of the users allowed on the phone.
+
+        Returns:
+            200: setup id.
+            400: a field is missing.
+            500: hashing or database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -192,6 +235,19 @@ class LiteSetupLoad(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
+        """
+        Send to the phone everything it needs to work offline, no OAuth: users, analyses, variables,
+        dictionary, patients, prescribers, settings, nationalities, table schemas and the logo.
+
+        Body:
+            login (str): LabBook Lite setup login.
+            pwd (str): its password, checked against the bcrypt hash.
+
+        Returns:
+            200: setup data.
+            400: login or pwd missing.
+            401: unknown login or wrong password.
+        """
         args = request.get_json() or {}
 
         if 'login' not in args or 'pwd' not in args:
@@ -538,6 +594,22 @@ class LiteDataRecovery(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
+        """
+        Import the data entered on the phone, no OAuth: patients, records, requested analyses, samples,
+        results, validations, then the PDF reports already sent by LiteReportRecovery.
+        A failing item is logged and skipped, the others go on.
+
+        Body:
+            login (str): LabBook Lite setup login.
+            pwd (str): its password, checked against the bcrypt hash.
+            patients, records, analysis_request, samples, analysis_result, analysis_validation,
+            pdf_reports (list, optional): items to import.
+
+        Returns:
+            200: {'success': true}.
+            400: login or pwd missing.
+            401: unknown login or wrong password.
+        """
         args = request.get_json() or {}
 
         if 'login' not in args or 'pwd' not in args:
@@ -907,6 +979,11 @@ class LiteDataRecovery(Resource):
                     continue
 
                 filename = pdf.get("filename")  # ex: cr_LT-202505250001.pdf
+
+                if not is_safe_report_filename(filename):
+                    self.log.warning(Logs.fileline() + f" : LiteDataRecovery Skipping PDF → invalid filename {Logs.clean(str(filename))}")
+                    continue
+
                 file_path = os.path.join(Constants.cst_upload, filename)
 
                 if not os.path.exists(file_path):
@@ -961,6 +1038,21 @@ class LiteReportRecovery(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
+        """
+        Store the PDF reports sent by the phone in the upload directory, no OAuth.
+        LiteDataRecovery then links them to their records.
+
+        Body:
+            login (str): LabBook Lite setup login.
+            pwd (str): its password, checked against the bcrypt hash.
+            pdf_files (list, optional): items with filename and content_base64.
+
+        Returns:
+            200: {'success': true}.
+            400: login or pwd missing.
+            401: unknown login or wrong password.
+            500: a file could not be written, the files before it are kept.
+        """
         args = request.get_json() or {}
 
         if 'login' not in args or 'pwd' not in args:
@@ -992,6 +1084,10 @@ class LiteReportRecovery(Resource):
                 filename = pdf.get('filename')
                 content_b64 = pdf.get('content_base64')
                 if not filename or not content_b64:
+                    continue
+
+                if not is_safe_report_filename(filename):
+                    self.log.warning(Logs.fileline() + f' : LiteReportRecovery Skipping PDF → invalid filename {Logs.clean(str(filename))}')
                     continue
 
                 pdf_path = os.path.join(target_dir, filename)

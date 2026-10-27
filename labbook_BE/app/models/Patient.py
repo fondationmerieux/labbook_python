@@ -17,6 +17,11 @@ class Patient:
 
     @staticmethod
     def getPatientList(args):
+        """
+        Read the patients for the list screen, ordered by name, birth date as YYYY-MM-DD.
+        args: code, code_lab, lastname, firstname, phone (start of either number), sex,
+        limit (5000 by default with filters, None for no limit). An empty args reads up to 100000.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' code is not NULL '
@@ -75,6 +80,13 @@ class Patient:
 
     @staticmethod
     def getPatientSearch(text):
+        """
+        Search patients for a select field: every word must start a name, code or phone number,
+        limited to 1000.
+
+        Returns:
+            list: rows, empty when text has no word.
+        """
         cursor = DB.cursor()
 
         words = [w.strip() for w in text.split(' ') if w.strip()]
@@ -115,6 +127,13 @@ class Patient:
 
     @staticmethod
     def combinePatients(id_pat1, id_pat2):
+        """
+        Merge patient 2 into patient 1: records, deleted records and form items move to patient 1,
+        then patient 2 is deleted. Its external references (external_ref) are not moved.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -149,6 +168,9 @@ class Patient:
 
     @staticmethod
     def getPatient(id_pat):
+        """
+        Read one patient, columns named pat_* as the patient screen expects.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner as id_user, anonyme as pat_ano, code as pat_code, code_patient as pat_code_lab, '
@@ -209,6 +231,9 @@ class Patient:
 
     @staticmethod
     def getFormItems(id_pat):
+        """
+        Read the active custom form values of a patient.
+        """
         cursor = DB.cursor()
 
         req = ('select pfi_key, pfi_value '
@@ -221,6 +246,9 @@ class Patient:
 
     @staticmethod
     def checkFormItem(id_pat, key):
+        """
+        Count the active values of one custom form key for a patient.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_item '
@@ -235,6 +263,9 @@ class Patient:
 
     @staticmethod
     def sameFormItem(id_pat, key, value, act):
+        """
+        Count the values of a patient equal to this one for a key, active or not depending on act.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_item '
@@ -249,6 +280,12 @@ class Patient:
 
     @staticmethod
     def desactFormItem(id_pat, key):
+        """
+        Deactivate the active value of a key for a patient, kept as history.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -267,6 +304,12 @@ class Patient:
 
     @staticmethod
     def insertFormItem(id_pat, key, value, id_user):
+        """
+        Store a new active custom form value for a patient.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -284,6 +327,9 @@ class Patient:
 
     @staticmethod
     def getHistFormItems(id_pat):
+        """
+        Read the active history form values of a patient with the user who entered them, newest first.
+        """
         cursor = DB.cursor()
         sql = ('select phfi_evt, phfi_date, phfi_user, phfi_type, phfi_key, phfi_value, '
                'u.firstname, u.lastname, u.username '
@@ -296,6 +342,12 @@ class Patient:
 
     @staticmethod
     def insertHistFormItem(id_pat, id_user, block_id, fields):
+        """
+        Store one history form event, a row per field sharing a new UUID.
+
+        Returns:
+            str: UUID of the event.
+        """
         cursor = DB.cursor()
 
         phfi_evt = str(uuid.uuid4())  # event id
@@ -313,6 +365,12 @@ class Patient:
 
     @staticmethod
     def deleteHistFormEvent(id_pat, evt_id):
+        """
+        Deactivate every row of a history form event.
+
+        Returns:
+            int: number of rows deactivated.
+        """
         cursor = DB.cursor()
         sql = ('update patient_hist_form_item '
                'set phfi_act="N" '
@@ -322,6 +380,12 @@ class Patient:
 
     @staticmethod
     def getPatientByCode(code, code_lab):
+        """
+        Read a patient by its code, or by its laboratory code when code is empty.
+
+        Returns:
+            dict or None: patient, an empty dict when both codes are empty, None when not found.
+        """
         cursor = DB.cursor()
 
         cond  = ''
@@ -350,6 +414,10 @@ class Patient:
 
     @staticmethod
     def getPatientByIdentity(name, fname, sex, birth, age, age_unit):
+        """
+        Read the first patient with this name, first name and sex ('M', 'F', other), and this birth date,
+        or this age and age unit ('D', 'W', 'M', years otherwise) when there is no birth date.
+        """
         cursor = DB.cursor()
 
         if sex == 'M':
@@ -387,6 +455,12 @@ class Patient:
 
     @staticmethod
     def updatePatient(**params):
+        """
+        Update a patient of sigl_03_data. Missing pat_email, pat_lite, pat_agreement and pat_amicare take '', 0, 'N' and 0.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -422,6 +496,12 @@ class Patient:
 
     @staticmethod
     def insertPatient(**params):
+        """
+        Insert a patient in sigl_03_data. Missing pat_email, pat_lite, pat_agreement and pat_amicare take '', 0, 'N' and 0.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -460,6 +540,10 @@ class Patient:
     def newPatientCode(length=5, prefix=""):
         # Format by defaut 5 alphanumeric characters without zero
 
+        """
+        Generate a patient code not used yet: length characters (5 at least), capitals and digits 1 to 9.
+        The uniqueness is checked with prefix, but the code is returned without it.
+        """
         chars   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         numbers = "123456789"
         pool = chars + numbers
@@ -489,6 +573,12 @@ class Patient:
 
     @staticmethod
     def codeLab_exist(code):
+        """
+        Tell whether a laboratory patient code is used.
+
+        Returns:
+            bool or int: True if used, False otherwise, -1 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -508,6 +598,9 @@ class Patient:
 
     @staticmethod
     def getPatientHistoric(id_pat):
+        """
+        Read every result of a patient, sampling acts left out, dictionary values as labels, limited to 7000.
+        """
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_rec, rec.type as type_rec, rec.date_prescription as date_prescr, ref.nom as analysis, '
@@ -535,6 +628,9 @@ class Patient:
 
     @staticmethod
     def getDataset():
+        """
+        Read every patient with labels for sex, blood group, age unit and nationality, for the dataset screen.
+        """
         cursor = DB.cursor()
 
         req = ('select pat.id_data as id_patient, pat.code, pat.code_patient as code_lab, pat.nom as lastname, '
@@ -559,6 +655,12 @@ class Patient:
 
     @staticmethod
     def update_amicare_id(id_pat, amicare_id):
+        """
+        Store the AmiCare id of a patient.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
             cursor.execute('update sigl_03_data set pat_amicare=%s where id_data=%s', (amicare_id, id_pat))

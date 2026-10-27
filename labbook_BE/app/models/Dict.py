@@ -12,6 +12,9 @@ class Dict:
 
     @staticmethod
     def getDictValue(id_value):
+        """
+        Read one value of sigl_dico_data, as a list of one row.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr '
@@ -24,6 +27,12 @@ class Dict:
 
     @staticmethod
     def deleteDictValue(id_value):
+        """
+        Delete one value of sigl_dico_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -38,6 +47,9 @@ class Dict:
 
     @staticmethod
     def getDictDetails(dict_name):
+        """
+        Read every value of a dictionary, ordered by position.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
@@ -51,6 +63,10 @@ class Dict:
 
     @staticmethod
     def getDictDetailsById(id_dict):
+        """
+        Read the values of the dictionary named after the last '_' of the short_label of an entry,
+        for result types written 'dico_<name>'.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dico_descr, dict_formatting '
@@ -65,6 +81,12 @@ class Dict:
 
     @staticmethod
     def insertDict(**params):
+        """
+        Insert a dictionary value in sigl_dico_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -82,6 +104,12 @@ class Dict:
 
     @staticmethod
     def updateDict(**params):
+        """
+        Update a dictionary value: label, short label, position, code and formatting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -99,6 +127,12 @@ class Dict:
 
     @staticmethod
     def deleteDict(dict_name):
+        """
+        Delete a dictionary with all its values.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -113,6 +147,12 @@ class Dict:
 
     @staticmethod
     def updateDescr(**params):
+        """
+        Set the description of every value of a dictionary.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -129,6 +169,12 @@ class Dict:
 
     @staticmethod
     def exist(dico_name):
+        """
+        Tell whether a dictionary name is used.
+
+        Returns:
+            bool or int: True if used, False otherwise, -1 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -148,6 +194,10 @@ class Dict:
 
     @staticmethod
     def getDictList(args):
+        """
+        Read the dictionaries, one row per name, limited to 2000.
+        args: name, label (translated texts searched outside fr_FR), code.
+        """
         cursor = DB.cursor()
 
         filter_cond = ''
@@ -201,6 +251,9 @@ class Dict:
 
     @staticmethod
     def getDictExport(dico_name):
+        """
+        Read the values of one dictionary, or of every dictionary when dico_name is empty, for the CSV export.
+        """
         cursor = DB.cursor()
 
         cond = ''

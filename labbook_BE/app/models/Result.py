@@ -14,6 +14,11 @@ class Result:
 
     @staticmethod
     def getResultList(args):
+        """
+        Read the results of the records not yet technically validated, received over a period, limited to 500.
+        args: date_beg, date_end (required), emer_ana, type_ana, id_ana, code_pat, valid_res,
+        link_fam (passed as SQL parameters).
+        """
         cursor = DB.cursor()
 
         table_cond  = ''
@@ -79,6 +84,11 @@ class Result:
 
     @staticmethod
     def getResultRecord(id_rec, empty=True, link_fam=None):
+        """
+        Read the results of a record with analysis, variable and sample, ordered for display.
+        empty=False leaves out the results without value. link_fam is joined into the SQL text
+        without parameters.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -128,6 +138,10 @@ class Result:
 
     @staticmethod
     def getPreviousResult(id_pat, ref_ana, ref_var, id_res, date_vld=''):
+        """
+        Read the previous biologically validated result, not cancelled, of a patient for the same analysis
+        and variable, before date_vld when given.
+        """
         cursor = DB.cursor()
 
         if not date_vld:
@@ -152,6 +166,12 @@ class Result:
 
     @staticmethod
     def insertResult(**params):
+        """
+        Insert an empty result in sigl_09_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -177,6 +197,12 @@ class Result:
 
     @staticmethod
     def deleteResult(id_res):
+        """
+        Move a result to sigl_09_deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -205,6 +231,9 @@ class Result:
 
     @staticmethod
     def getResultValidation(id_res, type_vld=0):
+        """
+        Read the last validation of a result, of one type when type_vld is given, with its cancel reason.
+        """
         cursor = DB.cursor()
 
         req = (
@@ -232,6 +261,9 @@ class Result:
 
     @staticmethod
     def getResultListValidation(id_res):
+        """
+        Read every validation of a result, oldest first.
+        """
         cursor = DB.cursor()
 
         req = ('select v.id_data as id_data, v.id_owner as id_owner, v.id_resultat as id_resultat, '
@@ -247,6 +279,9 @@ class Result:
 
     @staticmethod
     def getLastTypeValidation(id_ana):
+        """
+        Read the type of the last validation of the results of a requested analysis.
+        """
         cursor = DB.cursor()
 
         req = ('select valid.type_validation as type_validation '
@@ -260,6 +295,10 @@ class Result:
 
     @staticmethod
     def getValidationByReq(id_req, type_vld=252):
+        """
+        Read the last validation of one type for the results of a requested analysis.
+        type_vld: 250 administrative, 251 technical, 252 biological.
+        """
         cursor = DB.cursor()
 
         req = ('select vld.type_validation as type_vld, vld.date_validation as date_vld '
@@ -273,6 +312,10 @@ class Result:
 
     @staticmethod
     def getListValidators(id_rec, type_vld=252):
+        """
+        Read the users who validated the results of a record, of one type, for the report.
+        type_vld: 250 administrative, 251 technical, 252 biological.
+        """
         cursor = DB.cursor()
 
         req = (
@@ -290,6 +333,12 @@ class Result:
 
     @staticmethod
     def insertValidation(**params):
+        """
+        Insert a validation of a result in sigl_10_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -307,6 +356,12 @@ class Result:
 
     @staticmethod
     def deleteValidationByResult(id_res):
+        """
+        Move every validation of a result to sigl_10_deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -335,6 +390,12 @@ class Result:
 
     @staticmethod
     def updateResult(**params):
+        """
+        Update the value of a result.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -353,6 +414,9 @@ class Result:
     @staticmethod
     def getResultRecordForReport(id_rec):
         # sort and group id_fam by id_req_ana
+        """
+        Read the results with a value of a record, with analysis and variable, for the report.
+        """
         cursor = DB.cursor()
 
         req = ('select ref.famille as id_fam '
@@ -408,6 +472,9 @@ class Result:
 
     @staticmethod
     def countResValidate(id_req_ana):
+        """
+        Count the validated results of a requested analysis, for the report.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_vld '
@@ -424,6 +491,9 @@ class Result:
 
     @staticmethod
     def getDataset(date_beg, date_end):
+        """
+        Read the results of the records validated or partly validated, received over a period, for the dataset screen.
+        """
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
@@ -464,6 +534,13 @@ class Result:
 
     @staticmethod
     def updateResultDemo():
+        """
+        Fill the last empty blood group and rhesus results with demo values (owner 666).
+        No longer called.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

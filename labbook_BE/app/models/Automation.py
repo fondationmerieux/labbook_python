@@ -39,6 +39,13 @@ class Automation:
     # ---------------------------
     @staticmethod
     def getAutomationJobs(job_type=None, is_active=None, limit=100, offset=0, order_by='ajb_next_run_at', order_dir='asc'):
+        """
+        Read the automation jobs, filtered by type and active flag, sorted and paginated.
+        order_by and order_dir outside the allowed values fall back to ajb_next_run_at asc.
+
+        Returns:
+            list: jobs, ajb_params decoded from JSON.
+        """
         cursor = DB.cursor()
 
         valid_order_by = {
@@ -90,6 +97,13 @@ class Automation:
 
     @staticmethod
     def getAutomationJob(ajb_ser: int):
+        """
+        Read one automation job, ajb_params decoded from JSON, with the names of its internal recipients
+        added as <key>_label.
+
+        Returns:
+            dict or None: job, None when not found.
+        """
         cursor = DB.cursor()
 
         req = (
@@ -434,6 +448,12 @@ class Automation:
 
     @staticmethod
     def deleteAutomationJob(ajb_ser: int) -> bool:
+        """
+        Delete one automation job.
+
+        Returns:
+            bool: True when a row was deleted, False when not found or on SQL error.
+        """
         cursor = DB.cursor()
         try:
             req = 'delete from automation_job where ajb_ser = %s'
@@ -453,6 +473,13 @@ class Automation:
                           date_to=None,
                           limit=100,
                           offset=0):
+        """
+        Read the execution history with its job fields, newest first, filtered and paginated,
+        with the names of the internal recipients.
+
+        Returns:
+            list: runs, empty on SQL error.
+        """
         cursor = DB.cursor()
 
         req = (
@@ -934,6 +961,9 @@ def compute_next_run_at(kind: str,
     last_dom_flag = str(schedule_last_dom or 'N').upper()
 
     def _exec_dt_for_period_start(start_y: int, start_m: int) -> datetime:
+        """
+        Return the execution date and time of the period starting at this year and month.
+        """
         end_y, end_m = _add_months(start_y, start_m, span - 1)
         month_end = _end_of_month(end_y, end_m)
         exec_day = _apply_day_choice(month_end, schedule_dom, last_dom_flag)
@@ -1074,6 +1104,9 @@ def _compute_period_window(job_row: dict, now_dt: datetime | None = None) -> tup
     job_type = (job_row.get('ajb_type') or '').lower()
 
     def day_bounds(d: date) -> tuple[datetime, datetime]:
+        """
+        Return the first and last second of a day.
+        """
         beg = datetime(d.year, d.month, d.day, 0, 0, 0)
         end = datetime(d.year, d.month, d.day, 23, 59, 59)
         return beg, end
@@ -1127,6 +1160,9 @@ def _compute_period_window(job_row: dict, now_dt: datetime | None = None) -> tup
     use_anchor = (schedule_anchor_jan == 'Y')
 
     def period_end_for(d: date) -> date:
+        """
+        Return the last day of the period containing d, periods aligned on January when anchored.
+        """
         if use_anchor:
             group_idx = (d.month - 1) // span
             start_month = group_idx * span + 1
@@ -1137,6 +1173,9 @@ def _compute_period_window(job_row: dict, now_dt: datetime | None = None) -> tup
             return _end_of_month(end_year, end_month)
 
     def period_start_from_end(end_d: date) -> date:
+        """
+        Return the first day of the period ending at end_d.
+        """
         start_year, start_month = _add_months(end_d.year, end_d.month, -(span - 1))
         return date(start_year, start_month, 1)
 
@@ -1769,6 +1808,14 @@ def _execute_job_dhis2_create(job_row: dict) -> dict:
 
 
 def _execute_job_billing(job_row: dict) -> dict:
+    """
+    Run a billing job: build the billing PDF of the scheduled period with billing_template,
+    store it in the billing upload directory, and attach it to an internal message when
+    billing_internal_msg is 'Y'. A period without data is a success, with a message only.
+
+    Returns:
+        dict: status, rows_count, output_uri, message and error_trace of the run.
+    """
     params = job_row.get('ajb_params') or {}
     if isinstance(params, str):
         try:
@@ -2602,6 +2649,13 @@ def _attach_file_to_message(message_id: int,
 
 
 def _execute_job_ssh(job_row: dict) -> dict:
+    """
+    Run the shell command of a system job (params 'command'), output kept in
+    /storage/io/ntp_status.out, and store the NTP status in the audit trail when params 'audit' is 'Y'.
+
+    Returns:
+        dict: status, rows_count, output_uri, message and error_trace of the run.
+    """
     params = job_row.get('ajb_params') or {}
     if isinstance(params, str):
         try:

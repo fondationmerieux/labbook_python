@@ -34,6 +34,12 @@ class Test(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Check that the API answers and the token is valid.
+
+        Returns:
+            200: 'Test GET OK'.
+        """
         self.log.info(Logs.fileline() + ' : TRACE Test GET')
         audit_user = request.oauth_user
         try:
@@ -45,6 +51,15 @@ class Test(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Check that the API answers and send the body back.
+
+        Body:
+            Any JSON.
+
+        Returns:
+            200: 'args = ' followed by the body received.
+        """
         self.log.info(Logs.fileline() + ' : TRACE Test POST')
 
         audit_user = request.oauth_user
@@ -62,6 +77,15 @@ class DicoById(Resource):
 
     @require_oauth()
     def get(self, id_data):
+        """
+        Return one dictionary entry, label translated, short_label left as is.
+
+        Args:
+            id_data (int): entry id.
+
+        Returns:
+            200: entry fields, empty object when not found.
+        """
         audit_user = request.oauth_user
         dico = Various.getDicoById(id_data)
 
@@ -93,6 +117,16 @@ class DefaultValue(Resource):
 
     @require_oauth()
     def get(self, name):
+        """
+        Return one setting of sigl_06_data.
+
+        Args:
+            name (str): setting name (identifiant).
+
+        Returns:
+            200: id_data, id_owner, identifiant, label and value.
+            404: setting not found.
+        """
         audit_user = request.oauth_user
         Various.useLangDB()
 
@@ -122,6 +156,17 @@ class DefaultValue(Resource):
 
     @require_oauth()
     def post(self, name, value):
+        """
+        Change the value of one setting of sigl_06_data.
+
+        Args:
+            name (str): setting name (identifiant).
+            value (str): new value.
+
+        Returns:
+            200: true.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         ret = Various.updateDefaultValue(name, value)
 
@@ -147,6 +192,12 @@ class InitVersion(Resource):
     log = logging.getLogger('log_services')
 
     def get(self):
+        """
+        Reload the en_GB and pt translations of the database after a new version, once only, no OAuth.
+
+        Returns:
+            200: empty body, also when nothing had to be done.
+        """
         # check if need to init version
         ini = Various.getLastInitVersion()
 
@@ -165,6 +216,13 @@ class NationalityList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the nationalities, codes in upper case, names translated.
+
+        Returns:
+            200: list of nationalities.
+            404: no nationality.
+        """
         audit_user = request.oauth_user
         l_items = Various.getNationalityList()
 
@@ -202,6 +260,21 @@ class DatasetByName(Resource):
 
     @require_oauth()
     def post(self, name):
+        """
+        Return a raw dataset, every text translated.
+
+        Args:
+            name (str): 'patient', 'record', 'analysis' or 'result'.
+
+        Body:
+            date_beg (str): start, YYYY-MM-DD HH:MM, not used for 'patient'.
+            date_end (str): end, YYYY-MM-DD HH:MM, not used for 'patient'.
+
+        Returns:
+            200: list of rows. For 'patient', the custom form fields are added to each row.
+            404: no data, or unknown name.
+            500: date_beg and date_end both missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 

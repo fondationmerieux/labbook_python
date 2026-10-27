@@ -15,6 +15,10 @@ class Report:
 
     @staticmethod
     def getNbResultRecevied(l_id_var, id_prod, date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Count the results received over a period for these variables and one sample type, epidemiological report.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         req = ('select count(distinct rec.id_data) as total '
@@ -49,6 +53,10 @@ class Report:
 
     @staticmethod
     def getNbResultReceviedV2(l_id_var, l_id_prod, date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Same as getNbResultRecevied with several sample types, indicators report.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond_id_prod = ''
@@ -94,6 +102,11 @@ class Report:
 
     @staticmethod
     def getNbResultAnalyzed(l_id_var, id_prod, date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Count the biologically validated results over a period for these variables and one sample type,
+        epidemiological report.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         req = ('select count(distinct rec.id_data) as total '
@@ -129,6 +142,10 @@ class Report:
 
     @staticmethod
     def getNbResultAnalyzedV2(l_id_var, l_id_prod, date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Same as getNbResultAnalyzed with several sample types, indicators report.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond_id_prod = ''
@@ -175,6 +192,12 @@ class Report:
 
     @staticmethod
     def getResultIndicator(**params):
+        """
+        Run the query built by ParseFormulaV2 (inner_req, end_req) over a period, indicators report.
+
+        Returns:
+            dict: row with value.
+        """
         cursor = DB.cursor()
 
         req = ('select count(distinct rec.id_data) as value '
@@ -206,6 +229,10 @@ class Report:
 
     @staticmethod
     def getActivityAge(date_beg, date_end, type_ana, lite_filter='A', lite_user_id=0):
+        """
+        Count the validated analyses of a period by analysis, sex and patient age, family type_ana or all when 0.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -251,6 +278,10 @@ class Report:
 
     @staticmethod
     def getActivityType(date_beg, date_end, type_ana, lite_filter='A', lite_user_id=0):
+        """
+        Count the validated analyses of a period by analysis and record type, family type_ana or all when 0.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -296,6 +327,11 @@ class Report:
 
     @staticmethod
     def getStatPatient(date_beg, date_end, service_int, lite_filter='A', lite_user_id=0):
+        """
+        Count the patients of the records received over a period, by age.
+        service_int: start of the internal service, empty for all.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -325,6 +361,11 @@ class Report:
 
     @staticmethod
     def getStatPrescr(date_beg, date_end, service_int, lite_filter='A', lite_user_id=0):
+        """
+        Count the records of each prescriber over a period of prescription dates.
+        service_int: start of the internal service, empty for all.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -354,6 +395,10 @@ class Report:
 
     @staticmethod
     def getStatSampler(date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Count the samples taken by each sampler over a period.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -382,6 +427,10 @@ class Report:
 
     @staticmethod
     def getStatProduct(date_beg, date_end, lite_filter='A', lite_user_id=0):
+        """
+        Count the samples of each type taken over a period (status 8).
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -411,6 +460,11 @@ class Report:
 
     @staticmethod
     def getStatNbPat(date_beg, date_end, service_int, lite_filter='A', lite_user_id=0):
+        """
+        Read the patients of the records received over a period, by sex and record type, for counting.
+        service_int: start of the internal service, empty for all.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -440,6 +494,11 @@ class Report:
 
     @staticmethod
     def getStatNbAna(date_beg, date_end, service_int, lite_filter='A', lite_user_id=0):
+        """
+        Read the analyses of the records received over a period, sampling acts left out, for counting.
+        service_int: start of the internal service, empty for all.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -463,6 +522,10 @@ class Report:
 
     @staticmethod
     def getBillingStatus(date_beg, date_end, id_user):
+        """
+        Read the billing of the records received over a period, limited to 7000.
+        id_user above 0 keeps the records of one user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -482,6 +545,10 @@ class Report:
 
     @staticmethod
     def getTodayList(date_beg, date_end, service_int):
+        """
+        Read the analyses of the records received over a period with their validation type, for the work list.
+        service_int: start of the internal service, empty for all.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -513,6 +580,11 @@ class Report:
 
     @staticmethod
     def getRegisterRows(date_beg, date_end, id_fam, type_rec, link_fam, limit):
+        """
+        Read one row per result of the records received over a period, with record, patient, sample and
+        validation fields, for the register. id_fam, type_rec ('E', 'I') and link_fam narrow the rows,
+        limit caps them.
+        """
         cursor = DB.cursor()
 
         params = {'date_beg': date_beg, 'date_end': date_end, 'limit': limit}
@@ -650,6 +722,9 @@ class Report:
 
     @staticmethod
     def getIdValueForFormula(dict_name, code):
+        """
+        Read the id of a dictionary value by dictionary name and code, for the [dict.code] items of a formula.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data '
@@ -663,6 +738,13 @@ class Report:
     @staticmethod
     def ParseFormulaV2(formula, l_id_prod):
         # used by export Indicator
+        """
+        Turn an indicators formula into the inner and end parts of the SQL query run by getResultIndicator.
+        l_id_prod: sample types of this result.
+
+        Returns:
+            dict: inner and end parts of the query.
+        """
         req = {}
 
         if formula != 'N/A':
@@ -918,6 +1000,12 @@ class Report:
 
     @staticmethod
     def ParseDictVar(dict_var):
+        """
+        Turn a [dict_name.code] item of a formula into the id of the dictionary value.
+
+        Returns:
+            int: id, 0 when the item does not match.
+        """
         res = 0
 
         # [dict_name.code] pattern
@@ -951,6 +1039,11 @@ class Report:
 
     @staticmethod
     def getTAT(date_beg, date_end, type_ana, id_ana, code_pat, rec_num, lite_filter='A', lite_user_id=0):
+        """
+        Read the analyses of a period with the save and validation dates of their record, for the turnaround times.
+        type_ana, id_ana, code_pat and rec_num narrow the rows.
+        lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only, lite_user_id narrowing to one phone user.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -1014,6 +1107,9 @@ class Report:
         """
         # --- helpers ---------------------------------------------------------
         def normalize_spaces(text: str) -> str:
+            """
+            Collapse every run of spaces into one.
+            """
             return ' '.join(text.split())
 
         def split_top_level_or(expr: str) -> list:

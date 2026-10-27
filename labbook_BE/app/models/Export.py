@@ -16,6 +16,14 @@ class Export:
 
     @staticmethod
     def getDataWhonet(date_beg, date_end):
+        """
+        Read the antibiotic susceptibility results for the WHONET export: biologically validated records
+        received over a period, their WHONET analyses (family 18), the biologically validated results not cancelled,
+        the sample, the patient and the laboratory header.
+
+        Returns:
+            list: one dict per result with every field of the WHONET file.
+        """
         cursor = DB.cursor()
 
         l_res = []
@@ -229,6 +237,15 @@ class Export:
 
     @staticmethod
     def getStatDHIS2(date_beg, date_end, key, rec_type='A', lite_filter='A'):
+        """
+        Compute one value of a DHIS2 spreadsheet over a period, chosen by key: NB_REC_SAVED, NB_ANA_SAVED,
+        NB_SAMP_OUTSOURCED, staff counts, equipment, procedures, stock alerts, non-conformities,
+        quality controls, meetings...
+        rec_type: 'E' external, 'I' internal, 'A' both. lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only.
+
+        Returns:
+            dict or str: row with value, 'WRONG FILTER' for an unknown key.
+        """
         res = ''
 
         cursor = DB.cursor()
@@ -583,6 +600,10 @@ class Export:
 
     @staticmethod
     def getListOutsourcing(date_beg, date_end, rec_type='A', lite_filter='A'):
+        """
+        Read the outsourced analyses of the records received over a period, for the LIST_OUTSOURCING export.
+        rec_type: 'E' external, 'I' internal, 'A' both. lite_filter: 'A' all, 'N' without LabBook Lite, 'Y' LabBook Lite only.
+        """
         cursor = DB.cursor()
 
         sql = (
@@ -620,6 +641,9 @@ class Export:
 
     @staticmethod
     def getListEEQ(date_beg, date_end):
+        """
+        Read the external quality control results of a period, for the LIST_EEQ export.
+        """
         cursor = DB.cursor()
 
         sql = (
@@ -643,6 +667,9 @@ class Export:
 
     @staticmethod
     def getListEqpFailure(date_beg, date_end):
+        """
+        Read the equipment failures of a period, for the LIST_EQUIPMENT_FAILURE export.
+        """
         cursor = DB.cursor()
 
         sql = (
@@ -667,6 +694,13 @@ class Export:
 
     @staticmethod
     def getListStockStatus(date_beg, date_end):
+        """
+        Compute the stock status of each product, packs left and expiry warning from stock_setting,
+        for the LIST_STOCK_STATUS export.
+
+        Returns:
+            list: one row per product.
+        """
         cursor = DB.cursor()
 
         # Load setting (warning in days)

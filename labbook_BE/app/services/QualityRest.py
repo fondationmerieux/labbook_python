@@ -115,6 +115,13 @@ class QualityLastMeeting(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the last quality meeting.
+
+        Returns:
+            200: meeting fields.
+            404: no meeting.
+        """
         audit_user = request.oauth_user
         meeting = Quality.getLastMeeting()
 
@@ -155,6 +162,15 @@ class QualityNbNonCompl(Resource):
 
     @require_oauth()
     def get(self, period):
+        """
+        Return the number of non-conformities.
+
+        Args:
+            period (str): 'open' for the ones not closed, 'month' for the last month.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = Quality.getNbNonCompliance(period)
 
@@ -178,6 +194,17 @@ class ConformityList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List the non-conformities of a period.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+
+        Returns:
+            200: list of non-conformities.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -225,6 +252,16 @@ class ConformityDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one non-conformity.
+
+        Args:
+            id_item (int): non-conformity id.
+
+        Returns:
+            200: non-conformity fields, dates as YYYY-MM-DD, None replaced by ''.
+            404: non-conformity not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getNonConformity(id_item)
 
@@ -264,6 +301,22 @@ class ConformityDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a non-conformity.
+
+        Args:
+            id_item (int): non-conformity id, 0 to create.
+
+        Body:
+            id_owner, id_item, name, reporter, report_date, description, impacts, categories (cat_*)
+            and their sub-categories (sub_*), follow-up (flwd_*), incharge, validate, close_date,
+            close_comment...: every field of the form, all required.
+
+        Returns:
+            200: id of the non-conformity.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -471,6 +524,16 @@ class ConformityDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one non-conformity.
+
+        Args:
+            id_item (int): non-conformity id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteNonConformity(id_item)
 
@@ -497,6 +560,19 @@ class ConformityExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the non-conformities of a period to a CSV file.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+
+        Returns:
+            200: file written to tmp/nonconformity_YYYYMMDD.csv, empty body.
+            400: date_beg or date_end missing.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -566,7 +642,7 @@ class ConformityExport(Resource):
                 Audit.insertAudit(audit_user, "ConformityExport", "QUALITY", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ConformityExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportConformity')
         try:
@@ -583,6 +659,16 @@ class ControlList(Resource):
 
     @require_oauth()
     def get(self, type_ctrl):
+        """
+        List the quality controls of one kind.
+
+        Args:
+            type_ctrl (str): 'INT' internal, 'EXT' external.
+
+        Returns:
+            200: list of controls.
+            409: type_ctrl is neither INT nor EXT.
+        """
         audit_user = request.oauth_user
         if type_ctrl != 'INT' and type_ctrl != 'EXT':
             self.log.error(Logs.fileline() + ' : ControlList ERROR wrong type')
@@ -618,6 +704,16 @@ class ControlDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one quality control.
+
+        Args:
+            id_item (int): quality control id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: quality control not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getControlDet(id_item)
 
@@ -645,6 +741,23 @@ class ControlDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a quality control.
+
+        Args:
+            id_item (int): quality control id, 0 to create.
+
+        Body:
+            type_ctrl (str): 'INT' or 'EXT'.
+            type_val (str): kind of value.
+            name (str): control name.
+            id_eqp (int): equipment checked.
+
+        Returns:
+            200: id of the control.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -717,6 +830,14 @@ class ControlIntExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every internal quality control to a CSV file.
+
+        Returns:
+            200: file written to tmp/control_int_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('INT')
@@ -762,7 +883,7 @@ class ControlIntExport(Resource):
                 Audit.insertAudit(audit_user, "ControlIntExport", "QUALITY", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlIntExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ControlIntExport')
         try:
@@ -778,6 +899,15 @@ class ControlIntResList(Resource):
 
     @require_oauth()
     def get(self, id_ctrl):
+        """
+        Return the results of an internal quality control.
+
+        Args:
+            id_ctrl (int): control id.
+
+        Returns:
+            200: list, dates as YYYY-MM-DD HH:MM.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getControlIntResList(id_ctrl)
 
@@ -807,6 +937,16 @@ class ControlIntRes(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one internal control result.
+
+        Args:
+            id_item (int): internal control result id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: internal control result not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getControlIntRes(id_item)
 
@@ -849,6 +989,21 @@ class ControlIntRes(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update an internal control result.
+
+        Args:
+            id_item (int): internal control result id, 0 to create.
+
+        Body:
+            cti_ctq (int): control id.
+            cti_date, cti_type, cti_result, cti_target, cti_comment: result fields.
+
+        Returns:
+            200: id of the result.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -922,6 +1077,17 @@ class ControlIntResExport(Resource):
 
     @require_oauth()
     def post(self, id_ctrl):
+        """
+        Export the results of one internal quality control to a CSV file.
+
+        Args:
+            id_ctrl (int): control id.
+
+        Returns:
+            200: file written to tmp/control_int_<id_ctrl>_YYYYMMDD.csv, empty body.
+            404: control not found, or nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cti_date', 'cti_target', 'cti_result', 'cti_comment', ]]
         controlDet = Quality.getControlDet(id_ctrl)
@@ -933,7 +1099,7 @@ class ControlIntResExport(Resource):
                 Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit not found')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 404)
 
         ctq_type = controlDet['ctq_type_val']
         ctq_name = controlDet['ctq_name']
@@ -990,7 +1156,7 @@ class ControlIntResExport(Resource):
                 Audit.insertAudit(audit_user, "ControlIntResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlIntResExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ControlIntResExport id_ctrl=' + str(id_ctrl))
         try:
@@ -1006,6 +1172,14 @@ class ControlExtExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every external quality control to a CSV file.
+
+        Returns:
+            200: file written to tmp/control_ext_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('EXT')
@@ -1051,7 +1225,7 @@ class ControlExtExport(Resource):
                 Audit.insertAudit(audit_user, "ControlExtExport", "QUALITY", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlExtExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ControlExtExport')
         try:
@@ -1067,6 +1241,15 @@ class ControlExtResList(Resource):
 
     @require_oauth()
     def get(self, id_ctrl):
+        """
+        Return the results of an external quality control, with the last attached report.
+
+        Args:
+            id_ctrl (int): control id.
+
+        Returns:
+            200: list of results, dates as YYYY-MM-DD HH:MM, id_file and filename of the report.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getControlExtResList(id_ctrl)
 
@@ -1109,6 +1292,16 @@ class ControlExtRes(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one external control result.
+
+        Args:
+            id_item (int): external control result id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: external control result not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getControlExtRes(id_item)
 
@@ -1139,6 +1332,21 @@ class ControlExtRes(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update an external control result.
+
+        Args:
+            id_item (int): external control result id, 0 to create.
+
+        Body:
+            cte_ctq (int): control id.
+            cte_date, cte_type, cte_organizer, cte_contact, cte_conform, cte_comment: result fields.
+
+        Returns:
+            200: id of the result.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1213,6 +1421,17 @@ class ControlExtResExport(Resource):
 
     @require_oauth()
     def post(self, id_ctrl):
+        """
+        Export the results of one external quality control to a CSV file.
+
+        Args:
+            id_ctrl (int): control id.
+
+        Returns:
+            200: file written to tmp/control_ext_<id_ctrl>_YYYYMMDD.csv, empty body.
+            404: control not found, or nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cte_date', 'cte_organizer', 'cte_contact', 'cte_conform', 'cte_comment', ]]
         controlDet = Quality.getControlDet(id_ctrl)
@@ -1224,7 +1443,7 @@ class ControlExtResExport(Resource):
                 Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit not found')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 404)
 
         ctq_type = controlDet['ctq_type_val']
         ctq_name = controlDet['ctq_name']
@@ -1282,7 +1501,7 @@ class ControlExtResExport(Resource):
                 Audit.insertAudit(audit_user, "ControlExtResExport", "QUALITY", int(id_ctrl), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ControlExtResExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ControlExtResExport id_ctrl=' + str(id_ctrl))
         try:
@@ -1298,6 +1517,12 @@ class EquipmentList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every equipment, with its photo when one is attached.
+
+        Returns:
+            200: list of equipment, section translated, photo_name and photo_url when a photo exists.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEquipmentList()
 
@@ -1338,6 +1563,15 @@ class EquipmentSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search equipment for a select field, limited to 1000.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching equipment.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1360,6 +1594,16 @@ class EquipmentDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one equipment.
+
+        Args:
+            id_item (int): equipment id.
+
+        Returns:
+            200: equipment fields, dates as YYYY-MM-DD, None replaced by ''.
+            404: equipment not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getEquipment(id_item)
 
@@ -1399,6 +1643,22 @@ class EquipmentDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update an equipment.
+
+        Args:
+            id_item (int): equipment id, 0 to create.
+
+        Body:
+            id_owner, id_item, name, maker, model, funct, location, section, supplier, serial, inventory,
+            incharge, date_receipt, date_buy, date_onduty, date_revoc, comment, critical,
+            eqp_status: equipment fields, all required.
+
+        Returns:
+            200: id of the equipment.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1479,6 +1739,17 @@ class EquipmentDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one equipment. Its preventive maintenances, contracts, failures and metrology
+        are deleted after it: a failure there leaves the equipment already gone.
+
+        Args:
+            id_item (int): equipment id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteEquipment(id_item)
 
@@ -1549,6 +1820,16 @@ class EquipmentComm(Resource):
 
     @require_oauth()
     def get(self, type, id_eqp):
+        """
+        Return a comment of an equipment.
+
+        Args:
+            type (str): kind of comment, only 'DOC' is handled.
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: comment fields, None replaced by ''.
+        """
         audit_user = request.oauth_user
         comm = Quality.getEquipmentComm(type, id_eqp)
 
@@ -1569,6 +1850,21 @@ class EquipmentComm(Resource):
 
     @require_oauth()
     def post(self, type, id_eqp):
+        """
+        Update a comment of an equipment.
+
+        Args:
+            type (str): kind of comment, only 'DOC' is handled.
+            id_eqp (int): equipment id.
+
+        Body:
+            comm (str): new comment.
+
+        Returns:
+            200: empty body.
+            400: comm missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1606,6 +1902,16 @@ class EqpDoc(Resource):
 
     @require_oauth()
     def get(self, type, id_eqp):
+        """
+        Return the manuals or procedures linked to an equipment.
+
+        Args:
+            type (str): 'MANU' manuals, 'PROC' procedures.
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: list with eqd_ser, title, id_file and name.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEquipmentDoc(type, id_eqp)
 
@@ -1628,6 +1934,23 @@ class EqpDoc(Resource):
 
     @require_oauth()
     def post(self, id_eqp):
+        """
+        Set the manuals and procedures linked to an equipment. Items with id_eqd 0 are added,
+        links missing from the lists are removed.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Body:
+            id_user (int): user making the change.
+            l_MANU (list): manuals, with id_eqd and id_MANU.
+            l_PROC (list): procedures, with id_eqd and id_PROC.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1721,6 +2044,14 @@ class EquipmentExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every equipment to a CSV file.
+
+        Returns:
+            200: file written to tmp/equipment_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['id_data', 'creation_date', 'name', 'maker', 'model', 'funct', 'location', 'status', 'section',
                    'supplier', 'serial_number', 'inventory_number', 'incharge', 'purchase_date', 'receipt_date',
@@ -1786,7 +2117,7 @@ class EquipmentExport(Resource):
                 Audit.insertAudit(audit_user, "EquipmentExport", "QUALITY", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : EquipmentExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportEquipment')
         try:
@@ -1802,6 +2133,15 @@ class EqpFailureList(Resource):
 
     @require_oauth()
     def get(self, id_eqp):
+        """
+        Return the failures of an equipment.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: list of failures.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEqpFailureList(id_eqp)
 
@@ -1834,6 +2174,17 @@ class EqpFailureExport(Resource):
 
     @require_oauth()
     def post(self, id_eqp):
+        """
+        Export the failures of an equipment to a CSV file.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: file written to tmp/eqp_failure_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         eqp = Quality.getEquipment(id_eqp)
 
@@ -1888,7 +2239,7 @@ class EqpFailureExport(Resource):
                 Audit.insertAudit(audit_user, "EqpFailureExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : EqpFailureExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpFailureExport')
         try:
@@ -1904,6 +2255,22 @@ class EqpFailureDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a failure.
+
+        Args:
+            id_item (int): not used, a new row is always added.
+
+        Body:
+            id_eqp (int): equipment id.
+            id_user (int): user making the change.
+            date_fail, type, incharge, supplier, comment: failure fields.
+
+        Returns:
+            200: id of the new row.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1947,6 +2314,16 @@ class EqpFailureDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one failure.
+
+        Args:
+            id_item (int): failure id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteEqpFailure(id_item)
 
@@ -1973,6 +2350,15 @@ class EqpMetrologyList(Resource):
 
     @require_oauth()
     def get(self, id_eqp):
+        """
+        Return the metrology checks of an equipment.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: list of metrology checks.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEqpMetrologyList(id_eqp)
 
@@ -2005,6 +2391,17 @@ class EqpMetrologyExport(Resource):
 
     @require_oauth()
     def post(self, id_eqp):
+        """
+        Export the metrology checks of an equipment to a CSV file.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: file written to tmp/eqp_metrology_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         eqp = Quality.getEquipment(id_eqp)
 
@@ -2052,7 +2449,7 @@ class EqpMetrologyExport(Resource):
                 Audit.insertAudit(audit_user, "EqpMetrologyExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : EqpMetrologyExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpMetrologyExport')
         try:
@@ -2068,6 +2465,22 @@ class EqpMetrologyDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a metrology check.
+
+        Args:
+            id_item (int): not used, a new row is always added.
+
+        Body:
+            id_eqp (int): equipment id.
+            id_user (int): user making the change.
+            date_metr, supplier, comment: check fields.
+
+        Returns:
+            200: id of the new row.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2109,6 +2522,16 @@ class EqpMetrologyDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one metrology check.
+
+        Args:
+            id_item (int): metrology check id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteEqpMetrology(id_item)
 
@@ -2135,6 +2558,15 @@ class EqpPreventList(Resource):
 
     @require_oauth()
     def get(self, id_eqp):
+        """
+        Return the preventive maintenances of an equipment.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: list of preventive maintenances.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEquipmentPreventiveList(id_eqp)
 
@@ -2167,6 +2599,17 @@ class EqpPreventExport(Resource):
 
     @require_oauth()
     def post(self, id_eqp):
+        """
+        Export the preventive maintenances of an equipment to a CSV file.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: file written to tmp/eqp_preventive_maintenance_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         eqp = Quality.getEquipment(id_eqp)
 
@@ -2212,7 +2655,7 @@ class EqpPreventExport(Resource):
                 Audit.insertAudit(audit_user, "EqpPreventExport", "QUALITY", int(id_eqp), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : EqpPreventExport ERROR audit export failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpPreventExport')
         try:
@@ -2228,6 +2671,22 @@ class EqpPreventiveDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a preventive maintenance.
+
+        Args:
+            id_item (int): not used, a new row is always added.
+
+        Body:
+            id_eqp (int): equipment id.
+            id_user (int): user making the change.
+            date_prevent, operator, comment: maintenance fields.
+
+        Returns:
+            200: id of the new row.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2269,6 +2728,16 @@ class EqpPreventiveDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one preventive maintenance.
+
+        Args:
+            id_item (int): preventive maintenance id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteEqpPreventive(id_item)
 
@@ -2295,6 +2764,15 @@ class EqpContractList(Resource):
 
     @require_oauth()
     def get(self, id_eqp):
+        """
+        Return the maintenance contracts of an equipment.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: list of maintenance contracts.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getEquipmentContractList(id_eqp)
 
@@ -2330,6 +2808,17 @@ class EqpContractExport(Resource):
 
     @require_oauth()
     def post(self, id_eqp):
+        """
+        Export the maintenance contracts of an equipment to a CSV file.
+
+        Args:
+            id_eqp (int): equipment id.
+
+        Returns:
+            200: file written to tmp/eqp_maintenance_contract_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         eqp = Quality.getEquipment(id_eqp)
 
@@ -2376,7 +2865,7 @@ class EqpContractExport(Resource):
                 Audit.insertAudit(audit_user, "EqpContractExport", "EQP", int(id_eqp), "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : EqpContractExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE EqpContractExport')
         try:
@@ -2392,6 +2881,22 @@ class EqpContractDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a maintenance contract.
+
+        Args:
+            id_item (int): not used, a new row is always added.
+
+        Body:
+            id_eqp (int): equipment id.
+            id_user (int): user making the change.
+            date_contract, date_upd, supplier, comment: contract fields.
+
+        Returns:
+            200: id of the new row.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2433,6 +2938,16 @@ class EqpContractDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one maintenance contract.
+
+        Args:
+            id_item (int): maintenance contract id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteEqpContract(id_item)
 
@@ -2459,6 +2974,16 @@ class ManualList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List the quality manuals with their last attached file.
+
+        Body (all optional):
+            title (str): searched in the title.
+            man_mas (str): master manual filter.
+
+        Returns:
+            200: list of manuals, section translated, dates as YYYY-MM-DD, id_file and filename.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2516,6 +3041,16 @@ class ManualDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one quality manual.
+
+        Args:
+            id_item (int): quality manual id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: quality manual not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getManual(id_item)
 
@@ -2552,6 +3087,21 @@ class ManualDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a quality manual.
+
+        Args:
+            id_item (int): quality manual id, 0 to create.
+
+        Body:
+            id_owner, id_item, title, reference, writer, auditor, approver, date_insert, date_apply,
+            date_update, section, man_mas: manual fields, all required.
+
+        Returns:
+            200: id of the manual.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2620,6 +3170,16 @@ class ManualDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one quality manual.
+
+        Args:
+            id_item (int): quality manual id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteManual(id_item)
 
@@ -2646,6 +3206,14 @@ class ManualExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the quality manuals, with the same filters as ManualList to a CSV file.
+
+        Returns:
+            200: file written to tmp/manual_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2707,7 +3275,7 @@ class ManualExport(Resource):
                 Audit.insertAudit(audit_user, "ManualExport", "MANU", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ManualExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportManual')
         try:
@@ -2723,6 +3291,15 @@ class ManualSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search quality manuals for a select field.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching manuals.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2745,6 +3322,12 @@ class MeetingList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every quality meeting with its last attached file.
+
+        Returns:
+            200: list of meetings, type translated, date as YYYY-MM-DD, id_file and filename.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getMeetingList()
 
@@ -2791,6 +3374,16 @@ class MeetingDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one quality meeting.
+
+        Args:
+            id_item (int): quality meeting id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: quality meeting not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getMeeting(id_item)
 
@@ -2821,6 +3414,20 @@ class MeetingDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a quality meeting.
+
+        Args:
+            id_item (int): quality meeting id, 0 to create.
+
+        Body:
+            id_owner, id_item, date_meeting, type, promoter, report: meeting fields, all required.
+
+        Returns:
+            200: id of the meeting.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2881,6 +3488,16 @@ class MeetingDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one quality meeting.
+
+        Args:
+            id_item (int): quality meeting id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteMeeting(id_item)
 
@@ -2907,6 +3524,14 @@ class MeetingExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every quality meeting to a CSV file.
+
+        Returns:
+            200: file written to tmp/meeting_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['id_data', 'date_meeting', 'type', 'type_id', 'promoter', 'report', ]]
         dict_data = Quality.getMeetingList()
@@ -2954,7 +3579,7 @@ class MeetingExport(Resource):
                 Audit.insertAudit(audit_user, "MeetingExport", "MEET", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : MeetingExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportMeeting')
         try:
@@ -2970,6 +3595,12 @@ class ProcedureList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every procedure with its last attached file.
+
+        Returns:
+            200: list of procedures, section translated, dates as YYYY-MM-DD, id_file and filename.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getProcedureList()
 
@@ -3022,6 +3653,16 @@ class ProcedureDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one procedure.
+
+        Args:
+            id_item (int): procedure id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: procedure not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getProcedure(id_item)
 
@@ -3058,6 +3699,21 @@ class ProcedureDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a procedure.
+
+        Args:
+            id_item (int): procedure id, 0 to create.
+
+        Body:
+            id_owner, id_item, title, reference, writer, auditor, approver, date_insert, date_apply,
+            date_update, section: procedure fields, all required.
+
+        Returns:
+            200: id of the procedure.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3124,6 +3780,16 @@ class ProcedureDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one procedure.
+
+        Args:
+            id_item (int): procedure id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteProcedure(id_item)
 
@@ -3150,6 +3816,14 @@ class ProcedureExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every procedure to a CSV file.
+
+        Returns:
+            200: file written to tmp/procedure_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['id_data', 'title', 'reference', 'writer', 'auditor', 'approver', 'date_insert',
                    'date_apply', 'date_update', 'section', ]]
@@ -3205,7 +3879,7 @@ class ProcedureExport(Resource):
                 Audit.insertAudit(audit_user, "ProcedureExport", "PROC", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : ProcedureExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportProcedure')
         try:
@@ -3221,6 +3895,15 @@ class ProcedureSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search procedures for a select field.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching procedures.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3243,6 +3926,14 @@ class StaffExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the staff to a CSV file.
+
+        Returns:
+            200: file written to tmp/staff_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['id_data', 'lastname', 'firstname', 'initial', 'birth', 'address',
                    'phone', 'email', 'arrived', 'position', 'section', 'last_eval', 'username', ]]
@@ -3301,7 +3992,7 @@ class StaffExport(Resource):
                 Audit.insertAudit(audit_user, "StaffExport", "STAFF", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StaffExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportStaff')
         try:
@@ -3317,6 +4008,19 @@ class StockCancelIO(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Cancel a stock entry or exit. Cancelling an exit marks its supply as not empty again.
+
+        Body:
+            id_stock (int): supply id (entry) or use id (exit).
+            type_move (str): 'I' entry, 'O' exit.
+            id_user (int): user cancelling.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed or unknown type_move.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3354,6 +4058,16 @@ class StockList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List the stock by product and place, with packs left and days before expiry.
+
+        Body (all optional):
+            prod_name, prod_type, prod_conserv, prod_lessor, prod_local: filters.
+            limit (int): number of rows.
+
+        Returns:
+            200: list of stock lines, type and storage translated, day_to_expir 1000 when expiry does not matter.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3416,6 +4130,16 @@ class StockListDet(Resource):
 
     @require_oauth()
     def get(self, id_item, id_local):
+        """
+        Return the supplies of a product in one place.
+
+        Args:
+            id_item (int): product id.
+            id_local (int): place id.
+
+        Returns:
+            200: list of supplies with packs left and days before expiry.
+        """
         audit_user = request.oauth_user
         l_stocks = Quality.getStockListDet(id_item, id_local)
 
@@ -3471,6 +4195,21 @@ class StockProductHist(Resource):
 
     @require_oauth()
     def post(self, id_item, id_local):
+        """
+        Return the entries and exits of a product in one place over a period.
+
+        Args:
+            id_item (int): product id.
+            id_local (int): place id.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+
+        Returns:
+            200: list of moves.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3550,6 +4289,12 @@ class StockProductList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every stock product.
+
+        Returns:
+            200: list, type and storage translated.
+        """
         audit_user = request.oauth_user
         l_products = Quality.getStockProductList()
 
@@ -3582,6 +4327,15 @@ class StockProductSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search stock products for a select field, limited to 1000.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching products.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3604,6 +4358,16 @@ class StockProductDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one stock product.
+
+        Args:
+            id_item (int): stock product id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: stock product not found.
+        """
         audit_user = request.oauth_user
         stock = Quality.getStockProduct(id_item)
 
@@ -3631,6 +4395,21 @@ class StockProductDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a stock product.
+
+        Args:
+            id_item (int): product id, 0 to create.
+
+        Body:
+            prd_name, prd_type, prd_nb_by_pack, prd_safe_limit, prd_supplier, prd_ref_supplier, prd_conserv,
+            prd_expir_oblig: product fields, all required.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3695,6 +4474,16 @@ class StockProductDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one stock product.
+
+        Args:
+            id_item (int): stock product id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStockProduct(id_item)
 
@@ -3721,6 +4510,15 @@ class StockSupplyList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List the supplies, with the packs left.
+
+        Body (all optional):
+            prod_name, prod_local: filters.
+
+        Returns:
+            200: list of supplies, dates as YYYY-MM-DD HH:MM.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3757,6 +4555,21 @@ class StockSupplyDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a supply to the stock. The buy price is stored in cents.
+
+        Args:
+            id_item (int): not used, a new supply is always added.
+
+        Body:
+            prs_prd, prs_prl, prs_user, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num,
+            prs_buy_price, prs_lessor: supply fields, all required.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: insertion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3806,6 +4619,19 @@ class StockSupplyMove(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Move supplies to other places. A supply moved whole changes place, a supply split creates
+        a new supply for the packs moved.
+
+        Body:
+            id_user (int): user making the change.
+            list_supply (list): items with prev_prs_ser, prs_ser, prs_nb_pack and prs_prl.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3904,6 +4730,21 @@ class StockSupplyRemove(Resource):
 
     @require_oauth()
     def post(self, id_item, id_local):
+        """
+        Mark as removed every supply of a product in one place.
+
+        Args:
+            id_item (int): product id.
+            id_local (int): place id.
+
+        Body:
+            id_user (int): user making the change.
+
+        Returns:
+            200: empty body.
+            400: id_user missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3941,6 +4782,15 @@ class StockUse(Resource):
 
     @require_oauth()
     def get(self, prs_ser):
+        """
+        Return the number of packs already used from a supply.
+
+        Args:
+            prs_ser (int): supply id.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         stock_use = Quality.getNbStockUse(prs_ser)
 
@@ -3969,6 +4819,19 @@ class StockUse(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Take packs out of a supply, which is marked empty when nothing is left.
+
+        Body:
+            pru_prs (int): supply id.
+            pru_nb_pack (int): number of packs used.
+            pru_user (int): user making the change.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4027,6 +4890,17 @@ class StockExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the stock, with the same filters as StockList to a CSV file.
+
+        Body (all optional):
+            prod_name, prod_type, prod_conserv, prod_lessor, prod_local: filters.
+
+        Returns:
+            200: file written to tmp/stock_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4104,7 +4978,7 @@ class StockExport(Resource):
                 Audit.insertAudit(audit_user, "StockExport", "STOCK", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StockExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockExport')
         try:
@@ -4120,6 +4994,14 @@ class StockProductsExport(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Export every stock product to a CSV file.
+
+        Returns:
+            200: file written to tmp/stock_products_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['prd_ser', 'date', 'name', 'type', 'nb_by_pack', 'supplier', 'ref_supplier', 'conserv',
                    'safe_limit']]
@@ -4182,7 +5064,7 @@ class StockProductsExport(Resource):
                 Audit.insertAudit(audit_user, "StockProductsExport", "STOCK", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StockProductsExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockProductsExport')
         try:
@@ -4198,6 +5080,14 @@ class StockSuppliesExport(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Export every supply to a CSV file.
+
+        Returns:
+            200: file written to tmp/stock_supplies_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['prs_ser', 'date', 'product', 'nb_pack', 'receipt_date', 'expir_date', 'rack', 'batch_num',
                    'buy_price', 'user', 'empty', 'cancel', 'user_cancel', 'lessor', 'remove', 'user_remove']]
@@ -4255,7 +5145,7 @@ class StockSuppliesExport(Resource):
                 Audit.insertAudit(audit_user, "StockSuppliesExport", "STOCK", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StockSuppliesExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockSuppliesExport')
         try:
@@ -4271,6 +5161,14 @@ class StockUsesExport(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Export every stock exit to a CSV file.
+
+        Returns:
+            200: file written to tmp/stock_uses_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['pru_ser', 'date', 'product', 'nb_pack', 'user', 'cancel', 'user_cancel']]
         dict_data = Quality.getStockExportUses()
@@ -4318,7 +5216,7 @@ class StockUsesExport(Resource):
                 Audit.insertAudit(audit_user, "StockUsesExport", "STOCK", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : StockUsesExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE StockUsesExport')
         try:
@@ -4334,6 +5232,12 @@ class StockLocalList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every stock place.
+
+        Returns:
+            200: list with nb_used, the number of supplies stored there.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getStockLocalList()
 
@@ -4367,6 +5271,15 @@ class StorageList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List the stored aliquots with their place, record and patient.
+
+        Body (optional):
+            in_stock (str): 'Y' (default) aliquots in stock, 'N' the ones taken out.
+
+        Returns:
+            200: data, list of aliquots, type and pathogen labels added, dates as YYYY-MM-DD HH:MM.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4412,6 +5325,12 @@ class StorageRoomList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every storage room.
+
+        Returns:
+            200: data, list of storage rooms.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getStorageRoomList()
 
@@ -4438,6 +5357,16 @@ class StorageRoomDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one storage room.
+
+        Args:
+            id_item (int): storage room id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: storage room not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageRoom(id_item)
 
@@ -4465,6 +5394,20 @@ class StorageRoomDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a storage room.
+
+        Args:
+            id_item (int): storage room id, 0 to create.
+
+        Body:
+            sro_user, sro_name, sro_label, sro_abbrev: room fields.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4522,6 +5465,16 @@ class StorageRoomDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one storage room.
+
+        Args:
+            id_item (int): storage room id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStorageRoom(id_item)
 
@@ -4548,6 +5501,12 @@ class StorageChamberList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every storage chamber.
+
+        Returns:
+            200: data, list of storage chambers.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getStorageChamberList()
 
@@ -4574,6 +5533,16 @@ class StorageChamberDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one storage chamber.
+
+        Args:
+            id_item (int): storage chamber id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: storage chamber not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageChamber(id_item)
 
@@ -4601,6 +5570,21 @@ class StorageChamberDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a storage chamber.
+
+        Args:
+            id_item (int): storage chamber id, 0 to create.
+
+        Body:
+            sch_user, sch_name, sch_label, sch_abbrev: chamber fields.
+            sch_room (int): room id.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4662,6 +5646,16 @@ class StorageChamberDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one storage chamber.
+
+        Args:
+            id_item (int): storage chamber id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStorageChamber(id_item)
 
@@ -4688,6 +5682,12 @@ class StorageCompList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every storage compartment.
+
+        Returns:
+            200: data, list of storage compartments.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getStorageCompList()
 
@@ -4714,6 +5714,16 @@ class StorageCompDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one storage compartment.
+
+        Args:
+            id_item (int): storage compartment id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: storage compartment not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageComp(id_item)
 
@@ -4741,6 +5751,21 @@ class StorageCompDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a storage compartment.
+
+        Args:
+            id_item (int): storage compartment id, 0 to create.
+
+        Body:
+            sco_user, sco_name, sco_label, sco_abbrev, sco_dim_x, sco_dim_y, sco_dim_z: compartment fields.
+            sco_chamber (int): chamber id.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4804,6 +5829,16 @@ class StorageCompDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one storage compartment.
+
+        Args:
+            id_item (int): storage compartment id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStorageComp(id_item)
 
@@ -4830,6 +5865,12 @@ class StorageBoxList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every storage box.
+
+        Returns:
+            200: data, list of storage boxs.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getStorageBoxList()
 
@@ -4856,6 +5897,16 @@ class StorageBoxDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one storage box.
+
+        Args:
+            id_item (int): storage box id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: storage box not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageBox(id_item)
 
@@ -4883,6 +5934,21 @@ class StorageBoxDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a storage box.
+
+        Args:
+            id_item (int): storage box id, 0 to create.
+
+        Body:
+            sbo_user, sbo_name, sbo_label, sbo_coordinates, sbo_dim_x, sbo_dim_y, sbo_full: box fields.
+            sbo_compartment (int): compartment id.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -4946,6 +6012,16 @@ class StorageBoxDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one storage box.
+
+        Args:
+            id_item (int): storage box id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStorageBox(id_item)
 
@@ -4972,6 +6048,16 @@ class StorageBoxCoord(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return the full location of a storage box: room, chamber, compartment and box.
+
+        Args:
+            id_item (int): box id.
+
+        Returns:
+            200: labels of each level, coordinates and full flag of the box.
+            404: box not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageBoxCoord(id_item)
 
@@ -5003,6 +6089,16 @@ class StorageAliquotDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one aliquot.
+
+        Args:
+            id_item (int): aliquot id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: aliquot not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getStorageAliquot(id_item)
 
@@ -5030,6 +6126,21 @@ class StorageAliquotDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create aliquots, or update one when id_item is above 0.
+
+        Args:
+            id_item (int): aliquot id, 0 to create.
+
+        Body:
+            aliquots (list): items with sal_user, sal_sample, sal_patient, sal_box, sal_type, sal_pathogen,
+                             sal_coordinates and sal_in_stock.
+
+        Returns:
+            200: empty body.
+            400: aliquots or a field of an item missing.
+            500: database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5106,6 +6217,16 @@ class StorageAliquotDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one aliquot.
+
+        Args:
+            id_item (int): aliquot id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteStorageAliquot(id_item)
 
@@ -5132,6 +6253,22 @@ class StorageAliquotDestock(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Take an aliquot out of the storage.
+
+        Args:
+            id_item (int): aliquot id.
+
+        Body:
+            id_user (int): user making the change.
+            in_stock (str): required, not used.
+            reason, external, location, destock_date: destocking fields.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5175,6 +6312,21 @@ class StorageAliquotRestock(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Put an aliquot back in the storage.
+
+        Args:
+            id_item (int): aliquot id.
+
+        Body:
+            id_user (int): user making the change.
+            in_stock (str): required, not used.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5213,6 +6365,12 @@ class SupplierList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every supplier.
+
+        Returns:
+            200: list.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getSupplierList()
 
@@ -5239,6 +6397,15 @@ class SupplierSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search suppliers for a select field, limited to 1000.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching suppliers.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5261,6 +6428,16 @@ class SupplierDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one supplier.
+
+        Args:
+            id_item (int): supplier id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: supplier not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getSupplier(id_item)
 
@@ -5288,12 +6465,28 @@ class SupplierDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a supplier.
+
+        Args:
+            id_item (int): supplier id, 0 to create.
+
+        Body:
+            id_owner, id_item, supplier, lastname, firstname, funct, address, phone, mobile, fax, email,
+            comment, critical: supplier fields, all required.
+
+        Returns:
+            200: id of the supplier.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
         if 'id_owner' not in args or 'id_item' not in args or 'supplier' not in args or 'funct' not in args or \
            'lastname' not in args or 'firstname' not in args or 'address' not in args or 'comment' not in args or \
-           'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args:
+           'phone' not in args or 'mobile' not in args or 'fax' not in args or 'email' not in args or \
+           'critical' not in args:
             self.log.error(Logs.fileline() + ' : SupplierDet ERROR args missing')
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING"}
@@ -5356,6 +6549,16 @@ class SupplierDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one supplier.
+
+        Args:
+            id_item (int): supplier id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteSupplier(id_item)
 
@@ -5382,6 +6585,14 @@ class SupplierExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every supplier to a CSV file.
+
+        Returns:
+            200: file written to tmp/supplier_YYYYMMDD.csv, empty body.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         l_data = [['id_data', 'id_owner', 'supplier', 'lastname', 'firstname', 'funct', 'address',
                    'phone', 'mobile', 'fax', 'email', 'comment', 'critical',
@@ -5438,7 +6649,7 @@ class SupplierExport(Resource):
                 Audit.insertAudit(audit_user, "SupplierExport", "SUPPLIER", None, "ERROR", details, "E")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : SupplierExport ERROR audit false')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE ExportSupplier')
         try:
@@ -5454,6 +6665,18 @@ class TraceDownload(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Record that a user opened a document, or update the last access when already recorded.
+
+        Body:
+            id_user (int): user.
+            type (str): kind of document, 'PROC' for instance.
+            ref (int): document id.
+
+        Returns:
+            200: empty body, also when the write failed.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5494,6 +6717,15 @@ class TraceList(Resource):
 
     @require_oauth()
     def get(self, type_trace):
+        """
+        Return who opened the documents of one kind.
+
+        Args:
+            type_trace (str): kind of document, only 'PROC' is handled.
+
+        Returns:
+            200: list of traces, dates as YYYY-MM-DD HH:MM.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getTraceList(type_trace)
 
@@ -5525,6 +6757,19 @@ class TraceList(Resource):
 
     @require_oauth()
     def post(self, type_trace):
+        """
+        Same list as TraceList.get, with filters.
+
+        Args:
+            type_trace (str): kind of document, only 'PROC' is handled.
+
+        Body:
+            doc_name (str): searched in the document name, required, may be empty.
+            user_id (int): user id, required, 0 or empty for every user.
+
+        Returns:
+            200: list of traces, dates as YYYY-MM-DD HH:MM.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5562,6 +6807,15 @@ class MessageList(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return the messages sent or received by a user and not deleted on their side.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: list of messages, dates as YYYY-MM-DD HH:MM, id_file and filename of the attachment.
+        """
         audit_user = request.oauth_user
         l_items = Quality.getMessageList(id_user)
 
@@ -5604,6 +6858,16 @@ class MessageDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one message.
+
+        Args:
+            id_item (int): message id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: message not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getMessage(id_item)
 
@@ -5634,6 +6898,22 @@ class MessageDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Add a message.
+
+        Args:
+            id_item (int): not used, a new row is always added.
+
+        Body:
+            id_user (int): sender.
+            receiver (int): recipient.
+            title, message (str): message content.
+
+        Returns:
+            200: id of the message.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5677,6 +6957,17 @@ class MessageDel(Resource):
 
     @require_oauth()
     def post(self, id_item, id_user):
+        """
+        Delete a message on the side of one user, the other one still sees it.
+
+        Args:
+            id_item (int): message id.
+            id_user (int): user deleting it.
+
+        Returns:
+            200: true.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deleteMessage(id_item, id_user)
 
@@ -5705,10 +6996,20 @@ class MessageRead(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Mark a message as read.
+
+        Args:
+            id_item (int): message id.
+
+        Returns:
+            200: empty body.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.messageRead(id_item)
 
-        if ret is True:
+        if ret is False:
             self.log.error(Logs.alert() + ' : MessageRead ERROR read')
             try:
                 details = {"result": "ERROR", "id_item": int(id_item)}
@@ -5731,6 +7032,15 @@ class MessageUnread(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return the number of unread messages of a user.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         # audit_user = request.oauth_user
         res = Quality.countMessageUnread(id_user)
 
@@ -5749,6 +7059,12 @@ class PrinterList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return every printer.
+
+        Returns:
+            200: data, list of printers.
+        """
         audit_user = request.oauth_user
         l_printers = Quality.getPrinterList()
 
@@ -5775,6 +7091,16 @@ class PrinterDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one printer.
+
+        Args:
+            id_item (int): printer id.
+
+        Returns:
+            200: fields, None replaced by ''.
+            404: printer not found.
+        """
         audit_user = request.oauth_user
         item = Quality.getPrinter(id_item)
 
@@ -5802,6 +7128,23 @@ class PrinterDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a printer.
+
+        Args:
+            id_item (int): printer id, 0 to create.
+
+        Body:
+            name (str): printer name.
+            script (str): print script, run by PrintByScript.
+            rank (int): display order.
+            default (str): 'Y' for the default printer.
+
+        Returns:
+            200: id of the printer.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -5859,6 +7202,16 @@ class PrinterDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one printer.
+
+        Args:
+            id_item (int): printer id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Quality.deletePrinter(id_item)
 

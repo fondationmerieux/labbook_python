@@ -35,6 +35,16 @@ class ProductDet(Resource):
 
     @require_oauth()
     def get(self, id_prod):
+        """
+        Return one sample.
+
+        Args:
+            id_prod (int): sample id.
+
+        Returns:
+            200: sample fields, dates as YYYY-MM-DD HH:MM, None replaced by ''.
+            404: sample not found.
+        """
         audit_user = request.oauth_user
         prod = Product.getProductDet(id_prod)
 
@@ -67,13 +77,30 @@ class ProductDet(Resource):
 
     @require_oauth()
     def post(self, id_prod):
+        """
+        Create or update a sample.
+
+        Args:
+            id_prod (int): sample id, 0 to create.
+
+        Body:
+            stat, type, storage, ana, prod_date, sampler, location, location_accu, receipt_date,
+            comment, code: sample fields, all required.
+            id_rec (int): record id.
+            id_owner (int): user making the change, required to create.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
         if 'stat' not in args or 'type' not in args or 'storage' not in args or 'ana' not in args or \
            'prod_date' not in args or 'sampler' not in args or 'location' not in args or \
            'location_accu' not in args or 'receipt_date' not in args or \
-           'comment' not in args or 'code' not in args:
+           'comment' not in args or 'code' not in args or 'id_rec' not in args:
             self.log.error(Logs.fileline() + ' : ProductDet ERROR args missing')
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "id_prod": int(id_prod)}
@@ -156,6 +183,16 @@ class ProductList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List samples with their record and patient. With an empty body, only samples of records not
+        yet biologically validated, limited to 1000, otherwise limited to 15000.
+
+        Body (optional):
+            link_fam (list): family ids to filter by.
+
+        Returns:
+            200: list of samples.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -178,6 +215,16 @@ class ProductReq(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return the samples of a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: list of samples, type and status translated, dates as YYYY-MM-DD HH:MM.
+            404: no sample in this record.
+        """
         audit_user = request.oauth_user
         l_prod = Product.getProductReq(id_rec)
 
@@ -218,6 +265,20 @@ class ProductReq(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Add samples to records. When a batch analyzer is declared, a LAB-28 work order is prepared
+        for each sample and the analyzer script is started.
+
+        Body:
+            list_prod (list): one item per sample, with id_owner, date_samp and date_receipt
+                              (YYYY-MM-DDTHH:MM), time_receipt, type_samp, ana, stat, id_rec, sampler,
+                              comm, locat_samp, locat_samp_more, location and code.
+
+        Returns:
+            200: empty body.
+            400: list_prod or a field of an item missing.
+            500: insertion failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -316,6 +377,13 @@ class ProductLastCode(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the last sample code matching the format set in the record numbering settings,
+        used to prefill the next code.
+
+        Returns:
+            200: last_code, empty when no format is set or no code matches.
+        """
         audit_user = request.oauth_user
         last_code = ''
 
@@ -352,6 +420,16 @@ class ProductCheckCode(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Tell which of the given sample codes are already used.
+
+        Body:
+            codes (list): codes to check, empty values ignored.
+
+        Returns:
+            200: existing_codes, the codes already used.
+            400: codes missing or not a list.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

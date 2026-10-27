@@ -40,6 +40,13 @@ class ConnectSetting(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the LabBook Connect settings.
+
+        Returns:
+            200: cos_by_user and cos_url.
+            500: settings not found.
+        """
         audit_user = request.oauth_user
         setting = Analyzer.getConnectSetting()
 
@@ -62,6 +69,18 @@ class ConnectSetting(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Update the LabBook Connect settings.
+
+        Body:
+            id_user (int): user making the change.
+            url (str): LabBook Connect address.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -99,6 +118,12 @@ class AnalyzerList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the analyzers declared, ordered by rank.
+
+        Returns:
+            200: list of analyzers.
+        """
         audit_user = request.oauth_user
         l_analyzers = Analyzer.getAnalyzerList()
 
@@ -119,6 +144,16 @@ class AnalyzerDet(Resource):
 
     @require_oauth()
     def get(self, id_analyzer):
+        """
+        Return one analyzer.
+
+        Args:
+            id_analyzer (int): analyzer id (ans_ser).
+
+        Returns:
+            200: analyzer fields, None replaced by ''.
+            404: analyzer not found.
+        """
         audit_user = request.oauth_user
         item = Analyzer.getAnalyzerDet(id_analyzer)
 
@@ -146,6 +181,25 @@ class AnalyzerDet(Resource):
 
     @require_oauth()
     def post(self, id_analyzer):
+        """
+        Create or update an analyzer.
+
+        Args:
+            id_analyzer (int): analyzer id, 0 to create.
+
+        Body:
+            id_user (int): user making the change.
+            rank (int): display order.
+            name (str): analyzer name.
+            key (str): identifier used by LabBook Connect in the LAB-27 and LAB-29 URLs.
+            batch (str): 'Y' batch mode, 'N' otherwise.
+            filename (str): setting file, see AnalyzerFile.
+
+        Returns:
+            200: analyzer id.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -211,6 +265,19 @@ class AnalyzerDet(Resource):
 
     @require_oauth()
     def delete(self, id_analyzer):
+        """
+        Delete an analyzer, its messages are kept.
+
+        Args:
+            id_analyzer (int): analyzer id.
+
+        Body (optional):
+            id_user (int): user making the change, written to the log.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -242,6 +309,12 @@ class AnalyzerFile(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the analyzer setting files found in /storage/resource/connect/analyzer/setting/.
+
+        Returns:
+            200: list of files with filename, version, brand, name, id, mapping and display.
+        """
         audit_user = request.oauth_user
         l_analyzers = Analyzer.getAnalyzerFiles()
 
@@ -261,6 +334,20 @@ class AnalyzerLab27(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, id_analyzer):
+        """
+        Answer a work order query sent by LabBook Connect (IHE LAW LAB-27), no OAuth.
+
+        Args:
+            id_analyzer (str): analyzer key, as set in AnalyzerDet.
+
+        Body:
+            Raw HL7 QBP^Q11 message, stored in analyzer_msg.
+
+        Returns:
+            200: HL7 RSP^K11 with the orders.
+            400: HL7 ACK, AR if the message is empty or the analyzer unknown, AE if the message is invalid.
+            500: HL7 ACK AE, message could not be stored or answer could not be built.
+        """
         msg_hl7 = request.data.decode('utf-8').strip()
 
         if not msg_hl7:
@@ -341,6 +428,21 @@ class AnalyzerLab29(Resource):
     log = logging.getLogger('log_services')
 
     def post(self, id_analyzer):
+        """
+        Receive analyzer results sent by LabBook Connect (IHE LAW LAB-29), no OAuth.
+        Only final results (OBX-11 'F') are stored, supplemental observations (S_OTHER) are skipped.
+
+        Args:
+            id_analyzer (str): analyzer key, as set in AnalyzerDet.
+
+        Body:
+            Raw HL7 OUL^R22 message, stored in analyzer_msg.
+
+        Returns:
+            200: HL7 ACK AA, even when a result could not be stored.
+            400: HL7 ACK, AR if the message is empty or the analyzer unknown, AE if the message is invalid.
+            500: HL7 ACK AE, message could not be stored.
+        """
         msg_hl7 = request.data.decode('utf-8').strip()
 
         if not msg_hl7:
@@ -529,6 +631,13 @@ class AnalyzerMsgList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the latest 1000 messages exchanged with the analyzers.
+
+        Returns:
+            200: data, list of messages, dates as Constants.cst_dt_HM.
+            404: no message.
+        """
         audit_user = request.oauth_user
 
         l_msg = Analyzer.getAnalyzerMsgList()
@@ -565,6 +674,16 @@ class AnalyzerMsgDet(Resource):
 
     @require_oauth()
     def delete(self, id_msg):
+        """
+        Delete one analyzer message.
+
+        Args:
+            id_msg (int): message id (anm_ser).
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Analyzer.deleteMsgAnalyzer(id_msg)
 

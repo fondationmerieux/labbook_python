@@ -31,6 +31,16 @@ class DoctorList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List doctors ordered by name, limited to 500 by default.
+
+        Body (all optional):
+            code, lastname, firstname, service, city (str): searched in the matching field.
+            limit (int): number of rows, None for no limit.
+
+        Returns:
+            200: list of doctors, speciality translated.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -66,6 +76,15 @@ class DoctorSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search doctors by name or code, every word of the term must match, limited to 1000.
+
+        Body:
+            term (str): searched text, words separated by spaces.
+
+        Returns:
+            200: list of matching doctors.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -88,6 +107,16 @@ class DoctorDet(Resource):
 
     @require_oauth()
     def get(self, id_doctor):
+        """
+        Return one doctor.
+
+        Args:
+            id_doctor (int): doctor id.
+
+        Returns:
+            200: doctor fields, None replaced by '', speciality translated.
+            404: doctor not found.
+        """
         audit_user = request.oauth_user
         doctor = Doctor.getDoctor(id_doctor)
 
@@ -119,6 +148,22 @@ class DoctorDet(Resource):
 
     @require_oauth()
     def post(self, id_doctor):
+        """
+        Create or update a doctor.
+
+        Args:
+            id_doctor (int): doctor id, 0 to create.
+
+        Body:
+            id_owner, id_doctor, code, title, lastname, firstname, initial, facility, service, address,
+            city, zipcity, spe, phone, mobile, fax, email: doctor fields, all required.
+            doc_agreement (str, optional): 'Y' or 'N' (default).
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -209,6 +254,16 @@ class DoctorDet(Resource):
 
     @require_oauth()
     def delete(self, id_doctor):
+        """
+        Delete a doctor.
+
+        Args:
+            id_doctor (int): doctor id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Doctor.deleteDoctor(id_doctor)
 
@@ -235,6 +290,17 @@ class DoctorExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export doctors to a CSV file, with the same filters as DoctorList and no limit.
+
+        Body (all optional):
+            code, lastname, firstname, service, city (str): searched in the matching field.
+
+        Returns:
+            200: file written to tmp/doctor_YYYYMMDD.csv, empty body.
+            404: no doctor.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -307,7 +373,7 @@ class DoctorExport(Resource):
                 Audit.insertAudit(audit_user, "DoctorExport", "DOCTOR", None, "ERROR", details, "R")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : DoctorExport ERROR audit exception')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DoctorExport')
         try:

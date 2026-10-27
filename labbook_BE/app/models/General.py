@@ -10,6 +10,11 @@ from app.models.Constants import Constants
 
 
 def compose_ret(ret, type=Constants.cst_content_type_plain, http_code=200, ensure_ascii=True):
+    """
+    Build the HTTP response of a service: ret encoded as JSON (Decimal, dates and bytes handled by
+    safe_json_default) or sent as is for plain text and HL7, with the matching Content-Type.
+    Every response carries Access-Control-Allow-Origin: *.
+    """
     if type == Constants.cst_content_type_json:
         resp = make_response(json.dumps(ret, ensure_ascii=ensure_ascii, default=safe_json_default), http_code)
     else:
@@ -28,6 +33,9 @@ def compose_ret(ret, type=Constants.cst_content_type_plain, http_code=200, ensur
 
 
 def compose_ret_ascii(ret, http_code=200):
+    """
+    Build a JSON response keeping non ASCII characters as they are, without the CORS header.
+    """
     resp = make_response(json.dumps(ret, ensure_ascii=False, default=safe_json_default), http_code)
 
     resp.headers['Content-type'] = 'application/json; charset=utf-8'
@@ -36,6 +44,10 @@ def compose_ret_ascii(ret, http_code=200):
 
 
 def safe_json_default(obj):
+    """
+    Turn what json.dumps cannot encode into a JSON value: Decimal to float, dates to ISO strings,
+    bytes to UTF-8 text or base64, anything else to its string.
+    """
     if isinstance(obj, Decimal):
         return float(obj)
     elif isinstance(obj, (datetime, date)):
@@ -49,6 +61,10 @@ def safe_json_default(obj):
 
 
 def parse_date_safe(date_str):
+    """
+    Parse a date written in one of the ISO formats LabBook receives, with or without time.
+    Raises ValueError for any other format.
+    """
     formats = [
         "%Y-%m-%dT%H:%M:%S.%fZ",
         "%Y-%m-%dT%H:%M:%S",

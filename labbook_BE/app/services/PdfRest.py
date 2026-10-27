@@ -46,6 +46,21 @@ class PdfBillList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Build the PDF list of the bills over a period.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            tpl_file (str): template file.
+            filename (str): name of the PDF to write.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            404: no bill over the period.
+            500: PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -99,6 +114,18 @@ class PdfInvoice(Resource):
 
     @require_oauth()
     def get(self, id_rec, template, filename):
+        """
+        Build the invoice PDF of a record.
+
+        Args:
+            id_rec (int): record id.
+            template (str): template file.
+            filename (str): name of the PDF to write.
+
+        Returns:
+            200: 0.
+            500: -1, template not found or PDF could not be built.
+        """
         audit_user = request.oauth_user
         tpl = Setting.getTemplateByFile(template)
 
@@ -136,6 +163,21 @@ class PdfReport(Resource):
 
     @require_oauth()
     def get(self, id_rec, template, filename, reedit='N', id_user=0):
+        """
+        Build the report PDF of a record. With reedit 'Y', a new report entry is created and the PDF
+        is written under its generated name, filename being ignored. The entry is removed if the PDF fails.
+
+        Args:
+            id_rec (int): record id.
+            template (str): template file.
+            filename (str): name of the PDF to write, when reedit is 'N'.
+            reedit (str): 'Y' for a new stored report, 'N' otherwise.
+            id_user (int): user asking for the report, owner of the new entry.
+
+        Returns:
+            200: empty body.
+            500: report entry or PDF could not be created.
+        """
         audit_user = request.oauth_user
         if reedit == 'Y':
             tpl = Setting.getTemplateByFile(template)
@@ -211,6 +253,21 @@ class PdfReportGeneric(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Build a PDF from an HTML fragment, with the laboratory header.
+
+        Body:
+            html (str): content of the page.
+            filename (str): name of the PDF to write, in the tmp directory.
+            orientation (str, optional): 'Landscape', 'Portrait' otherwise.
+            with_date (str, optional): 'Y' (default) adds the date of the day to the file name, 'N' does not.
+            criteria (optional): search criteria, kept in the audit trail only.
+
+        Returns:
+            200: empty body.
+            400: html or filename missing.
+            500: PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -254,6 +311,18 @@ class PdfReportGrouped(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Build one PDF gathering the reports of several records.
+
+        Body:
+            l_id_rec_vld (list): record ids.
+            filename (str): name of the PDF to write, in the tmp directory.
+
+        Returns:
+            200: 0.
+            400: -1, a field is missing.
+            500: -1, PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -292,6 +361,22 @@ class PdfReportGlobal(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Merge into one PDF the stored reports of the records of a period, and add one to their download count.
+
+        Body:
+            exclu (str): 'O' leaves out reports already downloaded, 'N' takes them all.
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            filename (str): name of the PDF to write, in the tmp directory.
+
+        Returns:
+            200: 0.
+            400: -1, a field is missing.
+            404: 0, no report to merge.
+            409: 0, PDF written but some report files were missing or empty.
+            500: -1, PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -346,6 +431,21 @@ class PdfSticker(Resource):
 
     @require_oauth()
     def post(self, template):
+        """
+        Build the barcode stickers PDF.
+
+        Args:
+            template (str): template file.
+
+        Body:
+            id (int): record id.
+            type_id (str): kind of id, only 'REC' is handled.
+
+        Returns:
+            200: 0.
+            400: -1, id or type_id missing.
+            500: -1, PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -383,6 +483,16 @@ class PdfTemplate(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Test a template by building its PDF with sample data, written as test_template.
+
+        Args:
+            id_item (int): template id.
+
+        Returns:
+            200: 0.
+            500: -1, template not found, type not handled (RES, STI, OUT, INV) or PDF could not be built.
+        """
         audit_user = request.oauth_user
         tpl = Setting.getTemplate(id_item)
 
@@ -437,6 +547,18 @@ class PdfOutsourced(Resource):
 
     @require_oauth()
     def get(self, id_rec, template, filename):
+        """
+        Build the outsourcing PDF of a record.
+
+        Args:
+            id_rec (int): record id.
+            template (str): template file.
+            filename (str): name of the PDF to write.
+
+        Returns:
+            200: empty body.
+            500: template not found or PDF could not be built.
+        """
         audit_user = request.oauth_user
         tpl = Setting.getTemplateByFile(template)
 
@@ -474,6 +596,21 @@ class PdfReportToday(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Build the PDF of the work list of a period.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            service_int (str): internal service, may be empty.
+            filename (str): name of the PDF to write.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            404: no record over the period.
+            500: PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -524,6 +661,21 @@ class PdfActivityReport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Build the activity report PDF of a period: analyses counted by type and by patient age.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            type_ana (int): family id, 0 for every family.
+            tpl_file (str): template file.
+            filename (str): name of the PDF to write.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: PDF could not be built.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -668,6 +820,21 @@ class PrintByScript(Resource):
 
     @require_oauth()
     def post(self, script_name):
+        """
+        Run a print script of the printer directory in the background, its output going to print.out.
+        The values of the aliquot are given to the script as PRINT_* environment variables.
+
+        Args:
+            script_name (str): script file name, letters, digits, '.', '_' and '-' only.
+
+        Body (optional):
+            sal_ser (int): aliquot to print.
+
+        Returns:
+            200: empty body, once the script is started.
+            400: invalid script name.
+            404: script or aliquot not found.
+        """
         audit_user = request.oauth_user
         args = request.get_json(silent=True) or {}
 

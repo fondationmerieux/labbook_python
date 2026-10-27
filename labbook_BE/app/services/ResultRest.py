@@ -45,6 +45,17 @@ class ResultValue(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Save the values typed for results.
+
+        Body:
+            list_answer (list): items with id_res, id_owner and value.
+
+        Returns:
+            200: empty body.
+            400: list_answer missing.
+            500: update failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -87,17 +98,30 @@ class ResultList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List results with their last validation, the validating user, the possible answers of
+        dictionary results and the patient codes.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            other filters of Result.getResultList (optional).
+
+        Returns:
+            200: list of results, labels translated.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
-        if not args or ('date_beg' not in args and 'date_end' not in args):
+        if not args or 'date_beg' not in args or 'date_end' not in args:
             self.log.error(Logs.fileline() + ' : ResultList args missing')
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "keys": list((args or {}).keys())}
                 Audit.insertAudit(audit_user, "ResultList", "RESULT", None, "ERROR", details, "R")
             except Exception as err:
                 self.log.error(Logs.fileline() + ' : ResultList ERROR audit args missing err=' + str(err))
-            return compose_ret('', Constants.cst_content_type_json, 500)
+            return compose_ret('', Constants.cst_content_type_json, 400)
 
         # convert isodate format to ymd format
         # args['date_beg'] = datetime.strptime(args['date_beg'], Constants.cst_isodate).strftime(Constants.cst_date_ymd)
@@ -234,6 +258,19 @@ class ResultRecord(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Return the results of a record with their last validation and the values received from analyzers.
+
+        Args:
+            id_rec (int): record id.
+
+        Body (optional):
+            link_fam (list): family ids to filter by.
+
+        Returns:
+            200: list of results, labels translated, analyzer values in l_res_analyzer.
+            404: no result in this record.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -346,6 +383,25 @@ class ResultCreate(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Create the empty results of a record, one per variable of each analysis, each with an
+        administrative validation.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            id_owner (int): user making the change.
+            user_role (str): required, not used.
+            list_ref (list, optional): only these analyses (ref_analyse), the last request of each one.
+                                       Every analysis of the record otherwise.
+
+        Returns:
+            200: empty body.
+            400: id_owner or user_role missing.
+            404: no analysis.
+            500: database write failed, the results before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -451,10 +507,31 @@ class ResultValid(Resource):
 
     @require_oauth()
     def post(self, type_valid, id_rec):
+        """
+        Validate results technically or biologically and update the record status. A biological
+        validation also creates the report and its PDF, a PDF failure is only logged.
+
+        Args:
+            type_valid (str): 'T' technical, 'B' biological.
+            id_rec (int): record id.
+
+        Body:
+            list_valid (list): items with id_res, id_owner, user_valid, date_valid and value.
+            template (str): report template, for 'B'.
+            reedit (str): 'Y' or 'N', for 'B'.
+            comm_valid (str): validation comment, required for 'B'.
+
+        Returns:
+            200: empty body.
+            400: list_valid missing, or template, reedit or comm_valid missing for 'B'.
+            500: unknown type_valid, or database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
-        if 'reedit' not in args and 'list_valid' not in args and 'template' not in args:
+        # the technical validation screens send list_valid only
+        if 'list_valid' not in args or \
+           (type_valid == 'B' and ('template' not in args or 'reedit' not in args or 'comm_valid' not in args)):
             self.log.error(Logs.fileline() + ' : TRACE ResultValid ERROR list_valid missing')
             try:
                 details = {"result": "ERROR", "reason": "ARGS_MISSING", "type_valid": type_valid, "id_rec": int(id_rec)}
@@ -602,6 +679,22 @@ class ResultReset(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Clear the value of a result and send it back to administrative validation. The record goes
+        back to the intermediate administrative status and is flagged as modified.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            id_owner (int): user making the change.
+            id_res (int): result id.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -696,6 +789,24 @@ class ResultCancel(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Cancel a validated result with a reason. The record goes back to the intermediate
+        administrative status and is flagged as modified.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            id_owner (int): user making the change.
+            id_res (int): result id.
+            reason (int): cancellation reason.
+            comment (str): comment.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -789,6 +900,16 @@ class ResultHisto(Resource):
 
     @require_oauth()
     def get(self, id_res):
+        """
+        Return every validation of a result, with its type, cancellation reason and user.
+
+        Args:
+            id_res (int): result id.
+
+        Returns:
+            200: list of validations, dates as YYYY-MM-DD.
+            404: no validation.
+        """
         audit_user = request.oauth_user
         l_valid = Result.getResultListValidation(id_res)
 
@@ -838,6 +959,21 @@ class ResultPrevious(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the previous result of a patient for the same analysis and variable.
+
+        Body:
+            id_pat (int): patient id.
+            ref_ana (int): analysis id.
+            ref_var (int): variable id.
+            id_res (int): current result, left out.
+            res_type (int): result type, a dictionary value is translated.
+            date_res (str, optional): only results before this date.
+
+        Returns:
+            200: previous result, empty when none.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -900,6 +1036,17 @@ class ResultFromExt(Resource):
 
     @require_oauth('external/result')
     def get(self, id_rec):
+        """
+        Return the results of a record for third-party applications (scope external/result).
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: record_id and analysis, each with its variables (id_res, code_var, loinc, label, value, unit,
+                 and possible_values for dictionary results).
+            404: no result in this record.
+        """
         audit_user = request.oauth_user
         l_res = {}
 
@@ -991,6 +1138,22 @@ class ResultFromExt(Resource):
 
     @require_oauth('external/result')
     def post(self, id_rec):
+        """
+        Save result values sent by a third-party application (scope external/result).
+        The results are not checked against id_rec.
+
+        Args:
+            id_rec (int): record id, sent back only.
+
+        Body:
+            list_results (list): items with id_res and value.
+
+        Returns:
+            record_id, updated and errors, with
+            200: every result saved.
+            207: some results saved.
+            400: list_results missing, or no result saved.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
         self.log.info(Logs.fileline() + ' : DEBUG args= ' + str(args))

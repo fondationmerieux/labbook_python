@@ -142,6 +142,9 @@ class Analysis:
 
     @staticmethod
     def getAnalysis(id_ana):
+        """
+        Read one analysis of sigl_05_data with the label of its sampling act.
+        """
         cursor = DB.cursor()
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
@@ -158,6 +161,9 @@ class Analysis:
 
     @staticmethod
     def getAnalysisByCode(code):
+        """
+        Read one analysis of sigl_05_data by its code.
+        """
         cursor = DB.cursor()
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
@@ -174,6 +180,9 @@ class Analysis:
 
     @staticmethod
     def getAnalysisByLoinc(loinc):
+        """
+        Read the first analysis of sigl_05_data with this LOINC code.
+        """
         cursor = DB.cursor()
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.nom, ana.abbr, ana.famille, ana.cote_unite, '
@@ -190,6 +199,13 @@ class Analysis:
 
     @staticmethod
     def insertAnalysis(**params):
+        """
+        Insert an analysis in sigl_05_data, at a given id_data when one is passed above 0.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -224,6 +240,13 @@ class Analysis:
 
     @staticmethod
     def updateAnalysis(**params):
+        """
+        Update an analysis of sigl_05_data.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -248,6 +271,12 @@ class Analysis:
 
     @staticmethod
     def deleteAnalysis(id_ana):
+        """
+        Delete an analysis of sigl_05_data and its links to variables, the variables are kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -266,6 +295,9 @@ class Analysis:
 
     @staticmethod
     def getProductType(id_data):
+        """
+        Read one dictionary entry of sigl_dico_data, used for sample types.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code '
@@ -278,6 +310,10 @@ class Analysis:
 
     @staticmethod
     def getAnalysisReq(id_rec, type_ana):
+        """
+        Read the analyses requested in a record (sigl_04_data) with their reference fields.
+        type_ana: 'Y' analyses only, 'N' sampling acts only (cote_unite 'PB'), anything else for both.
+        """
         cursor = DB.cursor()
 
         # Only analysis
@@ -306,6 +342,10 @@ class Analysis:
 
     @staticmethod
     def getAnalysisInvoice(id_rec, type_ana):
+        """
+        Read the analyses requested in a record with their price, for the invoice.
+        type_ana: 'Y' analyses only, 'N' sampling acts only (cote_unite 'PB'), anything else for both.
+        """
         cursor = DB.cursor()
 
         # Only analysis
@@ -333,6 +373,10 @@ class Analysis:
 
     @staticmethod
     def getAnalysisOutsourced(id_rec, type_ana):
+        """
+        Read the analyses requested in a record with their family, for the outsourcing document.
+        type_ana: 'Y' analyses only, 'N' sampling acts only (cote_unite 'PB'), anything else for both.
+        """
         cursor = DB.cursor()
 
         # Only analysis
@@ -362,6 +406,12 @@ class Analysis:
 
     @staticmethod
     def insertAnalysisReq(**params):
+        """
+        Add an analysis to a record in sigl_04_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -380,6 +430,14 @@ class Analysis:
 
     @staticmethod
     def deleteAnalysisReq(id_req, id_rec, id_ana, type_samp):
+        """
+        Remove an analysis from a record with its pathological products (sigl_01_data), and the
+        request of its sampling act when no other analysis of the record uses it.
+        type_samp is not used.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -395,9 +453,8 @@ class Analysis:
                 if nb:
                     if nb['nb_samp_act'] == 1:
                         # delete sample act request
-                        cursor.execute('delete from sigl_04_data as req '
-                                       'inner join sigl_05_data as ana on ana.id_data=req.ref_analyse '
-                                       'where req.id_dos=%s and req.ref_analyse = '
+                        cursor.execute('delete from sigl_04_data '
+                                       'where id_dos=%s and ref_analyse = '
                                        '(select produit_biologique from sigl_05_data where id_data=%s)', (id_rec, id_ana))
 
                     # delete all pathological product for this analysis
@@ -417,6 +474,9 @@ class Analysis:
 
     @staticmethod
     def getAllVariable():
+        """
+        Read every variable of sigl_07_data with its result type, ordered by label.
+        """
         cursor = DB.cursor()
 
         req = ('select var.id_data as id_item, var.code_var, var.libelle as label, var.commentaire as comment, '
@@ -431,6 +491,10 @@ class Analysis:
 
     @staticmethod
     def getListVariable(id_ana, test='N'):
+        """
+        Read the variables linked to an analysis with their link fields, in display order.
+        test='Y' works on the _test tables used by the import test mode.
+        """
         cursor = DB.cursor()
 
         if test == 'Y':
@@ -456,6 +520,9 @@ class Analysis:
 
     @staticmethod
     def getAnalysisVar(id_var):
+        """
+        Read one variable of sigl_07_data.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
@@ -471,6 +538,9 @@ class Analysis:
 
     @staticmethod
     def getLastAnalysisVar():
+        """
+        Read the last variable created in sigl_07_data.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, libelle as label, description as descr, unite as unit, normal_min as min, '
@@ -486,6 +556,10 @@ class Analysis:
 
     @staticmethod
     def getAnalysisVarExist(label, type_res, unit, var_min, var_max, code_var, test='N'):
+        """
+        Read the first variable with the same label, result type, unit, bounds and code, used by the import.
+        test='Y' works on the _test tables used by the import test mode.
+        """
         cursor = DB.cursor()
 
         if test == 'Y':
@@ -507,6 +581,14 @@ class Analysis:
 
     @staticmethod
     def insertAnalysisVar(**params):
+        """
+        Insert a variable in sigl_07_data. A code already used gets a _1, _2... suffix,
+        an empty code takes the id of the new variable.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -579,6 +661,13 @@ class Analysis:
 
     @staticmethod
     def updateAnalysisVar(**params):
+        """
+        Update a variable of sigl_07_data. A code used by another variable gets a _1, _2... suffix.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -622,6 +711,9 @@ class Analysis:
 
     @staticmethod
     def getRefVariable(id_ana):
+        """
+        Read the links between an analysis and its variables (sigl_05_07_data).
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, id_refanalyse, id_refvariable, position, num_var, obligatoire, var_whonet, '
@@ -635,6 +727,13 @@ class Analysis:
 
     @staticmethod
     def insertRefVariable(**params):
+        """
+        Link a variable to an analysis in sigl_05_07_data.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -659,6 +758,13 @@ class Analysis:
 
     @staticmethod
     def updateRefVariable(**params):
+        """
+        Update a link between an analysis and a variable (position, number, required, WHONET, QR code, LOINC).
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             if 'test' in params and params['test'] == 'Y':
                 mode_test = '_test '
@@ -681,6 +787,12 @@ class Analysis:
 
     @staticmethod
     def deleteRefVar(id_refana, id_refvar):
+        """
+        Remove the link between an analysis and a variable, the variable is kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -711,6 +823,9 @@ class Analysis:
 
     @staticmethod
     def getLastAnalysisReqByRefAna(ref_ana):
+        """
+        Read the last request of an analysis in sigl_04_data, whatever the record.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, id_dos, ref_analyse, prix, paye, urgent, demande, req_outsourced as outsourced '
@@ -724,6 +839,12 @@ class Analysis:
 
     @staticmethod
     def deleteAnalysisByRecord(id_rec):
+        """
+        Move every analysis request of a record to sigl_04_deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -752,6 +873,10 @@ class Analysis:
 
     @staticmethod
     def getAnalyzesList(args):
+        """
+        Read the analyses for the list screen, active ones by default, limited to 2000.
+        args: status, name (name, code, LOINC or abbreviation, translated name outside fr_FR), type_ana, type_prod.
+        """
         cursor = DB.cursor()
 
         filter_cond = ''
@@ -807,6 +932,10 @@ class Analysis:
 
     @staticmethod
     def getAnalyzesHistoList(args):
+        """
+        Read the analyses requested in the records received over a period, sampling acts left out.
+        args: date_beg, date_end, name, code, type_ana, limit (500 by default, None for no limit).
+        """
         cursor = DB.cursor()
 
         filter_cond = ' '
@@ -848,6 +977,9 @@ class Analysis:
 
     @staticmethod
     def getNbAnalysis(date_beg, date_end, id_ana):
+        """
+        Count the requests of one analysis in the records received over a period.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as total '
@@ -862,6 +994,9 @@ class Analysis:
 
     @staticmethod
     def getNbAnaByVar(id_var):
+        """
+        Count the analyses linked to a variable.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_link '
@@ -874,6 +1009,10 @@ class Analysis:
 
     @staticmethod
     def getAnalyzesHistoDet(args):
+        """
+        Read the results of one analysis in the records received over a period, dictionary values as labels.
+        args: date_beg, date_end, id_ana, limit.
+        """
         cursor = DB.cursor()
 
         date_beg = args['date_beg']
@@ -905,6 +1044,13 @@ class Analysis:
 
     @staticmethod
     def exist(code, test='N'):
+        """
+        Tell whether an analysis code is already used.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool or int: True if used, False otherwise, -1 on SQL error.
+        """
         try:
             if test == 'Y':
                 mode_test = '_test '
@@ -929,6 +1075,13 @@ class Analysis:
 
     @staticmethod
     def freeIdAna(id_ana, test='N'):
+        """
+        Tell whether an analysis id is still free, used by the import to keep the ids of the file.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool or int: True if free, False otherwise, -1 on SQL error.
+        """
         try:
             if test == 'Y':
                 mode_test = '_test '
@@ -953,6 +1106,9 @@ class Analysis:
 
     @staticmethod
     def getAnalysisExport():
+        """
+        Read every analysis with its links and variables, one row per variable, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select ana.id_data, ana.id_owner, ana.code, ana.ana_loinc, ana.nom, ana.abbr, ana.famille, '
@@ -974,6 +1130,10 @@ class Analysis:
 
     @staticmethod
     def getDataset(date_beg, date_end):
+        """
+        Read the analyses requested in the records received over a period, with record, prescriber
+        and patient fields, for the dataset screen.
+        """
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_analysis, rec.rec_custody, rec.id_patient, d_type.label as type, '
@@ -1008,6 +1168,13 @@ class Analysis:
 
     @staticmethod
     def updateAnalysisStatus(status, id_ana):
+        """
+        Enable ('E') or disable ('D') one analysis, or all of them when id_ana is 0.
+        Sampling acts are never changed.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1040,6 +1207,12 @@ class Analysis:
 
     @staticmethod
     def dropTableTest():
+        """
+        Empty the _test tables of analyses, links and variables.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1054,6 +1227,12 @@ class Analysis:
 
     @staticmethod
     def initTableTest():
+        """
+        Copy the analyses, links and variables into the _test tables.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1068,6 +1247,13 @@ class Analysis:
 
     @staticmethod
     def cleanGhostVar(test='N'):
+        """
+        Delete the variables linked to no analysis.
+        test='Y' works on the _test tables used by the import test mode.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             if test == 'Y':
                 mode_test = '_test '
@@ -1086,6 +1272,10 @@ class Analysis:
 
     @staticmethod
     def code_var_exists(code_var, test='N'):
+        """
+        Tell whether a variable code is already used.
+        test='Y' works on the _test tables used by the import test mode.
+        """
         if test == 'Y':
             mode_test = '_test '
         else:

@@ -15,6 +15,13 @@ class Audit:
 
     @staticmethod
     def list_audit(offset=0, limit=25, order_col_index=1, order_dir="desc", search_value=None, filters=None):
+        """
+        Read one page of audit_trail for the DataTables screen, filtered, searched and sorted.
+        Calls from 127.0.0.1 (system) are left out unless filters['include_system'] is 'Y'. SQL errors are raised, not turned into a return value.
+
+        Returns:
+            list: entries built by _build_audit_item.
+        """
         cursor = DB.cursor()
         try:
             order_col = Audit._get_order_column(order_col_index)
@@ -63,6 +70,9 @@ class Audit:
 
     @staticmethod
     def _get_order_column(order_col_index):
+        """
+        Map a DataTables column index to its audit_trail column, aud_date_utc by default.
+        """
         return {
             1: "aud_date_utc",
             2: "aud_user_display",
@@ -77,6 +87,13 @@ class Audit:
 
     @staticmethod
     def _apply_filters(sql, params, filters):
+        """
+        Add to sql the conditions of the screen filters (dates, user, role, context, action, status,
+        IP, resource, system calls) and their values to params.
+
+        Returns:
+            tuple: (sql, params).
+        """
         # Date filters
         if filters.get("date_start"):
             sql += " AND aud_date_utc >= %s"
@@ -137,6 +154,12 @@ class Audit:
 
     @staticmethod
     def _apply_global_search(sql, params, search_value):
+        """
+        Add to sql a LIKE on every text column for the DataTables search box.
+
+        Returns:
+            tuple: (sql, params).
+        """
         if search_value:
             like = "%" + search_value + "%"
             sql += """
@@ -158,6 +181,10 @@ class Audit:
 
     @staticmethod
     def _build_audit_item(r):
+        """
+        Turn an audit_trail row into the fields shown by the list: date, user, role, context read
+        from the JSON details, resource with its action, IP and status.
+        """
         item = {}
 
         item["aud_ser"] = r["aud_ser"]
@@ -204,6 +231,9 @@ class Audit:
 
     @staticmethod
     def countAuditTotal():
+        """
+        Count every entry of audit_trail.
+        """
         cursor = DB.cursor()
         try:
             cursor.execute("SELECT COUNT(*) AS nb FROM audit_trail")
@@ -218,6 +248,9 @@ class Audit:
 
     @staticmethod
     def countAuditFiltered(search_value=None, filters=None):
+        """
+        Count the entries matching the filters and the search, the total when there are none.
+        """
         filters = filters or {}
 
         # Detect if at least one filter is set
@@ -252,6 +285,9 @@ class Audit:
 
     @staticmethod
     def list_audit_by_period(date_beg_utc, date_end_utc):
+        """
+        Read every entry of a period, oldest first, for the ATNA export and the archive. SQL errors are raised, not turned into a return value.
+        """
         cursor = DB.cursor()
         try:
             sql = ('''
@@ -276,6 +312,12 @@ class Audit:
 
     @staticmethod
     def getAuditById(aud_ser):
+        """
+        Read one entry of audit_trail with its fields named as the detail screen expects. SQL errors are raised, not turned into a return value.
+
+        Returns:
+            dict or None: entry, None when not found.
+        """
         cursor = DB.cursor()
         try:
             sql = ('''
@@ -314,7 +356,13 @@ class Audit:
 
     @staticmethod
     def insertAudit(user, action, resource_type=None, resource_id=None, status=None, details_json=None, event_type="E"):
-        """Insert a new audit event into audit_trail."""
+        """
+        Insert a new audit event into audit_trail.
+        The client IP and the X-LabBook-Audit-Context header of the request are added. SQL errors are raised.
+
+        Returns:
+            int or None: id of the new entry, None when the audit trail is disabled.
+        """
 
         # Skip audit if disabled
         if not Audit.audit_trail_enabled:
@@ -367,6 +415,12 @@ class Audit:
 
     @staticmethod
     def purgeAuditByPeriod(date_beg_utc, date_end_utc):
+        """
+        Delete every entry of a period. SQL errors are raised, not turned into a return value.
+
+        Returns:
+            int: number of entries deleted.
+        """
         cursor = DB.cursor()
         try:
             sql = "DELETE FROM audit_trail WHERE aud_date_utc BETWEEN %s AND %s"

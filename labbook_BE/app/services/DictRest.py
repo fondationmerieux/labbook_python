@@ -36,6 +36,20 @@ class DictDescr(Resource):
 
     @require_oauth()
     def post(self, dict_name):
+        """
+        Update the description of a dictionary.
+
+        Args:
+            dict_name (str): dictionary name.
+
+        Body:
+            dico_descr (str): new description.
+
+        Returns:
+            200: empty body.
+            400: dico_descr missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -73,6 +87,15 @@ class DictDet(Resource):
 
     @require_oauth()
     def get(self, dict_name):
+        """
+        Return the values of a dictionary, ordered by position.
+
+        Args:
+            dict_name (str): dictionary name.
+
+        Returns:
+            200: list of values, labels and description translated, empty when the dictionary does not exist.
+        """
         audit_user = request.oauth_user
         l_dicts = Dict.getDictDetails(dict_name)
 
@@ -104,6 +127,21 @@ class DictDet(Resource):
 
     @require_oauth()
     def post(self, dict_name):
+        """
+        Create a dictionary or update its values. On update, values missing from list_val are deleted.
+
+        Args:
+            dict_name (str): dictionary name.
+
+        Body:
+            list_val (list): values with id_data (0 to create), id_owner, label, short_label, position,
+                             code and formatting.
+
+        Returns:
+            200: empty body.
+            400: list_val missing.
+            500: database write failed, the values before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -207,6 +245,20 @@ class DictDet(Resource):
 
     @require_oauth()
     def delete(self, dict_name):
+        """
+        Delete a dictionary with all its values.
+
+        Args:
+            dict_name (str): dictionary name.
+
+        Body:
+            id_owner (int): user making the change, required but not used by the deletion.
+
+        Returns:
+            200: empty body.
+            400: id_owner missing.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -244,6 +296,16 @@ class DictDetById(Resource):
 
     @require_oauth()
     def get(self, id_dict):
+        """
+        Return the values of the dictionary named in the short_label ('dico_<name>') of an entry,
+        used for variables whose result type is a dictionary.
+
+        Args:
+            id_dict (int): id of the entry holding the dictionary name.
+
+        Returns:
+            200: list of values, labels and description translated, empty when nothing matches.
+        """
         audit_user = request.oauth_user
         l_dicts = Dict.getDictDetailsById(id_dict)
 
@@ -279,6 +341,17 @@ class DictList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List dictionaries, one line per name, limited to 2000.
+
+        Body (all optional):
+            name (str): searched in the dictionary name.
+            label (str): searched in the value labels.
+            code (str): searched in the value codes.
+
+        Returns:
+            200: list with id_data, name translated, key (name untranslated) and dico_descr.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -316,6 +389,19 @@ class DictExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export one dictionary to a CSV file, format v1, read back by DictImport.
+
+        Body:
+            id_user (int): user asking for the export.
+            dico_name (str): dictionary name.
+
+        Returns:
+            200: file written to tmp/dict-<name>_YYYYMMDD.csv, empty body.
+            400: id_user or dico_name missing.
+            404: dictionary empty or unknown.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -429,7 +515,7 @@ class DictExport(Resource):
                 Audit.insertAudit(audit_user, "DictExport", "DICT", None, "ERROR", details, "R")
             except Exception:
                 self.log.exception(Logs.fileline() + ' : DictExport ERROR audit')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE DictExport')
         try:
@@ -445,6 +531,21 @@ class DictImport(Resource):
 
     @require_oauth()
     def get(self, filename, id_user):
+        """
+        Import dictionary values from a CSV file written by DictExport, format v1.
+        A line with id_data 0 is created, otherwise it is updated. The outcome is also stored
+        with DB.insertDbStatus, type 'DIC'.
+
+        Args:
+            filename (str): CSV file name, in the tmp directory.
+            id_user (int): user asking for the import.
+
+        Returns:
+            200: empty body.
+            400: filename or id_user missing.
+            409: unknown version, or wrong column name or order.
+            500: file empty or database write failed, the lines before it are kept.
+        """
         audit_user = request.oauth_user
 
         if not filename or id_user <= 0:

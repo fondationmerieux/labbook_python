@@ -13,6 +13,9 @@ class Quality:
 
     @staticmethod
     def getLastMeeting():
+        """
+        Read the last quality meeting.
+        """
         cursor = DB.cursor()
 
         req = ('select mee_ser as id_data, mee_user as id_owner, mee_date as sys_creation_date, '
@@ -27,6 +30,10 @@ class Quality:
 
     @staticmethod
     def getNbNonCompliance(period):
+        """
+        Count the non-conformities: period 'open' for the ones not closed, 'month' for the last month.
+        Any other period leaves the WHERE empty and the query fails.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -48,6 +55,9 @@ class Quality:
 
     @staticmethod
     def getConformityList(date_beg, date_end):
+        """
+        Read the non-conformities of a period, ordered by date.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, nom as name, date as date_create, impact_patient, '
@@ -62,6 +72,9 @@ class Quality:
 
     @staticmethod
     def getNonConformity(id_item):
+        """
+        Read one non-conformity of sigl_non_conformite_data with its equipment, supplier and users.
+        """
         cursor = DB.cursor()
 
         req = ('select sigl_non_conformite_data.id_data, sigl_non_conformite_data.nom as name, user_id as reporter_id, '
@@ -131,6 +144,12 @@ class Quality:
 
     @staticmethod
     def insertNonConformity(**params):
+        """
+        Insert a non-conformity in sigl_non_conformite_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -205,6 +224,12 @@ class Quality:
 
     @staticmethod
     def updateNonConformity(**params):
+        """
+        Update a non-conformity of sigl_non_conformite_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -284,6 +309,12 @@ class Quality:
 
     @staticmethod
     def deleteNonConformity(id_item):
+        """
+        Delete one non-conformity of sigl_non_conformite_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -299,6 +330,9 @@ class Quality:
 
     @staticmethod
     def getControlList(type_ctrl):
+        """
+        Read the quality controls of one kind ('INT' or 'EXT') with their equipment, ordered by name.
+        """
         cursor = DB.cursor()
 
         req = ('select ctq_ser as id_item, ctq_name, ctq_type_ctrl, ctq_type_val, ctq_eqp, eqp.nom as eqp_name '
@@ -312,6 +346,9 @@ class Quality:
 
     @staticmethod
     def getControlDet(id_ctrl):
+        """
+        Read one quality control with its equipment.
+        """
         cursor = DB.cursor()
 
         req = ('select ctq_ser as id_item, ctq_name, ctq_type_val, ctq_eqp, eqp.nom as eqp_name '
@@ -325,6 +362,12 @@ class Quality:
 
     @staticmethod
     def insertControlDet(**params):
+        """
+        Insert a quality control in control_quality.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -341,6 +384,12 @@ class Quality:
 
     @staticmethod
     def updateControlDet(**params):
+        """
+        Update a quality control of control_quality.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -359,6 +408,9 @@ class Quality:
 
     @staticmethod
     def getControlIntResList(id_ctrl):
+        """
+        Read the results of an internal quality control, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select cti_ser as id_item, cti_ctq, cti_date, cti_type, cti_target, cti_result, cti_comment '
@@ -371,6 +423,9 @@ class Quality:
 
     @staticmethod
     def getControlIntRes(cti_ser):
+        """
+        Read one internal control result.
+        """
         cursor = DB.cursor()
 
         req = ('select cti_ser as id_item, cti_ctq, cti_date, cti_type, cti_target, cti_result, cti_comment '
@@ -383,6 +438,12 @@ class Quality:
 
     @staticmethod
     def insertControlIntRes(**params):
+        """
+        Insert an internal control result in control_internal.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -399,6 +460,12 @@ class Quality:
 
     @staticmethod
     def updateControlIntRes(**params):
+        """
+        Update an internal control result.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -417,6 +484,9 @@ class Quality:
 
     @staticmethod
     def getControlExtResList(id_ctrl):
+        """
+        Read the results of an external quality control, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select cte_ser as id_item, cte_ctq, cte_date, cte_type, cte_organizer, cte_contact, '
@@ -430,6 +500,9 @@ class Quality:
 
     @staticmethod
     def getControlExtRes(cte_ser):
+        """
+        Read one external control result.
+        """
         cursor = DB.cursor()
 
         req = ('select cte_ser as id_item, cte_ctq, cte_date, cte_type, cte_organizer, cte_contact, '
@@ -443,6 +516,12 @@ class Quality:
 
     @staticmethod
     def insertControlExtRes(**params):
+        """
+        Insert an external control result in control_external.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -460,6 +539,12 @@ class Quality:
 
     @staticmethod
     def updateControlExtRes(**params):
+        """
+        Update an external control result.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -479,6 +564,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentList():
+        """
+        Read every equipment with its section label.
+        """
         cursor = DB.cursor()
 
         req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, '
@@ -495,6 +583,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentListExport():
+        """
+        Read every equipment with its section, supplier and person in charge, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select eqp.id_data, date_format(eqp.sys_creation_date, %s) as creation_date, eqp.nom as name, '
@@ -519,6 +610,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentSearch(text):
+        """
+        Search equipment, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -541,6 +635,9 @@ class Quality:
 
     @staticmethod
     def getEquipment(id_item):
+        """
+        Read one equipment of sigl_equipement_data with its supplier and person in charge.
+        """
         cursor = DB.cursor()
 
         req = ('select eqp.id_data, eqp.nom as name, eqp.nom_fabriquant as maker, eqp.modele as model, '
@@ -561,6 +658,12 @@ class Quality:
 
     @staticmethod
     def insertEquipment(**params):
+        """
+        Insert a equipment in sigl_equipement_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -584,6 +687,12 @@ class Quality:
 
     @staticmethod
     def updateEquipment(**params):
+        """
+        Update a equipment of sigl_equipement_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -606,6 +715,12 @@ class Quality:
 
     @staticmethod
     def deleteEquipment(id_item):
+        """
+        Delete one equipment of sigl_equipement_data. Its links to manuals and procedures (eqp_document) are deleted too.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -624,6 +739,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentComm(type_comm, id_eqp):
+        """
+        Read a comment column of an equipment: type_comm 'DOC' reads eqp_comm_doc, any other type fails.
+        """
         cursor = DB.cursor()
 
         cond_select = ''
@@ -643,6 +761,12 @@ class Quality:
 
     @staticmethod
     def updateEquipmentComm(type_comm, id_eqp, comm):
+        """
+        Update a comment column of an equipment, type_comm 'DOC' only.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -666,6 +790,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentDoc(type_doc, id_eqp):
+        """
+        Read the manuals ('MANU') or procedures ('PROC') linked to an equipment, with their file.
+        """
         cursor = DB.cursor()
 
         cond = ''
@@ -690,6 +817,12 @@ class Quality:
 
     @staticmethod
     def insertEquipmentDoc(id_user, id_eqp, type, ref):
+        """
+        Link a manual or a procedure to an equipment in eqp_document.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -707,6 +840,12 @@ class Quality:
 
     @staticmethod
     def deleteEquipmentDoc(id_eqd):
+        """
+        Remove one link between an equipment and a manual or procedure.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -722,6 +861,9 @@ class Quality:
 
     @staticmethod
     def getEqpFailureList(id_eqp):
+        """
+        Read the failures of an equipment with supplier and person in charge, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select eqf_ser, eqf_date, eqf_user, eqf_eqp, eqf_type, eqf_incharge, eqf_supplier, eqf_comm, '
@@ -739,6 +881,12 @@ class Quality:
 
     @staticmethod
     def insertEqpFailure(**params):
+        """
+        Insert a failure of an equipment in eqp_failure.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -757,6 +905,13 @@ class Quality:
 
     @staticmethod
     def deleteEqpFailure(id_item, with_id_eqp=False):
+        """
+        Delete a failure with its attached files (eqp_failure_file and sigl_file_data rows).
+        with_id_eqp=True takes id_item as an equipment id and deletes all of its failures.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
             cond = '%s'
@@ -777,6 +932,9 @@ class Quality:
 
     @staticmethod
     def getEqpMetrologyList(id_eqp):
+        """
+        Read the metrology checks of an equipment with their supplier, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select eqm_ser, eqm_date, eqm_user, eqm_eqp, eqm_supplier, eqm_comm, '
@@ -792,6 +950,12 @@ class Quality:
 
     @staticmethod
     def insertEqpMetrology(**params):
+        """
+        Insert a metrology check of an equipment in eqp_metrology.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -809,6 +973,13 @@ class Quality:
 
     @staticmethod
     def deleteEqpMetrology(id_item, with_id_eqp=False):
+        """
+        Delete a metrology check with its attached files (eqp_calibration_file and sigl_file_data rows).
+        with_id_eqp=True takes id_item as an equipment id and deletes all of its metrology checks.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
             cond = '%s'
@@ -829,6 +1000,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentPreventiveList(id_eqp):
+        """
+        Read the preventive maintenances of an equipment with their operator, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select eqs_ser, eqs_date, eqs_user, eqs_eqp, eqs_operator, eqs_comm, '
@@ -844,6 +1018,12 @@ class Quality:
 
     @staticmethod
     def insertEqpPreventive(**params):
+        """
+        Insert a preventive maintenance of an equipment in eqp_preventive_maintenance.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -861,6 +1041,13 @@ class Quality:
 
     @staticmethod
     def deleteEqpPreventive(id_item, with_id_eqp=False):
+        """
+        Delete a preventive maintenance with its attached files (eqp_preventive_maintenance_file and sigl_file_data rows).
+        with_id_eqp=True takes id_item as an equipment id and deletes all of its preventive maintenances.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
             cond = '%s'
@@ -881,6 +1068,9 @@ class Quality:
 
     @staticmethod
     def getEquipmentContractList(id_eqp):
+        """
+        Read the maintenance contracts of an equipment with their supplier, newest first.
+        """
         cursor = DB.cursor()
 
         req = ('select eqc_ser, eqc_date, eqc_user, eqc_eqp, eqc_supplier, eqc_date_upd, eqc_comm, '
@@ -896,6 +1086,12 @@ class Quality:
 
     @staticmethod
     def insertEqpContract(**params):
+        """
+        Insert a maintenance contract of an equipment in eqp_maintenance_contract.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -913,6 +1109,13 @@ class Quality:
 
     @staticmethod
     def deleteEqpContract(id_item, with_id_eqp=False):
+        """
+        Delete a maintenance contract with its attached files (eqp_maintenance_file and sigl_file_data rows).
+        with_id_eqp=True takes id_item as an equipment id and deletes all of its maintenance contracts.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
             cond = '%s'
@@ -933,6 +1136,13 @@ class Quality:
 
     @staticmethod
     def cancelStockIO(**params):
+        """
+        Cancel a stock entry (type_move 'I', product_supply) or exit ('O', product_use).
+        Cancelling an exit marks its supply as not empty again.
+
+        Returns:
+            bool: True on success, False on SQL error or unknown type_move.
+        """
         try:
             cursor = DB.cursor()
 
@@ -965,6 +1175,10 @@ class Quality:
 
     @staticmethod
     def getStockList(args):
+        """
+        Read the stock grouped by product and place, with the packs used.
+        args: prod_name, prod_type, prod_conserv, prod_lessor, prod_local, limit.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' prs_ser > 0 and prs_cancel="N" and prs_remove="N" '
@@ -1020,6 +1234,9 @@ class Quality:
 
     @staticmethod
     def getStockExportProducts():
+        """
+        Read every stock product with type, storage and supplier, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_date, prd_name, prd_type, dict1.label as type, prd_nb_by_pack, '
@@ -1036,6 +1253,9 @@ class Quality:
 
     @staticmethod
     def getStockExportSupplies():
+        """
+        Read every supply with product, place and user, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select prs_ser, prs_date, prd_name as product, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, '
@@ -1055,6 +1275,9 @@ class Quality:
 
     @staticmethod
     def getStockExportUses():
+        """
+        Read every stock exit with product, supply and user, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select pru_ser, pru_date, prd_name as product, pru_nb_pack, u1.username as user, pru_cancel, '
@@ -1072,6 +1295,9 @@ class Quality:
 
     @staticmethod
     def getSumStockSupply(id_item, id_local):
+        """
+        Sum the packs received of a product in one place, cancelled and removed supplies left out.
+        """
         cursor = DB.cursor()
 
         req = ('select sum(prs_nb_pack) as total '
@@ -1085,6 +1311,9 @@ class Quality:
 
     @staticmethod
     def getStockListDet(id_item, id_local=0):
+        """
+        Read the supplies of a product in one place still in stock, with the packs used.
+        """
         cursor = DB.cursor()
 
         req = ('select prs_ser, prd_name, prs_nb_pack, prs_receipt_date, prs_expir_date, prl_name, prs_prl, '
@@ -1103,6 +1332,9 @@ class Quality:
 
     @staticmethod
     def getStockSearch(text):
+        """
+        Search suppliers by name, used by the stock screens, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -1125,6 +1357,9 @@ class Quality:
 
     @staticmethod
     def getStockProductSearch(text):
+        """
+        Search stock products, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -1147,6 +1382,9 @@ class Quality:
 
     @staticmethod
     def getStockProduct(id_item):
+        """
+        Read one stock product with its supplier.
+        """
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
@@ -1161,6 +1399,12 @@ class Quality:
 
     @staticmethod
     def getStockProductHist(id_item, date_beg, date_end, id_local=0):
+        """
+        Read the entries and exits of a product in one place over a period, cancelled ones left out.
+
+        Returns:
+            list: supplies and uses with their user.
+        """
         cursor = DB.cursor()
 
         # Take all supply  for this product
@@ -1190,6 +1434,9 @@ class Quality:
 
     @staticmethod
     def getStockProductList():
+        """
+        Read every stock product with type, storage and supplier.
+        """
         cursor = DB.cursor()
 
         req = ('select prd_ser, prd_name, prd_type, prd_nb_by_pack, prd_supplier, prd_ref_supplier, '
@@ -1206,6 +1453,12 @@ class Quality:
 
     @staticmethod
     def insertStockProduct(**params):
+        """
+        Insert a stock product in product_details.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1226,6 +1479,12 @@ class Quality:
 
     @staticmethod
     def updateStockProduct(**params):
+        """
+        Update a stock product.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1245,6 +1504,10 @@ class Quality:
 
     @staticmethod
     def getStockSupplyList(args):
+        """
+        Read the supplies still in stock with product and place.
+        args: prod_name, prod_local.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' '
@@ -1273,6 +1536,9 @@ class Quality:
 
     @staticmethod
     def getStockSupply(prs_ser):
+        """
+        Read one supply of product_supply.
+        """
         cursor = DB.cursor()
 
         req = ('select prs_ser, prs_date, prs_prd, prs_nb_pack, prs_receipt_date, prs_expir_date, prs_batch_num, '
@@ -1286,6 +1552,12 @@ class Quality:
 
     @staticmethod
     def updateStockSupplyLocal(**params):
+        """
+        Move a supply to another place.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1303,6 +1575,13 @@ class Quality:
 
     @staticmethod
     def insertStockSupplySplit(**params):
+        """
+        Create a supply with some packs of an existing one, in another place, copying its other fields.
+        The source supply is not changed: StockSupplyMove lowers its packs in a separate item.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1323,6 +1602,12 @@ class Quality:
 
     @staticmethod
     def removeStockSupply(id_item, id_local, id_user):
+        """
+        Mark as removed every supply of a product in one place.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1339,6 +1624,9 @@ class Quality:
 
     @staticmethod
     def getNbStockSupply(id_item):
+        """
+        Read the number of packs of one supply, cancelled or removed ones left out.
+        """
         cursor = DB.cursor()
 
         req = ('select prs_nb_pack as nb_pack '
@@ -1351,6 +1639,9 @@ class Quality:
 
     @staticmethod
     def getNbStockUse(id_item):
+        """
+        Sum the packs used from one supply, cancelled exits left out.
+        """
         cursor = DB.cursor()
 
         req = ('select sum(pru_nb_pack) as nb_pack '
@@ -1364,6 +1655,12 @@ class Quality:
 
     @staticmethod
     def deleteStockProduct(id_item):
+        """
+        Delete a stock product, its supplies are kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1379,6 +1676,12 @@ class Quality:
 
     @staticmethod
     def insertStockSupply(**params):
+        """
+        Insert a supply in product_supply.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1398,6 +1701,12 @@ class Quality:
 
     @staticmethod
     def updateStockSupply(**params):
+        """
+        Update a supply of product_supply.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1417,6 +1726,12 @@ class Quality:
 
     @staticmethod
     def emptyStockSupply(prs_ser):
+        """
+        Mark a supply as empty, when its last pack is used.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1433,6 +1748,12 @@ class Quality:
 
     @staticmethod
     def insertStockUse(**params):
+        """
+        Insert a stock exit in product_use.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1450,6 +1771,9 @@ class Quality:
 
     @staticmethod
     def getStockLocalList():
+        """
+        Read every stock place.
+        """
         cursor = DB.cursor()
 
         req = ('select prl_ser, prl_name, prl_rank '
@@ -1462,6 +1786,9 @@ class Quality:
 
     @staticmethod
     def countStockLocalUsed(id_local):
+        """
+        Count the supplies stored in a place, cancelled and removed ones left out.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_used '
@@ -1474,6 +1801,10 @@ class Quality:
 
     @staticmethod
     def getStorageList(args):
+        """
+        Read the aliquots with their place, sample, record, patient and destocking,
+        in stock ones by default (args 'in_stock' 'Y' or 'N'), newest first.
+        """
         cursor = DB.cursor()
 
         in_stock = args.get('in_stock', 'Y') if args else 'Y'
@@ -1515,6 +1846,9 @@ class Quality:
 
     @staticmethod
     def getStorageRoomList():
+        """
+        Read every storage room with its number of chambers.
+        """
         cursor = DB.cursor()
 
         req = ('select sro_ser as id, sro_name as name, sro_abbrev as abbrev, '
@@ -1530,6 +1864,9 @@ class Quality:
 
     @staticmethod
     def getStorageRoom(id_item):
+        """
+        Read one storage room of storage_room.
+        """
         cursor = DB.cursor()
 
         req = ('select sro_ser, sro_user, sro_name, sro_abbrev, sro_label '
@@ -1542,6 +1879,12 @@ class Quality:
 
     @staticmethod
     def insertStorageRoom(**params):
+        """
+        Insert a storage room in storage_room.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1559,6 +1902,12 @@ class Quality:
 
     @staticmethod
     def updateStorageRoom(**params):
+        """
+        Update a storage room of storage_room.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1575,6 +1924,12 @@ class Quality:
 
     @staticmethod
     def deleteStorageRoom(id_item):
+        """
+        Delete one storage room of storage_room.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1590,6 +1945,9 @@ class Quality:
 
     @staticmethod
     def getStorageChamberList():
+        """
+        Read every storage chamber with its room and number of compartments.
+        """
         cursor = DB.cursor()
 
         req = ('select sch_ser as id, sch_name as name, sch_abbrev as abbrev, '
@@ -1606,6 +1964,9 @@ class Quality:
 
     @staticmethod
     def getStorageChamber(id_item):
+        """
+        Read one storage chamber of storage_chamber.
+        """
         cursor = DB.cursor()
 
         req = ('select sch_ser, sch_user, sch_room, sch_name, sch_abbrev, sch_label '
@@ -1618,6 +1979,12 @@ class Quality:
 
     @staticmethod
     def insertStorageChamber(**params):
+        """
+        Insert a storage chamber in storage_chamber.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1635,6 +2002,12 @@ class Quality:
 
     @staticmethod
     def updateStorageChamber(**params):
+        """
+        Update a storage chamber of storage_chamber.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1652,6 +2025,12 @@ class Quality:
 
     @staticmethod
     def deleteStorageChamber(id_item):
+        """
+        Delete one storage chamber of storage_chamber.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1667,6 +2046,9 @@ class Quality:
 
     @staticmethod
     def getStorageCompList():
+        """
+        Read every storage compartment with its chamber and number of boxes.
+        """
         cursor = DB.cursor()
 
         req = ('select sco_ser as id, sco_name as name, sco_abbrev as abbrev, sco_dim_x as dim_x, sco_dim_y as dim_y, '
@@ -1684,6 +2066,9 @@ class Quality:
 
     @staticmethod
     def getStorageComp(id_item):
+        """
+        Read one storage compartment of storage_compartment.
+        """
         cursor = DB.cursor()
 
         req = ('select sco_ser, sco_user, sco_chamber, sco_name, sco_abbrev, sco_label, sco_dim_x, sco_dim_y, sco_dim_z '
@@ -1696,6 +2081,12 @@ class Quality:
 
     @staticmethod
     def insertStorageComp(**params):
+        """
+        Insert a storage compartment in storage_compartment.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1715,6 +2106,12 @@ class Quality:
 
     @staticmethod
     def updateStorageComp(**params):
+        """
+        Update a storage compartment of storage_compartment.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1732,6 +2129,12 @@ class Quality:
 
     @staticmethod
     def deleteStorageComp(id_item):
+        """
+        Delete one storage compartment of storage_compartment.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1747,6 +2150,9 @@ class Quality:
 
     @staticmethod
     def getStorageBoxList():
+        """
+        Read every storage box with its compartment and number of aliquots.
+        """
         cursor = DB.cursor()
 
         req = ('select sbo_ser as id, sbo_name as name, sbo_coordinates as coord, sbo_dim_x as dim_x, sbo_dim_y as dim_y, '
@@ -1764,6 +2170,9 @@ class Quality:
 
     @staticmethod
     def getStorageBox(id_item):
+        """
+        Read one storage box of storage_box.
+        """
         cursor = DB.cursor()
 
         req = ('select sbo_ser, sbo_user, sbo_compartment, sbo_name, sbo_coordinates, sbo_label, sbo_dim_x, sbo_dim_y, '
@@ -1777,6 +2186,12 @@ class Quality:
 
     @staticmethod
     def insertStorageBox(**params):
+        """
+        Insert a storage box in storage_box.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1796,6 +2211,12 @@ class Quality:
 
     @staticmethod
     def updateStorageBox(**params):
+        """
+        Update a storage box of storage_box.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1814,6 +2235,12 @@ class Quality:
 
     @staticmethod
     def deleteStorageBox(id_item):
+        """
+        Delete one storage box of storage_box.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1829,6 +2256,9 @@ class Quality:
 
     @staticmethod
     def getStorageBoxCoord(id_item):
+        """
+        Read the full location of a box: room, chamber, compartment and box labels, coordinates and full flag.
+        """
         cursor = DB.cursor()
 
         req = ('select sro_label, sch_label, sco_label, sbo_coordinates, sbo_label, sbo_full '
@@ -1844,6 +2274,9 @@ class Quality:
 
     @staticmethod
     def getStorageAliquot(id_item):
+        """
+        Read one aliquot of storage_aliquot with its sample and patient.
+        """
         cursor = DB.cursor()
 
         req = ('select sal_ser, sal_user, sal_sample, sal_patient, sal_pathogen, sal_box, sal_coordinates, sal_in_stock, '
@@ -1898,6 +2331,12 @@ class Quality:
 
     @staticmethod
     def insertStorageAliquot(**params):
+        """
+        Insert a aliquot in storage_aliquot.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1917,6 +2356,12 @@ class Quality:
 
     @staticmethod
     def updateStorageAliquot(**params):
+        """
+        Update a aliquot of storage_aliquot.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1935,6 +2380,12 @@ class Quality:
 
     @staticmethod
     def deleteStorageAliquot(id_item):
+        """
+        Delete one aliquot of storage_aliquot.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1950,6 +2401,9 @@ class Quality:
 
     @staticmethod
     def getSupplierList():
+        """
+        Read every supplier.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
@@ -1966,6 +2420,12 @@ class Quality:
 
     @staticmethod
     def destockStorageAliquot(id_item, id_user, reason, external, location, destock_date):
+        """
+        Take an aliquot out of the storage and record why, where and when in sample_destock.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -1985,6 +2445,12 @@ class Quality:
 
     @staticmethod
     def restockStorageAliquot(id_item, id_user):
+        """
+        Put an aliquot back in the storage and set the restock date and user of its last destocking.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2007,6 +2473,9 @@ class Quality:
 
     @staticmethod
     def getSupplierSearch(text):
+        """
+        Search suppliers, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -2029,6 +2498,9 @@ class Quality:
 
     @staticmethod
     def getSupplier(id_item):
+        """
+        Read one supplier of sigl_fournisseurs_data.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data ,id_owner, fournisseur_nom as supplier, contact_nom as lastname, '
@@ -2044,6 +2516,12 @@ class Quality:
 
     @staticmethod
     def insertSupplier(**params):
+        """
+        Insert a supplier in sigl_fournisseurs_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2064,6 +2542,12 @@ class Quality:
 
     @staticmethod
     def updateSupplier(**params):
+        """
+        Update a supplier of sigl_fournisseurs_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2083,6 +2567,12 @@ class Quality:
 
     @staticmethod
     def deleteSupplier(id_item):
+        """
+        Delete one supplier of sigl_fournisseurs_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2098,6 +2588,10 @@ class Quality:
 
     @staticmethod
     def getManualList(args):
+        """
+        Read the quality manuals with section and users, ordered by title.
+        args: title, man_mas.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' manu.titre != "" '
@@ -2131,6 +2625,9 @@ class Quality:
 
     @staticmethod
     def getManualSearch(text):
+        """
+        Search quality manuals, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -2154,6 +2651,9 @@ class Quality:
 
     @staticmethod
     def getManual(id_item):
+        """
+        Read one quality manual of sigl_manuels_data with its section and users.
+        """
         cursor = DB.cursor()
 
         req = ('select manu.id_data ,manu.id_owner, manu.titre as title, manu.reference, mas_name, '
@@ -2176,6 +2676,12 @@ class Quality:
 
     @staticmethod
     def insertManual(**params):
+        """
+        Insert a quality manual in sigl_manuels_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2195,6 +2701,12 @@ class Quality:
 
     @staticmethod
     def updateManual(**params):
+        """
+        Update a quality manual of sigl_manuels_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2213,6 +2725,12 @@ class Quality:
 
     @staticmethod
     def deleteManual(id_item):
+        """
+        Delete one quality manual of sigl_manuels_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2228,6 +2746,9 @@ class Quality:
 
     @staticmethod
     def getMeetingList():
+        """
+        Read every quality meeting with its type and promoter.
+        """
         cursor = DB.cursor()
 
         req = ('select meet.mee_ser as id_data, meet.mee_date_meeting as date_meeting, meet.mee_type as type_id, '
@@ -2243,6 +2764,9 @@ class Quality:
 
     @staticmethod
     def getMeeting(id_item):
+        """
+        Read one quality meeting of meeting with its promoter.
+        """
         cursor = DB.cursor()
 
         req = ('select meet.mee_ser as id_data, meet.mee_user as id_owner, meet.mee_date_meeting as date_meeting, '
@@ -2259,6 +2783,12 @@ class Quality:
 
     @staticmethod
     def insertMeeting(**params):
+        """
+        Insert a quality meeting in meeting.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2278,6 +2808,12 @@ class Quality:
 
     @staticmethod
     def updateMeeting(**params):
+        """
+        Update a quality meeting of meeting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2295,6 +2831,12 @@ class Quality:
 
     @staticmethod
     def deleteMeeting(id_item):
+        """
+        Delete one quality meeting of meeting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2310,6 +2852,9 @@ class Quality:
 
     @staticmethod
     def getProcedureList():
+        """
+        Read every procedure with its section and users.
+        """
         cursor = DB.cursor()
 
         req = ('select proc.id_data, proc.id_owner, proc.titre as title, proc.reference as reference, '
@@ -2328,6 +2873,9 @@ class Quality:
 
     @staticmethod
     def getProcedureSearch(text):
+        """
+        Search procedures, for a select field, limited to 1000.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -2351,6 +2899,9 @@ class Quality:
 
     @staticmethod
     def getProcedure(id_item):
+        """
+        Read one procedure of sigl_procedures_data with its users.
+        """
         cursor = DB.cursor()
 
         req = ('select proc.id_data ,proc.id_owner, proc.titre as title, proc.reference, '
@@ -2371,6 +2922,12 @@ class Quality:
 
     @staticmethod
     def insertProcedure(**params):
+        """
+        Insert a procedure in sigl_procedures_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2390,6 +2947,12 @@ class Quality:
 
     @staticmethod
     def updateProcedure(**params):
+        """
+        Update a procedure of sigl_procedures_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2408,6 +2971,12 @@ class Quality:
 
     @staticmethod
     def deleteProcedure(id_item):
+        """
+        Delete one procedure of sigl_procedures_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2423,6 +2992,9 @@ class Quality:
 
     @staticmethod
     def getStaffList():
+        """
+        Read the active users with their staff fields, ordered by name, for the staff export.
+        """
         cursor = DB.cursor()
 
         req = ('select usr.id_data, usr.lastname, usr.firstname, usr.initiale as initial, '
@@ -2440,6 +3012,9 @@ class Quality:
 
     @staticmethod
     def getTraceList(type_trace):
+        """
+        Read who opened the documents of one kind, last access first. Only 'PROC' is handled, an empty list otherwise.
+        """
         cursor = DB.cursor()
 
         info_doc  = ''
@@ -2465,6 +3040,10 @@ class Quality:
 
     @staticmethod
     def getTraceListSearch(type_trace, args):
+        """
+        Same as getTraceList with filters.
+        args: user_id and doc_name, both read without a default, a missing key raises KeyError.
+        """
         cursor = DB.cursor()
 
         info_doc  = ''
@@ -2500,6 +3079,9 @@ class Quality:
 
     @staticmethod
     def getTraceDownload(id_user, type, ref):
+        """
+        Read the trace of a user on one document.
+        """
         cursor = DB.cursor()
 
         req = ('select trd_ser, trd_date, trd_last_access, trd_type, trd_ref, trd_user '
@@ -2512,6 +3094,12 @@ class Quality:
 
     @staticmethod
     def insertTraceDownload(id_user, type, ref):
+        """
+        Record the first access of a user to a document.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2528,6 +3116,12 @@ class Quality:
 
     @staticmethod
     def updateTraceDownload(id_user, type, ref):
+        """
+        Set the last access of a user to a document to now.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2545,6 +3139,9 @@ class Quality:
 
     @staticmethod
     def getMessageList(id_user):
+        """
+        Read the messages sent or received by a user and not deleted on their side.
+        """
         cursor = DB.cursor()
 
         req = ('select ime_ser, ime_date, ime_sender, ime_receiver, ime_subject, ime_body, ime_is_read, '
@@ -2563,6 +3160,9 @@ class Quality:
 
     @staticmethod
     def getMessage(id_item):
+        """
+        Read one internal message with its sender and receiver.
+        """
         cursor = DB.cursor()
 
         req = ('select ime_ser, ime_date, ime_sender, ime_subject, ime_body, ime_is_read, '
@@ -2579,6 +3179,12 @@ class Quality:
 
     @staticmethod
     def insertMessage(**params):
+        """
+        Insert an internal message.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2596,6 +3202,12 @@ class Quality:
 
     @staticmethod
     def deleteMessage(id_item, id_user):
+        """
+        Delete a message on the side of one user, sender or receiver, the other still sees it.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2615,6 +3227,12 @@ class Quality:
 
     @staticmethod
     def messageRead(id_item):
+        """
+        Mark a message as read.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2630,6 +3248,9 @@ class Quality:
 
     @staticmethod
     def countMessageUnread(id_user):
+        """
+        Count the unread messages of a user, deleted ones left out.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_msg '
@@ -2642,6 +3263,9 @@ class Quality:
 
     @staticmethod
     def getPrinterList():
+        """
+        Read every printer.
+        """
         cursor = DB.cursor()
 
         req = ('select prt_ser, prt_name, prt_script, prt_default, prt_rank '
@@ -2654,6 +3278,9 @@ class Quality:
 
     @staticmethod
     def getPrinter(id_item):
+        """
+        Read one printer of printer_setting.
+        """
         cursor = DB.cursor()
 
         req = ('select prt_ser, prt_name, prt_script, prt_default, prt_rank '
@@ -2666,6 +3293,12 @@ class Quality:
 
     @staticmethod
     def insertPrinter(**params):
+        """
+        Insert a printer in printer_setting.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2683,6 +3316,12 @@ class Quality:
 
     @staticmethod
     def updatePrinter(**params):
+        """
+        Update a printer of printer_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -2699,6 +3338,12 @@ class Quality:
 
     @staticmethod
     def deletePrinter(id_item):
+        """
+        Delete one printer of printer_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

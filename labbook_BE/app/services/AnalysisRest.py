@@ -170,6 +170,20 @@ class AnalysisSearch(Resource):
 
     @require_oauth()
     def post(self, type):
+        """
+        Search analyses or pathological products by code or name.
+
+        Args:
+            type (str): 'A' for analyses, 'P' for pathological products.
+
+        Body:
+            term (str): searched text.
+            status (int, optional): 4 enabled (default), 5 disabled.
+            link_fam (list, optional): family ids to filter by.
+
+        Returns:
+            200: list of matching analyses, names translated.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -218,6 +232,15 @@ class AnalysisVarSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search variables by label, every word of the term must match.
+
+        Body:
+            term (str): searched text, words separated by spaces.
+
+        Returns:
+            200: list of matching variables, labels translated.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -250,6 +273,18 @@ class AnalysisList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List analyses, enabled ones only by default, limited to 2000.
+
+        Body (all optional):
+            status (str): 'A' enabled, 'I' disabled.
+            name (str): searched in name, code, LOINC code and abbreviation.
+            type_ana (int): family id.
+            type_prod (int): sample type id.
+
+        Returns:
+            200: list of analyses, name, family and product translated.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -292,6 +327,18 @@ class AnalysisListFromExt(Resource):
 
     @require_oauth('external/analysis')
     def post(self):
+        """
+        Same list as AnalysisList, for third-party applications (scope external/analysis).
+
+        Body (all optional):
+            status (str): 'A' enabled, 'I' disabled.
+            name (str): searched in name, code, LOINC code and abbreviation.
+            type_ana (int): family id.
+            type_prod (int): sample type id.
+
+        Returns:
+            200: list of analyses, name, family and product translated.
+        """
         self.log.info(Logs.fileline() + ' : AnalysisListFromExt API access authorized')
         audit_user = request.oauth_user
         args = request.get_json() or {}
@@ -338,6 +385,22 @@ class AnalysisHistoExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export to a CSV file how many times each analysis was requested over a period, no limit.
+
+        Body:
+            date_beg (str): start of the period, on the record receipt date.
+            date_end (str): end of the period.
+            name (str, optional): searched in name and abbreviation.
+            code (str, optional): searched in code, abbreviation and LOINC code.
+            type_ana (int, optional): family id.
+
+        Returns:
+            200: file written to tmp/analyzes_YYYYMMDD.csv, empty body.
+            400: date_beg or date_end missing.
+            404: no analysis over the period.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -433,6 +496,20 @@ class AnalysisHistoList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List how many times each analysis was requested over a period, limited to 7000.
+
+        Body:
+            date_beg (str): start of the period, on the record receipt date.
+            date_end (str): end of the period.
+            name (str, optional): searched in name and abbreviation.
+            code (str, optional): searched in code, abbreviation and LOINC code.
+            type_ana (int, optional): family id.
+
+        Returns:
+            200: list of analyses with their count in nb_ana, family and name translated.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -484,6 +561,19 @@ class AnalysisHistoDet(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the results of one analysis in each record received over a period, limited to 7000.
+
+        Body:
+            date_beg (str): start of the period, on the record receipt date.
+            date_end (str): end of the period.
+            id_ana (int): analysis id.
+
+        Returns:
+            200: one line per result, with record number, prescription date, variable and result translated,
+                 type_rec 'E' external or 'I' internal.
+            400: date_beg, date_end or id_ana missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -538,6 +628,16 @@ class AnalysisCode(Resource):
 
     @require_oauth()
     def get(self, code):
+        """
+        Check whether an analysis code is already used.
+
+        Args:
+            code (str): analysis code.
+
+        Returns:
+            200: 1 if the code exists, 0 otherwise.
+            500: -1 on SQL error.
+        """
         audit_user = request.oauth_user
         ret = Analysis.exist(code)
 
@@ -573,6 +673,16 @@ class AnalysisCodeFromExt(Resource):
 
     @require_oauth('external/analysis')
     def get(self, code):
+        """
+        Same check as AnalysisCode, for third-party applications (scope external/analysis).
+
+        Args:
+            code (str): analysis code.
+
+        Returns:
+            200: 1 if the code exists, 0 otherwise.
+            500: -1 on SQL error.
+        """
         self.log.info(Logs.fileline() + ' : AnalysisCodeFromExt API access authorized')
         audit_user = request.oauth_user
         ret = Analysis.exist(code)
@@ -609,6 +719,16 @@ class AnalysisDet(Resource):
 
     @require_oauth()
     def get(self, id_ana):
+        """
+        Return one analysis with its translated name.
+
+        Args:
+            id_ana (int): analysis id.
+
+        Returns:
+            200: analysis fields, None replaced by ''.
+            404: analysis not found.
+        """
         audit_user = request.oauth_user
         analysis = Analysis.getAnalysis(id_ana)
 
@@ -645,6 +765,21 @@ class AnalysisDet(Resource):
 
     @require_oauth()
     def post(self, id_ana):
+        """
+        Create or update an analysis with its variables, the id read from the body wins over the URL.
+
+        Body:
+            id_ana (int): analysis id, updated if it exists, created otherwise.
+            id_owner, code, ana_loinc, name, abbr, type_ana, type_prod, unit, value, stat, comment,
+            product, whonet, ana_ast, ana_lite: analysis fields.
+            list_var (list): variables, see save_analysis_variables. On update, links to variables
+                             missing from this list are removed.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -768,6 +903,16 @@ class AnalysisDet(Resource):
 
     @require_oauth()
     def delete(self, id_ana):
+        """
+        Delete an analysis and its links to variables, the variables themselves are kept.
+
+        Args:
+            id_ana (int): analysis id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Analysis.deleteAnalysis(id_ana)
 
@@ -794,6 +939,16 @@ class AnalysisDetFromExt(Resource):
 
     @require_oauth('external/analysis')
     def get(self, id_ana):
+        """
+        Same as AnalysisDet.get, for third-party applications (scope external/analysis).
+
+        Args:
+            id_ana (int): analysis id.
+
+        Returns:
+            200: analysis fields, None replaced by ''.
+            404: analysis not found.
+        """
         self.log.info(Logs.fileline() + ' : AnalysisDetFromExt API access authorized')
         audit_user = request.oauth_user
         analysis = Analysis.getAnalysis(id_ana)
@@ -835,6 +990,13 @@ class AnalysisVarAll(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every variable with the number of analyses it is linked to.
+
+        Returns:
+            200: list of variables with nb_link, label and comment translated.
+            404: no variable.
+        """
         audit_user = request.oauth_user
         l_vars = Analysis.getAllVariable()
 
@@ -880,6 +1042,16 @@ class AnalysisVarList(Resource):
 
     @require_oauth()
     def get(self, id_ana):
+        """
+        Return the variables of one analysis, in their display order.
+
+        Args:
+            id_ana (int): analysis id.
+
+        Returns:
+            200: list of variables with their link fields, label and comment translated.
+            404: no variable for this analysis.
+        """
         audit_user = request.oauth_user
         l_vars = Analysis.getListVariable(id_ana)
 
@@ -918,6 +1090,16 @@ class AnalysisVarDet(Resource):
 
     @require_oauth()
     def get(self, id_var):
+        """
+        Return one variable.
+
+        Args:
+            id_var (int): variable id.
+
+        Returns:
+            200: variable fields, label and comment translated.
+            404: variable not found.
+        """
         audit_user = request.oauth_user
         ana_var = Analysis.getAnalysisVar(id_var)
 
@@ -955,6 +1137,16 @@ class AnalysisTypeProd(Resource):
 
     @require_oauth()
     def get(self, id_type_prod):
+        """
+        Return one sample type from the dictionary.
+
+        Args:
+            id_type_prod (int): dictionary entry id.
+
+        Returns:
+            200: dictionary entry, label translated.
+            404: entry not found.
+        """
         audit_user = request.oauth_user
         type_prod = Analysis.getProductType(id_type_prod)
 
@@ -990,6 +1182,17 @@ class AnalysisReq(Resource):
 
     @require_oauth()
     def get(self, id_rec, type_ana='A'):
+        """
+        Return the analyses requested in a record.
+
+        Args:
+            id_rec (int): record id.
+            type_ana (str): 'Y' analyses only, 'N' sample acts only, anything else for both.
+
+        Returns:
+            200: list of requested analyses, name translated, price and rating as floats.
+            404: nothing requested in this record.
+        """
         audit_user = request.oauth_user
         l_ana = Analysis.getAnalysisReq(id_rec, type_ana)
 
@@ -1032,6 +1235,19 @@ class AnalysisReq(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Add analyses to records.
+
+        Body:
+            list_ana (list): one item per analysis, with id_owner, id_rec, id_ana, price, paid, emer,
+                             req and outsourced. A None price is computed from the analysis rating
+                             and added to the record bill.
+
+        Returns:
+            200: empty body.
+            400: list_ana or a field of an item missing.
+            500: insertion failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1107,6 +1323,24 @@ class AnalysisReq(Resource):
 
     @require_oauth()
     def delete(self, id_req):
+        """
+        Remove an analysis from a record, with its pathological products, and its sample act
+        when no other analysis of the record uses it.
+
+        Args:
+            id_req (int): requested analysis id.
+
+        Body:
+            id_rec (int): record id.
+            id_ana (int): analysis id.
+            type_samp (int): sample type, required but not used by the deletion.
+            price (float): removed from the record bill when above 0.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: bill update or deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1157,6 +1391,18 @@ class AnalysisExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every analysis with its variables to a CSV file, format v6, read back by AnalysisImport.
+
+        Body:
+            id_user (int): user asking for the export.
+
+        Returns:
+            200: file written to tmp/analyzes_YYYYMMDD.csv, empty body.
+            400: id_user missing.
+            404: no analysis.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1474,6 +1720,22 @@ class AnalysisImport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Import analyses and variables from a CSV file written by AnalysisExport, formats v3 to v6.
+        The outcome is also stored with DB.insertDbStatus, type 'ANA'.
+
+        Body:
+            filename (str): CSV file name, in the tmp directory.
+            type (str): 'U' updates existing analyses, 'A' adds new ones.
+            id_user (int): user asking for the import.
+            test (str): 'Y' imports into the test tables, copied from production first.
+
+        Returns:
+            200: empty body.
+            400: field missing, or file name invalid or not found.
+            409: unknown version, or wrong column name or order.
+            500: database write failed, the rows before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2163,6 +2425,19 @@ class AnalysisStatus(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Enable or disable one analysis or all of them, sample acts are never changed.
+
+        Body:
+            status (str): 'E' enable, 'D' disable.
+            id_ana (int): analysis id, 0 for every analysis.
+            id_user (int): user asking for the change.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

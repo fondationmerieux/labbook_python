@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.6.29] - 2026-10-21
+## [3.6.29] - 2026-10-27
 ### Added
 - New table `external_ref` linking external system references to LabBook data
 - New column `var_loinc` on the analysis-variable link, LOINC code of a result variable

@@ -25,6 +25,16 @@ class DbLastStat(Resource):
 
     @require_oauth()
     def get(self, type):
+        """
+        Return the last status stored by an import with DB.insertDbStatus.
+
+        Args:
+            type (str): 'ANA' for analyses, 'DIC' for dictionaries.
+
+        Returns:
+            200: 'YYYY-MM-DD HH:MM:SS;<status>', the status being 'OK;...' or 'ERR;...',
+                 empty string when nothing is stored.
+        """
         ret = ''
 
         stat = DB.getLastStatus(type)

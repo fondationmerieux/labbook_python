@@ -16,6 +16,12 @@ class User:
 
     @staticmethod
     def checkUserAccess(login, pwd):
+        """
+        Tell whether an active user has this login and this password hash.
+
+        Returns:
+            bool: True when they match, False otherwise or on SQL error.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_user '
@@ -46,6 +52,9 @@ class User:
 
     @staticmethod
     def exist(firstname, lastname, username):
+        """
+        Tell whether a user has this first name, last name and login, used by the import.
+        """
         cursor = DB.cursor()
 
         req = ('select count(*) as nb_user '
@@ -63,6 +72,9 @@ class User:
 
     @staticmethod
     def getUserByLogin(login):
+        """
+        Read the active user of a login with its profile, password hash included.
+        """
         cursor = DB.cursor()
 
         req = ('select user.id_data, user.username, user.side_account, user.password, user.role_type, '
@@ -80,6 +92,9 @@ class User:
 
     @staticmethod
     def getUserDetails(id_user):
+        """
+        Read one user with its title label and linked prescriber name, password left out.
+        """
         cursor = DB.cursor()
 
         req = ('select u.username, u.cps_id as cps, u.rpps, u.status as stat, u.firstname, u.lastname, '
@@ -99,6 +114,12 @@ class User:
 
     @staticmethod
     def insertUser(**params):
+        """
+        Insert a user in sigl_user_data, password already hashed.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -120,6 +141,12 @@ class User:
 
     @staticmethod
     def updateUser(**params):
+        """
+        Update a user of sigl_user_data, password left unchanged.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -141,6 +168,12 @@ class User:
 
     @staticmethod
     def updateUserByImport(**params):
+        """
+        Update the user with this login, first name and last name from an import line, password left unchanged.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -162,6 +195,9 @@ class User:
     @staticmethod
     def getUserListOfRights(id_user):
 
+        """
+        Read the rights of a user: the ones of its profile, overridden by its own permissions.
+        """
         cursor = DB.cursor()
 
         req = ('select prr_ser, coalesce(usp_granted, prp_granted) as prp_granted, prr_tag '
@@ -178,6 +214,9 @@ class User:
     @staticmethod
     def getUserRightsList(id_user=0, role_type='', role_id=0):
 
+        """
+        Read every right with its value for a user, or for a profile when id_user is 0, for the rights screen.
+        """
         cursor = DB.cursor()
 
         req = ''
@@ -221,6 +260,10 @@ class User:
 
     @staticmethod
     def getUserRoleList(type='', l_exclude=None, genuine='N'):
+        """
+        Read the profiles, of one role type, without the types of l_exclude, built-in ones only when
+        genuine is 'Y', ordered by label.
+        """
         cursor = DB.cursor()
 
         l_cond = []
@@ -252,6 +295,9 @@ class User:
 
     @staticmethod
     def getUserRole(role_type):
+        """
+        Read the role (sigl_pj_role) of a role type.
+        """
         cursor = DB.cursor()
 
         req = ('select id_role, name, label, type '
@@ -264,6 +310,9 @@ class User:
 
     @staticmethod
     def getRoleDetails(pro_ser):
+        """
+        Read one profile with its role.
+        """
         cursor = DB.cursor()
 
         req = ('select pro_ser, pro_by_user, pro_role, pro_label, type as role_type, pro_genuine, pro_color_1, '
@@ -278,6 +327,12 @@ class User:
 
     @staticmethod
     def deleteRoleDet(pro_ser, id_user):
+        """
+        Delete a profile with its permissions and the user permissions based on it.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -300,6 +355,12 @@ class User:
 
     @staticmethod
     def insertProfileRole(**params):
+        """
+        Insert a profile in profile_role.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -316,6 +377,9 @@ class User:
 
     @staticmethod
     def getRoleDetByUser(id_user):
+        """
+        Read the profile of a user.
+        """
         cursor = DB.cursor()
 
         req = ('select pro_ser, pro_by_user, pro_role, pro_label, type as role_type, pro_genuine, pro_color_1, '
@@ -331,6 +395,12 @@ class User:
 
     @staticmethod
     def updateProfileRole(**params):
+        """
+        Update the label and colours of a profile.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -348,6 +418,12 @@ class User:
 
     @staticmethod
     def insertProfilePermission(**params):
+        """
+        Insert a permission of a profile for one right.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -366,6 +442,12 @@ class User:
 
     @staticmethod
     def updateProfilePermission(**params):
+        """
+        Set the value of one permission of a profile.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -382,6 +464,9 @@ class User:
 
     @staticmethod
     def sameGranted(prp, granted):
+        """
+        Tell whether a profile permission has this value, to know if a user permission still differs from it.
+        """
         cursor = DB.cursor()
 
         req = ('select 1 '
@@ -399,6 +484,12 @@ class User:
 
     @staticmethod
     def insertUserPermission(**params):
+        """
+        Insert a permission of a user that differs from its profile.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -415,6 +506,12 @@ class User:
 
     @staticmethod
     def updateUserPermission(**params):
+        """
+        Set the value of one permission of a user.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -431,6 +528,12 @@ class User:
 
     @staticmethod
     def deleteUserPermission(user, prp):
+        """
+        Remove one permission of a user, its profile value applies again.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -445,6 +548,9 @@ class User:
 
     @staticmethod
     def getUserIdentList():
+        """
+        Read the identity of every active user ('lastname firstname - login'), for select fields.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data as id_user, TRIM(CONCAT(lastname," ",firstname," - ",username)) as user_ident '
@@ -457,6 +563,9 @@ class User:
 
     @staticmethod
     def getUserExport():
+        """
+        Read every user with a login, password hashes included, for the CSV export.
+        """
         cursor = DB.cursor()
 
         req = ('select u.firstname, u.lastname, u.username, u.password, u.titre, u.email, u.status, u.locale, '
@@ -473,6 +582,10 @@ class User:
 
     @staticmethod
     def getUserList(args):
+        """
+        Read the users with their profile, oldest first.
+        args: firstname, lastname, login, role_pro, status.
+        """
         cursor = DB.cursor()
 
         filter_cond = 'u.role_type != "X" '
@@ -533,6 +646,9 @@ class User:
 
     @staticmethod
     def getUserLiteList():
+        """
+        Read the active users with an 'A' or 'AGT' role, who can be given access to LabBook Lite.
+        """
         cursor = DB.cursor()
 
         req = ('select u.id_data, u.username, u.firstname, u.lastname, u.role_type, pro.pro_label as pro_label '
@@ -548,6 +664,9 @@ class User:
 
     @staticmethod
     def getUserSearch(text):
+        """
+        Search users for a select field.
+        """
         cursor = DB.cursor()
 
         l_words = text.split(' ')
@@ -575,6 +694,9 @@ class User:
 
     @staticmethod
     def getUserConnections(date_beg, date_end):
+        """
+        Read the logins and logouts of a period from event_log (type 17), oldest first.
+        """
         cursor = DB.cursor()
 
         limit = ' limit 50000'
@@ -594,6 +716,14 @@ class User:
     def getPasswordDB(pwd, salt=''):
         # password hash (TODO by Bcrypt)
 
+        """
+        Hash a password as stored in sigl_user_data: SHA1 of the MD5 of the password completed with part
+        of the salt, then ':' and the salt. A new random salt is drawn when none is given.
+        MD5 and SHA1 are fast hashes, the code notes a move to bcrypt still to do.
+
+        Returns:
+            str: 'hash:salt'.
+        """
         if not salt:
             salt = hashlib.sha1(os.urandom(32)).hexdigest()
 
@@ -614,6 +744,12 @@ class User:
 
     @staticmethod
     def updatePassword(id_user, password):
+        """
+        Store a new password hash for a user.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -630,6 +766,12 @@ class User:
 
     @staticmethod
     def updateStatus(id_user, status):
+        """
+        Set the status of a user ('A' active, 'D' disabled).
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -646,6 +788,9 @@ class User:
 
     @staticmethod
     def getUserNbUsers():
+        """
+        Count the active users.
+        """
         cursor = DB.cursor()
 
         # Number of records
@@ -659,6 +804,9 @@ class User:
 
     @staticmethod
     def countProfileByRole(pro_ser):
+        """
+        Count the active users of a profile.
+        """
         cursor = DB.cursor()
 
         # Number of profiles
@@ -672,6 +820,12 @@ class User:
 
     @staticmethod
     def role_exist(role_label):
+        """
+        Tell whether a profile name is used.
+
+        Returns:
+            bool or int: True if used, False otherwise, -1 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

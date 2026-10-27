@@ -34,16 +34,20 @@ class AutoJobList(Resource):
     @require_oauth()
     def post(self):
         """
-        List automation jobs with optional filters and pagination.
+        List automation jobs with optional filters and pagination, system jobs left out.
+
         Body (all optional):
-        {
-          "type": "dhis2|activity|billing",
-          "active": "Y|N",
-          "limit": 100,
-          "offset": 0,
-          "order_by": "ajb_next_run_at|ajb_created_at|ajb_updated_at|ajb_label|ajb_type",
-          "order_dir": "asc|desc"
-        }
+            type (str): 'dhis2', 'activity' or 'billing'.
+            active (str): 'Y' or 'N'.
+            limit (int): 100 by default, 500 at most.
+            offset (int): 0 by default.
+            order_by (str): ajb_next_run_at (default), ajb_created_at, ajb_updated_at, ajb_label or ajb_type.
+            order_dir (str): 'asc' (default) or 'desc'.
+
+        Returns:
+            200: list of jobs.
+            400: limit or offset is not a number.
+            500: database read failed.
         """
         audit_user = request.oauth_user
         body = request.get_json(silent=True) or {}
@@ -97,7 +101,17 @@ class AutoJobDet(Resource):
 
     @require_oauth()
     def get(self, ajb_ser: int):
-        """Get a single automation job by id."""
+        """
+        Get a single automation job by id.
+
+        Args:
+            ajb_ser (int): job id.
+
+        Returns:
+            200: job fields.
+            404: job not found.
+            500: database read failed.
+        """
         audit_user = request.oauth_user
         try:
             job = Automation.getAutomationJob(ajb_ser=ajb_ser)
@@ -132,12 +146,34 @@ class AutoJobCreate(Resource):
     def post(self):
         """
         Create an automation job.
-        Required minimal fields in body:
-          type, label, schedule.kind
-        Returns the new job id as a raw scalar in the response body (200).
+
+        Body:
+            type (str): 'dhis2', 'activity', 'billing' or 'system'.
+            label (str): job name.
+            schedule (dict): kind among H, D, W, M, B, T, Q, S, A (D refused for dhis2),
+                             time 02:00:00 by default.
+            params (dict, optional): job settings.
+            active (str, optional): 'Y' (default) or 'N'.
+
+        Returns:
+            200: new job id as a raw scalar.
+            400: type, label or schedule kind invalid.
+            403: type 'system', those jobs come from Alembic only.
+            500: insertion failed.
         """
         audit_user = request.oauth_user
         body = request.get_json(silent=False) or {}
+
+        # system jobs (NTP, audit purge) come from Alembic only: one of them runs a shell command
+        if (body.get('type') or '').strip().lower() == 'system':
+            self.log.error(Logs.fileline() + ' : AutoJobCreate ERROR system job refused')
+            try:
+                details = {"result": "ERROR", "reason": "SYSTEM_JOB_FORBIDDEN"}
+                Audit.insertAudit(audit_user, "AutoJobCreate", "AUTOMATION", None, "ERROR", details, "C")
+            except Exception as err:
+                self.log.error(Logs.fileline() + ' : AutoJobCreate ERROR audit system job err=' + str(err))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         try:
             new_id = Automation.createAutomationJob(payload=body)
 
@@ -171,11 +207,35 @@ class AutoJobUpdate(Resource):
     @require_oauth()
     def put(self, ajb_ser: int):
         """
-        Update an automation job. Only provided fields are applied.
-        Body shape is identical to create(), all fields optional.
+        Update an automation job, only the fields provided are applied.
+
+        Args:
+            ajb_ser (int): job id.
+
+        Body:
+            Same fields as AutoJobCreate, all optional. The next run is recomputed when the schedule changes.
+
+        Returns:
+            200: empty body.
+            400: type or schedule kind invalid.
+            403: system job, or type 'system' asked, those jobs come from Alembic only.
+            500: job not found or update failed.
         """
         audit_user = request.oauth_user
         body = request.get_json(silent=False) or {}
+
+        # system jobs (NTP, audit purge) come from Alembic only: one of them runs a shell command
+        job = Automation.getAutomationJob(ajb_ser=ajb_ser)
+        if (body.get('type') or '').strip().lower() == 'system' or \
+           (job and (job.get('ajb_type') or '').lower() == 'system'):
+            self.log.error(Logs.fileline() + ' : AutoJobUpdate ERROR system job refused ajb_ser=' + str(ajb_ser))
+            try:
+                details = {"result": "ERROR", "reason": "SYSTEM_JOB_FORBIDDEN", "ajb_ser": ajb_ser}
+                Audit.insertAudit(audit_user, "AutoJobUpdate", "AUTOMATION", ajb_ser, "ERROR", details, "U")
+            except Exception as err:
+                self.log.error(Logs.fileline() + ' : AutoJobUpdate ERROR audit system job err=' + str(err))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         try:
             updated = Automation.updateAutomationJob(ajb_ser=ajb_ser, payload=body)
             if not updated:
@@ -215,7 +275,18 @@ class AutoJobDelete(Resource):
 
     @require_oauth()
     def delete(self, ajb_ser: int):
-        """Delete an automation job by id."""
+        """
+        Delete an automation job by id, system SSH jobs cannot be deleted.
+
+        Args:
+            ajb_ser (int): job id.
+
+        Returns:
+            200: empty body.
+            403: system SSH job.
+            404: job not found.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
 
         job = Automation.getAutomationJob(ajb_ser=ajb_ser)
@@ -257,15 +328,19 @@ class AutoRunList(Resource):
     def post(self):
         """
         List execution history (automation_run).
+
         Body (all optional):
-        {
-          "job_id": 123,
-          "status": "running|success|error|timeout",
-          "from": "YYYY-MM-DD",
-          "to": "YYYY-MM-DD",
-          "limit": 100,
-          "offset": 0
-        }
+            job_id (int): job id.
+            status (str): 'running', 'success', 'error' or 'timeout'.
+            from (str): first day, YYYY-MM-DD.
+            to (str): last day, YYYY-MM-DD.
+            limit (int): 100 by default, 500 at most.
+            offset (int): 0 by default.
+
+        Returns:
+            200: list of runs.
+            400: limit or offset is not a number.
+            500: database read failed.
         """
         audit_user = request.oauth_user
         body = request.get_json(silent=True) or {}
@@ -319,10 +394,17 @@ class AutoJobRunNow(Resource):
     def post(self, ajb_ser: int):
         """
         Force immediate execution by setting next_run_at to NOW().
-        Optional body:
-        {
-          "message": "triggered from UI"
-        }
+
+        Args:
+            ajb_ser (int): job id.
+
+        Body (optional):
+            message (str): reason kept in the audit trail only, 'triggered from UI' for instance.
+
+        Returns:
+            200: empty body.
+            404: job not found.
+            500: update failed.
         """
         audit_user = request.oauth_user
         body = request.get_json(silent=True) or {}

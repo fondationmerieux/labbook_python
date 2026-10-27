@@ -86,6 +86,13 @@ class SettingAgeInterval(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the age intervals of the reports.
+
+        Returns:
+            200: list of age intervals of the reports, None replaced by ''.
+            404: none set.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getAgeInterval()
 
@@ -109,6 +116,18 @@ class SettingAgeInterval(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Save the age intervals of the reports: items with ais_ser 0 are added, the others updated,
+        and the ones missing from the list are deleted.
+
+        Body:
+            list_val (list): items with ais_ser, ais_rank, ais_lower_bound and ais_upper_bound (below 0 means no bound).
+
+        Returns:
+            200: empty body.
+            400: list_val missing.
+            500: no interval set yet, or database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -197,6 +216,13 @@ class SettingReqServices(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the requesting services.
+
+        Returns:
+            200: list of requesting services, None replaced by ''.
+            404: none set.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getReqServices()
 
@@ -220,6 +246,18 @@ class SettingReqServices(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Save the requesting services: items with rqs_ser 0 are added, the others updated,
+        and the ones missing from the list are deleted.
+
+        Body:
+            list_val (list): items with rqs_ser, rqs_rank and rqs_name.
+
+        Returns:
+            200: empty body.
+            400: list_val missing.
+            500: database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -290,6 +328,16 @@ class SettingFuncUnitDet(Resource):
 
     @require_oauth()
     def get(self, id_unit):
+        """
+        Return one functional unit.
+
+        Args:
+            id_unit (int): unit id.
+
+        Returns:
+            200: unit fields.
+            404: unit not found.
+        """
         audit_user = request.oauth_user
         func_unit = Setting.getFuncUnitDet(id_unit)
 
@@ -321,6 +369,13 @@ class SettingFuncUnit(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the functional units.
+
+        Returns:
+            200: list of functional units with nb_user and nb_fam, the number of users and families linked.
+            404: none set.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getFuncUnit()
 
@@ -363,6 +418,18 @@ class SettingFuncUnit(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Save the functional units: items with fun_ser 0 are added, the others updated,
+        and the ones missing from the list are deleted.
+
+        Body:
+            list_val (list): items with fun_ser, fun_rank and fun_name.
+
+        Returns:
+            200: empty body.
+            400: list_val missing.
+            500: database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -429,6 +496,17 @@ class SettingFuncUnit(Resource):
 
     @require_oauth()
     def delete(self):
+        """
+        Delete one functional unit.
+
+        Body:
+            id_unit (int): unit id.
+
+        Returns:
+            200: empty body.
+            400: id_unit missing.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -466,6 +544,17 @@ class SettingLinkUnit(Resource):
 
     @require_oauth()
     def get(self, type, id_unit):
+        """
+        Return the users or families linked to a functional unit.
+
+        Args:
+            type (str): kind of link, 'U' users, 'F' families.
+            id_unit (int): unit id.
+
+        Returns:
+            200: list of links, role translated.
+            404: no link.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getLinkUnit(type, id_unit)
 
@@ -498,6 +587,21 @@ class SettingLinkUnit(Resource):
 
     @require_oauth()
     def post(self, type, id_unit):
+        """
+        Set the users or families linked to a functional unit: new ids are added, missing ones removed.
+
+        Args:
+            type (str): kind of link, 'U' users, 'F' families.
+            id_unit (int): unit id.
+
+        Body:
+            list_link (list): items with id_item.
+
+        Returns:
+            200: empty body.
+            400: list_link missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -562,6 +666,16 @@ class SettingLinkByUser(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return the functional units a user belongs to.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: list of links.
+            404: no link.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getLinkByUser(id_user)
 
@@ -588,6 +702,13 @@ class SettingPref(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return every preference of sigl_06_data.
+
+        Returns:
+            200: list of preferences, None replaced by ''.
+            404: no preference.
+        """
         audit_user = request.oauth_user
         l_prefs = Setting.getPrefList()
 
@@ -611,6 +732,22 @@ class SettingPref(Resource):
 
     @require_oauth()
     def post(self, id_owner):
+        """
+        Save the preferences: every key of the body is written to sigl_06_data.
+
+        Args:
+            id_owner (int): user making the change, above 0.
+
+        Body:
+            prix_acte, entete_1, entete_2, entete_3, entete_adr, entete_tel, entete_fax, entete_email,
+            entete_ville, facturation, facturation_pat_hosp, unite_age_defaut, auto_logout, qualite,
+            default_language, db_language, audit_purge_months: required.
+
+        Returns:
+            200: empty body.
+            400: id_owner below 1, or a field is missing.
+            500: update failed, the keys before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -654,6 +791,13 @@ class SettingRecNum(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the record and sample numbering setting.
+
+        Returns:
+            200: setting fields, None replaced by '', dates as YYYY-MM-DD HH:MM:SS.
+            404: no setting.
+        """
         audit_user = request.oauth_user
         setting = Setting.getRecNumSetting()
 
@@ -687,6 +831,21 @@ class SettingRecNum(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Update the record and sample numbering setting.
+
+        Body:
+            id_owner (int): user making the change.
+            period (int): numbering period.
+            format (int): number format.
+            samp_mask (str): sample code mask.
+            samp_regex (str): sample code pattern, used by ProductLastCode.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -733,6 +892,13 @@ class SettingReport(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the report setting.
+
+        Returns:
+            200: setting fields, None replaced by '', dates as YYYY-MM-DD HH:MM:SS.
+            404: no setting.
+        """
         audit_user = request.oauth_user
         setting = Setting.getReportSetting()
 
@@ -766,6 +932,20 @@ class SettingReport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Update the report setting.
+
+        Body:
+            id_owner (int): user making the change.
+            header (str): report header.
+            comment (str): report comment.
+            report_pwd (str): password of the PDF reports.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -806,6 +986,13 @@ class SettingBackup(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the backup setting.
+
+        Returns:
+            200: setting fields, start time as a string.
+            404: '1', no setting.
+        """
         audit_user = request.oauth_user
         setting = Setting.getBackupSetting()
 
@@ -840,6 +1027,17 @@ class ScriptBackup(Resource):
 
     @require_oauth()
     def post(self, media):
+        """
+        Start a backup to a media in the background, its output going to backup.out.
+        Follow it with ScriptStatus mode 'B'.
+
+        Args:
+            media (str): media name, letters, digits, '.', '_' and '-' only.
+
+        Returns:
+            200: 0, once the script is started.
+            400: '1', invalid media name.
+        """
         audit_user = request.oauth_user
 
         if not _is_plain_name(media, 32):
@@ -877,6 +1075,16 @@ class ScriptGenkey(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Generate the backup encryption key. The password stays in the process environment.
+
+        Body:
+            pwd_key (str): key password.
+
+        Returns:
+            200: script return code, 0 when it succeeded.
+            400: '1', pwd_key missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -910,6 +1118,16 @@ class ScriptInitMedia(Resource):
 
     @require_oauth()
     def post(self, media):
+        """
+        Prepare a media for backups and wait for the end of the script.
+
+        Args:
+            media (str): media name, letters, digits, '.', '_' and '-' only.
+
+        Returns:
+            200: script return code, 0 when it succeeded.
+            400: '1', invalid media name.
+        """
         audit_user = request.oauth_user
 
         if not _is_plain_name(media, 32):
@@ -943,6 +1161,12 @@ class ScriptKeyexist(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Check whether the backup encryption key exists.
+
+        Returns:
+            200: script return code, 0 when the key exists.
+        """
         audit_user = request.oauth_user
         cmd = 'sh ' + Constants.cst_path_script + '/' + Constants.cst_script_backup + Constants.cst_io_keyexist
 
@@ -963,6 +1187,20 @@ class ScriptListarchive(Resource):
 
     @require_oauth()
     def post(self, media):
+        """
+        List the archives of a media in the background, its output going to listarchive.out.
+        Follow it with ScriptStatus mode 'A'. The password stays in the process environment.
+
+        Args:
+            media (str): media name, letters, digits, '.', '_' and '-' only.
+
+        Body:
+            user_pwd (str): password of the system user.
+
+        Returns:
+            200: 0, once the script is started.
+            400: '1', user_pwd missing or invalid media name.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1012,6 +1250,20 @@ class ScriptListmedia(Resource):
 
     @require_oauth()
     def post(self, type):
+        """
+        List the available media in the background, its output going to listmedia.out.
+        Follow it with ScriptStatus mode 'M'. The password stays in the process environment.
+
+        Args:
+            type (str): 'U' adds the -U option to the script, anything else for none.
+
+        Body:
+            user_pwd (str): password of the system user.
+
+        Returns:
+            200: return code of the start, 0 when started.
+            400: '1', user_pwd missing.
+        """
         audit_user = request.oauth_user
         if type == "U":
             type = ' -U '
@@ -1051,6 +1303,18 @@ class ScriptProgbackup(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Schedule the daily backup and store its start time.
+
+        Body:
+            start_time (str): start time, HH:MM for instance.
+            user_pwd (str): password of the system user.
+
+        Returns:
+            200: '0'.
+            400: '1', a field is missing or start_time is invalid.
+            500: '1', script missing or failed, or the time could not be stored.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1173,6 +1437,16 @@ class ScriptRestart(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Restart LabBook. The password stays in the process environment.
+
+        Body:
+            pwd_user (str): password of the system user.
+
+        Returns:
+            200: script return code, 0 when it succeeded.
+            400: '1', pwd_user missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1206,6 +1480,20 @@ class ScriptRestore(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Restore an archive from a media in the background, its output going to restore.out.
+        Follow it with ScriptStatus mode 'R'. The password stays in the process environment.
+
+        Body:
+            media (str): media name, letters, digits, '.', '_' and '-' only.
+            archive (str): archive name, the same characters and spaces.
+            pwd_key (str): key password.
+
+        Returns:
+            200: 0, once the script is started.
+            400: '1', a field is missing or invalid.
+            500: '1', backup script missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1298,6 +1586,17 @@ class ScriptStatus(Resource):
     log = logging.getLogger('log_services')
 
     def get(self, mode):
+        """
+        Return the last line written by a backup script, no OAuth since it is polled during a restore.
+
+        Args:
+            mode (str): 'R' restore, 'B' backup, 'M' media list, 'A' archive list.
+
+        Returns:
+            200: last status line, 'WAIT;<date>;...' while the script runs or the file cannot be read.
+                 For 'M' and 'A' once finished: ret and the list of media or archives.
+            500: 'ERR;<date>;Wrong mode'.
+        """
         date_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         try:
@@ -1397,6 +1696,15 @@ class TemplateList(Resource):
 
     @require_oauth()
     def get(self, type=''):
+        """
+        Return the document templates, of one type or all of them.
+
+        Args:
+            type (str, optional): template type, RES, STI, OUT, INV...
+
+        Returns:
+            200: list of templates.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getTemplateList(type)
 
@@ -1423,6 +1731,16 @@ class TemplateDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one template.
+
+        Args:
+            id_item (int): template id.
+
+        Returns:
+            200: template fields, None replaced by ''.
+            404: template not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getTemplate(id_item)
 
@@ -1450,6 +1768,23 @@ class TemplateDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a template.
+
+        Args:
+            id_item (int): template id, 0 to create.
+
+        Body:
+            tpl_name (str): template name.
+            tpl_type (str): RES, STI, OUT, INV...
+            tpl_file (str): template file.
+            tpl_default (str): 'Y' for the default template of its type.
+
+        Returns:
+            200: id of the template.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1514,6 +1849,16 @@ class TemplateDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one template.
+
+        Args:
+            id_item (int): template id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Setting.deleteTemplate(id_item)
 
@@ -1540,6 +1885,20 @@ class ZipCityAdd(Resource):
 
     @require_oauth()
     def post(self, filename):
+        """
+        Import zip codes and cities from a CSV file of the tmp directory, header line skipped.
+
+        Args:
+            filename (str): CSV file name, zip code then city on each line.
+
+        Body:
+            id_user (int): user asking for the import.
+
+        Returns:
+            200: id of the last row added.
+            400: id_user missing.
+            500: file empty or insertion failed, the lines before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1607,6 +1966,17 @@ class ZipCityDelAll(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Delete every zip code.
+
+        Body:
+            id_user (int): user asking for the deletion.
+
+        Returns:
+            200: result of the deletion.
+            400: id_user missing.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1649,6 +2019,16 @@ class ZipCityDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one zip code.
+
+        Args:
+            id_item (int): zip code id.
+
+        Returns:
+            200: zip code and city.
+            404: not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getZipCity(id_item)
 
@@ -1680,6 +2060,15 @@ class ZipCityList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List zip codes and cities.
+
+        Body (optional):
+            filters of Setting.getZipCityList.
+
+        Returns:
+            200: list of zip codes.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1708,6 +2097,15 @@ class ZipCitySearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search zip codes and cities for a select field.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching zip codes.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1730,6 +2128,13 @@ class SettingStock(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the stock setting.
+
+        Returns:
+            200: setting fields, None replaced by ''.
+            404: no setting.
+        """
         audit_user = request.oauth_user
         setting = Setting.getStockSetting()
 
@@ -1757,6 +2162,21 @@ class SettingStock(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Update the stock setting and the stock places: places with prl_ser 0 are added,
+        the others updated, and the ones missing from the list are deleted.
+
+        Body:
+            id_owner (int): user making the change.
+            expir_warning (int): days before expiry for a warning.
+            expir_alert (int): days before expiry for an alert.
+            list_local (list): places with prl_ser, prl_rank and prl_name, empty leaves them unchanged.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1845,6 +2265,12 @@ class SettingFormList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the configurable form fields with their status.
+
+        Returns:
+            200: list of fields, labels translated.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getSettingFormList()
 
@@ -1875,6 +2301,19 @@ class SettingFormDet(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Enable or disable a configurable form field.
+
+        Body:
+            id_owner (int): user making the change.
+            ref (str): field reference.
+            stat (str): new status.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1913,6 +2352,13 @@ class SettingManual(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the quality manual sections.
+
+        Returns:
+            200: list of quality manual sections, None replaced by ''.
+            404: none set.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getManualSetting()
 
@@ -1941,6 +2387,18 @@ class SettingManual(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Save the quality manual sections: items with mas_ser 0 are added, the others updated,
+        and the ones missing from the list are deleted.
+
+        Body:
+            list_val (list): items with mas_ser, mas_rank and mas_name.
+
+        Returns:
+            200: empty body.
+            400: list_val missing.
+            500: database write failed, the items before it are kept.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2011,6 +2469,13 @@ class SettingManualCat(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the quality manual categories.
+
+        Returns:
+            200: list of categories.
+            404: none set.
+        """
         audit_user = request.oauth_user
         l_datas = Setting.getManualCategory()
 
@@ -2043,6 +2508,12 @@ class SettingDHIS2List(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the DHIS2 servers.
+
+        Returns:
+            200: list of servers.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getDHIS2List()
 
@@ -2069,6 +2540,16 @@ class SettingDHIS2Det(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one DHIS2 server.
+
+        Args:
+            id_item (int): DHIS2 server id.
+
+        Returns:
+            200: DHIS2 server fields, None replaced by ''.
+            404: DHIS2 server not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getDHIS2Det(id_item)
 
@@ -2091,6 +2572,24 @@ class SettingDHIS2Det(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update a DHIS2 server.
+
+        Args:
+            id_item (int): DHIS2 server id, 0 to create.
+
+        Body:
+            id_user (int): user making the change.
+            name (str): server name.
+            url (str): server address.
+            login, pwd (str): server account.
+            default (str): 'Y' for the default server.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2166,6 +2665,16 @@ class SettingDHIS2Det(Resource):
 
     @require_oauth()
     def delete(self, id_item):
+        """
+        Delete one DHIS2 server.
+
+        Args:
+            id_item (int): DHIS2 server id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Setting.deleteDHIS2Det(id_item)
 
@@ -2192,6 +2701,12 @@ class SettingSendMethodList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the sending methods (SMTP, Mailjet, WhatsApp).
+
+        Returns:
+            200: list of methods.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getSendingMethodList()
 
@@ -2221,6 +2736,17 @@ class SettingSendMethodDet(Resource):
 
     @require_oauth()
     def get(self, type, id_item):
+        """
+        Return one sending method.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): sending method id.
+
+        Returns:
+            200: sending method fields, None replaced by ''.
+            404: sending method not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getSendingMethodDet(type, id_item)
 
@@ -2252,6 +2778,22 @@ class SettingSendMethodDet(Resource):
 
     @require_oauth()
     def post(self, type, id_item):
+        """
+        Create or update a sending method.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): sending method id, 0 to create.
+
+        Body:
+            sdi_type, sdi_name, sdi_default: required.
+            other sdi_* fields of the method type, saved as they come.
+
+        Returns:
+            200: id of the method.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2313,6 +2855,17 @@ class SettingSendMethodDet(Resource):
 
     @require_oauth()
     def delete(self, type, id_item):
+        """
+        Delete one sending method.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): sending method id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Setting.deleteSendingMethodDet(type, id_item)
 
@@ -2339,6 +2892,20 @@ class SettingSendMethodTest(Resource):
 
     @require_oauth()
     def post(self, type, id_item):
+        """
+        Send a test message with a sending method.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): method id.
+
+        Body:
+            to (str): recipient.
+
+        Returns:
+            200: message.
+            400: error, unknown type or sending failed.
+        """
         audit_user = request.oauth_user
         payload = request.get_json(silent=True) or {}
         to = payload.get('to')
@@ -2375,6 +2942,12 @@ class SettingSendModelList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the message models.
+
+        Returns:
+            200: list of models.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getSendingModelList()
 
@@ -2404,6 +2977,17 @@ class SettingSendModelDet(Resource):
 
     @require_oauth()
     def get(self, type, id_item):
+        """
+        Return one message model.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): message model id.
+
+        Returns:
+            200: message model fields, None replaced by ''.
+            404: message model not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getSendingModelDet(type, id_item)
 
@@ -2428,6 +3012,22 @@ class SettingSendModelDet(Resource):
 
     @require_oauth()
     def post(self, type, id_item):
+        """
+        Create or update a message model.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): message model id, 0 to create.
+
+        Body:
+            mdl_type, mdl_displayname, mdl_default: required.
+            other mdl_* fields, saved as they come.
+
+        Returns:
+            200: id of the model.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2488,6 +3088,17 @@ class SettingSendModelDet(Resource):
 
     @require_oauth()
     def delete(self, type, id_item):
+        """
+        Delete one message model.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            id_item (int): message model id.
+
+        Returns:
+            200: empty body.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         ret = Setting.deleteSendingModelDet(type, id_item)
 
@@ -2514,6 +3125,26 @@ class SettingSendModelTest(Resource):
 
     @require_oauth()
     def post(self, type, mdl_ser):
+        """
+        Send a test message with a model, through the method given or the default one of the type.
+
+        Args:
+            type (str): 'S' SMTP, 'M' Mailjet, 'W' WhatsApp.
+            mdl_ser (int): model id.
+
+        Body:
+            to (str): recipient.
+            method_id (int, optional): method to use.
+            lang (str, optional): WhatsApp template language.
+
+        Returns:
+            200: message 'test sent'.
+            400: recipient missing or invalid type.
+            404: model not found.
+            412: no sending method for this type.
+            500: unexpected error.
+            502: sending failed.
+        """
         audit_user = request.oauth_user
         try:
             payload = request.get_json(force=True) or {}
@@ -2610,6 +3241,23 @@ class SettingSendReport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Send a report PDF to a recipient.
+
+        Body:
+            method_id (int): sending method.
+            method_type (str): 'S', 'M' or 'W'.
+            template_id (int): message model.
+            recipient (str): email address or phone number.
+            file (str): report file.
+            rec_num, pat_code: record and patient, used in the message.
+            id_user (int): user sending it.
+
+        Returns:
+            200: message.
+            500: unexpected error.
+            502: sending failed, with its reason.
+        """
         audit_user = request.oauth_user
 
         data = request.get_json(silent=True) or {}
@@ -2671,6 +3319,12 @@ class SettingSendList(Resource):
     def post(self):
         """
         Return a list of sending_event rows for the DataTable.
+
+        Body (optional):
+            limit (int): number of rows, 1000 by default.
+
+        Returns:
+            200: list of sending events, date as YYYY-MM-DD HH:MM:SS.
         """
         audit_user = request.oauth_user
         args  = request.get_json(silent=True) or {}
@@ -2704,6 +3358,20 @@ class SettingSendResend(Resource):
 
     @require_oauth()
     def post(self, sde_ser):
+        """
+        Send again a message already sent.
+
+        Args:
+            sde_ser (int): sending event id.
+
+        Body (optional):
+            id_user (int): user asking for it.
+
+        Returns:
+            200: message.
+            500: unexpected error.
+            502: sending failed, with its reason.
+        """
         audit_user = request.oauth_user
         data = request.get_json(silent=True) or {}
 
@@ -2748,6 +3416,12 @@ class SettingOauthList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the OAuth clients.
+
+        Returns:
+            200: list of clients.
+        """
         audit_user = request.oauth_user
         l_items = Setting.getSettingOauthList()
 
@@ -2774,6 +3448,16 @@ class SettingOauthDet(Resource):
 
     @require_oauth()
     def get(self, id_item):
+        """
+        Return one OAuth client.
+
+        Args:
+            id_item (int): client id.
+
+        Returns:
+            200: client fields, None replaced by ''.
+            404: client not found.
+        """
         audit_user = request.oauth_user
         item = Setting.getSettingOauth(id_item)
 
@@ -2801,6 +3485,24 @@ class SettingOauthDet(Resource):
 
     @require_oauth()
     def post(self, id_item):
+        """
+        Create or update an OAuth client, the labbook-FE client cannot be changed.
+        Missing fields take a default value.
+
+        Args:
+            id_item (int): client id, 0 to create.
+
+        Body:
+            oacl_client_id, oacl_client_name: client identity.
+            oacl_client_secret, oacl_user_id, oacl_redirect_uris, oacl_scope, oacl_grant_types,
+            oacl_response_types, oacl_token_endpoint_auth_method, oacl_is_active (optional).
+
+        Returns:
+            200: id of the client.
+            403: labbook-FE client.
+            404: client not found.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2899,7 +3601,18 @@ class SettingOauthDet(Resource):
 
     @require_oauth()
     def delete(self, id_item):
-        """Delete an OAuth client by id (forbidden for labbook-FE)."""
+        """
+        Delete an OAuth client by id (forbidden for labbook-FE).
+
+        Args:
+            id_item (int): client id.
+
+        Returns:
+            200: empty body.
+            403: labbook-FE client.
+            404: client not found.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         cur = Setting.getSettingOauth(id_item)
         if not cur:

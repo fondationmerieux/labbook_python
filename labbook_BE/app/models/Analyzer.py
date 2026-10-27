@@ -22,6 +22,9 @@ class Analyzer:
 
     @staticmethod
     def getConnectSetting():
+        """
+        Read the LabBook Connect setting (connect_setting, a single row).
+        """
         cursor = DB.cursor()
 
         req = ('select cos_by_user, cos_url '
@@ -33,6 +36,12 @@ class Analyzer:
 
     @staticmethod
     def updateConnectSetting(**params):
+        """
+        Update the LabBook Connect setting: user and address.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -49,6 +58,9 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerList():
+        """
+        Read every analyzer of analyzer_setting, ordered by rank.
+        """
         cursor = DB.cursor()
 
         req = ('select ans_ser, ans_rank, ans_name, ans_id, ans_batch '
@@ -61,6 +73,9 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerDet(id_analyzer):
+        """
+        Read one analyzer by its id (ans_ser).
+        """
         cursor = DB.cursor()
 
         req = ('select ans_ser, ans_user, ans_name, ans_id, ans_filename, ans_batch '
@@ -73,6 +88,9 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerDetById(id_analyzer):
+        """
+        Read one analyzer by the key used by LabBook Connect in its URLs (ans_id).
+        """
         cursor = DB.cursor()
 
         req = ('select ans_ser, ans_user, ans_name, ans_id, ans_filename, ans_batch '
@@ -85,6 +103,12 @@ class Analyzer:
 
     @staticmethod
     def insertAnalyzerDet(**params):
+        """
+        Insert an analyzer in analyzer_setting.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -101,6 +125,12 @@ class Analyzer:
 
     @staticmethod
     def updateAnalyzerDet(**params):
+        """
+        Update an analyzer of analyzer_setting.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -119,6 +149,12 @@ class Analyzer:
 
     @staticmethod
     def deleteAnalyzer(id_analyzer):
+        """
+        Delete an analyzer, its messages and results are kept.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -134,6 +170,12 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerFiles():
+        """
+        Read the TOML setting files of /storage/resource/connect/analyzer/setting/.
+
+        Returns:
+            list: one dict per file with filename, version, brand, name, id, mapping and display.
+        """
         ret = []
 
         # get list of file a specific permanent directory
@@ -169,6 +211,11 @@ class Analyzer:
 
     @staticmethod
     def listTask(stat, tot=''):
+        """
+        Read the analyzer messages with a status, oldest first, used by script/analyzer.py.
+        tot narrows to one transaction type (LAB-27, LAB-28, LAB-29).
+        An empty stat matches nothing: 'anm_stat != NULL' is never true in SQL.
+        """
         cursor = DB.cursor()
 
         cond = ' anm_stat = %s'
@@ -192,6 +239,14 @@ class Analyzer:
 
     @staticmethod
     def buildLab28(id_samp):
+        """
+        Build the HL7 OML^O33 work order (IHE LAW LAB-28) of a sample and store it as pending
+        in analyzer_msg, once for each analyzer in batch mode.
+        A missing sample, analysis, record or patient is logged, then the next line fails on None.
+
+        Returns:
+            bool: True when every work order was stored, False when one could not be updated.
+        """
         date_now = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
 
         # laboritory details
@@ -404,6 +459,12 @@ class Analyzer:
 
     @staticmethod
     def insertLabTransactions(**params):
+        """
+        Insert a message exchanged with LabBook Connect in analyzer_msg.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -420,6 +481,12 @@ class Analyzer:
 
     @staticmethod
     def updateLab27_ACK(**params):
+        """
+        Store the answer sent to a LAB-27 query and its status. Carriage returns of msg are stored as the two characters \r.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -441,6 +508,12 @@ class Analyzer:
 
     @staticmethod
     def updateLab28_OML_O33(**params):
+        """
+        Store the OML^O33 message of a LAB-28 work order and its status. Carriage returns of msg are stored as the two characters \r.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -462,6 +535,12 @@ class Analyzer:
 
     @staticmethod
     def updateLab28_ORL_O34(**params):
+        """
+        Store the ORL^O34 answer received for a LAB-28 work order and its status.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -479,6 +558,12 @@ class Analyzer:
 
     @staticmethod
     def updateLab29_ACK(**params):
+        """
+        Store the acknowledgement sent for LAB-29 results, its status and the sample found. Carriage returns of msg are stored as the two characters \r.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -501,6 +586,9 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerMsgList():
+        """
+        Read the latest 1000 analyzer messages with the analyzer name.
+        """
         cursor = DB.cursor()
 
         # analyzer_msg grows with every exchange and nothing purges it, so the newest
@@ -518,6 +606,12 @@ class Analyzer:
 
     @staticmethod
     def deleteMsgAnalyzer(id_msg):
+        """
+        Delete one analyzer message.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -726,6 +820,12 @@ class Analyzer:
 
     @staticmethod
     def insertAnalyzerResult(ans_ser, code, samp, value, unit, lb_code=None):
+        """
+        Store a result value received from an analyzer in analyzer_result.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -741,6 +841,12 @@ class Analyzer:
 
     @staticmethod
     def getAnalyzerResultsBySample(id_samp):
+        """
+        Read the values received from analyzers for a sample, newest first.
+
+        Returns:
+            list: rows, empty on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

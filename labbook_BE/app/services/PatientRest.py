@@ -38,6 +38,18 @@ class PatientList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List patients, limited to 5000 with filters and 100000 with an empty body.
+
+        Body (all optional):
+            code, code_lab, lastname, firstname (str): searched in the matching field.
+            phone (str): searched at the start of both phone numbers.
+            sex (int): sex id.
+            limit (int): number of rows, None for no limit.
+
+        Returns:
+            200: list of patients, None replaced by ''.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -68,6 +80,19 @@ class PatientListFromExt(Resource):
 
     @require_oauth('external/patient')
     def post(self):
+        """
+        Same list as PatientList, for third-party applications (scope external/patient).
+        sex is sent as 'M', 'F' or 'U', lite and birth_approx as 'Y' or 'N'.
+
+        Body (all optional):
+            code, code_lab, lastname, firstname (str): searched in the matching field.
+            phone (str): searched at the start of both phone numbers.
+            sex (int): sex id.
+            limit (int): number of rows, None for no limit.
+
+        Returns:
+            200: list of patients, None replaced by ''.
+        """
         self.log.info(Logs.fileline() + ' : PatientListFromExt API access authorized')
         audit_user = request.oauth_user
         args = request.get_json() or {}
@@ -112,6 +137,20 @@ class PatientListExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export patients to a CSV file, with the same filters as PatientList and no limit.
+
+        Body:
+            code, code_lab, lastname, firstname (str): required, may be empty.
+            phone (str, optional): searched at the start of both phone numbers.
+            sex (int, optional): sex id.
+
+        Returns:
+            200: file written to tmp/patients_YYYYMMDD.csv, empty body.
+            400: code, code_lab, lastname or firstname missing.
+            404: no patient.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -189,6 +228,16 @@ class PatientSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search patients for the select2 field, every word must start a name, code or phone number,
+        limited to 1000.
+
+        Body:
+            term (str): searched text, words separated by spaces.
+
+        Returns:
+            200: list of matching patients, age unit translated, empty body when nothing matches.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -227,6 +276,13 @@ class PatientCode(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Generate a new patient code.
+
+        Returns:
+            200: the code.
+            404: no code could be generated.
+        """
         audit_user = request.oauth_user
         code = Patient.newPatientCode()
 
@@ -253,6 +309,16 @@ class PatientCodeLab(Resource):
 
     @require_oauth()
     def get(self, pat_code_lab):
+        """
+        Check whether a laboratory patient code is already used.
+
+        Args:
+            pat_code_lab (str): laboratory patient code.
+
+        Returns:
+            200: 1 if the code exists, 0 otherwise.
+            500: -1 on SQL error.
+        """
         audit_user = request.oauth_user
         ret = Patient.codeLab_exist(pat_code_lab)
 
@@ -288,6 +354,18 @@ class PatientCombine(Resource):
 
     @require_oauth()
     def post(self, id_pat1, id_pat2):
+        """
+        Merge two patients: records and form items of patient 2 move to patient 1, then patient 2 is deleted.
+
+        Args:
+            id_pat1 (int): patient kept.
+            id_pat2 (int): patient merged then deleted.
+
+        Returns:
+            200: empty body.
+            400: an id is not above 0.
+            500: merge failed.
+        """
         audit_user = request.oauth_user
 
         if id_pat1 <= 0 or id_pat2 <= 0:
@@ -324,6 +402,16 @@ class PatientDet(Resource):
 
     @require_oauth()
     def get(self, id_pat):
+        """
+        Return one patient.
+
+        Args:
+            id_pat (int): patient id.
+
+        Returns:
+            200: patient fields, birth date as YYYY-MM-DD, None replaced by ''.
+            404: patient not found.
+        """
         audit_user = request.oauth_user
         patient = Patient.getPatient(id_pat)
 
@@ -354,6 +442,25 @@ class PatientDet(Resource):
 
     @require_oauth()
     def post(self, id_pat=0):
+        """
+        Create or update a patient. Keys outside the standard fields are stored as custom form items,
+        a changed value deactivates the previous one. With an age and no birth date, an approximate
+        birth date is computed.
+
+        Args:
+            id_pat (int): patient id, 0 to create.
+
+        Body:
+            id_user (int): user making the change.
+            pat_code, pat_name, pat_firstname, pat_birth (YYYY-MM-DD), pat_sex... (optional): patient fields,
+            missing ones take their default value.
+            pat_amicare (int, optional): 1 creates the AmiCare account.
+
+        Returns:
+            200: id_pat.
+            400: id_user missing.
+            500: patient not found on update, or database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -603,6 +710,13 @@ class PatientDet(Resource):
         return compose_ret(res, Constants.cst_content_type_json)
 
     def create_amicare_account(self, args, id_pat):
+        """
+        Create the patient account on AmiCare and store the AmiCare id. Errors are only logged.
+
+        Args:
+            args (dict): patient fields, as received by post.
+            id_pat (int): patient id.
+        """
         # imported here and not at the top, app/__init__.py loads this file itself
         from app import AMICARE_CONFIG  # pylint: disable=import-outside-toplevel
         if args.get('pat_amicare') != 1:
@@ -645,6 +759,15 @@ class PatientFormItem(Resource):
 
     @require_oauth()
     def get(self, id_pat):
+        """
+        Return the active custom form items of a patient.
+
+        Args:
+            id_pat (int): patient id.
+
+        Returns:
+            200: object with one key per form item.
+        """
         audit_user = request.oauth_user
 
         l_vals  = {}
@@ -671,6 +794,15 @@ class PatientHistFormItem(Resource):
 
     @require_oauth()
     def get(self, id_pat):
+        """
+        Return the history form events of a patient, one entry per event.
+
+        Args:
+            id_pat (int): patient id.
+
+        Returns:
+            200: list of events with evt, block_id, user_name, datetime and fields, empty when none.
+        """
         audit_user = request.oauth_user
 
         l_items = Patient.getHistFormItems(id_pat)
@@ -736,6 +868,21 @@ class PatientHistFormItem(Resource):
 
     @require_oauth()
     def post(self, id_pat):
+        """
+        Store a new history form event for a patient.
+
+        Args:
+            id_pat (int): patient id.
+
+        Body:
+            id_user (int): user making the change.
+            block_id (str): form block.
+            fields (dict): values of the block, not empty.
+
+        Returns:
+            200: evt, id of the new event.
+            400: id_pat invalid, or id_user, block_id or fields missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json(silent=True) or {}
 
@@ -773,6 +920,18 @@ class PatientHistFormItem(Resource):
 
     @require_oauth()
     def delete(self, id_pat, evt_id):
+        """
+        Delete one history form event of a patient.
+
+        Args:
+            id_pat (int): patient id.
+            evt_id (str): event id.
+
+        Returns:
+            200: deleted, result of the deletion.
+            400: evt_id missing.
+            404: event not found.
+        """
         audit_user = request.oauth_user
 
         if not evt_id:
@@ -808,6 +967,17 @@ class PatientHistoric(Resource):
 
     @require_oauth()
     def get(self, id_pat):
+        """
+        Return a patient with all the results of its records.
+
+        Args:
+            id_pat (int): patient id.
+
+        Returns:
+            200: patient and analyzes, analysis, variable and result translated,
+                 type_rec 'E' external or 'I' internal.
+            404: patient not found.
+        """
         audit_user = request.oauth_user
 
         l_datas = {}

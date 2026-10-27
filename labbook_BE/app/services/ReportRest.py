@@ -39,6 +39,20 @@ class ReportEpidemio(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Compute the epidemiological report over a period, one block per disease set in epidemio.ini.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            lite_filter (str, optional): 'A' all records (default), 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            lite_user_id (int, optional): LabBook Lite user, 0 for all.
+
+        Returns:
+            200: list of diseases with sample label, details (res_type 'T' title or 'R' result, res_value),
+                 total_received and total_analyzed.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -207,6 +221,20 @@ class ReportIndicator(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Compute the indicators report over a period, one block per disease set in indicator.ini.
+        Same as ReportEpidemio, with several sample types per disease and per result.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            lite_filter (str, optional): 'A' all records (default), 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            lite_user_id (int, optional): LabBook Lite user, 0 for all.
+
+        Returns:
+            200: list of diseases with sample labels, details, total_received and total_analyzed.
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -372,6 +400,20 @@ class ReportActivity(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the activity over a period: analyses counted by type and by patient age.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            type_ana (int): family id, 0 for every family.
+            lite_filter (str, optional): 'A' all records (default), 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            lite_user_id (int, optional): LabBook Lite user, 0 for all.
+
+        Returns:
+            200: type and age, analysis names translated, ages in years.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -446,6 +488,20 @@ class ReportStat(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the statistics of a period: patients, prescribers, samplers, samples and counts.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            service_int (str): internal service, may be empty.
+            lite_filter (str, optional): 'A' all records (default), 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            lite_user_id (int, optional): LabBook Lite user, 0 for all.
+
+        Returns:
+            200: patient, prescr, sampler, product, nb_pat and nb_ana.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -519,6 +575,21 @@ class ReportTAT(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the turnaround times of the analyses of a period: from record save to record validation,
+        to technical validation and to biological validation, each with its running average.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            type_ana, id_ana, code_pat, rec_num: filters, required, may be empty.
+            lite_filter (str, optional): 'A' all records (default), 'N' without LabBook Lite, 'Y' LabBook Lite only.
+            lite_user_id (int, optional): LabBook Lite user, 0 for all.
+
+        Returns:
+            200: list of analyses with tat_* (this line) and tot_* (average) in days, hours, minutes and seconds.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -736,6 +807,18 @@ class ReportBilling(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the billing status of the records of a period.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            id_user (int): records created by this user, 0 for every user.
+
+        Returns:
+            200: list of records with bill_price and bill_remain as floats.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -783,6 +866,18 @@ class ReportToday(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the work list of a period: analyses of the records received.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            service_int (str): internal service, may be empty.
+
+        Returns:
+            200: list of analyses, family and analysis translated, type_rec 'E' external or 'I' internal.
+            400: a field is missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -837,6 +932,20 @@ class ReportTodayExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the work list of a period to a CSV file.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            service_int (str): internal service, may be empty.
+
+        Returns:
+            200: file written to tmp/report_today_YYYYMMDD.csv, empty body.
+            400: a field is missing.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -920,6 +1029,21 @@ class ReportRegister(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the register of a period: one entry per record with its analyses and results,
+        limited to 20000 results. When the limit is reached, the last record is dropped as it may be incomplete.
+
+        Body:
+            date_beg (str): start of the period.
+            date_end (str): end of the period.
+            id_fam (int, optional): family id, 0 for every family.
+            type_rec (str, optional): 'E' external, 'I' internal, empty for both.
+            link_fam (list, optional): family ids to filter by.
+
+        Returns:
+            200: l_rec, nb_ext, nb_hosp and truncated ('Y' or 'N').
+            400: date_beg or date_end missing.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 

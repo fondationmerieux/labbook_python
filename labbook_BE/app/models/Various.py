@@ -22,6 +22,9 @@ __all__ = [
 # --- Language helpers ---
 def get_lang_pdf_default():
     # lang_pdf
+    """
+    Return the language of the reports, the default_language preference.
+    """
     db_val = Various.getDefaultValue('default_language')
     Various.log.info(Logs.fileline() + ' : lang_pdf in database = ' + db_val['value'])
     return db_val['value']
@@ -29,6 +32,9 @@ def get_lang_pdf_default():
 
 def get_lang_db_default():
     # lang_db
+    """
+    Return the language of the database texts, the db_language preference.
+    """
     db_val = Various.getDefaultValue('db_language')
     Various.log.info(Logs.fileline() + ' : lang_db in database = ' + db_val['value'])
     return db_val['value']
@@ -39,6 +45,11 @@ class Various:
 
     @staticmethod
     def useLangPDF():
+        """
+        Make _() translate into the language of the reports.
+        gettext.install puts _ in the builtins, so it changes the language of the whole process,
+        every request included, until the next call.
+        """
         lang_code = get_lang_pdf_default()
 
         langPDF = gettext.translation('messages', Constants.cst_path_lang, [lang_code], fallback=False)
@@ -46,6 +57,11 @@ class Various:
 
     @staticmethod
     def useLangDB():
+        """
+        Make _() translate into the language of the database texts.
+        gettext.install puts _ in the builtins, so it changes the language of the whole process,
+        every request included, until the next call.
+        """
         lang_code = get_lang_db_default()
 
         langDB = gettext.translation('messages', Constants.cst_path_lang, [lang_code], fallback=False)
@@ -53,6 +69,12 @@ class Various:
 
     @staticmethod
     def insertEvent(**params):
+        """
+        Record an event in event_log (logins, imports...).
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -70,6 +92,9 @@ class Various:
 
     @staticmethod
     def getDicoById(id_data):
+        """
+        Read one dictionary value of sigl_dico_data.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, dico_name, label, short_label, position, code, dict_formatting '
@@ -83,6 +108,9 @@ class Various:
 
     @staticmethod
     def getDefaultValue(name):
+        """
+        Read one preference of sigl_06_data by its key (identifiant).
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, identifiant, label, value '
@@ -95,6 +123,12 @@ class Various:
 
     @staticmethod
     def updateDefaultValue(name, value):
+        """
+        Set the value of one preference of sigl_06_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -113,6 +147,9 @@ class Various:
 
     @staticmethod
     def getLastNumDos():
+        """
+        Read the day, month and year numbers of the last record created, to compute the next ones.
+        """
         cursor = DB.cursor()
 
         req = ('select num_dos_jour, num_dos_an, num_dos_mois '
@@ -125,6 +162,9 @@ class Various:
 
     @staticmethod
     def getLastInitVersion():
+        """
+        Read the last row of init_version, which says whether the translations must be reloaded.
+        """
         cursor = DB.cursor()
 
         req = ('select * '
@@ -137,6 +177,12 @@ class Various:
 
     @staticmethod
     def updateInitVersion(ini_ser, stat):
+        """
+        Set the status of an init_version row, 'N' once the translations are reloaded.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -154,6 +200,13 @@ class Various:
 
     @staticmethod
     def updateTranslationsTable(lang):
+        """
+        Fill the translations table for one language with the translated names of analyses, variables
+        and dictionary values, so searches work outside fr_FR.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             # use lang en_GB for DB
             langDB = gettext.translation('messages', Constants.cst_path_lang, lang.split())
@@ -288,6 +341,9 @@ class Various:
 
     @staticmethod
     def getNationalityList():
+        """
+        Read every nationality.
+        """
         cursor = DB.cursor()
 
         req = ('select nat_ser, nat_name, nat_code '
@@ -300,6 +356,9 @@ class Various:
 
     @staticmethod
     def getNationalityById(id):
+        """
+        Read one nationality.
+        """
         cursor = DB.cursor()
 
         req = ('select nat_ser, nat_name, nat_code '

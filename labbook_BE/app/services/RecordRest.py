@@ -49,6 +49,21 @@ class RecordList(Resource):
 
     @require_oauth()
     def post(self, id_pres):
+        """
+        List records, limited to 1000 with an empty body and 4000 with filters.
+
+        Args:
+            id_pres (int): prescriber id, 0 for every prescriber.
+
+        Body (all optional):
+            num_rec, code, code_pat, lastname, firstname: searched in the matching field.
+            date_beg, date_end (str): receipt date range.
+            type_rec, type_ana, stat_rec, stat_work, emer: filters.
+            link_fam (list): family ids to filter by.
+
+        Returns:
+            200: list of records, type_rec 'E' external or 'I' internal.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -86,6 +101,23 @@ class RecordListFromExt(Resource):
 
     @require_oauth('external/record')
     def post(self, id_pres):
+        """
+        Same list as RecordList, for third-party applications (scope external/record).
+
+        Args:
+            id_pres (int): prescriber id, 0 for every prescriber.
+
+        Body (all optional):
+            num_rec, code, code_pat, lastname, firstname: searched in the matching field.
+            date_beg, date_end (str): receipt date range.
+            stat_rec (str): N, A, IA, T, IT or B (biologically validated).
+            emer (str): 'Y' for emergencies only.
+            type_rec, type_ana, stat_work: filters.
+            link_fam (list): family ids to filter by.
+
+        Returns:
+            200: list of records, type_rec 'E' external or 'I' internal.
+        """
         self.log.info(Logs.fileline() + ' : RecordListFromExt API access authorized')
         audit_user = request.oauth_user
         args = request.get_json()
@@ -148,6 +180,16 @@ class RecordDet(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return one record.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: record fields, discount translated, dates as YYYY-MM-DD or YYYY-MM-DD HH:MM, amounts as floats.
+            404: record not found.
+        """
         audit_user = request.oauth_user
         record = Record.getRecord(id_rec)
 
@@ -218,6 +260,25 @@ class RecordDet(Resource):
 
     @require_oauth()
     def post(self, id_rec=0):
+        """
+        Create a record and give it its day, month and year numbers. Records are never updated here.
+
+        Args:
+            id_rec (int): must be 0.
+
+        Body:
+            id_owner, id_patient, type, id_med, service_int, bed_num, parcel, parcel_id, comm, price,
+            discount, percent_discount, percent_insurance, bill_remain, receipt_num, bill_num, stat,
+            rec_custody, rec_num_int, rec_modified, rec_hosp_num: record fields, all required.
+            date_record, parcel_date (str): YYYY-MM-DDTHH:MM.
+            date_prescr, date_hosp (str): YYYY-MM-DD.
+
+        Returns:
+            200: id_rec.
+            400: a field is missing.
+            405: id_rec is not 0.
+            500: insertion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json(silent=True) or {}
 
@@ -395,6 +456,17 @@ class RecordDet(Resource):
 
     @require_oauth()
     def delete(self, id_rec):
+        """
+        Delete a record with its reports, documents, results, validations, analyses and samples.
+        Each step is its own statement: a failure leaves the steps before it done.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: empty body.
+            500: a deletion failed.
+        """
         audit_user = request.oauth_user
         # delete sigl_11_data with id_dos = id_rec
         ret = File.deleteFileReportByRecord(id_rec)
@@ -498,6 +570,29 @@ class RecordDetFromExt(Resource):
 
     @require_oauth('external/record')
     def post(self, id_rec=0):
+        """
+        Create a complete record sent by a third-party application (scope external/record): patient and
+        prescriber are found or created, then the record, its analyses, sampling acts, samples, empty
+        results and administrative validation. Analyses are checked before anything is written.
+
+        Args:
+            id_rec (int): not used.
+
+        Body:
+            patient (dict): pat_* fields, found by external reference, codes or identity.
+            prescriber (dict): prescr_* fields, found by code or identity.
+            record (dict): rec_* fields, rec_type, rec_date and rec_date_prescr required.
+            ana_list (list): analyses by ana_code or ana_loinc, with ana_emer, ana_req and ana_out.
+            samp_list (list): samples with samp_ana, samp_type, samp_code, samp_status...
+            external (dict, optional): system, record and patient references, kept in external_ref.
+
+        Returns:
+            200: id of the new record.
+            400: body or a required field missing, or unknown samp_type, with an error message.
+            404: analysis or sampling act not found, with an error message.
+            409: external record reference already used.
+            500: database write failed, with an error message. What was written before stays.
+        """
         self.log.info(Logs.fileline() + ' : RecordDetFromExt API access authorized')
         audit_user = request.oauth_user
 
@@ -1067,8 +1162,8 @@ class RecordDetFromExt(Resource):
             # calc price
             ana_price = price_act * tmp_ana['cote_valeur']
 
-            # No bill if internal record and hosp bill pref set to 0
-            if record['rec_type'] == 'I' and not hosp_bill:
+            # No bill if internal record and hosp bill pref set to 0 (rec_type already turned into 184)
+            if record['rec_type'] == 184 and not hosp_bill:
                 ana_price = 0
 
             if ana['ana_emer'] == 'Y':
@@ -1111,7 +1206,7 @@ class RecordDetFromExt(Resource):
             if tmp_ana['produit_biologique'] and tmp_ana['produit_biologique'] not in l_id_act:
                 tmp_act = Analysis.getAnalysis(tmp_ana['produit_biologique'])
 
-                if not tmp_ana:
+                if not tmp_act:
                     self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR sampling act associated to analysis not found with code : ' + Logs.clean(ana['ana_code']))
                     err = {"error": "sampling act associated to analysis not found with code = " + str(ana['ana_code'])}
                     return compose_ret(err, Constants.cst_content_type_json, 404)
@@ -1119,8 +1214,8 @@ class RecordDetFromExt(Resource):
                 # calc price of this act
                 ana_act_price = price_act * tmp_act['cote_valeur']
 
-                # No bill if internal record and hosp bill pref set to 0
-                if record['rec_type'] == 'I' and not hosp_bill:
+                # No bill if internal record and hosp bill pref set to 0 (rec_type already turned into 184)
+                if record['rec_type'] == 184 and not hosp_bill:
                     ana_act_price = 0
 
                 tot_price += ana_act_price
@@ -1380,6 +1475,20 @@ class RecordComm(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Update the comment of a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            comm (str): new comment.
+
+        Returns:
+            200: empty body.
+            400: comm missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -1417,6 +1526,13 @@ class RecordLast(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the last record created.
+
+        Returns:
+            200: record fields, dates formatted, amounts as floats.
+            404: no record.
+        """
         audit_user = request.oauth_user
         record = Record.getLastRecord()
 
@@ -1485,6 +1601,15 @@ class RecordNext(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return the next record waiting for biological validation after a given one.
+
+        Args:
+            id_rec (int): current record id.
+
+        Returns:
+            200: id of the next record, 0 when none.
+        """
         audit_user = request.oauth_user
         id_rec_next = 0
 
@@ -1509,6 +1634,20 @@ class RecordStat(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Change the status of a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            stat (int): new status.
+
+        Returns:
+            200: empty body.
+            400: stat missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -1546,6 +1685,16 @@ class RecordListAna(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return the analyses requested in a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: list of analyses, name translated.
+            404: no analysis in this record.
+        """
         audit_user = request.oauth_user
         l_datas = Record.getRecordListAnalysis(id_rec)
 
@@ -1582,6 +1731,15 @@ class RecordNbEmer(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return the number of emergency records.
+
+        Body (optional):
+            link_fam (list): family ids to filter by.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -1610,6 +1768,12 @@ class RecordNbRecTech(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of records waiting for technical validation.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = Record.getRecordNbRecTech()
 
@@ -1633,6 +1797,12 @@ class RecordNbRecBio(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of records waiting for biological validation.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = Record.getRecordNbRecBio()
 
@@ -1656,6 +1826,12 @@ class RecordNbRec(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of records.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = Record.getRecordNbRec()
 
@@ -1679,6 +1855,12 @@ class RecordNbRecToday(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of records numbered today and already biologically validated.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         num_today = datetime.now().strftime("%Y%m%d")
 
@@ -1704,6 +1886,16 @@ class RecordValid(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return the validation entry of a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: validation fields, date as YYYY-MM-DD HH:MM.
+            404: no validation entry.
+        """
         audit_user = request.oauth_user
         rev = Record.getRecordValidation(id_rec)
 
@@ -1729,6 +1921,21 @@ class RecordValid(Resource):
 
     @require_oauth()
     def post(self, id_rec):
+        """
+        Add a validation entry to a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Body:
+            id_user (int): user validating.
+            comm (str): comment.
+
+        Returns:
+            200: empty body.
+            400: id_user or comm missing.
+            500: insertion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -1767,6 +1974,16 @@ class RecordNumInt(Resource):
 
     @require_oauth()
     def get(self, rec_num_int):
+        """
+        Check whether an internal record number is already used.
+
+        Args:
+            rec_num_int (str): internal record number.
+
+        Returns:
+            200: 1 if the number exists, 0 otherwise.
+            500: -1 on SQL error.
+        """
         audit_user = request.oauth_user
         ret = Record.rec_num_int_exist(rec_num_int)
 

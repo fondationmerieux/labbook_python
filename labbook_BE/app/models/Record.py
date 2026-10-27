@@ -13,6 +13,13 @@ class Record:
 
     @staticmethod
     def getRecordList(args, id_pres):
+        """
+        Read the records for the list screen with patient and status, limited to 1000 with an empty args,
+        4000 otherwise. id_pres above 0 keeps the records of one prescriber.
+        args: num_rec (record numbers or an external reference), stat_work (list of statuses), type_rec
+        ('C' custody, 'E' external, 'I' internal), stat_rec, lastname, firstname, code, code_pat,
+        date_beg, date_end, emer, type_ana, link_fam (joined into the SQL text without parameters).
+        """
         cursor = DB.cursor()
 
         table_cond  = ''
@@ -156,6 +163,9 @@ class Record:
 
     @staticmethod
     def getRecordListGlobal(date_beg, date_end):
+        """
+        Read the biologically validated records received over a period, oldest first, for the global report.
+        """
         cursor = DB.cursor()
 
         filter_cond = ' '
@@ -183,6 +193,9 @@ class Record:
 
     @staticmethod
     def getRecord(id_rec):
+        """
+        Read one record with its prescriber, discount label and number as set in record_setting.
+        """
         cursor = DB.cursor()
 
         req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.rec_date_receipt, rec.num_dos_jour, '
@@ -206,6 +219,9 @@ class Record:
 
     @staticmethod
     def getLastRecord():
+        """
+        Read the last record created.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data, id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
@@ -221,6 +237,12 @@ class Record:
 
     @staticmethod
     def getRecordIdByNum(num_rec):
+        """
+        Read the id of the last record with this year or month number.
+
+        Returns:
+            int: record id, 0 when not found.
+        """
         cursor = DB.cursor()
 
         cursor.execute('select id_data from sigl_02_data where num_dos_an = %s or num_dos_mois = %s '
@@ -231,6 +253,9 @@ class Record:
 
     @staticmethod
     def getRecordListAnalysis(id_rec):
+        """
+        Read the analyses of a record with their validation state, sampling acts left out.
+        """
         cursor = DB.cursor()
 
         req = ('select refana.nom as name, max(vld.type_validation) as last_vld '
@@ -247,6 +272,12 @@ class Record:
 
     @staticmethod
     def getRecordNext(id_rec):
+        """
+        Find the record that follows id_rec among the ones waiting for biological validation (254, 255).
+
+        Returns:
+            dict or bool: next record (id_data), False when id_rec is the last one.
+        """
         cursor = DB.cursor()
 
         req = ('select id_data '
@@ -272,6 +303,12 @@ class Record:
 
     @staticmethod
     def insertRecord(**params):
+        """
+        Insert a record in sigl_02_data, rec_date_save set to now.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -297,6 +334,12 @@ class Record:
 
     @staticmethod
     def updateRecordComm(id_rec, comm):
+        """
+        Update the comment of a record.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -315,6 +358,12 @@ class Record:
 
     @staticmethod
     def updateRecordStat(id_rec, stat):
+        """
+        Update the status of a record.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -333,6 +382,12 @@ class Record:
 
     @staticmethod
     def updateRecordModified(id_rec, modified):
+        """
+        Set the modified flag of a record ('Y' after a result reset or cancel).
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -351,6 +406,13 @@ class Record:
 
     @staticmethod
     def removeRecordBill(id_rec, diff_price):
+        """
+        Take diff_price off the record price and recompute the amount to pay with its discount and
+        insurance rates. A negative diff_price adds to the price.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -389,6 +451,12 @@ class Record:
 
     @staticmethod
     def updateRecordBill(id_rec, price, remain):
+        """
+        Set the price and the amount to pay of a record.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -407,6 +475,12 @@ class Record:
 
     @staticmethod
     def deleteRecord(id_rec):
+        """
+        Move a record to sigl_02_deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -434,6 +508,10 @@ class Record:
 
     @staticmethod
     def getRecordNbEmer(args):
+        """
+        Count the records with an urgent analysis not yet biologically validated.
+        args: link_fam.
+        """
         cursor = DB.cursor()
 
         table_cond = ''
@@ -467,6 +545,9 @@ class Record:
 
     @staticmethod
     def getRecordNbRecTech():
+        """
+        Count the records waiting for technical validation (182, 253).
+        """
         cursor = DB.cursor()
 
         # Number of records to validate by a technician
@@ -480,6 +561,9 @@ class Record:
 
     @staticmethod
     def getRecordNbRecBio():
+        """
+        Count the records waiting for biological validation (254, 255).
+        """
         cursor = DB.cursor()
 
         # Number of records to validate by a biologist
@@ -493,6 +577,9 @@ class Record:
 
     @staticmethod
     def getRecordNbRec():
+        """
+        Count every record.
+        """
         cursor = DB.cursor()
 
         # Number of records
@@ -505,6 +592,9 @@ class Record:
 
     @staticmethod
     def getRecordNbRecToday(num_today):
+        """
+        Count the records numbered today (num_today, YYYYMMDD) and already biologically validated.
+        """
         cursor = DB.cursor()
 
         # Number of records validated today
@@ -518,6 +608,13 @@ class Record:
 
     @staticmethod
     def generateBillNumber(id_rec):
+        """
+        Give a record the next bill number, the highest one plus 1 on 10 digits, and store it in sigl_pj_sequence.
+        Two calls at the same time can get the same number.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             # Get last number
             cursor = DB.cursor()
@@ -561,6 +658,12 @@ class Record:
 
     @staticmethod
     def insertPjSequence(sid, pattern, num):
+        """
+        Store the last number given for a sequence (numdosjour, numdosmois, numdosan, num_fact) in sigl_pj_sequence.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -578,6 +681,9 @@ class Record:
 
     @staticmethod
     def getDataset(date_beg, date_end):
+        """
+        Read the records received over a period with patient, prescriber and labels, for the dataset screen.
+        """
         cursor = DB.cursor()
 
         req = ('select rec.id_data as id_record, rec.rec_custody, rec.id_patient,  d_type.label as type, rec.rec_num_int, '
@@ -607,6 +713,9 @@ class Record:
 
     @staticmethod
     def getRecordValidation(id_rec):
+        """
+        Read the last validation entry of a record.
+        """
         cursor = DB.cursor()
 
         # return last validation
@@ -621,6 +730,12 @@ class Record:
 
     @staticmethod
     def insertRecordValidation(**params):
+        """
+        Insert a validation entry for a record.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -638,6 +753,12 @@ class Record:
 
     @staticmethod
     def rec_num_int_exist(rec_num_int):
+        """
+        Tell whether an internal record number is used.
+
+        Returns:
+            bool or int: True if used, False otherwise, -1 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 

@@ -16,6 +16,10 @@ class DB:
 
     @staticmethod
     def cursor(ecr=False):
+        """
+        Return a cursor on the shared connection, opened or reconnected when needed.
+        ecr=True gives a plain tuple cursor, a dictionary cursor otherwise.
+        """
         if ecr is True:
             cursor = DB.open_cnx().cursor()
         else:
@@ -31,6 +35,11 @@ class DB:
 
     @staticmethod
     def open_cnx():
+        """
+        Return the connection shared by the whole process, after a ping that reconnects a dead socket.
+        The first call connects with DB_USER, DB_PWD, DB_HOST and DB_NAME of the app config, autocommit on.
+        Any failure is raised as DBException.
+        """
         try:
             # If we already have a connection, ensure it's still alive (sleep/resume can kill sockets)
             if DB.cnx is not None:
@@ -69,6 +78,13 @@ class DB:
 
     @staticmethod
     def insertDbStatus(**params):
+        """
+        Store the outcome of an import in database_status, read back by DbLastStat.
+        params: stat ('OK;...' or 'ERR;...'), type ('ANA' or 'DIC').
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -86,6 +102,9 @@ class DB:
 
     @staticmethod
     def getLastStatus(type):
+        """
+        Read the last import outcome of one type ('ANA' or 'DIC') in database_status.
+        """
         cursor = DB.cursor()
 
         cursor.execute('select dbs_date, dbs_stat, dbs_type '
@@ -97,6 +116,10 @@ class DB:
 
     @staticmethod
     def read_config_file(file_path):
+        """
+        Read the key = value pairs of a Python settings file.
+        No longer called: the settings come from current_app.config since 14/05/2024.
+        """
         config = {}
 
         with open(file_path, 'r', encoding='utf-8') as file:

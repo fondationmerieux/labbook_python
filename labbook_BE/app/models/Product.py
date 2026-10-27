@@ -12,6 +12,9 @@ class Product:
 
     @staticmethod
     def getProductDet(id_prod):
+        """
+        Read one sample of sigl_01_data with the code of its analysis.
+        """
         cursor = DB.cursor()
 
         req = ('select samp.id_data, samp.id_owner, samp.samp_date as prod_date, samp.type_prel as prod_type, '
@@ -29,6 +32,10 @@ class Product:
 
     @staticmethod
     def getOrderDetForLab27(id_prod):
+        """
+        Read a sample with its record, analysis and patient for a LAB-27 answer.
+        Despite its name, id_prod is compared with the sample code, not its id.
+        """
         cursor = DB.cursor()
 
         req = ("""
@@ -88,6 +95,11 @@ class Product:
 
     @staticmethod
     def getProductList(args):
+        """
+        Read the samples with their record and patient. With an empty args, only samples of records
+        not yet biologically validated, limited to 1000, otherwise limited to 15000.
+        args: link_fam, family ids joined into the SQL text without parameters.
+        """
         cursor = DB.cursor()
 
         table_cond  = ''
@@ -139,6 +151,9 @@ class Product:
 
     @staticmethod
     def getProductReq(id_rec):
+        """
+        Read the samples of a record with the labels of their type, status and sampling place.
+        """
         cursor = DB.cursor()
 
         req = ('select prod.id_data as id_data, prod.id_owner as id_owner, prod.samp_date, prod.type_prel as type_prel, '
@@ -159,6 +174,12 @@ class Product:
 
     @staticmethod
     def insertProductReq(**params):
+        """
+        Insert a sample in sigl_01_data.
+
+        Returns:
+            int: new id, 0 on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -179,6 +200,12 @@ class Product:
 
     @staticmethod
     def updateProduct(**params):
+        """
+        Update a sample of sigl_01_data.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -199,6 +226,12 @@ class Product:
 
     @staticmethod
     def deleteProductByRecord(id_rec):
+        """
+        Move the samples of a record to sigl_01_deleted.
+
+        Returns:
+            bool: True on success, False on SQL error.
+        """
         try:
             cursor = DB.cursor()
 
@@ -232,7 +265,7 @@ class Product:
         """
         Try to resolve specimen_id as a numeric primary key (id_data).
         If not found, fallback to search by code (string).
-        Returns the corresponding id_data or None if not found.
+        Returns the corresponding id_data or 0 if not found.
         """
         cursor = DB.cursor()
 
@@ -278,6 +311,12 @@ class Product:
 
     @staticmethod
     def getLastSampleCode(samp_regex):
+        """
+        Read the last sample code matching samp_regex, used to prefill the next code.
+
+        Returns:
+            str: code, empty when samp_regex is empty, nothing matches or on SQL error.
+        """
         try:
             samp_regex = (samp_regex or '').strip()
             if not samp_regex:
@@ -309,6 +348,12 @@ class Product:
 
     @staticmethod
     def getExistingSampleCodes(codes):
+        """
+        Tell which of these sample codes are already used.
+
+        Returns:
+            list: codes found, empty on SQL error.
+        """
         if not codes:
             return []
 

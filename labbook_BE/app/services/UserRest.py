@@ -50,6 +50,20 @@ class UserAccess(Resource):
     log = logging.getLogger('log_services')
 
     def post(self):
+        """
+        Check a login and password from the login page, no OAuth.
+
+        Body:
+            login (str): user login.
+            pwd (str): password, compared with the salted hash.
+
+        Returns:
+            200: id_user, role_type and login.
+            400: login or pwd missing.
+            401: wrong password.
+            404: unknown login.
+            500: unexpected error.
+        """
         args = request.get_json() or {}
 
         # Check required fields
@@ -122,6 +136,16 @@ class UserByLogin(Resource):
 
     @require_oauth()
     def get(self, login):
+        """
+        Return a user by login.
+
+        Args:
+            login (str): user login.
+
+        Returns:
+            200: user fields, None replaced by ''.
+            404: user not found.
+        """
         audit_user = request.oauth_user
         user = User.getUserByLogin(login)
 
@@ -153,6 +177,16 @@ class UserDet(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return one user.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: user fields, dates as YYYY-MM-DD, None replaced by ''.
+            404: user not found.
+        """
         audit_user = request.oauth_user
         user = User.getUserDetails(id_user)
 
@@ -189,6 +223,26 @@ class UserDet(Resource):
 
     @require_oauth()
     def post(self, id_user):
+        """
+        Create or update a user. The password is only set on creation, see UserPassword to change it.
+        A 'Z' account gets no login and a random password.
+
+        Args:
+            id_user (int): user id, 0 to create.
+
+        Body:
+            id_user, login, cps, rpps, firstname, lastname, lang, email, title, initial, birth, phone,
+            arrived, position, section, last_eval, address, cv, diploma, training, comment, id_pres,
+            role_type, role_pro: user fields, all required.
+            stat (str): status, required to update.
+            id_owner (int), password (str): required to create.
+
+        Returns:
+            200: result of the database write, the new id on creation.
+            400: a field is missing.
+            404: user not found on update.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -354,6 +408,21 @@ class UserStaffDet(Resource):
 
     @require_oauth()
     def post(self, id_user):
+        """
+        Update the staff file of a user, account fields (login, role, status, language) are kept.
+
+        Args:
+            id_user (int): user id.
+
+        Body:
+            id_user, firstname, lastname, email, title, initial, birth, phone, arrived, position, section,
+            last_eval, address, cv, diploma, training, comment, role_type, role_pro: required.
+
+        Returns:
+            200: empty body, also when id_user is 0 and nothing is done.
+            400: a field is missing.
+            500: user not found or update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -434,6 +503,15 @@ class UserList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        List users.
+
+        Body:
+            filters of User.getUserList (optional).
+
+        Returns:
+            200: list of users, section and role translated, dates as YYYY-MM-DD.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -480,6 +558,15 @@ class UserListFromExt(Resource):
 
     @require_oauth('external/user')
     def post(self):
+        """
+        Same list as UserList, for third-party applications (scope external/user).
+
+        Body:
+            filters of User.getUserList (optional).
+
+        Returns:
+            200: list of users, section and role translated, dates as YYYY-MM-DD.
+        """
         self.log.info(Logs.fileline() + ' : UserListFromExt API access authorized')
         audit_user = request.oauth_user
         args = request.get_json() or {}
@@ -527,6 +614,12 @@ class UserLiteList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the active users with an 'A' or 'AGT' role, who can be given access to LabBook Lite.
+
+        Returns:
+            200: list of users with their profile label.
+        """
         audit_user = request.oauth_user
         l_users = User.getUserLiteList()
 
@@ -553,6 +646,19 @@ class UserRoleList(Resource):
 
     @require_oauth()
     def post(self, type=''):
+        """
+        Return the profiles, with the number of users of each one.
+
+        Args:
+            type (str, optional): role type.
+
+        Body (optional):
+            exclude (list): profiles to leave out.
+            genuine (str): 'Y' for the built-in profiles only, 'N' (default) otherwise.
+
+        Returns:
+            200: list of profiles with nb_profile, label translated.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -604,6 +710,16 @@ class UserRoleDet(Resource):
 
     @require_oauth()
     def get(self, pro_ser):
+        """
+        Return one profile with its rights.
+
+        Args:
+            pro_ser (int): profile id.
+
+        Returns:
+            200: profile fields.
+            500: profile not found.
+        """
         audit_user = request.oauth_user
         role = User.getRoleDetails(pro_ser)
 
@@ -626,6 +742,25 @@ class UserRoleDet(Resource):
 
     @require_oauth()
     def post(self, pro_ser):
+        """
+        Create or update a profile and its rights.
+
+        Args:
+            pro_ser (int): profile id, 0 to create.
+
+        Body:
+            by_user (int): user making the change.
+            id_user (int): required.
+            role_type (str): role the profile is based on, used on creation.
+            role_label (str): profile name.
+            role_color_1, role_color_2, role_text_color (str): display colours.
+            l_rights (list): items with prp_ser and prp_granted.
+
+        Returns:
+            200: result of the profile write, the new id on creation.
+            400: a field is missing.
+            500: role not found or database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -731,6 +866,20 @@ class UserRoleDet(Resource):
 
     @require_oauth()
     def delete(self, pro_ser):
+        """
+        Delete one profile.
+
+        Args:
+            pro_ser (int): profile id.
+
+        Body:
+            id_user (int): user making the change.
+
+        Returns:
+            200: empty body.
+            400: id_user missing.
+            500: deletion failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -768,6 +917,16 @@ class UserRoleByUser(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return the profile of a user.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: profile fields.
+            500: profile not found.
+        """
         audit_user = request.oauth_user
         role = User.getRoleDetByUser(id_user)
 
@@ -794,6 +953,12 @@ class UserIdentList(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the identity of every active user, for select fields.
+
+        Returns:
+            200: list with id_user and user_ident ('lastname firstname - login').
+        """
         audit_user = request.oauth_user
         l_ident = User.getUserIdentList()
 
@@ -820,6 +985,15 @@ class UserSearch(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Search users for a select field.
+
+        Body:
+            term (str): searched text.
+
+        Returns:
+            200: list of matching users.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -848,6 +1022,16 @@ class UserRightsList(Resource):
 
     @require_oauth()
     def get(self, id_user):
+        """
+        Return the rights granted to a user.
+
+        Args:
+            id_user (int): user id.
+
+        Returns:
+            200: list of rights.
+            404: no right.
+        """
         audit_user = request.oauth_user
         l_rights = User.getUserListOfRights(id_user)
 
@@ -870,6 +1054,18 @@ class UserRightsList(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Return every right with its value for a user or a profile, for the rights screen.
+
+        Body:
+            id_user (int): user id.
+            role_type (str): role type.
+            role_id (int): profile id.
+
+        Returns:
+            200: list of rights, labels translated.
+            404: no right.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -911,6 +1107,23 @@ class UserRights(Resource):
 
     @require_oauth()
     def post(self, id_user):
+        """
+        Save the rights of a user. A right different from the one of its profile is stored for the user,
+        a right equal to it again is removed from the user.
+
+        Args:
+            id_user (int): user id, nothing is done when 0.
+
+        Body:
+            by_user (int): user making the change.
+            id_user (int): user id.
+            l_rights (list): items with prp_ser, prp_granted and src ('prp' from the profile, 'usp' from the user).
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1013,6 +1226,18 @@ class UserPassword(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Change the password of a user, stored as a salted hash.
+
+        Body:
+            id_user (int): user id.
+            password (str): new password.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'password' not in args:
@@ -1036,6 +1261,18 @@ class UserStatus(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Enable or disable a user.
+
+        Body:
+            id_user (int): user id.
+            status (str): 'A' active, 'D' disabled.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1076,6 +1313,12 @@ class UserCount(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of users.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = User.getUserNbUsers()
 
@@ -1099,6 +1342,19 @@ class UserConnExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export the logins and logouts of a period to a CSV file.
+
+        Body:
+            date_beg (str): first day, YYYY-MM-DD.
+            date_end (str): last day, YYYY-MM-DD, included.
+
+        Returns:
+            200: file written to tmp/user-conn_<date_beg>_<date_end>.csv, empty body.
+            400: date missing or not in YYYY-MM-DD.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1190,6 +1446,18 @@ class UserExport(Resource):
 
     @require_oauth()
     def post(self):
+        """
+        Export every user to a CSV file, format v3, password hashes included, read back by UserImport.
+
+        Body:
+            id_user (int): user asking for the export.
+
+        Returns:
+            200: file written to tmp/users_YYYYMMDD.csv, empty body.
+            400: id_user missing.
+            404: nothing to export.
+            500: CSV file could not be written.
+        """
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1382,7 +1650,7 @@ class UserExport(Resource):
 
         except Exception:
             self.log.exception(Logs.fileline() + ' : post UserExport failed')
-            return False
+            return compose_ret('', Constants.cst_content_type_json, 500)
 
         self.log.info(Logs.fileline() + ' : TRACE UserExport')
         try:
@@ -1398,6 +1666,20 @@ class UserImport(Resource):
 
     @require_oauth()
     def get(self, filename, id_user):
+        """
+        Import users from a CSV file written by UserExport, format v3. A user with the same first name,
+        last name and login is updated, password excepted, the others are created.
+
+        Args:
+            filename (str): CSV file name, in the tmp directory.
+            id_user (int): user asking for the import.
+
+        Returns:
+            200: empty body.
+            400: filename or id_user missing.
+            409: wrong version or number of columns.
+            500: file empty or database write failed, the lines before it are kept.
+        """
         audit_user = request.oauth_user
 
         if not filename or id_user <= 0:
@@ -1490,7 +1772,8 @@ class UserImport(Resource):
                 if locale:
                     if locale == 'FR':
                         locale = 35
-                    elif locale == 'UK':
+                    # UserExport writes EN, UK kept for older files
+                    elif locale in ('EN', 'UK'):
                         locale = 34
                     elif locale == 'US':
                         locale = 75
@@ -1600,6 +1883,16 @@ class UserRoleExist(Resource):
 
     @require_oauth()
     def get(self, role_label):
+        """
+        Check whether a profile name is already used.
+
+        Args:
+            role_label (str): profile name.
+
+        Returns:
+            200: 1 if the name exists, 0 otherwise.
+            500: -1 on SQL error.
+        """
         audit_user = request.oauth_user
         ret = User.role_exist(role_label)
 

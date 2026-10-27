@@ -32,6 +32,16 @@ class FileDocList(Resource):
 
     @require_oauth()
     def get(self, type_ref, ref):
+        """
+        Return the documents attached to an item.
+
+        Args:
+            type_ref (str): kind of owner, REC record, EQxx equipment, USxx user, MANU, PROC, MEET, CTRL, MSG, SIGN...
+            ref (int): id of the item.
+
+        Returns:
+            200: list of documents, None replaced by ''.
+        """
         audit_user = request.oauth_user
         l_files = File.getFileDocList(type_ref, ref)
 
@@ -58,6 +68,17 @@ class FileDoc(Resource):
 
     @require_oauth()
     def get(self, type_ref, ref):
+        """
+        Return the details of one document with its storage path.
+
+        Args:
+            type_ref (str): kind of owner, REC record, EQxx equipment, USxx user, MANU, PROC, MEET, CTRL, MSG, SIGN...
+            ref (int): document id (id_file), not the item id.
+
+        Returns:
+            200: document fields, storage path in 'storage'.
+            404: document or its storage not found.
+        """
         audit_user = request.oauth_user
         # ref = id_file
         filedata = File.getFileData(ref)
@@ -100,6 +121,22 @@ class FileDoc(Resource):
 
     @require_oauth()
     def post(self, type_ref, ref):
+        """
+        Register a file already written to disk and attach it to an item.
+
+        Args:
+            type_ref (str): kind of owner, REC record, EQxx equipment, USxx user, MANU, PROC, MEET, CTRL, MSG, SIGN...
+            ref (int): id of the item.
+
+        Body:
+            id_owner, original_name, generated_name, size, hash, ext, content_type, id_storage,
+            end_path: file fields, all required.
+
+        Returns:
+            200: empty body.
+            400: a field is missing.
+            500: database write failed.
+        """
         audit_user = request.oauth_user
         # ref = id_rec
         args = request.get_json()
@@ -166,6 +203,17 @@ class FileDoc(Resource):
 
     @require_oauth()
     def delete(self, type_ref, ref):
+        """
+        Detach a document from its item. The file and its sigl_file_data row are kept.
+
+        Args:
+            type_ref (str): kind of owner, REC record, EQxx equipment, USxx user, MANU, PROC, MEET, CTRL, MSG, SIGN...
+            ref (int): document id (id_file).
+
+        Returns:
+            200: empty body.
+            500: deletion failed or unknown type_ref.
+        """
         audit_user = request.oauth_user
         # ref= id_file
         ret = File.deleteFileDoc(type_ref, ref)
@@ -193,6 +241,15 @@ class FileReport(Resource):
 
     @require_oauth()
     def get(self, id_rec):
+        """
+        Return the reports generated for a record.
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: list of reports with date, template name and download count.
+        """
         audit_user = request.oauth_user
         l_report = File.getAllFileReport(id_rec)
 
@@ -222,6 +279,17 @@ class FileReportCopy(Resource):
 
     @require_oauth()
     def post(self, filename, copy_name):
+        """
+        Write a copy of a report to the tmp directory, with a DUPLICATA watermark on every page.
+
+        Args:
+            filename (str): report file name, in the report directory.
+            copy_name (str): name of the copy.
+
+        Returns:
+            200: empty body.
+            500: copy failed.
+        """
         audit_user = request.oauth_user
         ret = File.copyReport(filename, copy_name)
 
@@ -248,6 +316,16 @@ class FileReportNbDL(Resource):
 
     @require_oauth()
     def post(self, filename):
+        """
+        Add one to the download count of a report.
+
+        Args:
+            filename (str): report file name.
+
+        Returns:
+            200: empty body.
+            500: update failed.
+        """
         audit_user = request.oauth_user
         ret = File.raiseReportNbDL(filename)
 
@@ -274,6 +352,13 @@ class FileStorage(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the current storage, created on first call when none exists.
+
+        Returns:
+            200: storage fields.
+            500: storage could not be created.
+        """
         audit_user = request.oauth_user
         storage = File.getLastFileStorage()
 
@@ -313,6 +398,12 @@ class FileNbManual(Resource):
 
     @require_oauth()
     def get(self):
+        """
+        Return the number of quality manuals.
+
+        Returns:
+            200: count as a raw scalar.
+        """
         audit_user = request.oauth_user
         res = File.getFileNbManuals()
 
