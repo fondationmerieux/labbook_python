@@ -133,10 +133,10 @@ msgstr "وقت إنشاء النسخ الاحتياطية"
 #: templates/non-conformity.html:633 templates/non-conformity.html:718
 #: templates/setting-analyzes.html:49 templates/setting-det-analysis.html:84
 #: templates/setting-det-analysis.html:95
-#: templates/setting-det-analysis.html:189
-#: templates/setting-det-analysis.html:251
-#: templates/setting-det-analysis.html:258
-#: templates/setting-det-analysis.html:267 templates/setting-det-dict.html:80
+#: templates/setting-det-analysis.html:232
+#: templates/setting-det-analysis.html:250
+#: templates/setting-det-analysis.html:257
+#: templates/setting-det-analysis.html:264 templates/setting-det-dict.html:80
 #: templates/setting-form.html:90 templates/setting-report.html:26
 #: templates/table-rights.html:44
 msgid "Oui"
@@ -156,10 +156,10 @@ msgstr "نعم"
 #: templates/non-conformity.html:721 templates/setting-analyzes.html:50
 #: templates/setting-det-analysis.html:87
 #: templates/setting-det-analysis.html:98
-#: templates/setting-det-analysis.html:192
-#: templates/setting-det-analysis.html:254
-#: templates/setting-det-analysis.html:261
-#: templates/setting-det-analysis.html:270 templates/setting-det-dict.html:80
+#: templates/setting-det-analysis.html:235
+#: templates/setting-det-analysis.html:253
+#: templates/setting-det-analysis.html:260
+#: templates/setting-det-analysis.html:267 templates/setting-det-dict.html:80
 #: templates/setting-form.html:93 templates/setting-report.html:29
 #: templates/table-rights.html:51
 msgid "Non"
@@ -254,7 +254,7 @@ msgstr " رمز "
 #: templates/list-storage-compartment.html:19
 #: templates/list-storage-room.html:19 templates/list-template.html:27
 #: templates/list-works.html:117 templates/move-stock-product.html:53
-#: templates/setting-det-analysis.html:283 templates/setting-det-user.html:106
+#: templates/setting-det-analysis.html:286 templates/setting-det-user.html:106
 #: templates/setting-dhis2.html:22 templates/setting-dicts.html:20
 #: templates/setting-dicts.html:64 templates/setting-functionnal-units.html:30
 #: templates/setting-link-unit-fam.html:22
@@ -343,7 +343,7 @@ msgstr "تقرير"
 #: templates/list-template.html:26 templates/list-works.html:96
 #: templates/report-today.html:69 templates/res-control-ext.html:64
 #: templates/setting-age-interval.html:29 templates/setting-analyzes.html:78
-#: templates/setting-det-analysis.html:282 templates/setting-det-dict.html:46
+#: templates/setting-det-analysis.html:285 templates/setting-det-dict.html:46
 #: templates/setting-dhis2.html:21 templates/setting-dhis2.html:55
 #: templates/setting-dicts.html:63 templates/setting-epidemio.html:27
 #: templates/setting-form.html:30 templates/setting-form.html:58
@@ -412,7 +412,7 @@ msgid "Renseignements / Informations complémentaires"
 msgstr "معلومات إضافية "
 
 #: models/Form.py:447 templates/administrative-record.html:256
-#: templates/block_cancel_save.html:6 templates/connect-management.html:30
+#: templates/block_cancel_save.html:6 templates/connect-management.html:41
 #: templates/det-aliquot.html:110 templates/det-analyzer.html:72
 #: templates/det-control.html:57 templates/det-dhis2-api.html:63
 #: templates/det-doctor.html:145 templates/det-equipment.html:177
@@ -431,11 +431,11 @@ msgstr "معلومات إضافية "
 #: templates/list-results.html:477 templates/list-results.html:815
 #: templates/move-stock-product.html:73 templates/non-conformity.html:776
 #: templates/popup/popup_aliquot.html:52 templates/res-control-ext.html:79
-#: templates/res-control-int.html:65 templates/setting-det-analysis.html:341
+#: templates/res-control-int.html:65 templates/setting-det-analysis.html:344
 #: templates/setting-det-dict.html:65 templates/setting-det-role.html:80
 #: templates/setting-det-user.html:224 templates/setting-link-unit-fam.html:33
 #: templates/setting-link-unit-user.html:36 templates/setting-logo.html:31
-#: templates/setting-pref.html:177 templates/setting-pwd-user.html:36
+#: templates/setting-pref.html:177 templates/setting-pwd-user.html:47
 #: templates/setting-rec-num.html:75 templates/setting-report.html:54
 #: templates/setting-stock.html:54 templates/setting-user-rights.html:35
 msgid "Enregistrer"
@@ -447,8 +447,8 @@ msgstr "وثائق مرفقة بالملف "
 
 #: templates/administrative-record.html:272
 #: templates/administrative-record.html:280 templates/analysis-import.html:26
-#: templates/connect-management.html:41 templates/connect-management.html:51
-#: templates/connect-management.html:61 templates/det-equipment.html:44
+#: templates/connect-management.html:52 templates/connect-management.html:62
+#: templates/connect-management.html:72 templates/det-equipment.html:44
 #: templates/det-equipment.html:117 templates/det-manual.html:89
 #: templates/det-manual.html:94 templates/det-meeting.html:52
 #: templates/det-meeting.html:57 templates/det-message.html:46
@@ -526,11 +526,11 @@ msgstr "شفرة خيطية  (الباركود)"
 #: templates/list-storage-room.html:70 templates/list-suppliers.html:116
 #: templates/list-template.html:114 templates/list-works.html:286
 #: templates/res-control-ext.html:229 templates/setting-age-interval.html:73
-#: templates/setting-analyzes.html:221 templates/setting-det-analysis.html:324
-#: templates/setting-det-analysis.html:330
-#: templates/setting-det-analysis.html:656 templates/setting-det-dict.html:103
+#: templates/setting-analyzes.html:221 templates/setting-det-analysis.html:327
+#: templates/setting-det-analysis.html:333
+#: templates/setting-det-analysis.html:660 templates/setting-det-dict.html:103
 #: templates/setting-dhis2.html:107 templates/setting-dhis2.html:226
-#: templates/setting-dicts.html:182 templates/setting-form.html:279
+#: templates/setting-dicts.html:184 templates/setting-form.html:279
 #: templates/setting-form.html:299 templates/setting-functionnal-units.html:86
 #: templates/setting-lite.html:79 templates/setting-manual.html:60
 #: templates/setting-oauth-list.html:87
@@ -556,7 +556,7 @@ msgstr "يرجى تأكيد الحذف"
 #: templates/list-stock.html:306 templates/list-stock.html:343
 #: templates/list-suppliers.html:176 templates/list-template.html:174
 #: templates/setting-analyzes.html:293 templates/setting-dhis2.html:159
-#: templates/setting-dicts.html:225
+#: templates/setting-dicts.html:227
 #: templates/setting-functionnal-units.html:137
 #: templates/setting-roles-and-rights.html:175
 #: templates/setting-zipcity.html:135
@@ -607,7 +607,7 @@ msgstr " تعديل "
 #: templates/move-stock-product.html:151 templates/pivot-table.html:158
 #: templates/report-billing.html:241 templates/report-tat.html:239
 #: templates/report-today.html:193 templates/setting-analyzes.html:254
-#: templates/setting-dhis2.html:94 templates/setting-dicts.html:165
+#: templates/setting-dhis2.html:94 templates/setting-dicts.html:167
 #: templates/setting-roles-and-rights.html:98 templates/setting-users.html:213
 #: templates/setting-zipcity.html:82
 msgid "Aucune donnée à afficher"
@@ -651,13 +651,13 @@ msgstr "طرأ خلل أثناء المعالجة"
 #: templates/res-control-ext.html:147 templates/res-control-int.html:126
 #: templates/setting-age-interval.html:216 templates/setting-analyzes.html:400
 #: templates/setting-analyzes.html:440 templates/setting-backup.html:335
-#: templates/setting-backup.html:344 templates/setting-det-analysis.html:1136
+#: templates/setting-backup.html:344 templates/setting-det-analysis.html:1145
 #: templates/setting-det-dict.html:307 templates/setting-det-dict.html:317
 #: templates/setting-det-role.html:189 templates/setting-det-user.html:397
 #: templates/setting-form.html:143 templates/setting-functionnal-units.html:252
 #: templates/setting-link-unit-fam.html:157
 #: templates/setting-link-unit-user.html:163 templates/setting-manual.html:201
-#: templates/setting-pref.html:260 templates/setting-pwd-user.html:86
+#: templates/setting-pref.html:260 templates/setting-pwd-user.html:101
 #: templates/setting-rec-num.html:123 templates/setting-report.html:91
 #: templates/setting-requesting-services.html:199
 #: templates/setting-stock.html:238 templates/setting-user-rights.html:83
@@ -665,7 +665,7 @@ msgid "Une erreur est survenue lors de l'enregistrement"
 msgstr "حدث خطأ أثناء الحفظ"
 
 #: templates/administrative-record.html:780 templates/analysis-import.html:99
-#: templates/connect-management.html:141 templates/det-equipment.html:461
+#: templates/connect-management.html:152 templates/det-equipment.html:461
 #: templates/det-manual.html:392 templates/det-meeting.html:262
 #: templates/det-message.html:252 templates/det-procedure.html:382
 #: templates/det-staff.html:420 templates/dict-import.html:89
@@ -722,7 +722,7 @@ msgid "Ajoute les nouvelles analyses (code non existant en base)"
 msgstr "إضافة تحاليل جديدة (ذات رمز غير موجود في قاعدة البيانات)"
 
 #: templates/analysis-import.html:50 templates/block_cancel_save.html:3
-#: templates/connect-management.html:70 templates/det-audit.html:93
+#: templates/connect-management.html:81 templates/det-audit.html:93
 #: templates/det-control.html:91 templates/det-list-stock.html:46
 #: templates/det-message.html:62 templates/det-pat-hist.html:32
 #: templates/det-patient.html:29 templates/det-sample.html:142
@@ -752,7 +752,7 @@ msgstr "إضافة تحاليل جديدة (ذات رمز غير موجود في
 #: templates/setting-form.html:101 templates/setting-indicator.html:40
 #: templates/setting-link-unit-fam.html:30
 #: templates/setting-link-unit-user.html:33 templates/setting-lite.html:29
-#: templates/setting-oauth-list.html:30 templates/setting-pwd-user.html:33
+#: templates/setting-oauth-list.html:30 templates/setting-pwd-user.html:44
 #: templates/setting-rec-num.html:72 templates/setting-report.html:51
 #: templates/setting-roles-and-rights.html:52
 #: templates/setting-sending-method.html:61 templates/setting-stock.html:51
@@ -770,7 +770,7 @@ msgstr "إختَبِر تحميل التحاليل "
 msgid "Importer des analyses"
 msgstr "تحميل التحاليل "
 
-#: templates/analysis-import.html:92 templates/connect-management.html:88
+#: templates/analysis-import.html:92 templates/connect-management.html:99
 #: templates/det-template.html:148 templates/det-template.html:188
 #: templates/dict-import.html:82 templates/report-dhis2.html:252
 #: templates/setting-dhis2.html:189 templates/setting-epidemio.html:69
@@ -912,7 +912,7 @@ msgstr "إضافة "
 #: templates/popup/popup_aliquot.html:49 templates/res-control-ext.html:75
 #: templates/res-control-int.html:61 templates/setting-backup.html:67
 #: templates/setting-backup.html:97 templates/setting-backup.html:122
-#: templates/setting-backup.html:147 templates/setting-det-analysis.html:340
+#: templates/setting-backup.html:147 templates/setting-det-analysis.html:343
 #: templates/setting-det-role.html:76 templates/setting-det-user.html:221
 #: templates/setting-user-rights.html:32 templates/technical-validation.html:70
 msgid "Annuler"
@@ -981,9 +981,9 @@ msgstr " إعادة إدخال نتيجة "
 #: templates/non-conformity.html:834 templates/non-conformity.html:872
 #: templates/non-conformity.html:910 templates/non-conformity.html:948
 #: templates/non-conformity.html:986 templates/report-billing.html:126
-#: templates/setting-det-analysis.html:359
-#: templates/setting-det-analysis.html:475
-#: templates/setting-det-analysis.html:544 templates/setting-det-user.html:240
+#: templates/setting-det-analysis.html:362
+#: templates/setting-det-analysis.html:479
+#: templates/setting-det-analysis.html:548 templates/setting-det-user.html:240
 msgid "Cliquer pour commencer une recherche"
 msgstr "إبدأ البحث "
 
@@ -1199,7 +1199,7 @@ msgstr "الأخير"
 #: templates/list-suppliers.html:25 templates/list-template.html:25
 #: templates/list-trace-download.html:52 templates/move-stock-product.html:52
 #: templates/setting-age-interval.html:28
-#: templates/setting-det-analysis.html:281 templates/setting-det-dict.html:45
+#: templates/setting-det-analysis.html:284 templates/setting-det-dict.html:45
 #: templates/setting-dhis2.html:20 templates/setting-dicts.html:62
 #: templates/setting-functionnal-units.html:28
 #: templates/setting-roles-and-rights.html:31 templates/setting-stock.html:38
@@ -1222,6 +1222,7 @@ msgstr "المُمَوِّن / التاجر"
 #: templates/det-hist-analysis.html:37 templates/det-hist-patient.html:73
 #: templates/det-template.html:24 templates/list-audits.html:71
 #: templates/list-audits.html:171 templates/pivot-table.html:33
+#: templates/setting-det-analysis.html:163
 msgid "Résultat"
 msgstr " نتيجة"
 
@@ -1245,7 +1246,7 @@ msgstr "تصدير البيانات"
 #: templates/list-nonconformities.html:177 templates/list-procedure.html:117
 #: templates/list-staff.html:120 templates/list-suppliers.html:112
 #: templates/list-template.html:105 templates/setting-analyzes.html:212
-#: templates/setting-dhis2.html:104 templates/setting-dicts.html:180
+#: templates/setting-dhis2.html:104 templates/setting-dicts.html:182
 #: templates/setting-roles-and-rights.html:121
 msgid "Editer"
 msgstr "يحرر"
@@ -1275,7 +1276,7 @@ msgstr "الرجاء ادخال اسم جهاز "
 #: templates/manage-pat-records.html:214 templates/res-control-ext.html:177
 #: templates/res-control-ext.html:198 templates/res-control-int.html:119
 #: templates/setting-age-interval.html:211 templates/setting-backup.html:331
-#: templates/setting-det-analysis.html:1128 templates/setting-det-dict.html:302
+#: templates/setting-det-analysis.html:1137 templates/setting-det-dict.html:302
 #: templates/setting-det-dict.html:312 templates/setting-form.html:138
 #: templates/setting-functionnal-units.html:246
 #: templates/setting-link-unit-fam.html:143
@@ -1288,12 +1289,12 @@ msgid "Enregistrement réussi"
 msgstr "اكتمل التسجيل"
 
 #: templates/det-control.html:299 templates/hist-analyzes.html:293
-#: templates/hist-patients.html:303 templates/list-ctrl-ext.html:174
+#: templates/hist-patients.html:307 templates/list-ctrl-ext.html:174
 #: templates/list-ctrl-int.html:174 templates/list-eqp-failure.html:206
 #: templates/list-eqp-maintenance.html:412
 #: templates/list-eqp-maintenance.html:460
 #: templates/list-eqp-metrology.html:199 templates/list-equipment.html:245
-#: templates/list-manuals.html:299 templates/list-meeting.html:221
+#: templates/list-manuals.html:303 templates/list-meeting.html:221
 #: templates/list-nonconformities.html:287 templates/list-procedure.html:241
 #: templates/list-staff.html:199 templates/list-suppliers.html:230
 #: templates/report-today.html:281 templates/report-today.html:342
@@ -1301,19 +1302,18 @@ msgstr "اكتمل التسجيل"
 msgid "Aucun résultats à exporter !"
 msgstr "لا توجد نتائج للتصدير!"
 
-#: templates/det-control.html:301 templates/det-list-stock.html:271
-#: templates/enter-result.html:948 templates/global-report.html:98
-#: templates/hist-analyzes.html:295 templates/hist-patients.html:305
-#: templates/hist-stock-product.html:350 templates/list-ctrl-ext.html:176
+#: templates/det-control.html:301 templates/enter-result.html:948
+#: templates/global-report.html:98 templates/hist-analyzes.html:295
+#: templates/hist-patients.html:309 templates/list-ctrl-ext.html:176
 #: templates/list-ctrl-int.html:176 templates/list-doctors.html:352
 #: templates/list-eqp-failure.html:208 templates/list-eqp-maintenance.html:414
 #: templates/list-eqp-maintenance.html:462
 #: templates/list-eqp-metrology.html:201 templates/list-equipment.html:247
-#: templates/list-manuals.html:301 templates/list-meeting.html:223
+#: templates/list-manuals.html:305 templates/list-meeting.html:223
 #: templates/list-nonconformities.html:289 templates/list-procedure.html:243
 #: templates/list-results.html:996 templates/list-staff.html:201
-#: templates/list-stock.html:420 templates/list-stock.html:463
-#: templates/list-stock.html:506 templates/list-stock.html:549
+#: templates/list-stock.html:424 templates/list-stock.html:467
+#: templates/list-stock.html:510 templates/list-stock.html:553
 #: templates/list-suppliers.html:232 templates/report-activity.html:668
 #: templates/report-activity.html:721 templates/report-activity.html:795
 #: templates/report-billing.html:304 templates/report-dhis2.html:185
@@ -1321,7 +1321,7 @@ msgstr "لا توجد نتائج للتصدير!"
 #: templates/report-statistic.html:639 templates/report-tat.html:416
 #: templates/report-tat.html:476 templates/report-today.html:283
 #: templates/report-today.html:344 templates/setting-analyzes.html:356
-#: templates/setting-dicts.html:287 templates/setting-users.html:357
+#: templates/setting-dicts.html:289 templates/setting-users.html:361
 #: templates/user-conn-export.html:82 templates/whonet-export.html:92
 msgid "Erreur lors de la génération du fichier"
 msgstr "خطأ أثناء إنشاء الملف"
@@ -1515,7 +1515,7 @@ msgstr "تاريخ الإسترجاع من المختبر"
 #: templates/det-equipment.html:163 templates/det-staff.html:215
 #: templates/eqp-document.html:64 templates/eqp-operation.html:124
 #: templates/list-vars.html:29 templates/setting-det-analysis.html:106
-#: templates/setting-det-analysis.html:245 templates/setting-det-user.html:212
+#: templates/setting-det-analysis.html:271 templates/setting-det-user.html:212
 msgid "Commentaires"
 msgstr "تعليقات"
 
@@ -1660,7 +1660,6 @@ msgstr "عدد الصناديق"
 msgid "Indiquer la quantité utilisée"
 msgstr "حدد الكمية المستخدمة"
 
-#: templates/det-list-stock.html:269 templates/hist-stock-product.html:348
 #: templates/list-doctors.html:350
 msgid "Aucun prescripteur à exporter !"
 msgstr "لا يوجد أي طبيب معالج للتنزيل!"
@@ -1872,7 +1871,7 @@ msgid "Recherche de code postal ou ville"
 msgstr "البحث عن الرقم البريدي أو اسم المدينة"
 
 #: templates/det-stock-product.html:160 templates/elem/search_zipcity.html:55
-#: templates/setting-det-analysis.html:459
+#: templates/setting-det-analysis.html:463
 msgid "Erreur lors de la récupération des données"
 msgstr "طرأ خلل أثناء استرجاع البيانات"
 
@@ -1952,9 +1951,9 @@ msgstr "طرأ خلل أثناء استرجاع التحاليل"
 #: templates/list-nonconformities.html:298 templates/list-procedure.html:157
 #: templates/list-suppliers.html:151 templates/list-template.html:149
 #: templates/setting-age-interval.html:90
-#: templates/setting-det-analysis.html:618
-#: templates/setting-det-analysis.html:765 templates/setting-det-dict.html:125
-#: templates/setting-dhis2.html:134 templates/setting-dicts.html:206
+#: templates/setting-det-analysis.html:622
+#: templates/setting-det-analysis.html:770 templates/setting-det-dict.html:125
+#: templates/setting-dhis2.html:134 templates/setting-dicts.html:208
 #: templates/setting-functionnal-units.html:112
 #: templates/setting-manual.html:76
 #: templates/setting-requesting-services.html:76
@@ -2178,7 +2177,7 @@ msgid "Une erreur est survenue lors du dépot du fichier"
 msgstr "حدث خطأ أثناء تحميل الملف"
 
 #: templates/dict-import.html:2 templates/dict-import.html:13
-#: templates/dict-import.html:46 templates/setting-dicts.html:85
+#: templates/dict-import.html:46 templates/setting-dicts.html:86
 msgid "Import de dictionnaire"
 msgstr "تحميل القاموس"
 
@@ -2304,7 +2303,7 @@ msgstr "العدد على المدّة       "
 #: templates/report-tat.html:223 templates/report-today.html:165
 #: templates/setting-analyzes.html:174 templates/setting-backup.html:668
 #: templates/setting-backup.html:680 templates/setting-det-role.html:234
-#: templates/setting-dicts.html:139 templates/setting-users.html:187
+#: templates/setting-dicts.html:141 templates/setting-users.html:187
 msgid "Une erreur est survenue lors de la récupération des données"
 msgstr "طرأ خلل أثناء استرجاع البيانات"
 
@@ -2558,7 +2557,7 @@ msgstr "الكلمات"
 
 #: templates/det-job.html:58 templates/histo-jobs.html:21
 #: templates/list-jobs.html:21 templates/list-laboratory.html:73
-#: templates/list-vars.html:25 templates/setting-det-analysis.html:139
+#: templates/list-vars.html:25 templates/setting-det-analysis.html:140
 #: templates/setting-det-dict.html:48 templates/setting-dicts.html:26
 #: templates/setting-pref.html:17
 msgid "Libellé"
@@ -2571,7 +2570,7 @@ msgstr "رمز المصطلح القصير"
 #: templates/form_table_act_name_pos.html:8 templates/list-analyzers.html:30
 #: templates/list-laboratory.html:76 templates/list-printer.html:78
 #: templates/list-staff.html:35 templates/setting-age-interval.html:32
-#: templates/setting-det-analysis.html:288 templates/setting-det-dict.html:51
+#: templates/setting-det-analysis.html:291 templates/setting-det-dict.html:51
 #: templates/setting-functionnal-units.html:33 templates/setting-stock.html:41
 msgid "Position"
 msgstr "الموقع"
@@ -2903,8 +2902,8 @@ msgstr "عتبة"
 msgid "Merci de confirmer la désactivation de cette ligne"
 msgstr "يرجى تأكيد  إلغاء تفعيل هذا السطر"
 
-#: templates/list-stock.html:418 templates/list-stock.html:461
-#: templates/list-stock.html:504 templates/list-stock.html:547
+#: templates/list-stock.html:422 templates/list-stock.html:465
+#: templates/list-stock.html:508 templates/list-stock.html:551
 msgid "Aucun stock à exporter !"
 msgstr "لا يوجد مخزون للتنزيل!"
 
@@ -2942,7 +2941,7 @@ msgstr "خطأ"
 msgid "Ajouter un modèle"
 msgstr "أضف قالبًا"
 
-#: templates/connect-management.html:31 templates/det-analyzer.html:38
+#: templates/connect-management.html:42 templates/det-analyzer.html:38
 #: templates/list-template.html:110 templates/report-dhis2.html:98
 #: templates/setting-sending-method.html:128
 #: templates/setting-sending-method.html:258
@@ -2969,17 +2968,17 @@ msgstr "تاريخ آخر تنزيل "
 msgid "Liste des variables"
 msgstr "لائحة المتغيرات"
 
-#: templates/list-vars.html:26 templates/setting-det-analysis.html:143
+#: templates/list-vars.html:26 templates/setting-det-analysis.html:144
 msgid "Code var."
 msgstr "رمز العامل المتغير "
 
 #: templates/list-vars.html:27 templates/setting-analyzes.html:79
-#: templates/setting-det-analysis.html:147 templates/setting-det-dict.html:47
+#: templates/setting-det-analysis.html:152 templates/setting-det-dict.html:47
 #: templates/setting-users.html:88
 msgid "Id"
 msgstr "بطاقة تعريف"
 
-#: templates/list-vars.html:28 templates/setting-det-analysis.html:154
+#: templates/list-vars.html:28 templates/setting-det-analysis.html:165
 msgid "Type de résultat"
 msgstr "نوع النتيجة"
 
@@ -3018,7 +3017,7 @@ msgstr "تسجيل الدخول"
 #: templates/det-dhis2-api.html:30 templates/det-lite.html:30
 #: templates/det-sending-method.html:58 templates/login.html:43
 #: templates/setting-backup.html:83 templates/setting-det-user.html:60
-#: templates/setting-pwd-user.html:15
+#: templates/setting-pwd-user.html:26
 msgid "Mot de passe"
 msgstr "كلمة السر"
 
@@ -4039,7 +4038,7 @@ msgstr "تنزيل فهرس التحاليل"
 msgid "Enregistrer la liste"
 msgstr "حفظ القائمة"
 
-#: templates/setting-analyzes.html:120 templates/setting-det-analysis.html:303
+#: templates/setting-analyzes.html:120 templates/setting-det-analysis.html:306
 msgid "Ajouter une analyse"
 msgstr "إضافة تحليل"
 
@@ -4053,12 +4052,12 @@ msgid "Désactiver"
 msgstr "تعطيل"
 
 #: templates/setting-analyzes.html:225 templates/setting-det-user.html:88
-#: templates/setting-users.html:56 templates/setting-users.html:247
+#: templates/setting-users.html:56 templates/setting-users.html:251
 msgid "Activé"
 msgstr "خيارات "
 
 #: templates/setting-analyzes.html:228 templates/setting-det-user.html:91
-#: templates/setting-users.html:57 templates/setting-users.html:250
+#: templates/setting-users.html:57 templates/setting-users.html:254
 msgid "Désactivé"
 msgstr "غير مُفعَّل"
 
@@ -4233,7 +4232,7 @@ msgid "Valeur de cotation"
 msgstr "قيمة التعرفة"
 
 #: templates/setting-det-analysis.html:93
-#: templates/setting-det-analysis.html:256
+#: templates/setting-det-analysis.html:255
 msgid "Export whonet"
 msgstr "تنزيل بنموذج Whonet "
 
@@ -4249,43 +4248,43 @@ msgstr "البحث عن متغير"
 msgid "Créer une nouvelle variable"
 msgstr "إنشاء متغير جديد"
 
-#: templates/setting-det-analysis.html:145
+#: templates/setting-det-analysis.html:146
 msgid "Par défaut sera l'ID de la variable"
 msgstr "تلقائيًا، هذا المجال سيُظهر تعريف المتغير"
 
-#: templates/setting-det-analysis.html:164 templates/setting-det-dict.html:21
+#: templates/setting-det-analysis.html:158 templates/setting-det-dict.html:21
 #: templates/setting-dicts.html:65
 msgid "Description"
 msgstr "الوصف"
 
-#: templates/setting-det-analysis.html:171
+#: templates/setting-det-analysis.html:216
 msgid "Valeur normale min."
 msgstr "الحد الأدنى لإعتبار النتيجة طبيعية "
 
-#: templates/setting-det-analysis.html:175
+#: templates/setting-det-analysis.html:220
 msgid "Valeur normale max."
 msgstr "الحد الأقصى لإعتبار النتيجة طبيعية "
 
-#: templates/setting-det-analysis.html:187
+#: templates/setting-det-analysis.html:230
 msgid "Souligner"
 msgstr "تسطير"
 
-#: templates/setting-det-analysis.html:202
+#: templates/setting-det-analysis.html:177
 msgid "Formule"
 msgstr "صيغة الحساب "
 
 #: templates/biological-validation.html:798 templates/enter-result.html:1054
-#: templates/setting-det-analysis.html:206
-#: templates/setting-det-analysis.html:284
+#: templates/setting-det-analysis.html:181
+#: templates/setting-det-analysis.html:287
 #: templates/technical-validation.html:619
 msgid "Unité"
 msgstr "وحدة"
 
-#: templates/setting-det-analysis.html:215
+#: templates/setting-det-analysis.html:190
 msgid "Précision"
 msgstr "دقة"
 
-#: templates/setting-det-analysis.html:238
+#: templates/setting-det-analysis.html:211
 msgid "Num. var pour la formule"
 msgstr "رقم فار للصيغة"
 
@@ -4293,64 +4292,64 @@ msgstr "رقم فار للصيغة"
 msgid "Position affichage"
 msgstr "موقعه في التسلسل"
 
-#: templates/setting-det-analysis.html:249
+#: templates/setting-det-analysis.html:248
 msgid "Résultat obligatoire"
 msgstr "نتيجة إلزامية"
 
-#: templates/setting-det-analysis.html:265
+#: templates/setting-det-analysis.html:262
 msgid "Générer un code QR"
 msgstr "إضافة الرمز المربع (QR code)"
 
-#: templates/setting-det-analysis.html:285
+#: templates/setting-det-analysis.html:288
 msgid "Min"
 msgstr "الأدنى"
 
-#: templates/setting-det-analysis.html:286
+#: templates/setting-det-analysis.html:289
 msgid "Max"
 msgstr "الأعلى"
 
-#: templates/setting-det-analysis.html:287
+#: templates/setting-det-analysis.html:290
 msgid "Num. var"
 msgstr " عدد متغير"
 
-#: templates/setting-det-analysis.html:298
+#: templates/setting-det-analysis.html:301
 msgid "Sous analyses"
 msgstr "التحاليل الفرعية"
 
-#: templates/setting-det-analysis.html:312
+#: templates/setting-det-analysis.html:315
 msgid "Produit biologique"
 msgstr "منتج حيوي "
 
-#: templates/setting-det-analysis.html:317
+#: templates/setting-det-analysis.html:320
 msgid "Chercher un produit biologique"
 msgstr "ابحث عن منتج حيوي"
 
-#: templates/setting-det-analysis.html:409
+#: templates/setting-det-analysis.html:412
 msgid "Variable déjà utilisée dans cette analyse"
 msgstr "هذا المتغير مستخدم سابقا في هذا التحليل"
 
-#: templates/js/stat_sample.js:9 templates/setting-det-analysis.html:657
+#: templates/js/stat_sample.js:9 templates/setting-det-analysis.html:661
 msgid "Modifier"
 msgstr "تعديل"
 
-#: templates/setting-det-analysis.html:994
+#: templates/setting-det-analysis.html:1001
 msgid "Veuillez saisir un code."
 msgstr "يرجى إدخال رمز"
 
-#: templates/setting-det-analysis.html:997
+#: templates/setting-det-analysis.html:1004
 msgid "Veuillez saisir un nom d'analyse."
 msgstr "يرجى إدخال اسم التحليل"
 
-#: templates/setting-det-analysis.html:1000
+#: templates/setting-det-analysis.html:1007
 msgid "Veuillez choisir ou définir au moins une variable."
 msgstr "يرجى تحديد متغير واحد على الأقل"
 
-#: templates/setting-det-analysis.html:1021
+#: templates/setting-det-analysis.html:1028
 msgid "Ce code existe déjà"
 msgstr "هذا الرمز موجود سابقًا"
 
 #: templates/det-patient.html:137 templates/det-req.html:1316
-#: templates/setting-det-analysis.html:1145 templates/setting-det-role.html:198
+#: templates/setting-det-analysis.html:1154 templates/setting-det-role.html:198
 msgid "Une erreur est survenue lors de la vérification du code"
 msgstr "طرأ خلل أثناء التحقق من الرمز"
 
@@ -4382,7 +4381,7 @@ msgstr "مدير"
 msgid "Prescripteur associé"
 msgstr "الجهة الواصفة "
 
-#: templates/setting-det-user.html:66 templates/setting-pwd-user.html:24
+#: templates/setting-det-user.html:66 templates/setting-pwd-user.html:35
 msgid "Confirmation du mot de passe"
 msgstr "تأكيد كلمة المرور"
 
@@ -4439,11 +4438,11 @@ msgstr "حفظ المستند"
 msgid "Liste des dictionnaires (choix de réponses)"
 msgstr "قائمة القواميس (اختيار الإجابات)"
 
-#: templates/setting-dicts.html:86 templates/setting-dicts.html:181
+#: templates/setting-dicts.html:88 templates/setting-dicts.html:183
 msgid "Exporter le dictionnaire"
 msgstr "تنزيل القاموس"
 
-#: templates/setting-dicts.html:87
+#: templates/setting-dicts.html:89
 msgid "Ajouter un dictionnaire"
 msgstr "أضف قاموس"
 
@@ -4659,7 +4658,7 @@ msgstr "لغة الفهرس "
 msgid "Mise à jour du mot de passe"
 msgstr "تحديد كلمة سر جديدة "
 
-#: templates/setting-pwd-user.html:60
+#: templates/setting-pwd-user.html:71
 msgid "Les mots de passe ne sont pas identiques !"
 msgstr "كلمة السر غير متطابقة!"
 
@@ -4764,23 +4763,23 @@ msgstr "إضافة مستخدم"
 msgid "Editer utilisateur"
 msgstr "تعديل معلومات المستخدم "
 
-#: templates/setting-users.html:231 templates/skeleton.html:53
+#: templates/setting-users.html:232 templates/skeleton.html:53
 msgid "Editer mot de passe"
 msgstr "تعديل كلمة المرور"
 
-#: templates/setting-users.html:235
+#: templates/setting-users.html:237
 msgid "Activer utilisateur"
 msgstr "تفعيل المستخدم"
 
-#: templates/setting-users.html:239
+#: templates/setting-users.html:241
 msgid "Désactiver utilisateur"
 msgstr "إيقاف المستخدم"
 
-#: templates/setting-users.html:277
+#: templates/setting-users.html:281
 msgid "Veuillez confirmer la modification de statut"
 msgstr "يرجى تأكيد تغيير الوضع"
 
-#: templates/setting-users.html:298
+#: templates/setting-users.html:302
 msgid "Erreur lors du changement de statut"
 msgstr "طرأ خلل عند تغيير الوضع"
 
@@ -4913,11 +4912,11 @@ msgstr "تكوين المحلل"
 msgid "Réception dossier"
 msgstr "استلام الملف"
 
-#: templates/setting-det-analysis.html:162
+#: templates/setting-det-analysis.html:173
 msgid "Détails de ce dictionnaire"
 msgstr "تفاصيل هذا القاموس"
 
-#: templates/setting-det-analysis.html:182
+#: templates/setting-det-analysis.html:226
 msgid "Affichage min./max."
 msgstr "الحد الأدنى/الحد الأقصى للعرض"
 
@@ -5075,15 +5074,15 @@ msgstr "الوقت"
 msgid "min"
 msgstr "دقيقة"
 
-#: templates/setting-det-analysis.html:220
+#: templates/setting-det-analysis.html:194
 msgid "Formule de conversion unité 2"
 msgstr "معادلة تحويل الوحدة 2"
 
-#: templates/setting-det-analysis.html:224
+#: templates/setting-det-analysis.html:198
 msgid "Unité 2"
 msgstr "الوحدة 2"
 
-#: templates/setting-det-analysis.html:233
+#: templates/setting-det-analysis.html:207
 msgid "Précision 2"
 msgstr "الدقة 2"
 
@@ -5222,8 +5221,8 @@ msgstr "رسالة"
 msgid "Destinataire"
 msgstr "المرسل اليه"
 
-#: templates/connect-management.html:44 templates/connect-management.html:54
-#: templates/connect-management.html:64 templates/det-message.html:66
+#: templates/connect-management.html:55 templates/connect-management.html:65
+#: templates/connect-management.html:75 templates/det-message.html:66
 #: templates/list-printer.html:23 templates/send_report_inline.html:7
 msgid "Envoyer"
 msgstr "إرسال"
@@ -5580,6 +5579,7 @@ msgid "s"
 msgstr "ث"
 
 #: templates/setting-det-analysis.html:27
+#: templates/setting-det-analysis.html:148
 msgid "LOINC"
 msgstr "برنامج LOINC"
 
@@ -5639,7 +5639,7 @@ msgstr "معاينة"
 msgid "Droits de cet utilisateur"
 msgstr "حقوق هذا المستخدم"
 
-#: templates/setting-users.html:243
+#: templates/setting-users.html:246
 msgid "Editer droits"
 msgstr "تعديل حقوق المستخدم"
 
@@ -5746,60 +5746,60 @@ msgstr "معلومات حول Connect"
 msgid "Plugins chargés"
 msgstr "الإضافات المحملة"
 
-#: templates/connect-management.html:25
+#: templates/connect-management.html:36
 msgid "URL du serveur LabBook Connect"
 msgstr "عنوان URL للخادم LabBook Connect"
 
-#: templates/connect-management.html:39
+#: templates/connect-management.html:50
 msgid "Importer un plugin"
 msgstr "استيراد إضافة"
 
-#: templates/connect-management.html:49
+#: templates/connect-management.html:60
 msgid "Importer un fichier de configuration"
 msgstr "استيراد ملف التهيئة"
 
-#: templates/connect-management.html:59
+#: templates/connect-management.html:70
 msgid "Importer un fichier de mapping"
 msgstr "استيراد ملف التخطيط"
 
-#: templates/connect-management.html:73
+#: templates/connect-management.html:84
 msgid "Recharger les plugins"
 msgstr "إعادة تحميل الإضافات"
 
-#: templates/connect-management.html:108 templates/list-printer.html:239
+#: templates/connect-management.html:119 templates/list-printer.html:239
 msgid "Veuillez sélectionner un fichier"
 msgstr "يرجى اختيار ملف"
 
-#: templates/connect-management.html:155 templates/connect-management.html:183
-#: templates/connect-management.html:208
+#: templates/connect-management.html:166 templates/connect-management.html:194
+#: templates/connect-management.html:219
 msgid "Veuillez saisir une URL."
 msgstr "يرجى إدخال عنوان URL"
 
-#: templates/connect-management.html:165
+#: templates/connect-management.html:176
 msgid "Plugins rechargés avec succès"
 msgstr "تم إعادة تحميل الإضافات بنجاح"
 
-#: templates/connect-management.html:173
+#: templates/connect-management.html:184
 msgid "Erreur lors du rechargement des plugins"
 msgstr "خطأ أثناء إعادة تحميل الإضافات"
 
-#: templates/connect-management.html:194
+#: templates/connect-management.html:205
 msgid "URL enregistrée avec succès"
 msgstr "تم تسجيل عنوان URL بنجاح"
 
-#: templates/connect-management.html:198
+#: templates/connect-management.html:209
 msgid "Erreur lors de l'enregistrement de l'URL"
 msgstr "خطأ أثناء تسجيل عنوان URL"
 
-#: templates/connect-management.html:217
+#: templates/connect-management.html:228
 msgid "Connexion réussie à LabBook Connect"
 msgstr "تم الاتصال بنجاح ب LabBook Connect"
 
-#: templates/connect-management.html:219
+#: templates/connect-management.html:230
 msgid "Échec de la connexion à LabBook Connect"
 msgstr "فشل الاتصال ب LabBook Connect"
 
-#: templates/connect-management.html:224
+#: templates/connect-management.html:235
 msgid "Impossible de joindre le serveur LabBook Connect"
 msgstr "لا يمكن الوصول إلى خادم LabBook Connect"
 
@@ -6361,7 +6361,7 @@ msgstr "الفترة المحسوبة"
 msgid "Séquences"
 msgstr "التسلسلات"
 
-#: templates/setting-det-analysis.html:195
+#: templates/setting-det-analysis.html:242
 msgid "Dans le compte rendu"
 msgstr "في التقرير"
 
@@ -7157,7 +7157,47 @@ msgstr "تنزيل السجل"
 msgid "Veuillez renseigner la période"
 msgstr "يرجى تحديد الفترة الزمنية"
 
-#: templates/setting-pwd-user.html:20
+#: templates/setting-pwd-user.html:21 templates/setting-pwd-user.html:31
 msgid "Afficher le mot de passe"
 msgstr "إظهار كلمة المرور"
+
+#: templates/connect-management.html:21
+msgid "Façade FHIR"
+msgstr "واجهة FHIR"
+
+#: templates/connect-management.html:23
+msgid "prête"
+msgstr "جاهزة"
+
+#: templates/connect-management.html:25
+msgid "non paramétrée, fichier fhir.toml absent dans Connect"
+msgstr "غير مُهيّأة، ملف fhir.toml غير موجود في Connect"
+
+#: templates/connect-management.html:27
+msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"
+msgstr "لا يُصدر LabBook رمز الوصول، راجع سجل Connect"
+
+#: templates/connect-management.html:29
+msgid "Connect ne répond pas"
+msgstr "Connect لا يستجيب"
+
+#: templates/setting-det-analysis.html:138
+msgid "Libellés et codes"
+msgstr "التسميات والرموز"
+
+#: templates/setting-det-analysis.html:214
+msgid "Valeurs normales"
+msgstr "القيم الطبيعية"
+
+#: templates/setting-det-analysis.html:238
+msgid "Affichage et échanges"
+msgstr "العرض والتبادل"
+
+#: templates/setting-pwd-user.html:16
+msgid "Ancien mot de passe"
+msgstr "كلمة المرور القديمة"
+
+#: templates/setting-pwd-user.html:98
+msgid "Ancien mot de passe incorrect"
+msgstr "كلمة المرور القديمة غير صحيحة"
 
