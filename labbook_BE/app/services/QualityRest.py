@@ -12,6 +12,7 @@ from app.models.File import File
 from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Quality import Quality
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -1949,10 +1950,17 @@ class EqpDoc(Resource):
         Returns:
             200: empty body.
             400: a field is missing.
+            403: no right to save an equipment document.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the save button of the equipment document screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'EQP_102' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : EqpDoc ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_user' not in args or 'l_MANU' not in args or 'l_PROC' not in args:
             self.log.error(Logs.fileline() + ' : EqpDoc ERROR args missing')
@@ -3100,10 +3108,17 @@ class ManualDet(Resource):
         Returns:
             200: id of the manual.
             400: a field is missing.
+            403: no right to save a manual.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the save button of the manual screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'MANUAL_121' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ManualDet ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_owner' not in args or 'id_item' not in args or 'reference' not in args or 'title' not in args or \
            'writer' not in args or 'auditor' not in args or 'approver' not in args or 'date_insert' not in args or \
@@ -3426,10 +3441,17 @@ class MeetingDet(Resource):
         Returns:
             200: id of the meeting.
             400: a field is missing.
+            403: no right to save a meeting.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the save button of the meeting screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'MEETING_164' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : MeetingDet ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_owner' not in args or 'id_item' not in args or 'date_meeting' not in args or \
            'type' not in args or 'promoter' not in args or 'report' not in args:
@@ -3712,10 +3734,17 @@ class ProcedureDet(Resource):
         Returns:
             200: id of the procedure.
             400: a field is missing.
+            403: no right to save a procedure.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the save button of the procedure screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'PROCEDURE_128' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ProcedureDet ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_owner' not in args or 'id_item' not in args or 'reference' not in args or 'title' not in args or \
            'writer' not in args or 'auditor' not in args or 'approver' not in args or 'date_insert' not in args or \
@@ -6478,10 +6507,17 @@ class SupplierDet(Resource):
         Returns:
             200: id of the supplier.
             400: a field is missing.
+            403: no right to save a supplier.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the save button of the supplier screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SUPPLIER_92' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : SupplierDet ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_owner' not in args or 'id_item' not in args or 'supplier' not in args or 'funct' not in args or \
            'lastname' not in args or 'firstname' not in args or 'address' not in args or 'comment' not in args or \

@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.30] - 2026-10-29
+### Security
+- Password of another account changed by a non administrator, own password changed without the current one
+- Settings pages opened and saved without the matching right
+- Patient merge open to users without the patient record management right
+- Staff, supplier, meeting, procedure, manual and equipment document files saved without the matching right
+- User rights edited without the right to edit profile rights
+- Backup and restore run without the backup configuration right
+- Audit archives listed and downloaded without the audit log right
+- Reports opened and generated without the matching right
+- New request pages opened by URL without the matching right
+- Prescriber able to see the records and patients of other prescribers
+- Stock supply page opened by URL without the matching right
+
 ## [3.6.29] - 2026-10-27
 ### Added
 - New table `external_ref` linking external system references to LabBook data

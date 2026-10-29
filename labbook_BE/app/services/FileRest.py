@@ -10,6 +10,8 @@ from app.models.Constants import Constants
 from app.models.Audit import Audit
 from app.models.File import File
 from app.models.Logs import Logs
+from app.models.Record import Record
+from app.models.User import User
 from app.security.oauth_routes import require_oauth
 
 
@@ -43,6 +45,13 @@ class FileDocList(Resource):
             200: list of documents, None replaced by ''.
         """
         audit_user = request.oauth_user
+
+        # a prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if type_ref == 'REC' and id_pres is not None and not Record.isRecordOfPrescriber(ref, id_pres):
+            self.log.error(Logs.fileline() + ' : FileDocList ERROR record of another prescriber ref=' + str(ref))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         l_files = File.getFileDocList(type_ref, ref)
 
         if not l_files:
@@ -251,6 +260,13 @@ class FileReport(Resource):
             200: list of reports with date, template name and download count.
         """
         audit_user = request.oauth_user
+
+        # a prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : FileReport ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         l_report = File.getAllFileReport(id_rec)
 
         if not l_report:

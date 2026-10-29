@@ -192,6 +192,38 @@ class Record:
         return cursor.fetchall()
 
     @staticmethod
+    def isRecordOfPrescriber(id_rec, id_pres):
+        """
+        True when the record is prescribed by this prescriber, always False without a prescriber.
+        """
+        if not id_pres or id_pres <= 0:
+            return False
+
+        cursor = DB.cursor()
+
+        req = 'select id_data from sigl_02_data where id_data=%s and med_prescripteur=%s limit 1'
+
+        cursor.execute(req, (id_rec, id_pres))
+
+        return cursor.fetchone() is not None
+
+    @staticmethod
+    def isPatientOfPrescriber(id_pat, id_pres):
+        """
+        True when the patient has at least one record of this prescriber, always False without a prescriber.
+        """
+        if not id_pres or id_pres <= 0:
+            return False
+
+        cursor = DB.cursor()
+
+        req = 'select id_data from sigl_02_data where id_patient=%s and med_prescripteur=%s limit 1'
+
+        cursor.execute(req, (id_pat, id_pres))
+
+        return cursor.fetchone() is not None
+
+    @staticmethod
     def getRecord(id_rec):
         """
         Read one record with its prescriber, discount label and number as set in record_setting.

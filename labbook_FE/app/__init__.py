@@ -1525,6 +1525,10 @@ def setting_user_rights(id_user=0):
         session.clear()
         return index()
 
+    if not has_permission('ADMIN_1'):
+        log.info(Logs.fileline() + ' : TRACE setting user rights => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-user-rights/' + str(id_user)
     session.modified = True
 
@@ -1562,6 +1566,10 @@ def setting_user_rights(id_user=0):
 def user_table_rights():
     log.info(Logs.fileline() + ' : TRACE /setting-user-rights/table-rights')
     id_user  = request.args.get('id_user', default=0, type=int)
+
+    if not has_permission('ADMIN_1'):
+        log.info(Logs.fileline() + ' : TRACE user table rights => permission denied')
+        return '', 403
 
     resp = ensure_be_token()
     if resp:
@@ -1704,6 +1712,10 @@ def user_conn_export():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_39'):
+        log.info(Logs.fileline() + ' : TRACE user-conn-export => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'user-conn-export'
     session.modified = True
 
@@ -1737,6 +1749,12 @@ def setting_pwd_user(user_id=0, ctx=''):
         session.clear()
         return index()
 
+    # own account, or another user's account for an administrator
+    own_account = user_id == int(session.get('user_id') or 0)
+    if not own_account and session.get('user_role') != 'A':
+        log.info(Logs.fileline() + ' : TRACE setting pwd user => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-pwd-user/' + str(user_id)
     session.modified = True
 
@@ -1748,6 +1766,7 @@ def setting_pwd_user(user_id=0, ctx=''):
         json_ihm['return_page'] = ctx
 
     json_data['user_id'] = user_id
+    json_data['own_account'] = own_account
 
     return render_template('setting-pwd-user.html', ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -1761,6 +1780,10 @@ def dict_import():
         log.info(Logs.fileline() + ' : TRACE Labbook dict import => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_53'):
+        log.info(Logs.fileline() + ' : TRACE dict import => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'dict-import'
     session.modified = True
@@ -1780,6 +1803,10 @@ def setting_dicts():
         log.info(Logs.fileline() + ' : TRACE Labbook setting dict => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_52'):
+        log.info(Logs.fileline() + ' : TRACE setting dict => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-dicts'
     session.modified = True
@@ -1874,6 +1901,10 @@ def setting_analyzes():
         log.info(Logs.fileline() + ' : TRACE Labbook setting analyzes => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_42'):
+        log.info(Logs.fileline() + ' : TRACE setting analyzes => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-analyzes'
     session.modified = True
@@ -2095,6 +2126,10 @@ def list_vars():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_42'):
+        log.info(Logs.fileline() + ' : TRACE list vars => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'list-vars'
     session.modified = True
 
@@ -2214,6 +2249,10 @@ def manage_pat_records():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_70'):
+        log.info(Logs.fileline() + ' : TRACE manage patient records => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'manage-pat-records'
     session.modified = True
 
@@ -2290,6 +2329,10 @@ def setting_preferences():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_38'):
+        log.info(Logs.fileline() + ' : TRACE setting preferences => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-pref'
     session.modified = True
 
@@ -2317,6 +2360,10 @@ def setting_backup():
         log.info(Logs.fileline() + ' : TRACE Labbook setting backup => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_54'):
+        log.info(Logs.fileline() + ' : TRACE setting backup => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-backup'
     session.modified = True
@@ -2384,6 +2431,10 @@ def setting_zipcity():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_67'):
+        log.info(Logs.fileline() + ' : TRACE setting zipcity => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-zipcity'
     session.modified = True
 
@@ -2412,6 +2463,10 @@ def setting_stock():
         log.info(Logs.fileline() + ' : TRACE Labbook setting stock => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_68'):
+        log.info(Logs.fileline() + ' : TRACE setting stock => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-stock'
     session.modified = True
@@ -2455,6 +2510,10 @@ def setting_form():
         log.info(Logs.fileline() + ' : TRACE Labbook setting form => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_69'):
+        log.info(Logs.fileline() + ' : TRACE setting form => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-form'
     session.modified = True
@@ -2706,6 +2765,10 @@ def setting_report():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_64'):
+        log.info(Logs.fileline() + ' : TRACE setting report => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-report'
     session.modified = True
 
@@ -2734,6 +2797,10 @@ def setting_sending_method():
         log.info(Logs.fileline() + ' : TRACE Labbook setting sending method => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_178'):
+        log.info(Logs.fileline() + ' : TRACE setting sending method => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-sending-method'
     session.modified = True
@@ -2853,6 +2920,10 @@ def setting_rec_num():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_65'):
+        log.info(Logs.fileline() + ' : TRACE setting rec num => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-rec-num'
     session.modified = True
 
@@ -2882,6 +2953,10 @@ def setting_logo():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_55'):
+        log.info(Logs.fileline() + ' : TRACE setting logo => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-logo'
     session.modified = True
 
@@ -2897,6 +2972,10 @@ def setting_age_interval():
         log.info(Logs.fileline() + ' : TRACE Labbook setting age interval => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_56'):
+        log.info(Logs.fileline() + ' : TRACE setting age interval => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-age-interval'
     session.modified = True
@@ -2934,6 +3013,10 @@ def setting_requesting_services():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_57'):
+        log.info(Logs.fileline() + ' : TRACE setting requesting services => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-requesting-services'
     session.modified = True
 
@@ -2969,6 +3052,10 @@ def setting_functionnal_units():
         log.info(Logs.fileline() + ' : TRACE Labbook setting functionnal units => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_58'):
+        log.info(Logs.fileline() + ' : TRACE setting functionnal units => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-functionnal-units'
     session.modified = True
@@ -3009,6 +3096,10 @@ def setting_manual():
         log.info(Logs.fileline() + ' : TRACE Labbook setting manual => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_66'):
+        log.info(Logs.fileline() + ' : TRACE setting manual => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-manual'
     session.modified = True
@@ -3200,6 +3291,10 @@ def setting_epidemio():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_75'):
+        log.info(Logs.fileline() + ' : TRACE setting epidemio => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-epidemio'
     session.modified = True
 
@@ -3230,6 +3325,10 @@ def setting_indicator():
         log.info(Logs.fileline() + ' : TRACE Labbook setting indicator => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_76'):
+        log.info(Logs.fileline() + ' : TRACE setting indicator => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-indicator'
     session.modified = True
@@ -3767,6 +3866,10 @@ def global_report():
         session.clear()
         return index()
 
+    if not has_permission('RECORD_10'):
+        log.info(Logs.fileline() + ' : TRACE global report => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'global-report'
     session.modified = True
 
@@ -3784,6 +3887,11 @@ def list_samples():
         log.info(Logs.fileline() + ' : TRACE Labbook list samples => disconnect')
         session.clear()
         return index()
+
+    # it is the sampler homepage, refusing it would loop back here
+    if session.get('user_role') != 'SP' and not has_permission('RECORD_13'):
+        log.info(Logs.fileline() + ' : TRACE list samples => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'list-samples'
     session.modified = True
@@ -3978,12 +4086,20 @@ def new_req(req_type):
 # Page : new external request
 @app.route('/new-req-ext')
 def new_req_ext():
+    if not has_permission('RECORD_11'):
+        log.info(Logs.fileline() + ' : TRACE new req ext => permission denied')
+        return redirect(url_for('homepage'))
+
     return new_req('E')
 
 
 # Page : new internal request
 @app.route('/new-req-int')
 def new_req_int():
+    if not has_permission('RECORD_12'):
+        log.info(Logs.fileline() + ' : TRACE new req int => permission denied')
+        return redirect(url_for('homepage'))
+
     return new_req('I')
 
 
@@ -4030,6 +4146,12 @@ def det_patient(type_req='E', id_pat=0):
         data, redir = be_get('/services/patient/det/' + str(id_pat), 'patient det')
         if redir:
             return redir
+
+        # the BE refuses a prescriber the patients of another prescriber
+        if data is None and session.get('user_role') == 'P':
+            log.info(Logs.fileline() + ' : TRACE det patient => permission denied')
+            return redirect(url_for('homepage'))
+
         if data is not None:
             data_pat = data
             json_data.update(data_pat)
@@ -4303,6 +4425,12 @@ def administrative_record(type_req='E', id_rec=0):
     data, redir = be_get('/services/record/det/' + str(id_rec), 'record det')
     if redir:
         return redir
+
+    # the BE refuses a prescriber the records of another prescriber
+    if data is None and session.get('user_role') == 'P':
+        log.info(Logs.fileline() + ' : TRACE administrative record => permission denied')
+        return redirect(url_for('homepage'))
+
     if data is not None:
         json_data['record'] = data
 
@@ -4857,6 +4985,10 @@ def report_activity():
         session.clear()
         return index()
 
+    if not has_permission('REPORT_26'):
+        log.info(Logs.fileline() + ' : TRACE report activity => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'report-activity'
     session.modified = True
 
@@ -4929,6 +5061,10 @@ def report_epidemio(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
         log.info(Logs.fileline() + ' : TRACE Labbook report epidemio => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_27'):
+        log.info(Logs.fileline() + ' : TRACE report epidemio => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'report-epidemio'
     session.modified = True
@@ -5005,6 +5141,10 @@ def report_indicator(date_beg='', date_end='', lite_filter='A', lite_user_id=0):
         log.info(Logs.fileline() + ' : TRACE Labbook report indicator => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_28'):
+        log.info(Logs.fileline() + ' : TRACE report indicator => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'report-indicator'
     session.modified = True
@@ -5140,6 +5280,10 @@ def pivot_table():
         session.clear()
         return index()
 
+    if not has_permission('REPORT_31'):
+        log.info(Logs.fileline() + ' : TRACE pivot table => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'pivot-table'
     session.modified = True
 
@@ -5168,6 +5312,10 @@ def report_statistic(lite_filter='A', lite_user_id=0):
         log.info(Logs.fileline() + ' : TRACE Labbook report statistic => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_29'):
+        log.info(Logs.fileline() + ' : TRACE report statistic => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'report-statistic'
     session.modified = True
@@ -5238,6 +5386,10 @@ def report_tat():
         session.clear()
         return index()
 
+    if not has_permission('REPORT_30'):
+        log.info(Logs.fileline() + ' : TRACE report tat => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'report-tat'
     session.modified = True
 
@@ -5275,6 +5427,10 @@ def report_dhis2():
         log.info(Logs.fileline() + ' : TRACE Labbook report dhis2 => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_32'):
+        log.info(Logs.fileline() + ' : TRACE report dhis2 => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'report-dhis2'
     session.modified = True
@@ -5318,6 +5474,10 @@ def whonet_export():
         log.info(Logs.fileline() + ' : TRACE Labbook whonet export => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_33'):
+        log.info(Logs.fileline() + ' : TRACE whonet export => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'whonet-export'
     session.modified = True
@@ -5481,6 +5641,10 @@ def report_today():
         session.clear()
         return index()
 
+    if not has_permission('REPORT_36'):
+        log.info(Logs.fileline() + ' : TRACE report today => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'report-today'
     session.modified = True
 
@@ -5526,6 +5690,10 @@ def report_billing():
         log.info(Logs.fileline() + ' : TRACE Labbook report billing => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_37'):
+        log.info(Logs.fileline() + ' : TRACE report billing => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'report-billing'
     session.modified = True
@@ -5634,6 +5802,10 @@ def list_laboratory():
         session.clear()
         return index()
 
+    if not has_permission('LAB_78'):
+        log.info(Logs.fileline() + ' : TRACE list laboratory => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'list-laboratory'
     session.modified = True
 
@@ -5707,6 +5879,11 @@ def det_staff(user_id=0, ctx=''):
         log.info(Logs.fileline() + ' : TRACE Labbook det staff => disconnect')
         session.clear()
         return index()
+
+    # own staff file, or the staff list right
+    if user_id != int(session.get('user_id') or 0) and not has_permission('STAFF_82'):
+        log.info(Logs.fileline() + ' : TRACE det staff => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-staff/' + str(user_id)
     session.modified = True
@@ -5895,6 +6072,10 @@ def eqp_document(id_eqp=0):
         log.info(Logs.fileline() + ' : TRACE Labbook eqp document => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('EQP_96'):
+        log.info(Logs.fileline() + ' : TRACE eqp document => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'eqp-document/' + str(id_eqp)
     session.modified = True
@@ -6162,6 +6343,10 @@ def det_supplier(id_supplier=0):
         session.clear()
         return index()
 
+    if not has_permission('SUPPLIER_91'):
+        log.info(Logs.fileline() + ' : TRACE det supplier => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-supplier/' + str(id_supplier)
     session.modified = True
 
@@ -6229,6 +6414,10 @@ def det_manual(id_manual=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det manual => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('MANUAL_120'):
+        log.info(Logs.fileline() + ' : TRACE det manual => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-manual/' + str(id_manual)
     session.modified = True
@@ -6313,6 +6502,10 @@ def det_procedure(id_procedure=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det procedure => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('PROCEDURE_126'):
+        log.info(Logs.fileline() + ' : TRACE det procedure => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-procedure/' + str(id_procedure)
     session.modified = True
@@ -6858,6 +7051,10 @@ def det_stock_product(prs_ser=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det stock product => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('STOCK_139'):
+        log.info(Logs.fileline() + ' : TRACE det stock product => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-stock-product/' + str(prs_ser)
     session.modified = True
@@ -7622,6 +7819,10 @@ def det_meeting(id_meeting=0):
         session.clear()
         return index()
 
+    if not has_permission('MEETING_163'):
+        log.info(Logs.fileline() + ' : TRACE det meeting => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-meeting/' + str(id_meeting)
     session.modified = True
 
@@ -7830,6 +8031,10 @@ def list_audit_archives():
         session.clear()
         return index()
 
+    if not has_permission('ADMIN_183'):
+        log.info(Logs.fileline() + ' : TRACE list audit archives => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'list-audit-archives'
     session.modified = True
 
@@ -7905,6 +8110,11 @@ def download_file(type='', filename='', type_ref='', ref=''):
 
     if not validated_type:
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+    # audit archives are left to the audit log right
+    if validated_type == 'AA' and not has_permission('ADMIN_183'):
+        log.info(Logs.fileline() + ' : TRACE download audit archive => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     if validated_type == 'PY':
         filepath = Constants.cst_path_tmp
@@ -8238,6 +8448,11 @@ def upload_photo(type_ref='', id_ref=0):
 @app.route('/upload-logo', methods=['POST'])
 def upload_logo():
     log.info(Logs.fileline())
+
+    if not has_permission('SETTING_55'):
+        log.info(Logs.fileline() + ' : TRACE upload logo => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method == 'POST':
         try:
             f = request.files['file']
@@ -8303,6 +8518,10 @@ def upload_dhis2():
 @app.route('/upload-epidemio', methods=['POST'])
 def upload_epidemio():
     log.info(Logs.fileline())
+
+    if not has_permission('SETTING_75'):
+        log.info(Logs.fileline() + ' : TRACE upload epidemio => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
@@ -8385,6 +8604,10 @@ def upload_form(type_form):
 def upload_indicator():
     log.info(Logs.fileline())
 
+    if not has_permission('SETTING_76'):
+        log.info(Logs.fileline() + ' : TRACE upload indicator => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
@@ -8458,6 +8681,10 @@ def upload_tpl():
 @app.route('/upload-import', methods=['POST'])
 def upload_import():
     log.info(Logs.fileline())
+
+    if not (has_permission('SETTING_40') or has_permission('SETTING_43') or has_permission('SETTING_53')):
+        log.info(Logs.fileline() + ' : TRACE upload import => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}

@@ -227,8 +227,10 @@ $("#list_users_total").html( data_len ) ;
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
                    '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' ;
 
+        {% if session['user_role'] == 'A' %}
         if ( data_users[i].role_type != 'Z' )
         menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
+        {% endif %}
 
         if ( data_users[i].stat != 'A' )
         {          
@@ -239,8 +241,10 @@ $("#list_users_total").html( data_len ) ;
         menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'D\');">{{ _("Désactiver utilisateur") }}</a>';
         }
 
-        if ( data_users[i].role_type != 'API' && data_users[i].role_type != 'Z' )        
+        {% if has_permission("ADMIN_1") %}
+        if ( data_users[i].role_type != 'API' && data_users[i].role_type != 'Z' )
         menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-user-rights/' + data_users[i].id_data + '">{{ _("Editer droits") }}</a>' ;
+        {% endif %}
         
     menu_act += '</div></ul></nav>' ;
 

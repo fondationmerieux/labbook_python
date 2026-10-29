@@ -15,9 +15,11 @@ from app.models.Audit import Audit
 from app.models.Pdf import Pdf
 from app.models.Logs import Logs
 from app.models.Quality import Quality
+from app.models.Record import Record
 from app.models.Report import Report
 from app.models.Setting import Setting
 from app.models.File import File
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -60,7 +62,12 @@ class PdfBillList(Resource):
             400: a field is missing.
             404: no bill over the period.
             500: PDF could not be built.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_37'):
+            self.log.error(Logs.fileline() + ' : PdfBillList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -179,6 +186,13 @@ class PdfReport(Resource):
             500: report entry or PDF could not be created.
         """
         audit_user = request.oauth_user
+
+        # a prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : PdfReport ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         if reedit == 'Y':
             tpl = Setting.getTemplateByFile(template)
 
@@ -376,7 +390,12 @@ class PdfReportGlobal(Resource):
             404: 0, no report to merge.
             409: 0, PDF written but some report files were missing or empty.
             500: -1, PDF could not be built.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'RECORD_10'):
+            self.log.error(Logs.fileline() + ' : PdfReportGlobal ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -610,7 +629,12 @@ class PdfReportToday(Resource):
             400: a field is missing.
             404: no record over the period.
             500: PDF could not be built.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_36'):
+            self.log.error(Logs.fileline() + ' : PdfReportToday ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -675,7 +699,12 @@ class PdfActivityReport(Resource):
             200: empty body.
             400: a field is missing.
             500: PDF could not be built.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_26'):
+            self.log.error(Logs.fileline() + ' : PdfActivityReport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

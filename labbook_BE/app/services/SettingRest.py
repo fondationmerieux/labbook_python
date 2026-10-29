@@ -15,6 +15,7 @@ from app.models.Constants import Constants
 from app.models.Logs import Logs
 from app.models.Quality import Quality
 from app.models.Setting import Setting
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -127,7 +128,12 @@ class SettingAgeInterval(Resource):
             200: empty body.
             400: list_val missing.
             500: no interval set yet, or database write failed, the items before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_56'):
+            self.log.error(Logs.fileline() + ' : SettingAgeInterval ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -257,7 +263,12 @@ class SettingReqServices(Resource):
             200: empty body.
             400: list_val missing.
             500: database write failed, the items before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_57'):
+            self.log.error(Logs.fileline() + ' : SettingReqServices ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -429,7 +440,12 @@ class SettingFuncUnit(Resource):
             200: empty body.
             400: list_val missing.
             500: database write failed, the items before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_58'):
+            self.log.error(Logs.fileline() + ' : SettingFuncUnit ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -506,7 +522,12 @@ class SettingFuncUnit(Resource):
             200: empty body.
             400: id_unit missing.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_58'):
+            self.log.error(Logs.fileline() + ' : SettingFuncUnit ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -747,7 +768,12 @@ class SettingPref(Resource):
             200: empty body.
             400: id_owner below 1, or a field is missing.
             500: update failed, the keys before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_38'):
+            self.log.error(Logs.fileline() + ' : SettingPref ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -845,7 +871,12 @@ class SettingRecNum(Resource):
             200: empty body.
             400: a field is missing.
             500: update failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_65'):
+            self.log.error(Logs.fileline() + ' : SettingRecNum ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -945,7 +976,12 @@ class SettingReport(Resource):
             200: empty body.
             400: a field is missing.
             500: update failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_64'):
+            self.log.error(Logs.fileline() + ' : SettingReport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1037,8 +1073,15 @@ class ScriptBackup(Resource):
         Returns:
             200: 0, once the script is started.
             400: '1', invalid media name.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptBackup ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
 
         if not _is_plain_name(media, 32):
             self.log.error(Logs.fileline() + ' : ScriptBackup ERROR invalid media')
@@ -1084,8 +1127,16 @@ class ScriptGenkey(Resource):
         Returns:
             200: script return code, 0 when it succeeded.
             400: '1', pwd_key missing.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptGenkey ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
+
         args = request.get_json() or {}
 
         if 'pwd_key' not in args:
@@ -1127,8 +1178,15 @@ class ScriptInitMedia(Resource):
         Returns:
             200: script return code, 0 when it succeeded.
             400: '1', invalid media name.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptInitMedia ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
 
         if not _is_plain_name(media, 32):
             self.log.error(Logs.fileline() + ' : ScriptInitMedia ERROR invalid media')
@@ -1314,8 +1372,16 @@ class ScriptProgbackup(Resource):
             200: '0'.
             400: '1', a field is missing or start_time is invalid.
             500: '1', script missing or failed, or the time could not be stored.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptProgbackup ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
+
         args = request.get_json() or {}
 
         if 'start_time' not in args or 'user_pwd' not in args:
@@ -1446,8 +1512,16 @@ class ScriptRestart(Resource):
         Returns:
             200: script return code, 0 when it succeeded.
             400: '1', pwd_user missing.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptRestart ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
+
         args = request.get_json() or {}
 
         if 'pwd_user' not in args:
@@ -1493,8 +1567,16 @@ class ScriptRestore(Resource):
             200: 0, once the script is started.
             400: '1', a field is missing or invalid.
             500: '1', backup script missing.
+            403: no backup configuration right.
         """
         audit_user = request.oauth_user
+
+        # backup actions are left to the backup configuration right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_54' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : ScriptRestore ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('1', Constants.cst_content_type_json, 403)
+
         args = request.get_json() or {}
 
         # Check mandatory arguments
@@ -1898,7 +1980,12 @@ class ZipCityAdd(Resource):
             200: id of the last row added.
             400: id_user missing.
             500: file empty or insertion failed, the lines before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_67'):
+            self.log.error(Logs.fileline() + ' : ZipCityAdd ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -1976,7 +2063,12 @@ class ZipCityDelAll(Resource):
             200: result of the deletion.
             400: id_user missing.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_67'):
+            self.log.error(Logs.fileline() + ' : ZipCityDelAll ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2176,7 +2268,12 @@ class SettingStock(Resource):
             200: empty body.
             400: a field is missing.
             500: database write failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_68'):
+            self.log.error(Logs.fileline() + ' : SettingStock ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2313,7 +2410,12 @@ class SettingFormDet(Resource):
             200: empty body.
             400: a field is missing.
             500: update failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_69'):
+            self.log.error(Logs.fileline() + ' : SettingFormDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2398,7 +2500,12 @@ class SettingManual(Resource):
             200: empty body.
             400: list_val missing.
             500: database write failed, the items before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_66'):
+            self.log.error(Logs.fileline() + ' : SettingManual ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2793,7 +2900,12 @@ class SettingSendMethodDet(Resource):
             200: id of the method.
             400: a field is missing.
             500: database write failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendMethodDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -2865,7 +2977,12 @@ class SettingSendMethodDet(Resource):
         Returns:
             200: empty body.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendMethodDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         ret = Setting.deleteSendingMethodDet(type, id_item)
 
@@ -2905,7 +3022,12 @@ class SettingSendMethodTest(Resource):
         Returns:
             200: message.
             400: error, unknown type or sending failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendMethodTest ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         payload = request.get_json(silent=True) or {}
         to = payload.get('to')
@@ -3027,7 +3149,12 @@ class SettingSendModelDet(Resource):
             200: id of the model.
             400: a field is missing.
             500: database write failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendModelDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -3098,7 +3225,12 @@ class SettingSendModelDet(Resource):
         Returns:
             200: empty body.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendModelDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         ret = Setting.deleteSendingModelDet(type, id_item)
 
@@ -3144,7 +3276,12 @@ class SettingSendModelTest(Resource):
             412: no sending method for this type.
             500: unexpected error.
             502: sending failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendModelTest ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         try:
             payload = request.get_json(force=True) or {}

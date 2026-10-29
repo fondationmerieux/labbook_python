@@ -421,10 +421,20 @@ class UserStaffDet(Resource):
         Returns:
             200: empty body, also when id_user is 0 and nothing is done.
             400: a field is missing.
+            403: another user's staff file, without the right to save it.
             500: user not found or update failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # own staff file, or any staff file with the right shown by the save button
+        id_caller = audit_user.get('usr_id')
+        if not id_caller or int(id_user) != int(id_caller):
+            l_rights = User.getUserListOfRights(id_caller) if id_caller else []
+            if not any(right['prr_tag'] == 'STAFF_83' and right['prp_granted'] == 'Y' for right in l_rights or []):
+                self.log.error(Logs.fileline() + ' : UserStaffDet ERROR forbidden caller=' + str(id_caller) +
+                               ' | id_user=' + str(id_user))
+                return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'id_user' not in args or 'firstname' not in args or 'lastname' not in args or 'email' not in args or \
            'title' not in args or 'initial' not in args or 'birth' not in args or 'phone' not in args or \
@@ -1122,10 +1132,17 @@ class UserRights(Resource):
         Returns:
             200: empty body.
             400: a field is missing.
+            403: no right to edit rights.
             500: database write failed.
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # same right as the roles and rights screen
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'ADMIN_1' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : UserRights ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if 'by_user' not in args or 'id_user' not in args or 'l_rights' not in args:
             self.log.error(Logs.fileline() + ' : UserRights ERROR args missing')
@@ -1232,10 +1249,12 @@ class UserPassword(Resource):
         Body:
             id_user (int): user id.
             password (str): new password.
+            old_password (str): current password, required on one's own account.
 
         Returns:
             200: empty body.
             400: a field is missing.
+            403: wrong current password on one's own account, or another user's account changed by a non administrator.
             500: update failed.
         """
         args = request.get_json() or {}
@@ -1243,6 +1262,22 @@ class UserPassword(Resource):
         if 'id_user' not in args or 'password' not in args:
             self.log.error(Logs.fileline() + ' : UserPassword ERROR args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
+
+        id_caller = request.oauth_user.get('usr_id')
+        if not id_caller:
+            self.log.error(Logs.fileline() + ' : UserPassword ERROR no connected user')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
+        if int(args['id_user']) == int(id_caller):
+            # own account, the current password is asked
+            if not User.checkPassword(id_caller, args.get('old_password') or ''):
+                self.log.error(Logs.fileline() + ' : UserPassword ERROR wrong current password caller=' + str(id_caller))
+                return compose_ret('', Constants.cst_content_type_json, 403)
+        elif request.oauth_user.get('usr_role') != 'A':
+            # another user's account is left to administrators only
+            self.log.error(Logs.fileline() + ' : UserPassword ERROR forbidden caller=' + str(id_caller) +
+                           ' | id_user=' + str(args['id_user']))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         pwd_db = User.getPasswordDB(args['password'])
 
@@ -1354,7 +1389,12 @@ class UserConnExport(Resource):
             400: date missing or not in YYYY-MM-DD.
             404: nothing to export.
             500: CSV file could not be written.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_39'):
+            self.log.error(Logs.fileline() + ' : UserConnExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

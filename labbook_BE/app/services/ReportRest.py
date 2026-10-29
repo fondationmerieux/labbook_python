@@ -14,6 +14,7 @@ from app.models.Logs import Logs
 from app.models.Audit import Audit
 from app.models.Report import Report
 from app.models.Result import Result
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -413,7 +414,12 @@ class ReportActivity(Resource):
         Returns:
             200: type and age, analysis names translated, ages in years.
             400: a field is missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_26'):
+            self.log.error(Logs.fileline() + ' : ReportActivity ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -501,7 +507,12 @@ class ReportStat(Resource):
         Returns:
             200: patient, prescr, sampler, product, nb_pat and nb_ana.
             400: a field is missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_29'):
+            self.log.error(Logs.fileline() + ' : ReportStat ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -589,7 +600,12 @@ class ReportTAT(Resource):
         Returns:
             200: list of analyses with tat_* (this line) and tot_* (average) in days, hours, minutes and seconds.
             400: a field is missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_30'):
+            self.log.error(Logs.fileline() + ' : ReportTAT ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -818,7 +834,12 @@ class ReportBilling(Resource):
         Returns:
             200: list of records with bill_price and bill_remain as floats.
             400: a field is missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_37'):
+            self.log.error(Logs.fileline() + ' : ReportBilling ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -877,7 +898,12 @@ class ReportToday(Resource):
         Returns:
             200: list of analyses, family and analysis translated, type_rec 'E' external or 'I' internal.
             400: a field is missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_36'):
+            self.log.error(Logs.fileline() + ' : ReportToday ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 
@@ -945,7 +971,12 @@ class ReportTodayExport(Resource):
             400: a field is missing.
             404: nothing to export.
             500: CSV file could not be written.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_36'):
+            self.log.error(Logs.fileline() + ' : ReportTodayExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 

@@ -15,6 +15,7 @@ from app.models.DB import DB
 from app.models.Dict import Dict
 from app.models.General import compose_ret
 from app.models.Logs import Logs
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -141,7 +142,12 @@ class DictDet(Resource):
             200: empty body.
             400: list_val missing.
             500: database write failed, the values before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_52', 'LAB_79'):
+            self.log.error(Logs.fileline() + ' : DictDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -258,7 +264,12 @@ class DictDet(Resource):
             200: empty body.
             400: id_owner missing.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_52', 'LAB_79'):
+            self.log.error(Logs.fileline() + ' : DictDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -545,7 +556,12 @@ class DictImport(Resource):
             400: filename or id_user missing.
             409: unknown version, or wrong column name or order.
             500: file empty or database write failed, the lines before it are kept.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_53'):
+            self.log.error(Logs.fileline() + ' : DictImport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
 
         if not filename or id_user <= 0:

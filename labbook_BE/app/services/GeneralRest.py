@@ -13,6 +13,7 @@ from app.models.Logs import Logs
 from app.models.Patient import Patient
 from app.models.Record import Record
 from app.models.Result import Result
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -274,7 +275,12 @@ class DatasetByName(Resource):
             200: list of rows. For 'patient', the custom form fields are added to each row.
             404: no data, or unknown name.
             500: date_beg and date_end both missing.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_31'):
+            self.log.error(Logs.fileline() + ' : DatasetByName ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json()
 

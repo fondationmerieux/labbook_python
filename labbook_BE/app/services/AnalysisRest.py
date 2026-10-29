@@ -16,6 +16,7 @@ from app.models.DB import DB
 from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Record import Record
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -779,7 +780,12 @@ class AnalysisDet(Resource):
             200: empty body.
             400: a field is missing.
             500: database write failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_42'):
+            self.log.error(Logs.fileline() + ' : AnalysisDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -912,7 +918,12 @@ class AnalysisDet(Resource):
         Returns:
             200: empty body.
             500: deletion failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_42'):
+            self.log.error(Logs.fileline() + ' : AnalysisDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         ret = Analysis.deleteAnalysis(id_ana)
 
@@ -1194,6 +1205,13 @@ class AnalysisReq(Resource):
             404: nothing requested in this record.
         """
         audit_user = request.oauth_user
+
+        # a prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : AnalysisReq ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         l_ana = Analysis.getAnalysisReq(id_rec, type_ana)
 
         if not l_ana:
@@ -2437,7 +2455,12 @@ class AnalysisStatus(Resource):
             200: empty body.
             400: a field is missing.
             500: update failed.
+            403: no right to change this setting.
         """
+        if not User.hasRight(request.oauth_user, 'SETTING_42'):
+            self.log.error(Logs.fileline() + ' : AnalysisStatus ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

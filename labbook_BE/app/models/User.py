@@ -91,6 +91,31 @@ class User:
         return cursor.fetchone()
 
     @staticmethod
+    def hasRight(oauth_user, *prr_tags):
+        """
+        True when the calling user is granted one of these rights.
+        """
+        id_user = (oauth_user or {}).get('usr_id')
+        if not id_user:
+            return False
+
+        l_rights = User.getUserListOfRights(id_user) or []
+
+        return any(right['prr_tag'] in prr_tags and right['prp_granted'] == 'Y' for right in l_rights)
+
+    @staticmethod
+    def getCallerPrescriber(oauth_user):
+        """
+        Prescriber id of a caller with the prescriber role, None for any other role, 0 when none is linked.
+        """
+        if not oauth_user or oauth_user.get('usr_role') != 'P':
+            return None
+
+        user = User.getUserDetails(oauth_user.get('usr_id') or 0)
+
+        return int(user['side_account'] or 0) if user else 0
+
+    @staticmethod
     def getUserDetails(id_user):
         """
         Read one user with its title label and linked prescriber name, password left out.
@@ -711,6 +736,24 @@ class User:
         cursor.execute(req, (date_beg, date_end,))
 
         return cursor.fetchall()
+
+    @staticmethod
+    def checkPassword(id_user, pwd):
+        """
+        True when pwd is the current password of this user, hashed as at login with the stored salt.
+        """
+        cursor = DB.cursor()
+
+        cursor.execute('select password from sigl_user_data where id_data=%s', (id_user,))
+
+        res = cursor.fetchone()
+
+        if not res or not res['password'] or ':' not in res['password'] or not pwd:
+            return False
+
+        salt = res['password'].split(':', 1)[1]
+
+        return User.getPasswordDB(pwd, salt) == res['password']
 
     @staticmethod
     def getPasswordDB(pwd, salt=''):

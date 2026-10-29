@@ -12,6 +12,8 @@ from app.models.Constants import Constants
 from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Patient import Patient
+from app.models.Record import Record
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -364,9 +366,16 @@ class PatientCombine(Resource):
         Returns:
             200: empty body.
             400: an id is not above 0.
+            403: no patient record management right.
             500: merge failed.
         """
         audit_user = request.oauth_user
+
+        # merging is irreversible, left to the patient record management right
+        l_rights = User.getUserListOfRights(audit_user.get('usr_id')) if audit_user.get('usr_id') else []
+        if not any(right['prr_tag'] == 'SETTING_70' and right['prp_granted'] == 'Y' for right in l_rights or []):
+            self.log.error(Logs.fileline() + ' : PatientCombine ERROR forbidden caller=' + str(audit_user.get('usr_id')))
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if id_pat1 <= 0 or id_pat2 <= 0:
             self.log.error(Logs.fileline() + ' : ' + 'PatientCombine ERROR wrong id_pat')
@@ -413,6 +422,13 @@ class PatientDet(Resource):
             404: patient not found.
         """
         audit_user = request.oauth_user
+
+        # a prescriber only reads his own patients
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isPatientOfPrescriber(id_pat, id_pres):
+            self.log.error(Logs.fileline() + ' : PatientDet ERROR patient of another prescriber id_pat=' + str(id_pat))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         patient = Patient.getPatient(id_pat)
 
         if not patient:

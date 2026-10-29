@@ -490,7 +490,12 @@ class ExportDHIS2(Resource):
             404: no data over the period.
             409: dates invalid, unknown period, or spreadsheet without version or with a wrong one.
             500: spreadsheet empty or file could not be written.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_32'):
+            self.log.error(Logs.fileline() + ' : ExportDHIS2 ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -685,7 +690,12 @@ class ExportDHIS2Api(Resource):
             405: DHIS2 server setting not found.
             409: dates invalid, unknown period, or spreadsheet without version or with a wrong one.
             500: spreadsheet empty or DHIS2 server unreachable.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_32'):
+            self.log.error(Logs.fileline() + ' : ExportDHIS2Api ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 
@@ -872,7 +882,12 @@ class ExportWhonet(Resource):
             400: date_beg or date_end missing.
             404: no result over the period.
             500: file could not be written.
+            403: no right to read this report.
         """
+        if not User.hasRight(request.oauth_user, 'REPORT_33'):
+            self.log.error(Logs.fileline() + ' : ExportWhonet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         audit_user = request.oauth_user
         args = request.get_json() or {}
 

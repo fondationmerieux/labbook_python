@@ -18,6 +18,7 @@ from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -69,6 +70,14 @@ class RecordList(Resource):
 
         if not args:
             args = {}
+
+        # a prescriber only lists his own records, whatever the URL says
+        if audit_user.get('usr_role') == 'P':
+            user = User.getUserDetails(audit_user.get('usr_id') or 0)
+            id_pres = int(user['side_account'] or 0) if user else 0
+            if id_pres <= 0:
+                self.log.error(Logs.fileline() + ' : RecordList ERROR prescriber account without prescriber')
+                return compose_ret([], Constants.cst_content_type_json)
 
         l_records = Record.getRecordList(args, id_pres)
 
@@ -188,6 +197,7 @@ class RecordDet(Resource):
 
         Returns:
             200: record fields, discount translated, dates as YYYY-MM-DD or YYYY-MM-DD HH:MM, amounts as floats.
+            403: record of another prescriber, asked by a prescriber.
             404: record not found.
         """
         audit_user = request.oauth_user
@@ -201,6 +211,14 @@ class RecordDet(Resource):
             except Exception as err:
                 self.log.error(Logs.fileline() + ' : RecordDet ERROR audit not found err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 404)
+
+        # a prescriber only reads his own records
+        if audit_user.get('usr_role') == 'P':
+            user = User.getUserDetails(audit_user.get('usr_id') or 0)
+            id_pres = int(user['side_account'] or 0) if user else 0
+            if id_pres <= 0 or int(record['med_prescripteur'] or 0) != id_pres:
+                self.log.error(Logs.fileline() + ' : RecordDet ERROR record of another prescriber id_rec=' + str(id_rec))
+                return compose_ret('', Constants.cst_content_type_json, 403)
 
         Various.useLangDB()
 

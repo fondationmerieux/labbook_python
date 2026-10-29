@@ -82,7 +82,9 @@
                     <input type="button" onclick="return_home();" id="btn_return" value="{{ _("Retour") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }}">
                 </div>
                 <div class="float-end">
+                    {% if has_permission("SETTING_53") %}
                     <input type="button" onclick="import_dict();" id="btn_import" value="{{ _("Import de dictionnaire") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-md-2">
+                    {% endif %}
                     <input type="button" onclick="export_dict('');" id="btn_export" value="{{ _("Exporter le dictionnaire") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-md-2">
                     <input type="button" onclick="add_dict();" id="btn_add" value="{{ _("Ajouter un dictionnaire") }}" class="btn btn-lbk btn-{{ session['user_role']|safe }} ms-md-2">
                 </div>
