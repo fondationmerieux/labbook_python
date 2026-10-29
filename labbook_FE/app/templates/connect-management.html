@@ -25,6 +25,8 @@
                             <i class="bi bi-circle-fill text-danger"></i> {{ _("non paramétrée, fichier fhir.toml absent dans Connect") }}
                         {% elif args['fhir_state'] == 'no token' %}
                             <i class="bi bi-circle-fill text-danger"></i> {{ _("LabBook ne délivre pas de jeton, voir le journal de Connect") }}
+                        {% elif args['fhir_state'] == 'not available' %}
+                            <i class="bi bi-circle-fill text-secondary"></i> -
                         {% else %}
                             <i class="bi bi-circle-fill text-secondary"></i> {{ _("Connect ne répond pas") }}
                         {% endif %}

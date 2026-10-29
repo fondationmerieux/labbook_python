@@ -2106,7 +2106,12 @@ def connect_management():
         try:
             url = json_data['cos_url'] + '/connect/test_fhir'
             req = requests.get(url, timeout=10)
-            json_data['fhir_state'] = req.text.strip()
+
+            # Connect answers 404 as long as it holds no FHIR facade
+            if req.status_code == 404:
+                json_data['fhir_state'] = 'not available'
+            else:
+                json_data['fhir_state'] = req.text.strip()
 
         except requests.exceptions.RequestException:
             log.exception(Logs.fileline() + ' : requests get FHIR facade state in Connect failed, url=%s', url)
