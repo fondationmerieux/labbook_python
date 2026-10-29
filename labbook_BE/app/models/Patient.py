@@ -26,6 +26,7 @@ class Patient:
 
         filter_cond = ' code is not NULL '
         params = []
+        limit_value = None
 
         if not args:
             limit = 'LIMIT 100000'
@@ -33,7 +34,9 @@ class Patient:
             if 'limit' in args and args['limit'] is None:
                 limit = ''  # no limit, used by export
             elif 'limit' in args and args['limit'] > 0:
-                limit = 'LIMIT ' + str(args['limit'])
+                # the asked limit travels as a parameter, never as text of the query
+                limit = 'LIMIT %s'
+                limit_value = int(args['limit'])
             else:
                 limit = 'LIMIT 5000'
 
@@ -73,6 +76,9 @@ class Patient:
                'order by lastname asc, firstname asc ' + limit)
 
         params.insert(0, Constants.cst_isodate)
+
+        if limit_value is not None:
+            params.append(limit_value)
 
         cursor.execute(req, params)
 

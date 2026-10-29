@@ -548,30 +548,28 @@ class Record:
 
         table_cond = ''
         filter_cond = ''
+        params = {}
 
         # Functionnal unit link with analyzes families
         if 'link_fam' in args and args['link_fam']:
             # avoid redundance of table if filter type_ana exist
             table_cond += (' inner join sigl_05_data as ref on req.ref_analyse = ref.id_data ')
 
-            cond_link_fam = ''
-            # prepare list for sql
-            for id_fam in args['link_fam']:
-                if not cond_link_fam:
-                    cond_link_fam = '('
+            # one parameter per family, so no identifier reaches the query as text
+            places = []
 
-                cond_link_fam = cond_link_fam + str(id_fam) + ','
+            for rank, id_fam in enumerate(args['link_fam']):
+                places.append('%(fam_' + str(rank) + ')s')
+                params['fam_' + str(rank)] = id_fam
 
-            if cond_link_fam:
-                cond_link_fam = cond_link_fam[:-1] + ')'
-                filter_cond += ' and ref.famille in ' + cond_link_fam + ' '
+            filter_cond += ' and ref.famille in (' + ','.join(places) + ') '
 
         req = ('select count(distinct(rec.id_data)) as nb_emer '
                'from sigl_02_data as rec '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data ' + table_cond +
                'where req.urgent=4 and rec.statut in (181,182,253,254,255) ' + filter_cond)
 
-        cursor.execute(req)
+        cursor.execute(req, params)
 
         return cursor.fetchone()
 
