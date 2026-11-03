@@ -2059,7 +2059,7 @@ class Setting:
                     return binascii.unhexlify(bytes(x)).decode('utf-8')
                 except Exception:
                     return ''
-        # Si jamais stocké en "0x...."
+        # In case it is stored as "0x...."
         s = str(x or '')
         if s.startswith(('0x', '0X')):
             try:

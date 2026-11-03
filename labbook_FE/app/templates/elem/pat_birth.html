@@ -10,7 +10,7 @@ $("#pat_birth").change(function()
 var born  = new Date( $("#pat_birth").val() ) ;
 var today = new Date( $("#date_current").val() || new Date().toISOString().slice(0, 10) ) ;
 
-    if ( isNaN(born) || isNaN(today) || born > today )
+    if ( Number.isNaN(born.getTime()) || Number.isNaN(today.getTime()) || born > today )
         return ;
 
 // complete months elapsed, dates are parsed as UTC

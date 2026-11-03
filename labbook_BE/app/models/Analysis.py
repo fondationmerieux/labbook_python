@@ -73,12 +73,12 @@ class Analysis:
         if conditions:
             cond += " AND (" + " OR ".join(conditions) + ")"
 
-        # Filtrer par familles fonctionnelles si nécessaire
+        # Filter on the functional families when needed
         if link_fam:
             link_fam_str = ", ".join(map(str, link_fam))
             cond += f' AND ana.famille IN ({link_fam_str})'
 
-        # Requête SQL optimisée
+        # Optimised SQL query
         req = (
             'SELECT ana.id_data AS id, '
             'CONCAT(ana.code, '

@@ -2178,7 +2178,7 @@ def _execute_job_activity(job_row: dict) -> dict:
             try:
                 sex_code = int(sex_raw)
             except (TypeError, ValueError):
-                # fallback si jamais on reçoit déjà 'M'/'F'/'U'
+                # fallback when 'M'/'F'/'U' is already received
                 sex_txt = str(sex_raw or '').upper()
                 if sex_txt in ('M', 'F', 'U'):
                     sex = sex_txt
@@ -2313,7 +2313,7 @@ def _execute_job_activity(job_row: dict) -> dict:
                 a = int(age_val)
             except (TypeError, ValueError):
                 return None
-            # Exemple de découpage (à adapter à ton HTML si différent)
+            # Example of splitting, to adapt if the HTML differs
             if a < 5:
                 return 1
             elif a < 15:
@@ -2339,12 +2339,12 @@ def _execute_job_activity(job_row: dict) -> dict:
                     'tot_M': 0,  'tot_F': 0,  'tot_U': 0,
                 }
 
-            # age en jours/semaines/mois selon unite, tu avais déjà normalisé plus haut
+            # age in days, weeks or months by unit, already normalised above
             band = _age_band(row.get('age'))
             if band not in (1, 2, 3, 4):
                 continue
 
-            # sex: 1/2/3 -> M/F/U (même logique que csv_type)
+            # sex: 1/2/3 -> M/F/U (same logic as csv_type)
             sex_raw = row.get('sex')
             try:
                 sex_code = int(sex_raw)

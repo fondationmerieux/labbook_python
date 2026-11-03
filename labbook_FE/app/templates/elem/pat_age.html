@@ -6,10 +6,10 @@
 $(document).on("change", "#pat_age, #pat_age_unit", function()
 {
 // after age change estimate birth date and mark it approximate
-var age  = parseInt( $("#pat_age").val(), 10 ) ;
+var age  = Number.parseInt( $("#pat_age").val(), 10 ) ;
 var unit = $("#pat_age_unit").val() ;
 
-    if ( !$("#pat_birth").length || isNaN(age) || age <= 0 )
+    if ( !$("#pat_birth").length || Number.isNaN(age) || age <= 0 )
         return ;
 
 var born = new Date( $("#date_current").val() || new Date().toISOString().slice(0, 10) ) ;

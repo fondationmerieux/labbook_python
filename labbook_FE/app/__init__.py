@@ -9004,12 +9004,12 @@ def delete_file(type='', filename=''):
         base_dir = Constants.cst_printer
         right = 'PRINT_174'
     else:
-        # type inconnu → on ne fait rien
+        # unknown type, nothing is done
         log.error(Logs.fileline() + ' : delete-file invalid file type')
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
 
     if not has_permission(right):
-        log.info(Logs.fileline() + ' : TRACE delete file ' + type + ' => permission denied')
+        log.info(Logs.fileline() + ' : TRACE delete file, right ' + right + ' missing => permission denied')
         return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     try:

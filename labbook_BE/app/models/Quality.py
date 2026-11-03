@@ -1839,7 +1839,7 @@ class Quality:
 
                'WHERE sal_in_stock=%s order by sal_date desc')
 
-        # Exécution de la requête
+        # Run the query
         cursor.execute(req, (in_stock, in_stock, in_stock, in_stock, in_stock, in_stock))
 
         return cursor.fetchall()
