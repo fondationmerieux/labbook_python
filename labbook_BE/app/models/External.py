@@ -45,6 +45,19 @@ class External:
         return row['exr_ref_ext']
 
     @staticmethod
+    def getRefsById(object_type, id_int):
+        """Return every external reference of a LabBook object, each with the system it comes from."""
+        cursor = DB.cursor()
+
+        cursor.execute('select exr_type_ext as `system`, exr_ref_ext as ref '
+                       'from external_ref '
+                       'where exr_type_int=%(object)s and exr_ref_int=%(id)s '
+                       'order by exr_type_ext',
+                       {'object': str(object_type), 'id': int(id_int)})
+
+        return cursor.fetchall()
+
+    @staticmethod
     def insertRef(**params):
         """Link an external reference to a LabBook object, 0 when it already exists."""
         try:

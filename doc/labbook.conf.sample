@@ -10,8 +10,8 @@ LABBOOK_DB_HOST=host.containers.internal
 # set to replace '/sigl' prefix in URLs of development version
 LABBOOK_URL_PREFIX=
 
-# if 1 runs gunicorn with reload option
-LABBOOK_DEBUG=1
+# if 1 runs gunicorn with reload option and opens the API page (Swagger) to every user, never in production
+LABBOOK_DEBUG=0
 
 # backup.sh commands (cmd1,cmd2,...) to fake with success or failure [default=empty]
 LABBOOK_TEST_OK=

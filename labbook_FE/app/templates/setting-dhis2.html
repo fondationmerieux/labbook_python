@@ -79,8 +79,8 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args['dhs']|safe or [] }} ;
-var data_dhis2 = {% if args['data_dhis2'] %}{{ args['data_dhis2']|safe }}{% else %}[]{% endif %} ;
+var data_items = {{ (args['dhs'] or [])|clean_json }} ;
+var data_dhis2 = {% if args['data_dhis2'] %}{{ args['data_dhis2']|clean_json }}{% else %}[]{% endif %} ;
 
 function display_item()
 {
@@ -101,10 +101,10 @@ res = "<tr>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
 
     {% if has_permission("SETTING_73") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-dhis2-api/" + data_items[i].dhs_ser + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-dhis2-api/" + escapeHtml(data_items[i].dhs_ser) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
     {% if has_permission("SETTING_74") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].dhs_ser + ")\">{{ _("Supprimer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_items[i].dhs_ser) + ")\">{{ _("Supprimer") }}</a>" ;
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
@@ -114,11 +114,11 @@ res = "<tr>" +
         else
         dhs_default = "" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].dhs_ser + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].dhs_ser) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].dhs_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].dhs_url + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].dhs_login + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].dhs_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].dhs_url) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].dhs_login) + "</div></td>" +
            "<td><div class=\"text-start\">" + dhs_default + "</div></td></tr>" ;
     }
 {% endif %}
@@ -221,9 +221,9 @@ let tr_file = '' ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'DH\', \'' + filename + '\', \'DHIS2\', 0);">{{ _("Télécharger") }}</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + filename + '\');">{{ _("Supprimer") }}</a>' ;
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(filename) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'DH\', \'' + escapeHtml(filename) + '\', \'DHIS2\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + escapeHtml(filename) + '\');">{{ _("Supprimer") }}</a>' ;
     tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;

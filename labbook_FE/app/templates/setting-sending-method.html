@@ -124,7 +124,7 @@ function loadMethodTable()
                     // Build "Tester" item only if not WhatsApp
                     const testerItem = isWA ? '' : `
                         <a class="dropdown-item menu-act-item" href="#"
-                           onclick="test_method('${row.sdi_type}', ${row.sdi_ser}); return false;">
+                           onclick="test_method('${escapeHtml(row.sdi_type)}', ${escapeHtml(row.sdi_ser)}); return false;">
                            {{ _('Tester') }}
                         </a>`;
 
@@ -136,7 +136,7 @@ function loadMethodTable()
                         <div class="dropdown-menu menu-act-drop nav-style">
                         <a class="dropdown-item menu-act-item" href="${editUrl}">{{ _("Éditer") }}</a>
                         ${testerItem}
-                        <a class="dropdown-item menu-act-item text-danger" href="#" onclick="delete_method('${row.sdi_type}', ${row.sdi_ser}); return false;">{{ _("Supprimer") }}</a>
+                        <a class="dropdown-item menu-act-item text-danger" href="#" onclick="delete_method('${escapeHtml(row.sdi_type)}', ${escapeHtml(row.sdi_ser)}); return false;">{{ _("Supprimer") }}</a>
                         </div>
                         </li>
                         </ul>
@@ -146,7 +146,7 @@ function loadMethodTable()
             },
             { data: 'sdi_ser', visible: false },
             { data: 'sdi_type', render: renderType },
-            { data: 'sdi_name' },
+            { data: 'sdi_name', render: $.fn.dataTable.render.text() },
             {
                 data: 'sdi_default',
                 orderable: false,
@@ -255,15 +255,15 @@ function loadModelTable() {
                         <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                         <div class="dropdown-menu menu-act-drop nav-style">
                         <a class="dropdown-item menu-act-item" href="${editUrl}">{{ _("Éditer") }}</a>
-                        <a class="dropdown-item menu-act-item" href="#" onclick="test_model('${row.mdl_type}', ${row.mdl_ser}); return false;">{{ _("Tester") }}</a>
-                        <a class="dropdown-item menu-act-item text-danger" href="#" onclick="delete_model('${row.mdl_type}', ${row.mdl_ser}); return false;">{{ _("Supprimer") }}</a>
+                        <a class="dropdown-item menu-act-item" href="#" onclick="test_model('${escapeHtml(row.mdl_type)}', ${escapeHtml(row.mdl_ser)}); return false;">{{ _("Tester") }}</a>
+                        <a class="dropdown-item menu-act-item text-danger" href="#" onclick="delete_model('${escapeHtml(row.mdl_type)}', ${escapeHtml(row.mdl_ser)}); return false;">{{ _("Supprimer") }}</a>
                         </div>
                         </li></ul></nav>`;
                 }
             },
             { data: 'mdl_ser', visible:false },
             { data: 'mdl_type', render: renderType },
-            { data: 'mdl_displayname' },
+            { data: 'mdl_displayname', render: $.fn.dataTable.render.text() },
             {
                 data: 'mdl_default', orderable:false, searchable:false, className:'text-center',
                 render: val => val === 'Y' ? '<i class="bi bi-check text-success" aria-label="{{ _("Par défaut") }}" title="{{ _("Par défaut") }}"></i>' : ''

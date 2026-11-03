@@ -356,7 +356,7 @@ let hasError = false;
         return;
     }
 
-    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/" + {{ args['id_item']|safe}}, {
+    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/" + {{ args['id_item']|clean_json }}, {
         method: "POST",
         headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" },
         body: JSON.stringify({ aliquots: aliquots })

@@ -7,6 +7,7 @@ from flask import request
 from flask_restful import Resource
 
 from app.models.Audit import Audit
+from app.models.User import User
 from app.models.Constants import Constants
 from app.models.Doctor import Doctor
 from app.models.General import compose_ret
@@ -165,6 +166,11 @@ class DoctorDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a prescriber
+        if not User.hasRight(audit_user, 'DOCTOR_87' if id_doctor == 0 else 'DOCTOR_88'):
+            self.log.error(Logs.fileline() + ' : DoctorDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_owner' not in args or 'id_doctor' not in args or 'code' not in args or 'title' not in args or \
@@ -265,6 +271,11 @@ class DoctorDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a prescriber
+        if not User.hasRight(audit_user, 'DOCTOR_89'):
+            self.log.error(Logs.fileline() + ' : DoctorDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Doctor.deleteDoctor(id_doctor)
 
         if not ret:
@@ -302,6 +313,11 @@ class DoctorExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export prescribers
+        if not User.hasRight(audit_user, 'DOCTOR_90'):
+            self.log.error(Logs.fileline() + ' : DoctorExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if not args:

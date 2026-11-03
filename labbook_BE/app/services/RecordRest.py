@@ -42,7 +42,57 @@ __all__ = [
     'RecordNbRecToday',
     'RecordValid',
     'RecordNumInt',
+    'RecordListUpdatedFromExt',
 ]
+
+# Record status as the letters already used by RecordListFromExt
+cst_status_letter = {181: 'N', 182: 'A', 253: 'IA', 254: 'T', 255: 'IT', 256: 'B'}
+
+
+def analysis_for_exchange(analysis):
+    """
+    Build one requested analysis for a third-party application.
+    """
+    return {
+        "ana_req":   analysis['id_req'],
+        "ana_code":  analysis['ana_code'],
+        "ana_name":  analysis['ana_name'],
+        "ana_loinc": analysis['ana_loinc'],
+        "ana_emer":  'Y' if analysis['urgent'] == 4 else 'N',
+        "ana_out":   'Y' if analysis['outsourced'] == 4 else 'N'
+    }
+
+
+def record_for_exchange(record):
+    """
+    Build one record for a third-party application, analyses left out. Shared by the read of
+    a single record and by the list of the changed ones.
+    """
+    return {
+        "rec_id":           record['id_data'],
+        "rec_num":          record['num_dos_an'],
+        "rec_num_int":      record['rec_num_int'] if record['rec_num_int'] else '',
+        "rec_type":         'E' if record['type'] == 183 else 'I',
+        "rec_status":       cst_status_letter.get(record['statut'], ''),
+        "rec_date_prescr":  datetime.strftime(record['date_prescription'], Constants.cst_isodate)
+                            if record['date_prescription'] else '',
+        "rec_date_receipt": datetime.strftime(record['rec_date_receipt'], Constants.cst_dt_HMS)
+                            if record['rec_date_receipt'] else '',
+        "rec_date_status":  datetime.strftime(record['rec_date_vld'], Constants.cst_dt_HMS)
+                            if record['rec_date_vld'] else '',
+        "rec_modified":     record['rec_modified'] if record['rec_modified'] else '',
+        "patient": {
+            "pat_id":       record['id_patient'],
+            "pat_code":     record['patient_code'] if record['patient_code'] else '',
+            "pat_code_lab": record['patient_code_lab'] if record['patient_code_lab'] else '',
+            "external":     External.getRefsById('PATIENT', record['id_patient']) if record['id_patient'] else []
+        },
+        "prescriber": {
+            "prescr_id":   record['med_prescripteur'] if record['med_prescripteur'] else 0,
+            "prescr_name": record['prescriber'] if record['prescriber'] else ''
+        },
+        "external": External.getRefsById('RECORD', record['id_data'])
+    }
 
 
 class RecordList(Resource):
@@ -298,6 +348,11 @@ class RecordDet(Resource):
             500: insertion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to create requests creates a record
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12'):
+            self.log.error(Logs.fileline() + ' : RecordDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json(silent=True) or {}
 
         if int(id_rec) != 0:
@@ -486,6 +541,11 @@ class RecordDet(Resource):
             500: a deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete records deletes one
+        if not User.hasRight(audit_user, 'RECORD_4'):
+            self.log.error(Logs.fileline() + ' : RecordDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         # delete sigl_11_data with id_dos = id_rec
         ret = File.deleteFileReportByRecord(id_rec)
 
@@ -587,6 +647,51 @@ class RecordDetFromExt(Resource):
     log = logging.getLogger('log_services')
 
     @require_oauth('external/record')
+    def get(self, id_rec):
+        """
+        Return one record for third-party applications (scope external/record).
+
+        Args:
+            id_rec (int): record id.
+
+        Returns:
+            200: rec_id, rec_num, rec_type 'E' or 'I', rec_status (N, A, IA, T, IT or B), rec_date_prescr,
+                 rec_date_receipt, rec_date_status (last status change), rec_modified, patient, prescriber,
+                 ana_list and external.
+            404: record not found.
+        """
+        audit_user = request.oauth_user
+
+        self.log.info(Logs.fileline() + ' : RecordDetFromExt API access authorized')
+        record = Record.getRecordForExchange(id_rec)
+
+        if not record:
+            self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR not found id_rec=' + str(id_rec))
+            try:
+                details = {"result": "ERROR", "reason": "NOT_FOUND", "id_rec": int(id_rec)}
+                Audit.insertAudit(audit_user, "RecordDetFromExtGet", "RECORD", int(id_rec), "ERROR", details, "R")
+            except Exception as err:
+                self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit not found err=' + str(err))
+            return compose_ret('', Constants.cst_content_type_json, 404)
+
+        l_res = record_for_exchange(record)
+        l_ana = []
+
+        for ana in Record.getReqAnalysisForExchange(id_rec):
+            l_ana.append(analysis_for_exchange(ana))
+
+        l_res["ana_list"] = l_ana
+
+        self.log.info(Logs.fileline() + ' : RecordDetFromExt id_rec=' + str(id_rec))
+        try:
+            details = {"result": "SUCCESS", "action": "VIEW", "id_rec": int(id_rec),
+                       "count_analysis": len(l_ana)}
+            Audit.insertAudit(audit_user, "RecordDetFromExtGet", "RECORD", int(id_rec), "SUCCESS", details, "R")
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit success err=' + str(err))
+        return compose_ret(l_res, Constants.cst_content_type_json, 200)
+
+    @require_oauth('external/record')
     def post(self, id_rec=0):
         """
         Create a complete record sent by a third-party application (scope external/record): patient and
@@ -602,7 +707,8 @@ class RecordDetFromExt(Resource):
             record (dict): rec_* fields, rec_type, rec_date and rec_date_prescr required.
             ana_list (list): analyses by ana_code or ana_loinc, with ana_emer, ana_req and ana_out.
             samp_list (list): samples with samp_ana, samp_type, samp_code, samp_status...
-            external (dict, optional): system, record and patient references, kept in external_ref.
+            external (dict, optional): system, record, patient and patient_resource references, kept in
+                external_ref. patient is the business number, patient_resource the id of the resource.
 
         Returns:
             200: id of the new record.
@@ -637,6 +743,7 @@ class RecordDetFromExt(Resource):
         ext_system  = args['external'].get('system', '') if 'external' in args else ''
         ext_ref     = args['external'].get('record', '') if 'external' in args else ''
         ext_pat_ref = args['external'].get('patient', '') if 'external' in args else ''
+        ext_pat_res = args['external'].get('patient_resource', '') if 'external' in args else ''
 
         if ext_system and ext_ref and External.getIdByRef(ext_system, 'RECORD', ext_ref) > 0:
             self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR external reference already used')
@@ -1478,6 +1585,13 @@ class RecordDetFromExt(Resource):
             if External.insertRef(user=0, system=ext_system, ref=ext_pat_ref, object='PATIENT', id=id_pat) <= 0:
                 self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertRef patient')
 
+        # Reference of the patient resource itself, the only one a FHIR link can name
+        if ext_system and ext_pat_res:
+            if External.getIdByRef(ext_system, 'PATIENT_RESOURCE', ext_pat_res) <= 0:
+                if External.insertRef(user=0, system=ext_system, ref=ext_pat_res,
+                                      object='PATIENT_RESOURCE', id=id_pat) <= 0:
+                    self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertRef patient resource')
+
         self.log.info(Logs.fileline() + ' : TRACE RecordDetFromExt')
         try:
             details = {"result": "SUCCESS", "id_rec": int(id_rec),
@@ -1486,6 +1600,71 @@ class RecordDetFromExt(Resource):
         except Exception as err2:
             self.log.error(Logs.fileline() + ' : RecordDetFromExt ERROR audit success err=' + str(err2))
         return compose_ret(id_rec, Constants.cst_content_type_json, 200)
+
+
+class RecordListUpdatedFromExt(Resource):
+    log = logging.getLogger('log_services')
+
+    # A record is read again at every status change, so one call brings back few of them
+    cst_limit = 500
+
+    @require_oauth('external/record')
+    def post(self):
+        """
+        List the records of an outside system changed since a date, for third-party applications
+        (scope external/record). Only the records carrying an external reference are listed, oldest
+        change first, 500 at most.
+
+        Body:
+            date_from (str): date of the last call, format YYYY-MM-DD HH:MM:SS, required.
+            system (str, optional): short name of the outside system, every one of them when absent.
+
+        Returns:
+            200: list of records, same fields as the read of one record, analyses left out.
+            400: date_from missing or malformed.
+        """
+        audit_user = request.oauth_user
+        args = request.get_json() or {}
+
+        self.log.info(Logs.fileline() + ' : RecordListUpdatedFromExt API access authorized')
+
+        if 'date_from' not in args or not args['date_from']:
+            self.log.error(Logs.fileline() + ' : RecordListUpdatedFromExt ERROR date_from missing')
+            err = {"error": "missing date_from"}
+            return compose_ret(err, Constants.cst_content_type_json, 400)
+
+        try:
+            datetime.strptime(args['date_from'], Constants.cst_dt_HMS)
+        except ValueError:
+            self.log.error(Logs.fileline() + ' : RecordListUpdatedFromExt ERROR date_from malformed')
+            err = {"error": "date_from must be formatted YYYY-MM-DD HH:MM:SS"}
+            return compose_ret(err, Constants.cst_content_type_json, 400)
+
+        system = args.get('system', '')
+
+        l_res   = []
+        d_index = {}
+
+        for record in Record.getRecordListForExchange(args['date_from'], system, self.cst_limit):
+            block = record_for_exchange(record)
+            block["ana_list"] = []
+
+            d_index[record['id_data']] = block
+            l_res.append(block)
+
+        # Analyses of every listed record read in one go, rather than one call per record
+        if d_index:
+            for ana in Record.getReqAnalysisListForExchange(list(d_index)):
+                d_index[ana['id_rec']]["ana_list"].append(analysis_for_exchange(ana))
+
+        self.log.info(Logs.fileline() + ' : RecordListUpdatedFromExt count=' + str(len(l_res)))
+        try:
+            details = {"result": "SUCCESS", "action": "VIEW", "date_from": str(args['date_from']),
+                       "system": str(system), "count": len(l_res)}
+            Audit.insertAudit(audit_user, "RecordListUpdatedFromExt", "RECORD", None, "SUCCESS", details, "R")
+        except Exception as err:
+            self.log.error(Logs.fileline() + ' : RecordListUpdatedFromExt ERROR audit success err=' + str(err))
+        return compose_ret(l_res, Constants.cst_content_type_json, 200)
 
 
 class RecordComm(Resource):
@@ -1508,6 +1687,11 @@ class RecordComm(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Record comment from the administrative record
+        if not User.hasRight(audit_user, 'RECORD_18'):
+            self.log.error(Logs.fileline() + ' : RecordComm ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'comm' not in args:
@@ -1552,6 +1736,11 @@ class RecordLast(Resource):
             404: no record.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordLast ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         record = Record.getLastRecord()
 
         if not record:
@@ -1629,6 +1818,11 @@ class RecordNext(Resource):
             200: id of the next record, 0 when none.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNext ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         id_rec_next = 0
 
         rec = Record.getRecordNext(id_rec)
@@ -1667,6 +1861,11 @@ class RecordStat(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Record status set from a new request or after added analyses
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_17'):
+            self.log.error(Logs.fileline() + ' : RecordStat ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'stat' not in args:
@@ -1714,6 +1913,12 @@ class RecordListAna(Resource):
             404: no analysis in this record.
         """
         audit_user = request.oauth_user
+
+        # A prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : RecordListAna ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_datas = Record.getRecordListAnalysis(id_rec)
 
         if not l_datas:
@@ -1759,6 +1964,11 @@ class RecordNbEmer(Resource):
             200: count as a raw scalar.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNbEmer ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if not args:
@@ -1793,6 +2003,11 @@ class RecordNbRecTech(Resource):
             200: count as a raw scalar.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNbRecTech ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         res = Record.getRecordNbRecTech()
 
         if not res:
@@ -1822,6 +2037,11 @@ class RecordNbRecBio(Resource):
             200: count as a raw scalar.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNbRecBio ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         res = Record.getRecordNbRecBio()
 
         if not res:
@@ -1851,6 +2071,11 @@ class RecordNbRec(Resource):
             200: count as a raw scalar.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNbRec ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         res = Record.getRecordNbRec()
 
         if not res:
@@ -1880,6 +2105,11 @@ class RecordNbRecToday(Resource):
             200: count as a raw scalar.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordNbRecToday ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         num_today = datetime.now().strftime("%Y%m%d")
 
         res = Record.getRecordNbRecToday(num_today)
@@ -1915,6 +2145,11 @@ class RecordValid(Resource):
             404: no validation entry.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : RecordValid ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         rev = Record.getRecordValidation(id_rec)
 
         if not rev:
@@ -1955,6 +2190,11 @@ class RecordValid(Resource):
             500: insertion failed.
         """
         audit_user = request.oauth_user
+
+        # Record validation from the biological validation screen
+        if not User.hasRight(audit_user, 'RECORD_6'):
+            self.log.error(Logs.fileline() + ' : RecordValid ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'id_user' not in args or 'comm' not in args:

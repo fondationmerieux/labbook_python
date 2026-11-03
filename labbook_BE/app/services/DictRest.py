@@ -52,6 +52,11 @@ class DictDescr(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Dictionaries right
+        if not User.hasRight(audit_user, 'SETTING_52'):
+            self.log.error(Logs.fileline() + ' : DictDescr ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'dico_descr' not in args:
@@ -414,6 +419,11 @@ class DictExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Dictionaries right
+        if not User.hasRight(audit_user, 'SETTING_52'):
+            self.log.error(Logs.fileline() + ' : DictExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['version', 'id_data', 'id_owner', 'dico_name', 'label', 'short_label', 'position', 'code',

@@ -69,7 +69,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_roles = {{ args|safe or [] }} ;
+var data_roles = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_roles.length / p_step ) ;
@@ -116,23 +116,23 @@ $("#list_users_total").html( data_len ) ;
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' ;
 
             if (data_roles[i].pro_genuine == 'Y')  
-            menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-role/' + data_roles[i].pro_ser + '">{{ _("Consulter") }}</a>' ;
+            menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-role/' + escapeHtml(data_roles[i].pro_ser) + '">{{ _("Consulter") }}</a>' ;
             else
-            menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-role/' + data_roles[i].pro_ser + '">{{ _("Editer") }}</a>' ;
+            menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-role/' + escapeHtml(data_roles[i].pro_ser) + '">{{ _("Editer") }}</a>' ;
 
             {% if has_permission("ADMIN_1") %}
             if (data_roles[i].pro_genuine == 'N' && data_roles[i].nb_profile == 0)
-            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_roles[i].pro_ser + ")\">{{ _("Supprimer") }}</a>" ;
+            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_roles[i].pro_ser) + ")\">{{ _("Supprimer") }}</a>" ;
             {% endif %}
 
         menu_act += '</div></ul></nav>' ;
         }
 
-    res += '<tr><td hidden><div>' + data_roles[i].pro_ser + '</div></td>' +
+    res += '<tr><td hidden><div>' + escapeHtml(data_roles[i].pro_ser) + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-start">' + data_roles[i].label + '</div></td>' +
-           '<td><div class="text-start">' + data_roles[i].role_based + '</div></td>' +
-           '<td><div class="text-start">' + data_roles[i].nb_profile + '</div></td></tr>' ;
+           '<td><div class="text-start">' + escapeHtml(data_roles[i].label) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_roles[i].role_based) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_roles[i].nb_profile) + '</div></td></tr>' ;
     }
 {% endif %}
 

@@ -783,7 +783,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_det = {% if args['details'] %}{{ args['details']|safe }}{% else %}[]{% endif %} ;
+var data_det = {% if args['details'] %}{{ args['details']|clean_json }}{% else %}[]{% endif %} ;
 
 $("#search_reporter").select2(
 {
@@ -1091,7 +1091,7 @@ let val_elem = $(elem).val() ;
 function save_item()
 {
 var id_owner   = {{ session['user_id']|safe}} ;
-var id_details = {{ args['id_det']|safe }}   ;
+var id_details = {{ args['id_det']|clean_json }}   ;
 var name       = $("#name").val()            ;
 var reporter   = {% if args['id_det'] > 0 %}$("#reporter_id").val(){% else %}$("#search_reporter").val(){% endif %} ;
 
@@ -1248,19 +1248,19 @@ var msg = "" ;
     if (id_details > 0)
     {
         if (followed < 1)
-        followed = {% if args['details']['followed_id'] %}{{ args['details']['followed_id']|safe }}{% else %}0{% endif %} ;
+        followed = {% if args['details']['followed_id'] %}{{ args['details']['followed_id']|clean_json }}{% else %}0{% endif %} ;
 
         if (incharge < 1)
-        incharge = {% if args['details']['incharge_id'] %}{{ args['details']['incharge_id']|safe }}{% else %}0{% endif %} ;
+        incharge = {% if args['details']['incharge_id'] %}{{ args['details']['incharge_id']|clean_json }}{% else %}0{% endif %} ;
 
         if (validate < 1)
-        validate = {% if args['details']['validate_id'] %}{{ args['details']['validate_id']|safe }}{% else %}0{% endif %} ;
+        validate = {% if args['details']['validate_id'] %}{{ args['details']['validate_id']|clean_json }}{% else %}0{% endif %} ;
 
         if (equipment < 1)
-        equipment = {% if args['details']['equipment_id'] %}{{ args['details']['equipment_id']|safe }}{% else %}0{% endif %} ;
+        equipment = {% if args['details']['equipment_id'] %}{{ args['details']['equipment_id']|clean_json }}{% else %}0{% endif %} ;
 
         if (supplier < 1)
-        supplier = {% if args['details']['supplier_id'] %}{{ args['details']['supplier_id']|safe }}{% else %}0{% endif %} ;
+        supplier = {% if args['details']['supplier_id'] %}{{ args['details']['supplier_id']|clean_json }}{% else %}0{% endif %} ;
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +

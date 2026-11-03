@@ -13,7 +13,7 @@
     'METROLOGY': {
         'title': _("Métrologie et étalonnage"), 'date_field': 'date_metr', 'file_code': 'EQCC',
         'service': 'metrology', 'list_page': 'list-eqp-metrology',
-        'perm_save': 'EQP_117', 'perm_del': 'EQP_119',
+        'perm_save': 'EQP_118', 'perm_del': 'EQP_119',
         'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
         'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
     'CONTRACT': {
@@ -314,10 +314,10 @@ let type    = 'JF' ;
     {
     let tmp_tr = '<tr>' ;
 
-    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(obj.name) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + escapeHtml(obj.name) + '\', \''+escapeHtml(type_ref)+'\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
     {% if has_permission(perm_del) %}
-    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + escapeHtml(type_ref) + '\', ' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a></div></td>' ;
     {% endif %}
     tmp_tr += '</tr>' ;
 

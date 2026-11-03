@@ -1,5 +1,5 @@
 {% extends "skeleton.html" %}
-{% block title %}{{ _("Paramètrage LabBook Lite") }}{% endblock %}
+{% block title %}{{ _("Paramétrage LabBook Lite") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Paramètrage LabBook Lite") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Paramétrage LabBook Lite") }}</span></h2>
 
             {% if has_permission("LITE_175") %}
             <table id="itemsTable" class="display table table-striped" style="width:100%">
@@ -72,10 +72,10 @@ function loadItemsTable()
                             <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                             <div class="dropdown-menu nav-style menu-act-drop">`;
         
-                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-lite/${row.lite_ser}">{{ _("Éditer") }}</a>`;
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-lite/${escapeHtml(row.lite_ser)}">{{ _("Éditer") }}</a>`;
 
                     menu += `
-                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.lite_ser}); return false;">
+                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${escapeHtml(row.lite_ser)}); return false;">
                             {{ _("Supprimer") }}
                         </a>`;
         

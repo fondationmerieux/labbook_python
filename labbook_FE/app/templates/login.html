@@ -84,7 +84,8 @@ var param = '{ "login":"' + login + '", "pwd":"' + pwd + '"}' ;
         $("#auth_msg").addClass("d-none");
         console.log("SUCCESS post login") ;
 
-        const payload = JSON.stringify({ login: login, id_user: ret_ws.id_user });
+        // Send no user id. The password check already opened the BE session.
+        const payload = JSON.stringify({});
 
             $.ajax({
                 type: "POST",

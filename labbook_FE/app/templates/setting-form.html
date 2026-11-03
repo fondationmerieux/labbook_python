@@ -109,8 +109,8 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_form_pat = {% if args['data_form_pat'] %}{{ args['data_form_pat']|safe }}{% else %}[]{% endif %} ;
-var data_form_pat_hist = {% if args['data_form_pat_hist'] %}{{ args['data_form_pat_hist']|safe }}{% else %}[]{% endif %} ;
+var data_form_pat = {% if args['data_form_pat'] %}{{ args['data_form_pat']|clean_json }}{% else %}[]{% endif %} ;
+var data_form_pat_hist = {% if args['data_form_pat_hist'] %}{{ args['data_form_pat_hist']|clean_json }}{% else %}[]{% endif %} ;
 
 function update_data( elem )
 {
@@ -274,10 +274,10 @@ let tr_file = '' ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'FP\', \'' + filename + '\', \'FORM\', 0);">{{ _("Télécharger") }}</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file_pat(\'' + filename + '\');">{{ _("Supprimer") }}</a>' ;
-    tmp_tr += ' - <a href="#" onclick="preview_form_pat(\'' + filename + '\');">{{ _("Aperçu") }}</a>' ;
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(filename) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'FP\', \'' + escapeHtml(filename) + '\', \'FORM\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file_pat(\'' + escapeHtml(filename) + '\');">{{ _("Supprimer") }}</a>' ;
+    tmp_tr += ' - <a href="#" onclick="preview_form_pat(\'' + escapeHtml(filename) + '\');">{{ _("Aperçu") }}</a>' ;
     tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;
@@ -294,10 +294,10 @@ let tr_file = '' ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'FPH\', \'' + filename + '\', \'FORM\', 0);">{{ _("Télécharger") }}</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file_hist(\'' + filename + '\');">{{ _("Supprimer") }}</a>' ;
-    tmp_tr += ' - <a href="#" onclick="preview_form_hist(\'' + filename + '\');">{{ _("Aperçu") }}</a>' ;
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(filename) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'FPH\', \'' + escapeHtml(filename) + '\', \'FORM\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file_hist(\'' + escapeHtml(filename) + '\');">{{ _("Supprimer") }}</a>' ;
+    tmp_tr += ' - <a href="#" onclick="preview_form_hist(\'' + escapeHtml(filename) + '\');">{{ _("Aperçu") }}</a>' ;
     tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;

@@ -111,8 +111,8 @@
 
 {% block add_script %}
 <script>
-var id_item    = {{ args['id_ctrl']|safe }} ;
-var data_items = {% if args['result'] %}{{ args['result']|safe }}{% else %}[]{% endif %} ;
+var id_item    = {{ args['id_ctrl']|clean_json }} ;
+var data_items = {% if args['result'] %}{{ args['result']|clean_json }}{% else %}[]{% endif %} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -154,7 +154,7 @@ $("#list_items_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-{{ type_url }}/" + data_items[i].{{ col_prefix }}_ctq + "/" + data_items[i].{{ col_prefix }}_type + "/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>";
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/res-control-{{ type_url }}/" + data_items[i].{{ col_prefix }}_ctq + "/" + data_items[i].{{ col_prefix }}_type + "/" + escapeHtml(data_items[i].id_item) + "\">{{ _("Editer") }}</a>";
 
     menu_act += "</div></ul></nav>" ;
     {% else %}
@@ -169,20 +169,20 @@ $("#list_items_total").html( data_len ) ;
     else if (data_items[i].cte_conform == "U") conform = "{{ _("Autre") }}" ;
 
     if ( data_items[i].id_file > 0)
-    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'CTRL', " + data_items[i].id_file + ");\"><span class=\"bi bi-download\"></span></a>" ;
+    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + escapeHtml(data_items[i].filename) + "', 'CTRL', " + escapeHtml(data_items[i].id_file) + ");\"><span class=\"bi bi-download\"></span></a>" ;
     else
     link_manual = "" ;
 
     {% endif %}
-    res += "<tr><td hidden><div>" + data_items[i].id_item + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_item) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-start\">" + data_items[i].{{ col_prefix }}_date + "</div></td>" +
     {% if is_ext %}
-           "<td><div class=\"text-start\">" + data_items[i].cte_organizer + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].cte_organizer) + "</div></td>" +
            "<td><div class=\"text-start\">" + conform + "</div></td>" +
     {% else %}
-           "<td><div class=\"text-start\">" + data_items[i].cti_target + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].cti_result + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].cti_target) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].cti_result) + "</div></td>" +
     {% endif %}
            "<td><div class=\"text-start\">" + data_items[i].{{ col_prefix }}_comment + "</div></td>" +
     {% if is_ext %}

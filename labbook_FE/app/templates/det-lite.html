@@ -110,7 +110,7 @@
 
 function save_item()
 {
-var id_item = {{ args['id_item']|safe }} ;
+var id_item = {{ args['id_item']|clean_json }} ;
 var name    = $("#lite_name").val() ;
 var login   = $("#lite_login").val() ;
 var pwd     = $("#lite_pwd").val() ;

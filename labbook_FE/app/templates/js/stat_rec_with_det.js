@@ -34,7 +34,7 @@ let tr_det_rec = '' ;
             for( i in data_rec )
             {
             tr_det_rec += '<tr><td class="col-1 icon">' + status_res( data_rec[i].last_vld ) + '</td>' +
-                          '<td>' + data_rec[i].name + '</td></tr>' ;
+                          '<td>' + escapeHtml(data_rec[i].name) + '</td></tr>' ;
             }
 
             $("#tbody_det_rec").append(tr_det_rec) ;

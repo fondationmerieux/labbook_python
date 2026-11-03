@@ -85,11 +85,23 @@ toutes plutôt que réécrits à chaque appel.
 serveur. C'est délibéré : manipuler des dates en Python est plus simple et plus fiable
 qu'en JavaScript.
 
+Le filtre **`clean_json`** sert à passer des données au JavaScript d'une page :
+`var data_items = {{ (args or [])|clean_json }} ;`. Il produit du JSON dont les caractères
+dangereux sont neutralisés, si bien qu'une saisie piégée (un nom contenant `</script>`) reste
+du texte. Pour une chaîne isolée, on utilise `|tojson`, qui garde toujours un texte.
+
+> **Règle.** Jamais `|safe` sur une donnée venue de la base ou de l'utilisateur : `|safe`
+> recopie tout tel quel, y compris un programme glissé dans un champ. Et dans le JavaScript,
+> toute donnée collée dans du HTML passe par `escapeHtml()`, définie une seule fois dans
+> `static/js/app-labbook.js`.
+
 **`get_init_var()` et `get_user_data()`** : au moment de la connexion, le front end
 interroge le back end pour les valeurs dont il aura besoin en permanence — délai de
 déconnexion, langue par défaut, profil et droits de l'utilisateur, couleurs de
 personnalisation, format des numéros de dossier — et les range en session. Elles ne sont pas
-redemandées à chaque page.
+redemandées à chaque page. L'utilisateur lui-même est demandé au back end à partir du jeton
+(`/services/user/token-owner`), jamais pris dans ce qu'envoie le navigateur (chapitre
+[08](08-oauth2.md)).
 
 **Construction de chemins sécurisés** : le front end construit parfois un chemin de fichier
 à partir d'une information venue du back end. Une fonction dédiée encadre cette

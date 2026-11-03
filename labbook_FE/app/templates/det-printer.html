@@ -66,7 +66,7 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 function save_item()
 {
-var id_item = {{ args['id_printer']|safe }} ;
+var id_item = {{ args['id_printer']|clean_json }} ;
 var name    = $("#name").val()   ;
 var rank    = $("#rank").val()   ;
 var script  = $("#script").val() ;

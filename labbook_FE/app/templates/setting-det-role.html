@@ -92,8 +92,8 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var by_user = {{ args['by_user']|safe }} ;
-var id_role = {{ args['role_id']|safe }} ;
+var by_user = {{ args['by_user']|clean_json }} ;
+var id_role = {{ args['role_id']|clean_json }} ;
 
 function save_role()
 {

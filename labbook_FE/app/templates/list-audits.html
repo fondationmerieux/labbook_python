@@ -329,7 +329,7 @@ function loadAuditTable() {
             },
 
             // 1) Date / time (UTC)
-            { data: "event_time_utc", defaultContent: "" },
+            { data: "event_time_utc", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 2) User display
             {
@@ -342,19 +342,19 @@ function loadAuditTable() {
             },
 
             // 3) Role
-            { data: "role_name", defaultContent: "" },
+            { data: "role_name", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 4) Context (NEW)
-            { data: "context_label", defaultContent: "" },
+            { data: "context_label", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 5) Resource label (resource + old details appended)
-            { data: "resource_label", defaultContent: "" },
+            { data: "resource_label", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 6) Client IP
-            { data: "ip_addr", defaultContent: "" },
+            { data: "ip_addr", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 7) Status
-            { data: "status_label", defaultContent: "" },
+            { data: "status_label", defaultContent: "", render: $.fn.dataTable.render.text() },
 
             // 8) Internal ID (hidden)
             { data: "aud_ser", defaultContent: "" }

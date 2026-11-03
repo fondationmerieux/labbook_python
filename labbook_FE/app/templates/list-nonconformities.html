@@ -90,7 +90,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {% if args['item_list'] %}{{ args['item_list']|safe }}{% else %}[]{% endif %} ;
+var data_items = {% if args['item_list'] %}{{ args['item_list']|clean_json }}{% else %}[]{% endif %} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -174,11 +174,11 @@ $("#list_items_total").html( data_len ) ;
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' ;
 
     {% if has_permission("NONCONF_145") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/non-conformity/' + data_items[i].id_data + '">{{ _("Editer") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/non-conformity/' + escapeHtml(data_items[i].id_data) + '">{{ _("Editer") }}</a>' ;
     {% endif %}
 
     {% if has_permission("NONCONF_146") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].id_data + ')">{{ _("Supprimer") }}</a>';
+    menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + escapeHtml(data_items[i].id_data) + ')">{{ _("Supprimer") }}</a>';
     {% endif %}
 
     menu_act += '</div></ul></nav>' ;
@@ -187,15 +187,15 @@ $("#list_items_total").html( data_len ) ;
     let impact_user    = data_items[i].impact_user    ;
     let correction     = data_items[i].correction     ;
 
-    res += '<tr><td hidden><div>' + data_items[i].id_data + '</div></td>' +
+    res += '<tr><td hidden><div>' + escapeHtml(data_items[i].id_data) + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].date_create + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].name + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].date_create) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].name) + '</div></td>' +
            '<td><div class="text-start">' + convert_impact(impact_patient) + '</div></td>' +
            '<td><div class="text-start">' + convert_impact(impact_user) + '</div></td>' +
            '<td><div class="text-start">' + convert_yes_no(correction) + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].date_correction + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].close_date + '</div></td></tr>' ;
+           '<td><div class="text-start">' + escapeHtml(data_items[i].date_correction) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].close_date) + '</div></td></tr>' ;
     }
 {% endif %}
 

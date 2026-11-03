@@ -135,7 +135,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_users = {{ args|safe or [] }} ;
+var data_users = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_users.length / p_step ) ;
@@ -225,25 +225,25 @@ $("#list_users_total").html( data_len ) ;
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + data_users[i].id_data + '">{{ _("Editer utilisateur") }}</a>' ;
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-det-user/' + escapeHtml(data_users[i].id_data) + '">{{ _("Editer utilisateur") }}</a>' ;
 
         {% if session['user_role'] == 'A' %}
         if ( data_users[i].role_type != 'Z' )
-        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + data_users[i].id_data + '">{{ _("Editer mot de passe") }}</a>';
+        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-pwd-user/' + escapeHtml(data_users[i].id_data) + '">{{ _("Editer mot de passe") }}</a>';
         {% endif %}
 
         if ( data_users[i].stat != 'A' )
         {          
-        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'A\');">{{ _("Activer utilisateur") }}</a>';
+        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + escapeHtml(data_users[i].id_data) + ',\'A\');">{{ _("Activer utilisateur") }}</a>';
         }
         else
         {
-        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + data_users[i].id_data + ',\'D\');">{{ _("Désactiver utilisateur") }}</a>';
+        menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="change_status(' + escapeHtml(data_users[i].id_data) + ',\'D\');">{{ _("Désactiver utilisateur") }}</a>';
         }
 
         {% if has_permission("ADMIN_1") %}
         if ( data_users[i].role_type != 'API' && data_users[i].role_type != 'Z' )
-        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-user-rights/' + data_users[i].id_data + '">{{ _("Editer droits") }}</a>' ;
+        menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/setting-user-rights/' + escapeHtml(data_users[i].id_data) + '">{{ _("Editer droits") }}</a>' ;
         {% endif %}
         
     menu_act += '</div></ul></nav>' ;
@@ -253,17 +253,17 @@ $("#list_users_total").html( data_len ) ;
         if ( data_users[i].stat != 'A' )
         user_stat = "{{ _("Désactivé") }}" ;
 
-    res += '<tr><td hidden><div>' + data_users[i].id_data + '</div></td>' +
+    res += '<tr><td hidden><div>' + escapeHtml(data_users[i].id_data) + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].id_data + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].username + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].firstname + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].lastname + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].id_data) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].username) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].firstname) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].lastname) + '</div></td>' +
            '<td><div class="text-start">' + user_stat + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].date_create + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].pro_label + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].section + '</div></td>' +
-           '<td><div class="text-start">' + data_users[i].origin + '</div></td></tr>' ;
+           '<td><div class="text-start">' + escapeHtml(data_users[i].date_create) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].pro_label) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].section) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_users[i].origin) + '</div></td></tr>' ;
     }
 {% endif %}
 

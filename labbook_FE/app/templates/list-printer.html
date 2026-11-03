@@ -140,10 +140,10 @@ function loadItemsTable()
                             <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                             <div class="dropdown-menu nav-style menu-act-drop">`;
         
-                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-printer/${row.prt_ser}">{{ _("Éditer") }}</a>`;
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-printer/${escapeHtml(row.prt_ser)}">{{ _("Éditer") }}</a>`;
 
                     menu += `
-                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.prt_ser}); return false;">
+                        <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${escapeHtml(row.prt_ser)}); return false;">
                             {{ _("Supprimer") }}
                         </a>`;
         

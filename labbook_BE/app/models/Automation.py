@@ -896,7 +896,7 @@ def _apply_day_choice(month_end: date, schedule_dom: int | None, last_dom_flag: 
     """Choose execution day within the end month: last_dom or specific dom (bounded)."""
     if (last_dom_flag or 'N').upper() == 'Y' or not schedule_dom:
         return month_end
-    safe_dom = min(schedule_dom, month_end.day)
+    safe_dom = max(1, min(int(schedule_dom), month_end.day))
     return date(month_end.year, month_end.month, safe_dom)
 
 

@@ -59,7 +59,7 @@
 
 {% block add_script %}
 <script>
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -102,22 +102,22 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
     
     {% if has_permission("SETTING_61") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-template/" + data_items[i].id_item + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-template/" + escapeHtml(data_items[i].id_item) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
 
     {% if has_permission("SETTING_62") %}
     if ( ["STI", "RES", "OUT", "INV"].includes(data_items[i].tpl_type) )
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"print_test(" + data_items[i].id_item + ")\">{{ _("Tester") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"print_test(" + escapeHtml(data_items[i].id_item) + ")\">{{ _("Tester") }}</a>" ;
     {% endif %}
 
     {% if has_permission("SETTING_63") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_item + ")\">{{ _("Supprimer") }}</a>";
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_items[i].id_item) + ")\">{{ _("Supprimer") }}</a>";
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 
     if ( data_items[i].tpl_file != "")
-    link_file = "<a href=\"#\" onclick=\"download_file('TP', '" + data_items[i].tpl_file + "', 'TPL', 0);\"><span class=\"bi bi-download\"></span></a>" ;
+    link_file = "<a href=\"#\" onclick=\"download_file('TP', '" + escapeHtml(data_items[i].tpl_file) + "', 'TPL', 0);\"><span class=\"bi bi-download\"></span></a>" ;
     else
     link_file = "" ;
 
@@ -126,10 +126,10 @@ $("#list_items_total").html( data_len ) ;
     else
     tpl_default = "" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_item + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_item) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].tpl_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].tpl_type + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].tpl_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].tpl_type) + "</div></td>" +
            "<td><div class=\"text-start\">" + tpl_default + "</div></td>" +
            "<td><div class=\"text-start\">" + link_file + "</div></td></tr>" ;
     }

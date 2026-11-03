@@ -82,8 +82,8 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var id_use_item = 0 ;
-var data_items  = {{ args|safe or [] }} ;
-var data_local  = {{ ihm['product_local']|safe or [] }} ;
+var data_items  = {{ (args or [])|clean_json }} ;
+var data_local  = {{ (ihm['product_local'] or [])|clean_json }} ;
 var p_step      = 20 ;
 var p_cur       = 1 ;
 var p_max       = Math.ceil( data_items.length / p_step ) ;
@@ -159,10 +159,10 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    next_nb_pack = '<input id="next_nb_pack_' + data_items[i].prs_ser + '" type="number" value="' + data_items[i].prs_nb_pack + '" min="1" step="1" max="' + data_items[i].prs_nb_pack + '" class="form-control form-lbk">' ;
-                                                                                                                               prev_local = data_items[i].prl_name + '<input id="prev_local_' + data_items[i].prs_ser + '" type="hidden" value="' + data_items[i].prs_prl + '"  class="form-control form-lbk">' ;    
+    next_nb_pack = '<input id="next_nb_pack_' + escapeHtml(data_items[i].prs_ser) + '" type="number" value="' + escapeHtml(data_items[i].prs_nb_pack) + '" min="1" step="1" max="' + escapeHtml(data_items[i].prs_nb_pack) + '" class="form-control form-lbk">' ;
+                                                                                                                               prev_local = escapeHtml(data_items[i].prl_name) + '<input id="prev_local_' + escapeHtml(data_items[i].prs_ser) + '" type="hidden" value="' + escapeHtml(data_items[i].prs_prl) + '"  class="form-control form-lbk">' ;    
 
-    local = '<select name="next_local_' + data_items[i].prs_ser + '" id="next_local_' + data_items[i].prs_ser + '" class="form-select">' ;
+    local = '<select name="next_local_' + escapeHtml(data_items[i].prs_ser) + '" id="next_local_' + escapeHtml(data_items[i].prs_ser) + '" class="form-select">' ;
 
         // Positionning th various select local
         for( j = 0; j < data_local.length; j++ )
@@ -175,15 +175,15 @@ $("#list_items_total").html( data_len ) ;
             if ( j == 0 )
             local += '<option value="0"></option>' ;
 
-        local += '<option value="' + data_local[j].prl_ser + '"' + selected + '>' + data_local[j].prl_name + '</option>' ;
+        local += '<option value="' + escapeHtml(data_local[j].prl_ser) + '"' + selected + '>' + escapeHtml(data_local[j].prl_name) + '</option>' ;
         }
 
     local += '</select>' ;
                                                                                                                   
-    res += "<tr><td hidden><div class=\"supply_data\" id=\"" + data_items[i].prs_ser + "\"></div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].prd_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].prs_date + "</div></td>" +
-           "<td><div class=\"text-center\" id=\"prev_nb_pack_" + data_items[i].prs_ser + "\">" + data_items[i].prs_nb_pack + "</div></td>" +
+    res += "<tr><td hidden><div class=\"supply_data\" id=\"" + escapeHtml(data_items[i].prs_ser) + "\"></div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].prd_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].prs_date) + "</div></td>" +
+           "<td><div class=\"text-center\" id=\"prev_nb_pack_" + escapeHtml(data_items[i].prs_ser) + "\">" + escapeHtml(data_items[i].prs_nb_pack) + "</div></td>" +
            "<td><div class=\"text-start\">" +  prev_local + "</div></td>" +
            "<td><div class=\"text-center\">" + next_nb_pack + "</div></td>" +
            "<td><div class=\"text-start\">" + local + "</div></td></tr>" ;

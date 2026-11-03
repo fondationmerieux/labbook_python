@@ -102,8 +102,8 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var lbl_histo = "{{ _('Historique') }}" ;
-var data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
-var tech_list = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;
+var data_res  = {% if args['list_res'] %}{{ args['list_res']|clean_json }}{% else %}[]{% endif %} ;
+var tech_list = {% if ihm['tech_list'] %}{{ ihm['tech_list']|clean_json }}{% else %}[]{% endif %} ;
 var cur_id_samp  = 0 ;
 var cur_samp_type= 0 ;
 var cur_id_pat   = 0 ;
@@ -447,8 +447,8 @@ let disp_valid = "d-none" ;
 
 let name      = '' ;
 let id_user   = "{{ session['user_id']|safe}}"        ;
-let firstname = "{{ session['user_firstname']|safe}}" ;
-let lastname  = "{{ session['user_lastname']|safe}}"  ;
+let firstname = {{ session['user_firstname']|tojson }} ;
+let lastname  = {{ session['user_lastname']|tojson }}  ;
 
     if ( firstname )
     name = firstname + ' ' + lastname ;
@@ -502,7 +502,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             selected = "selected" ;
             }
             
-        res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
+        res += "<option value=\"" + escapeHtml(tech_list[k].id_user) + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
         #}
 
@@ -528,7 +528,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         if ( ref_ana != ref_ana_p || ( id_rec_p != 0 && id_rec != id_rec_p ) )
         {
         let res_name    = data[i].nom ;
-        let res_fam     = " [" + data[i].famille + "]" ;
+        let res_fam     = " [" + escapeHtml(data[i].famille) + "]" ;
         {% if session['record_period'] == 1070 %} // Month period
         let num_dos = data[i].num_dos_mois ;
         {% else %} // Annual period
@@ -544,8 +544,8 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
-               "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + data[i].patient +
+               "<legend class=\"legend-lbk\">" + escapeHtml(res_name) + res_fam + "</legend>" +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + escapeHtml(rec_num_int) + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + escapeHtml(data[i].patient) +
                "<table class=\"table table-responsive table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }
@@ -608,11 +608,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 ico_limit = "show" ;
 
                 if (data[i].normal_max == "")
-                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + data[i].normal_min + "&nbsp;]\"></span>" + minmax +"<div>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>=" + escapeHtml(data[i].normal_min) + "&nbsp;]\"></span>" + minmax +"<div>" ;
                 else if (data[i].normal_min == "")
-                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + data[i].normal_max + "&nbsp;]\"></span>" + minmax +"<div>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<=" + escapeHtml(data[i].normal_max) + "&nbsp;]\"></span>" + minmax +"<div>" ;
                 else
-                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span>" + minmax +"<div>" ;
+                res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + escapeHtml(data[i].normal_min) + "&nbsp;-&nbsp;" + escapeHtml(data[i].normal_max) + "&nbsp;]\"></span>" + minmax +"<div>" ;
             }
 
             // outsourced icon
@@ -650,7 +650,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 if (res_valid != 250)
                 change = 'disabled' ;
 
-            res += "<select id=\"res_" + id_res + "\" class=\"form-select form-lbk saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
+            res += "<select id=\"res_" + escapeHtml(id_res) + "\" class=\"form-select form-lbk saved res-" + escapeHtml(id_rec) +"-"+ escapeHtml(ref_ana) + "\" onfocus=\"enabled_save(" + escapeHtml(id_rec) +","+ escapeHtml(ref_ana) + ")\"" + change + " >" +
                    "<option value=\"\"> </option>" ;
 
             value = "" ;
@@ -674,13 +674,13 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                     value    = res_answer[j].id_data ;
                     }
 
-                res += "<option value=\"" + res_answer[j].id_data + "\" " + selected + ">" + res_answer[j].label + "</option>" ;
+                res += "<option value=\"" + escapeHtml(res_answer[j].id_data) + "\" " + selected + ">" + escapeHtml(res_answer[j].label) + "</option>" ;
                 }
 
             res += "</select>" ;
-            res += "<input type=\"hidden\" id=\"old_res_" + id_res + "\" value=\"" + value + "\">" ;
-            res += "<input type=\"hidden\" id=\"type_res_" + id_res + "\" value=\"W\">" ;
-            res += "<input type=\"hidden\" id=\"oblig_res_" + id_res + "\" value=\"" + data[i].oblig + "\"></span>&nbsp;" ;
+            res += "<input type=\"hidden\" id=\"old_res_" + escapeHtml(id_res) + "\" value=\"" + value + "\">" ;
+            res += "<input type=\"hidden\" id=\"type_res_" + escapeHtml(id_res) + "\" value=\"W\">" ;
+            res += "<input type=\"hidden\" id=\"oblig_res_" + escapeHtml(id_res) + "\" value=\"" + escapeHtml(data[i].oblig) + "\"></span>&nbsp;" ;
             }
             // WRITE RESULT
             else if ( data[i].type_resultat != 229 && res_type != 265 ) // not calc and not label
@@ -706,14 +706,14 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 {
                 change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
 
-                res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                res += '<input type="hidden" class="num_var-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '-' + escapeHtml(data[i].num_var) + '" id="' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].num_var) + '">' ;
 
                     // Convert with formule_unite2
                     if (data[i].formule_unite2 != "")
                     {
-                    res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                    res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unit2 + '">' ;
-                    res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
+                    res += '<input type="hidden" class="formula2-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '" id="formula2_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].formule_unite2) + '">' ;
+                    res += '<input type="hidden" id="unit2_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unit2) + '">' ;
+                    res += '<input type="hidden" id="accu2_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu2) + '">' ;
                     }
                 }
                 else
@@ -749,14 +749,14 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
             }
             */
 
-            res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" ' + type_input + ' value="' + value + '" class="form-control form-lbk saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
-            res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
-            res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
-            res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '">' ;
-            res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
-            res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
-            res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
-            res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
+            res += '<div class="d-flex flex-column"><input id="res_' + escapeHtml(id_res) + '" ' + type_input + ' value="' + value + '" class="form-control form-lbk saved res-' + escapeHtml(id_rec) +'-'+ escapeHtml(ref_ana) + '" onfocus="enabled_save(' + escapeHtml(id_rec) +','+ escapeHtml(ref_ana) + ')" ' + change + ' size="6"><span id="conv2_' + escapeHtml(id_res) + '" class="mt-1">' + conv2_val + '</span></div>' ;
+            res += '<input type="hidden" id="unit_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unite) + '">' ;
+            res += '<input type="hidden" id="old_res_' + escapeHtml(id_res) + '" value="' + value + '">' ;
+            res += '<input type="hidden" id="res_type_' + escapeHtml(id_res) + '" value="' + res_type + '">' ;
+            res += '<input type="hidden" id="accu_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu) + '">' ;
+            res += '<input type="hidden" id="accu2_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu2) + '">' ;
+            res += '<input type="hidden" id="type_res_' + escapeHtml(id_res) + '" value="W">' ;
+            res += '<input type="hidden" id="oblig_res_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].oblig) + '"></span>&nbsp;' ;
             }
             // READONLY RESULT
             else
@@ -768,11 +768,11 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                 {
                     // Num var
                     if (data[i].num_var > 0)
-                    res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                    res += '<input type="hidden" class="num_var-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '-' + escapeHtml(data[i].num_var) + '" id="' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].num_var) + '">' ;
 
                     // Formula
                     if (data[i].formule != "")
-                    res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
+                    res += '<input type="hidden" class="formula-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '" id="formula_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].formule) + '">' ;
 
                     // Convert formula
                     if (data[i].formule_unite2 != "")
@@ -783,17 +783,17 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
                         conv2_val = conv2_val + ' ' + data[i].unit2 ;
                     }
 
-                res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
-                res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
-                res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '">' ;
-                res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
-                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '"></span>&nbsp;' ;
+                res += '<div class="d-flex flex-column"><input id="res_' + escapeHtml(id_res) + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + escapeHtml(id_rec) +'-'+ escapeHtml(ref_ana) + '" readonly size="6"><span id="conv2_' + escapeHtml(id_res) + '" class="mt-1">' + conv2_val + '</span></div>' ;
+                res += '<input type="hidden" id="unit_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unite) + '">' ;
+                res += '<input type="hidden" id="res_type_' + escapeHtml(id_res) + '" value="' + res_type + '">' ;
+                res += '<input type="hidden" id="accu_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu) + '">' ;
+                res += '<input type="hidden" id="old_res_' + escapeHtml(id_res) + '" value="' + value + '"></span>&nbsp;' ;
                 }
                 else
                 res += '</span>&nbsp;' ;
             }
 
-        res += '<span class="unit mt-2 show">' + res_unit + '</span></td></tr>' ;
+        res += '<span class="unit mt-2 show">' + escapeHtml(res_unit) + '</span></td></tr>' ;
         }
 
     id_rec_p  = id_rec  ;
@@ -840,7 +840,7 @@ let lastname  = "{{ session['user_lastname']|safe}}"  ;
         selected = "selected" ;
         }
         
-    res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
+    res += "<option value=\"" + escapeHtml(tech_list[k].id_user) + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
     #}
 

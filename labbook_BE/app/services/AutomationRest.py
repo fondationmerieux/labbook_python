@@ -11,6 +11,7 @@ from app.models.Constants import Constants
 from app.models.Automation import Automation
 from app.models.Logs import Logs
 from app.models.Audit import Audit
+from app.models.User import User
 from app.security.oauth_routes import require_oauth
 
 
@@ -50,6 +51,11 @@ class AutoJobList(Resource):
             500: database read failed.
         """
         audit_user = request.oauth_user
+
+        # Automation list, same right as the page
+        if not User.hasRight(audit_user, 'AUTO_179'):
+            self.log.error(Logs.fileline() + ' : AutoJobList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         body = request.get_json(silent=True) or {}
         job_type = body.get('type')
         is_active = body.get('active')
@@ -162,6 +168,11 @@ class AutoJobCreate(Resource):
             500: insertion failed.
         """
         audit_user = request.oauth_user
+
+        # Add an automation
+        if not User.hasRight(audit_user, 'AUTO_180'):
+            self.log.error(Logs.fileline() + ' : AutoJobCreate ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         body = request.get_json(silent=False) or {}
 
         # system jobs (NTP, audit purge) come from Alembic only: one of them runs a shell command
@@ -222,6 +233,11 @@ class AutoJobUpdate(Resource):
             500: job not found or update failed.
         """
         audit_user = request.oauth_user
+
+        # Edit an automation
+        if not User.hasRight(audit_user, 'AUTO_181'):
+            self.log.error(Logs.fileline() + ' : AutoJobUpdate ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         body = request.get_json(silent=False) or {}
 
         # system jobs (NTP, audit purge) come from Alembic only: one of them runs a shell command
@@ -289,6 +305,11 @@ class AutoJobDelete(Resource):
         """
         audit_user = request.oauth_user
 
+        # Delete an automation
+        if not User.hasRight(audit_user, 'AUTO_182'):
+            self.log.error(Logs.fileline() + ' : AutoJobDelete ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         job = Automation.getAutomationJob(ajb_ser=ajb_ser)
         if job:
             params = job.get('ajb_params') or {}
@@ -343,6 +364,11 @@ class AutoRunList(Resource):
             500: database read failed.
         """
         audit_user = request.oauth_user
+
+        # Automation history, same right as the page
+        if not User.hasRight(audit_user, 'AUTO_179'):
+            self.log.error(Logs.fileline() + ' : AutoRunList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         body = request.get_json(silent=True) or {}
         job_id = body.get('job_id')
         status = body.get('status')
@@ -407,6 +433,11 @@ class AutoJobRunNow(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Run an automation now, it may send data to DHIS2
+        if not User.hasRight(audit_user, 'AUTO_181'):
+            self.log.error(Logs.fileline() + ' : AutoJobRunNow ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         body = request.get_json(silent=True) or {}
         trigger_message = body.get('message', '')
 

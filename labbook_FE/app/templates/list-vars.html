@@ -50,7 +50,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -92,19 +92,19 @@ $("#list_items_total").html( data_len ) ;
                    '<ul class="navbar-nav">' +
                    '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
-                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-new-product/' + data_items[i].prd_ser + '">{{ _("Editer la fiche produit") }}</a>' +
-                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].prd_ser + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
+                   '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-new-product/' + escapeHtml(data_items[i].prd_ser) + '">{{ _("Editer la fiche produit") }}</a>' +
+                   '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + escapeHtml(data_items[i].prd_ser) + ')">{{ _("Supprimer la fiche produit") }}</a>' ;   
         
     menu_act += '</div></ul></nav>' ;
     #}
 
-    res += '<tr><td><div class="text-start">' + data_items[i].label + '</div></td>' +
+    res += '<tr><td><div class="text-start">' + escapeHtml(data_items[i].label) + '</div></td>' +
            {#'<td><div>' + menu_act + '</div></td>' +#}
-           '<td><div class="text-start">' + data_items[i].code_var + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].id_item + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].type_res + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].comment + '</div></td>' +
-           '<td><div class="text-start">' + data_items[i].nb_link + '</div></td></tr>' ;
+           '<td><div class="text-start">' + escapeHtml(data_items[i].code_var) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].id_item) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].type_res) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].comment) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_items[i].nb_link) + '</div></td></tr>' ;
     }
 {% endif %}
 

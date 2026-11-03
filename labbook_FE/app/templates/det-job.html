@@ -139,7 +139,7 @@
                                 min="1"
                                 max="31"
                                 class="form-control form-lbk"
-                                value="{{ args['item'].get('ajb_schedule_dom','') }}">
+                                value="{{ args['item'].get('ajb_schedule_dom') or '' }}">
                             <small class="text-muted">{{ _("1 à 31") }}</small>
                         </div>
 
@@ -189,7 +189,7 @@
                             <select id="dhis2_sheet" class="form-select form-lbk">
                                 <option value="" selected="selected">-- {{ _("Sélectionner") }} --</option>
                                 <option value="LIST_EEQ.csv" {% if args['item'].get('ajb_params', {}).get('dhis2_sheet') == 'LIST_EEQ.csv' %}selected{% endif %}>{{ _("EEQ") }}</option>
-                                <option value="LIST_EQUIPMENT_FAILURE.csv" {% if args['item'].get('ajb_params', {}).get('dhis2_sheet') == 'LIST_EQUIPMENT_FAILURE.csv' %}selected{% endif %}>{{ _("Pannes d'équipment") }}</option>
+                                <option value="LIST_EQUIPMENT_FAILURE.csv" {% if args['item'].get('ajb_params', {}).get('dhis2_sheet') == 'LIST_EQUIPMENT_FAILURE.csv' %}selected{% endif %}>{{ _("Pannes d'équipement") }}</option>
                                 <option value="LIST_OUTSOURCING.csv" {% if args['item'].get('ajb_params', {}).get('dhis2_sheet') == 'LIST_OUTSOURCING.csv' %}selected{% endif %}>{{ _("Sous-traitance") }}</option>
                                 <option value="LIST_STOCK_STATUS.csv" {% if args['item'].get('ajb_params', {}).get('dhis2_sheet') == 'LIST_STOCK_STATUS.csv' %}selected{% endif %}>{{ _("Statut du stock") }}</option>
                                 {% for filename in args['data_dhis2'] %}
@@ -740,6 +740,15 @@ function save_job() {
     if (!document.getElementById('ajb_label').value.trim()) { alert("{{ _("Le libellé est obligatoire.") }}"); return; }
     if (!document.getElementById('ajb_schedule_kind').value) { alert("{{ _("La fréquence est obligatoire.") }}"); return; }
     if (!document.getElementById('ajb_schedule_time').value) { alert("{{ _("L'heure d'exécution est obligatoire.") }}"); return; }
+
+    // Day of month must be 1 to 31 for monthly schedules
+    const domVal = document.getElementById('ajb_schedule_dom').value;
+    if (['M', 'B', 'T', 'Q', 'S', 'A'].includes(document.getElementById('ajb_schedule_kind').value) &&
+        !document.getElementById('ajb_schedule_last_dom').checked && domVal !== '' &&
+        !(/^\d+$/.test(domVal) && parseInt(domVal, 10) >= 1 && parseInt(domVal, 10) <= 31)) {
+        alert("{{ _("Jour du mois") }} : {{ _("1 à 31") }}");
+        return;
+    }
 
     const body = buildBackendPayload(jobType);
 

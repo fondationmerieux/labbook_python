@@ -4,6 +4,7 @@
 #}
     language: {
       lengthMenu: "{{ _('Afficher _MENU_ entrées') }}",
+      emptyTable: "{{ _('Aucune donnée à afficher') }}",
       zeroRecords: "{{ _('Aucun enregistrement trouvé') }}",
       info: "{{ _('Affichage de _START_ à _END_ sur _TOTAL_ entrées') }}",
       infoEmpty: "{{ _('Aucune entrée disponible') }}",

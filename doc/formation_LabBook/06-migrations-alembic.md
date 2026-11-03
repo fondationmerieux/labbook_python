@@ -18,7 +18,7 @@ Alembic s'exécute **au démarrage du conteneur**, avant le back end
 labbook_BE/
 ├── alembic.ini              configuration ; l'URL de connexion y est adaptée à MySQL
 └── alembic/
-    ├── versions/            les niveaux de migration (69 à ce jour)
+    ├── versions/            les niveaux de migration (73 à ce jour)
     ├── io/ resource/ upload/    fichiers à copier vers storage/
     └── ...
 ```

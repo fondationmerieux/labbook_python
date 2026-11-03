@@ -66,7 +66,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -109,30 +109,30 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
 
     {% if has_permission("SUPPLIER_93") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-supplier/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-supplier/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
 
     {% if has_permission("SUPPLIER_94") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_items[i].id_data) + ")\">{{ _("Supprimer") }}</a>" ;
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 
-    link_email = "<a href=\"mailto:" + data_items[i].email + "\">" + data_items[i].email + "</a>" ;
+    link_email = "<a href=\"mailto:" + escapeHtml(data_items[i].email) + "\">" + escapeHtml(data_items[i].email) + "</a>" ;
 
     let critical = "" ;
 
     if (data_items[i].supp_critical == 'Y' ) critical = "<i class=\"text-success bi bi-check-lg\"></i>" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_data) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].supplier + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].lastname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].firstname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].phone + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].mobile + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].supplier) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].lastname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].firstname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].phone) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].mobile) + "</div></td>" +
            "<td><div class=\"text-start\">" + link_email + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].address + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].address) + "</div></td>" +
            "<td><div class=\"text-start\">" + critical + "</div></td></tr>" ;
     }
 {% endif %}

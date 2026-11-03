@@ -75,9 +75,9 @@
 <script>
 function save_item()
 {
-var ctq_ser  = {{ args['ctq_ser']|safe }}    ;
-var id_item  = {{ args['cti_ser']|safe }}    ;
-var cti_type = "{{ args['type_val']|safe }}" ;
+var ctq_ser  = {{ args['ctq_ser']|clean_json }}    ;
+var id_item  = {{ args['cti_ser']|clean_json }}    ;
+var cti_type = {{ args['type_val']|tojson }} ;
 var cti_date = $("#cti_date").val()          ;
 {% if args['type_val'] == 'QL' %}
 var target   = JSON.stringify( $.trim( $("#cti_target").val() ) ) ;

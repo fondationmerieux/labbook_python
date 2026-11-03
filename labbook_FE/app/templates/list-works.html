@@ -160,7 +160,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_records = {{ args|safe or [] }} ;
+var data_records = {{ (args or [])|clean_json }} ;
 var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( data_records.length / p_step ) ;
@@ -267,23 +267,23 @@ $("#listing_dos_total").html( data_len ) ;
                    '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' ;
 
     {% if has_permission("RECORD_18") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_records[i].type_rec + '/' + data_records[i].id_data + '">{{ _("Dossier administratif") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + escapeHtml(data_records[i].type_rec) + '/' + escapeHtml(data_records[i].id_data) + '">{{ _("Dossier administratif") }}</a>' ;
     {% endif %}
 
     {% if has_permission("RECORD_14") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/enter-result/' + data_records[i].id_data + '">{{ _("Saisie de résultats") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/enter-result/' + escapeHtml(data_records[i].id_data) + '">{{ _("Saisie de résultats") }}</a>' ;
     {% endif %}
 
     {% if has_permission("RECORD_9") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/technical-validation/' + data_records[i].id_data + '">{{ _("Validation technique") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/technical-validation/' + escapeHtml(data_records[i].id_data) + '">{{ _("Validation technique") }}</a>' ;
     {% endif %}
 
     {% if has_permission("RECORD_6") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/biological-validation/S/' + data_records[i].id_data + '">{{ _("Validation biologique") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/biological-validation/S/' + escapeHtml(data_records[i].id_data) + '">{{ _("Validation biologique") }}</a>' ;
     {% endif %}
 
     {% if has_permission("RECORD_4") %}
-    menu_act += '<a class="dropdown-item menu-act-item" onclick="del_record(' + data_records[i].id_data + ');">{{ _("Supprimer") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" onclick="del_record(' + escapeHtml(data_records[i].id_data) + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
                    
     menu_act += '</div></li></ul>' ;
@@ -296,17 +296,17 @@ $("#listing_dos_total").html( data_len ) ;
     num_int = '' ;
 
         if (data_records[i].rec_num_int != "")
-            num_int = '<p style="color: black">' + data_records[i].rec_num_int + '</p>' ;
+            num_int = '<p style="color: black">' + escapeHtml(data_records[i].rec_num_int) + '</p>' ;
 
     res += '<tr ' + tr_style + '><td><div class="text-start">' + menu_act + '</div></td>' +
-           '<td><div>' + data_records[i].id_data + '</div></td>' +
+           '<td><div>' + escapeHtml(data_records[i].id_data) + '</div></td>' +
            '<td><div class="text-start">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
            '<td><div class="text-start">' + emer( data_records[i].urgent ) + '</div></td>' +
-           '<td><div class="text-start"><span class="rec-num" title="' + data_records[i].num_dos_long + ' / ' + data_records[i].rec_num_int + '">' + data_records[i].num_dos + num_int + '</span></div></td>' +
-           '<td><div class="text-start">' + data_records[i].rec_date_receipt + '</div></td>' +
-           '<td><div class="text-start">' + data_records[i].code + '</div></td>' +
-           '<td><div class="text-start">' + data_records[i].nom + '</div></td>' +
-           '<td><div class="text-start">' + data_records[i].prenom + '</div></td></tr>' ;
+           '<td><div class="text-start"><span class="rec-num" title="' + escapeHtml(data_records[i].num_dos_long) + ' / ' + escapeHtml(data_records[i].rec_num_int) + '">' + escapeHtml(data_records[i].num_dos) + num_int + '</span></div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_records[i].rec_date_receipt) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_records[i].code) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_records[i].nom) + '</div></td>' +
+           '<td><div class="text-start">' + escapeHtml(data_records[i].prenom) + '</div></td></tr>' ;
     }
 {% endif %}
 

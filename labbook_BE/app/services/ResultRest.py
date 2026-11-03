@@ -12,6 +12,7 @@ from app.models.Analysis import Analysis
 from app.models.Analyzer import Analyzer
 from app.models.Constants import Constants
 from app.models.Dict import Dict
+from app.models.External import External
 from app.models.File import File
 from app.models.Patient import Patient
 from app.models.Pdf import Pdf
@@ -57,6 +58,11 @@ class ResultValue(Resource):
             500: update failed, the items before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to save results saves them
+        if not User.hasRight(audit_user, 'RECORD_15'):
+            self.log.error(Logs.fileline() + ' : ResultValue ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'list_answer' not in args:
@@ -112,6 +118,11 @@ class ResultList(Resource):
             400: date_beg or date_end missing.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : ResultList ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if not args or 'date_beg' not in args or 'date_end' not in args:
@@ -272,6 +283,11 @@ class ResultRecord(Resource):
             404: no result in this record.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : ResultRecord ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         link_fam = []
@@ -403,6 +419,11 @@ class ResultCreate(Resource):
             500: database write failed, the results before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Analyses added from a new request or with the add analyses right
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_17'):
+            self.log.error(Logs.fileline() + ' : ResultCreate ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'id_owner' not in args or 'user_role' not in args:
@@ -527,6 +548,11 @@ class ResultValid(Resource):
             500: unknown type_valid, or database write failed.
         """
         audit_user = request.oauth_user
+
+        # Technical validation needs RECORD_9, biological validation RECORD_6
+        if not User.hasRight(audit_user, 'RECORD_6' if type_valid == 'B' else 'RECORD_9'):
+            self.log.error(Logs.fileline() + ' : ResultValid ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         # the technical validation screens send list_valid only
@@ -696,6 +722,11 @@ class ResultReset(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Reset of a result: technical or biological validation right
+        if not User.hasRight(audit_user, 'RECORD_9', 'RECORD_6'):
+            self.log.error(Logs.fileline() + ' : ResultReset ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'id_owner' not in args or 'id_res' not in args:
@@ -808,6 +839,11 @@ class ResultCancel(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Cancel of a validation: technical or biological validation right
+        if not User.hasRight(audit_user, 'RECORD_9', 'RECORD_6'):
+            self.log.error(Logs.fileline() + ' : ResultCancel ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'id_owner' not in args or 'id_res' not in args or 'reason' not in args or 'comment' not in args:
@@ -911,6 +947,11 @@ class ResultHisto(Resource):
             404: no validation.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : ResultHisto ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_valid = Result.getResultListValidation(id_res)
 
         if not l_valid:
@@ -975,6 +1016,11 @@ class ResultPrevious(Resource):
             400: a field is missing.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : ResultPrevious ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         res_prev = {}
@@ -1042,16 +1088,24 @@ class ResultFromExt(Resource):
         Args:
             id_rec (int): record id.
 
+        Query:
+            validated (str): 'Y' keeps only the biologically validated results, anything else, the default,
+                keeps them all as before.
+
         Returns:
-            200: record_id and analysis, each with its variables (id_res, code_var, loinc, label, value, unit,
-                 and possible_values for dictionary results).
+            200: record_id, patient_code, patient_resource (references of the patient resource in the
+                 outside systems), and analysis, each with its ana_code, loinc and its variables
+                 (id_res, code_var, loinc, label, value, unit, validated_on, normal_min, normal_max,
+                 interpretation, and possible_values for dictionary results).
             404: no result in this record.
         """
         audit_user = request.oauth_user
         l_res = {}
 
         self.log.info(Logs.fileline() + ' : ResultFromExt API access authorized')
-        l_results = Result.getResultRecord(id_rec, True)
+        # the caller asks for the validated results only, every result otherwise, as before
+        validated = request.args.get('validated', 'N') == 'Y'
+        l_results = Result.getResultRecord(id_rec, True, None, validated)
 
         if not l_results:
             self.log.error(Logs.fileline() + ' : ResultFromExt ERROR not found')
@@ -1062,7 +1116,11 @@ class ResultFromExt(Resource):
                 self.log.error(Logs.fileline() + ' : ResultFromExt ERROR audit not found err=' + str(err))
             return compose_ret('', Constants.cst_content_type_json, 404)
 
-        l_res = {"record_id": id_rec, "analysis": []}
+        l_res = {"record_id": id_rec,
+                 "patient_code": l_results[0]['patient_code'] if l_results[0]['patient_code'] else '',
+                 "patient_resource": External.getRefsById('PATIENT_RESOURCE', l_results[0]['id_pat'])
+                                     if l_results[0]['id_pat'] else [],
+                 "analysis": []}
         ana_map = {}
 
         for res in l_results:
@@ -1073,6 +1131,7 @@ class ResultFromExt(Resource):
                 ana_map[id_ana] = {
                     "ref_ana": res['ref_ana'],
                     "id_ana": id_ana,
+                    "ana_code": res['ana_code'] if res.get('ana_code') else '',
                     "name": res['nom'],
                     "loinc": res['ana_loinc'] if res.get('ana_loinc') else '',
                     "variables": []
@@ -1110,6 +1169,25 @@ class ResultFromExt(Resource):
                             "label": entry["label"]
                         })
 
+            # Reference range of the laboratory, and the same rule as the validation screens,
+            # out of range when both bounds and the value are readable numbers
+            normal_min = res["normal_min"] if res.get("normal_min") else ''
+            normal_max = res["normal_max"] if res.get("normal_max") else ''
+            interpretation = ''
+
+            if normal_min != '' and normal_max != '':
+                try:
+                    number = float(str(value).replace(',', '.'))
+
+                    if number < float(normal_min):
+                        interpretation = 'low'
+                    elif number > float(normal_max):
+                        interpretation = 'high'
+                    else:
+                        interpretation = 'normal'
+                except (TypeError, ValueError):
+                    interpretation = ''
+
             var_data = {
                 "id_res": res["id_res"],
                 "id_var": res["id_data"],
@@ -1117,7 +1195,11 @@ class ResultFromExt(Resource):
                 "loinc": res["var_loinc"] if res.get("var_loinc") else '',
                 "label": res["libelle"],
                 "value": value,
-                "unit": unit_label
+                "unit": unit_label,
+                "validated_on": res["date_valid"].strftime(Constants.cst_dt_HMS) if res.get("date_valid") else '',
+                "normal_min": normal_min,
+                "normal_max": normal_max,
+                "interpretation": interpretation
             }
 
             if possible_values:

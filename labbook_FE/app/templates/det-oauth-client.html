@@ -101,7 +101,7 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 function save_item()
 {
-    var id_item = {{ args['id_item']|safe }} ;
+    var id_item = {{ args['id_item']|clean_json }} ;
     var name    = $("#name").val()   ;
     var client_id = $("#client_id").val().trim();
     var client_secret = $("#client_secret").val().trim();

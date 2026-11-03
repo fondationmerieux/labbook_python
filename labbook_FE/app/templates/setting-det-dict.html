@@ -75,7 +75,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_val   = {"id_ihm":0, "id_data":0 ,"label":"", "code":"", "short_label":"", "position":0, "dict_formatting":"N"} ;
-var data_values  = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var data_values  = {% if args['data_values'] %}{{ args['data_values']|clean_json }}{% else %}[]{% endif %} ;
 var ind_values   = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
 var new_opt_yorn = [{'value': 'Y', 'label': '{{ _("Oui") }}'}, {'value': 'N', 'label': '{{ _("Non") }}'}] ;
 
@@ -100,18 +100,18 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
 
-    let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+    let btn = '<input type="button" onclick="del_value(' + escapeHtml(obj.id_ihm) + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
 
     {% if ihm['readonly'] %} btn = '' ; {% endif %}
 
-    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "", "display:none;") ;
+    tmp_tr += create_td(escapeHtml(obj.id_ihm), escapeHtml(obj.id_ihm), "", "display:none;") ;
     tmp_tr += create_td("", btn, " text-start", "") ; // actions
-    tmp_tr += create_td("id_data_" + obj.id_ihm, obj.id_data, "text-start", "") ;
-    tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "", "") ;
-    tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "", "") ;
-    tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "", "") ;
-    tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "", "") ;
-    tmp_tr += create_td("", select_yorn("format_"+obj.id_ihm, new_opt_yorn, obj.dict_formatting), "text-center", "") ;
+    tmp_tr += create_td("id_data_" + escapeHtml(obj.id_ihm), obj.id_data, "text-start", "") ;
+    tmp_tr += create_td("", create_input("label_"+escapeHtml(obj.id_ihm), "text", obj.label, "","", ""), "", "") ;
+    tmp_tr += create_td("", create_input("code_"+escapeHtml(obj.id_ihm), "text", obj.code, "", 10, ""), "", "") ;
+    tmp_tr += create_td("", create_input("short_"+escapeHtml(obj.id_ihm), "text", obj.short_label, "", 20, ""), "", "") ;
+    tmp_tr += create_td("", create_input("pos_"+escapeHtml(obj.id_ihm), "number", obj.position, 0, 10, ""), "", "") ;
+    tmp_tr += create_td("", select_yorn("format_"+escapeHtml(obj.id_ihm), new_opt_yorn, obj.dict_formatting), "text-center", "") ;
     tmp_tr += '</tr>' ;
 
     tr_value += tmp_tr ;
@@ -165,7 +165,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + escapeHtml(val) + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
@@ -188,7 +188,7 @@ let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id
         if (l_options[i].value == val_select)
         selected = "selected" ;
 
-    tmp_select += '<option value="' + l_options[i].value + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    tmp_select += '<option value="' + escapeHtml(l_options[i].value) + '" ' + selected + ' >' + escapeHtml(l_options[i].label) + '</option>' ;
     }
 
 tmp_select += '</select>' ;

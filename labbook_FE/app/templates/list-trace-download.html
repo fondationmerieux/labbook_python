@@ -76,7 +76,7 @@
 
 {% block add_script %}
 <script>
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -152,11 +152,11 @@ $("#list_items_total").html( data_len ) ;
 
     for( i = i_start; i < i_stop; i++ )
     {
-    res += "<tr><td hidden><div>" + data_items[i].trd_ser + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].trd_last_access + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].doc_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].doc_date + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].user_name + "</div></td></tr>" ;
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].trd_ser) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].trd_last_access) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].doc_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].doc_date) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].user_name) + "</div></td></tr>" ;
     }
 {% endif %}
 

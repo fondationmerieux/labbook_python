@@ -134,6 +134,17 @@ class PdfInvoice(Resource):
             500: -1, template not found or PDF could not be built.
         """
         audit_user = request.oauth_user
+
+        # A prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : PdfInvoice ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
+        # Invoice of a record
+        if not User.hasRight(audit_user, 'RECORD_22'):
+            self.log.error(Logs.fileline() + ' : PdfInvoice ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         tpl = Setting.getTemplateByFile(template)
 
         if not tpl:
@@ -338,6 +349,11 @@ class PdfReportGrouped(Resource):
             500: -1, PDF could not be built.
         """
         audit_user = request.oauth_user
+
+        # Reports of the grouped biological validation
+        if not User.hasRight(audit_user, 'RECORD_6', 'RECORD_7'):
+            self.log.error(Logs.fileline() + ' : PdfReportGrouped ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'l_id_rec_vld' not in args or 'filename' not in args:
@@ -466,6 +482,11 @@ class PdfSticker(Resource):
             500: -1, PDF could not be built.
         """
         audit_user = request.oauth_user
+
+        # Sticker of a record
+        if not User.hasRight(audit_user, 'RECORD_21'):
+            self.log.error(Logs.fileline() + ' : PdfSticker ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id' not in args or 'type_id' not in args:
@@ -513,6 +534,11 @@ class PdfTemplate(Resource):
             500: -1, template not found, type not handled (RES, STI, OUT, INV) or PDF could not be built.
         """
         audit_user = request.oauth_user
+
+        # Test of a document template
+        if not User.hasRight(audit_user, 'SETTING_62'):
+            self.log.error(Logs.fileline() + ' : PdfTemplate ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         tpl = Setting.getTemplate(id_item)
 
         if not tpl:
@@ -579,6 +605,17 @@ class PdfOutsourced(Resource):
             500: template not found or PDF could not be built.
         """
         audit_user = request.oauth_user
+
+        # A prescriber only reads his own records
+        id_pres = User.getCallerPrescriber(audit_user)
+        if id_pres is not None and not Record.isRecordOfPrescriber(id_rec, id_pres):
+            self.log.error(Logs.fileline() + ' : PdfOutsourced ERROR record of another prescriber id_rec=' + str(id_rec))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
+        # Transfer form of a record
+        if not User.hasRight(audit_user, 'RECORD_20'):
+            self.log.error(Logs.fileline() + ' : PdfOutsourced ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         tpl = Setting.getTemplateByFile(template)
 
         if not tpl:
@@ -865,6 +902,11 @@ class PrintByScript(Resource):
             404: script or aliquot not found.
         """
         audit_user = request.oauth_user
+
+        # Sample labels printed from the sample management
+        if not User.hasRight(audit_user, 'ALIQUOT_169'):
+            self.log.error(Logs.fileline() + ' : PrintByScript ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json(silent=True) or {}
 
         # the name comes from the URL: only a plain file name is accepted, so nothing

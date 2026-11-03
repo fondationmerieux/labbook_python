@@ -189,8 +189,8 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_EQPH = {% if args['data_EQPH'] %}{{ args['data_EQPH']|safe }}{% else %}[]{% endif %} ;
-var data_EQBI = {% if args['data_EQBI'] %}{{ args['data_EQBI']|safe }}{% else %}[]{% endif %} ;
+var data_EQPH = {% if args['data_EQPH'] %}{{ args['data_EQPH']|clean_json }}{% else %}[]{% endif %} ;
+var data_EQBI = {% if args['data_EQBI'] %}{{ args['data_EQBI']|clean_json }}{% else %}[]{% endif %} ;
 
 $("#search_supplier").select2(
 {
@@ -277,7 +277,7 @@ let id_item = $(e.currentTarget).val();
 function save_item()
 {
 var id_owner    = {{ session['user_id']|safe}} ;
-var id_item     = {{ args['id_eqp']|safe }}    ;
+var id_item     = {{ args['id_eqp']|clean_json }}    ;
 var name        = $("#name").val()             ;
 var maker       = $("#maker").val()            ;
 var model       = $("#model").val()            ;
@@ -402,13 +402,13 @@ let type    = 'JF' ;
     {
     let tmp_tr = '<tr>' ;
     
-    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + obj.name + '\', \''+type_ref+'\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(obj.name) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + escapeHtml(obj.name) + '\', \''+escapeHtml(type_ref)+'\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
     {% if has_permission("EQP_101") %}
-    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + type_ref + '\', ' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + escapeHtml(type_ref) + '\', ' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a></div></td>' ;
 
         if (type_ref == 'EQPH')
-        tmp_tr += '<td class="action"><div> - <a href="{{ session['server_ext'] }}/resource/photo/' + obj.dir + obj.gen_name + '" target="_blank">{{ _("Voir") }}</a></div></td>' ;
+        tmp_tr += '<td class="action"><div> - <a href="{{ session['server_ext'] }}/resource/photo/' + escapeHtml(obj.dir) + escapeHtml(obj.gen_name) + '" target="_blank">{{ _("Voir") }}</a></div></td>' ;
 
     {% endif %}
     tmp_tr += '</tr>' ;

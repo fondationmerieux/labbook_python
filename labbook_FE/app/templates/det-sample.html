@@ -157,8 +157,8 @@
 function save_prod()
 {
 var id_owner      = {{ session['user_id']|safe}} ;
-var id_rec        = {{ args['record']['id_data']|safe }} ;
-var id_prod       = {{ args['id_prod']|safe }}     ;
+var id_rec        = {{ args['record']['id_data']|clean_json }} ;
+var id_prod       = {{ args['id_prod']|clean_json }}     ;
 var code          = $("#prod_code").val()          ;
 var stat          = $("#prod_stat").val()          ;
 var type          = $("#prod_type").val()          ;

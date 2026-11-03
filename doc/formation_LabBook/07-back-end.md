@@ -165,24 +165,36 @@ de la requête.
 ### Structure type
 
 ```python
-class DoctorList(Resource):
+class DoctorExport(Resource):
+    log = logging.getLogger('log_services')            # log de la couche service
+
     @require_oauth()                                   # 1. authentification
     def post(self):
-        log = logging.getLogger('log_services')        # 2. log de la couche service
+        audit_user = request.oauth_user                # 2. l'appelant, lu dans le jeton
 
-        args = request.get_json()
-        if 'id_doctor' not in args:                    # 3. valider les arguments
-            Audit.insert(..., 'missing arguments')
-            return compose_ret('', Constants.cst_content_type['JSON'], 400)
+        if not User.hasRight(audit_user, 'DOCTOR_90'):  # 3. le droit du bouton de l'écran
+            self.log.error(Logs.fileline() + ' : DoctorExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
-        data = Doctor.getDoctorList(args)              # 4. appeler le modèle
+        args = request.get_json() or {}                # 4. valider les arguments
+        ...
+        data = Doctor.getDoctorList(args)              # 5. appeler le modèle
 
-        Audit.insert(..., 'success')                   # 5. tracer
-        return compose_ret(data, Constants.cst_content_type['JSON'])
+        Audit.insertAudit(audit_user, ...)             # 6. tracer
+        return compose_ret(data, Constants.cst_content_type_json)
 ```
 
 - **`@require_oauth()`** conditionne l'authentification. Le retirer rend le service
   accessible sans jeton — c'est ce qui distingue les huit endpoints exemptés.
+- **`request.oauth_user`** décrit l'appelant (`usr_id`, `usr_login`, `usr_role`). Il est
+  lu dans le jeton, jamais dans un cookie ni dans le corps de la requête.
+- **`User.hasRight(audit_user, 'TAG', ...)`** vérifie un droit du profil. Masquer un bouton
+  dans le front end ne suffit pas : le service peut être appelé directement. Tout service
+  qui modifie, supprime, exporte ou renvoie des données sensibles contrôle donc le même
+  droit que le bouton de l'écran, et répond `403` sinon.
+- **`User.getCallerPrescriber(audit_user)`** renvoie l'id du prescripteur quand l'appelant a
+  le profil Prescripteur. Les services de dossiers s'en servent pour qu'un prescripteur ne
+  voie que ses propres dossiers (`Record.isRecordOfPrescriber`).
 - **`compose_ret`** (dans `models/General.py`) met en forme la réponse et positionne les
   en-têtes. Sans code explicite, c'est un `200`. On passe `400` pour une requête invalide,
   `500` pour une erreur interne. Elle sait aussi produire du HL7, utilisé par les services

@@ -111,13 +111,147 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Analysis'
-  /external/record/det/0:
+  /external/record/det/{id_rec}:
+    get:
+      security: [ { OAuth2: [ external/record ] } ]
+      tags:
+      - record
+      summary: Get a record and its requested analyses for external usage
+      description: >
+        Return one record with its status, its dates, the code of its patient, the name of its prescriber,
+        the requested analyses with their LabBook and LOINC codes, and the references kept for the outside
+        systems. Sampling acts are left out.
+      operationId: RecordDetFromExtGet
+      parameters:
+        - name: id_rec
+          in: path
+          required: true
+          description: Record ID
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rec_id:
+                    type: integer
+                    description: Record ID
+                  rec_num:
+                    type: string
+                    description: Record number of the year
+                  rec_num_int:
+                    type: string
+                    description: Internal number given by the laboratory
+                  rec_type:
+                    type: string
+                    description: E for a record of an outside patient, I for an inside one
+                  rec_status:
+                    type: string
+                    description: N new, A administratively validated, IA and IT intermediate, T technically
+                      validated, B biologically validated
+                  rec_date_prescr:
+                    type: string
+                    description: Date of prescription
+                  rec_date_receipt:
+                    type: string
+                    description: Date the samples were received
+                  rec_date_status:
+                    type: string
+                    description: Date of the last status change
+                  rec_modified:
+                    type: string
+                    description: Y when the record was modified after its validation
+                  patient:
+                    type: object
+                    properties:
+                      pat_id:
+                        type: integer
+                        description: Patient ID
+                      pat_code:
+                        type: string
+                        description: Unique code given by LabBook
+                      pat_code_lab:
+                        type: string
+                        description: Code given by the laboratory, free text
+                      external:
+                        type: array
+                        description: References of the outside systems for this patient
+                        items:
+                          type: object
+                          properties:
+                            system:
+                              type: string
+                              description: Short name of the outside system
+                            ref:
+                              type: string
+                              description: Reference of the patient in that system
+                  prescriber:
+                    type: object
+                    properties:
+                      prescr_id:
+                        type: integer
+                        description: Prescriber ID, 0 when the record has none
+                      prescr_name:
+                        type: string
+                        description: Name and first name of the prescriber
+                  ana_list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ana_req:
+                          type: integer
+                          description: ID of the requested analysis in this record
+                        ana_code:
+                          type: string
+                          description: LabBook code of the analysis
+                        ana_name:
+                          type: string
+                          description: Analysis name
+                        ana_loinc:
+                          type: string
+                          description: LOINC code of the analysis, empty when it has none
+                        ana_emer:
+                          type: string
+                          description: Y for an urgent analysis
+                        ana_out:
+                          type: string
+                          description: Y when the analysis is subcontracted
+                  external:
+                    type: array
+                    description: References of the outside systems for this record
+                    items:
+                      type: object
+                      properties:
+                        system:
+                          type: string
+                          description: Short name of the outside system
+                        ref:
+                          type: string
+                          description: Reference of the record in that system
+        401:
+          description: Unauthorized – invalid or missing authentication
+        404:
+          description: Record not found
     post:
       security: [ { OAuth2: [ external/record ] } ]
       tags:
       - record
       summary: Create a new record
+      description: >
+        The record is always created, so id_rec has to be 0, it is only sent back.
       operationId: RecordFromExt
+      parameters:
+        - name: id_rec
+          in: path
+          required: true
+          description: Always 0, a record is never created on an existing ID
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
@@ -777,6 +911,13 @@ paths:
           description: Record ID
           schema:
             type: integer
+        - name: validated
+          in: query
+          required: false
+          description: Y keeps only the biologically validated results, anything else keeps them all
+          schema:
+            type: string
+            default: N
       responses:
         200:
           description: Successful operation
@@ -832,6 +973,18 @@ paths:
                                 type: string
                                 nullable: true
                                 description: Unit label
+                              validated_on:
+                                type: string
+                                description: Date of the biological validation, empty when not asked for
+                              normal_min:
+                                type: string
+                                description: Lower bound of the reference range of the laboratory
+                              normal_max:
+                                type: string
+                                description: Upper bound of the reference range of the laboratory
+                              interpretation:
+                                type: string
+                                description: low, high, normal, or empty when it cannot be worked out
                               possible_values:
                                 type: array
                                 nullable: true

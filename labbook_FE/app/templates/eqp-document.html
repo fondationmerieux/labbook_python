@@ -85,8 +85,8 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_MANU = {% if args['data_MANU'] %}{{ args['data_MANU']|safe }}{% else %}[]{% endif %} ;
-var data_PROC = {% if args['data_PROC'] %}{{ args['data_PROC']|safe }}{% else %}[]{% endif %} ;
+var data_MANU = {% if args['data_MANU'] %}{{ args['data_MANU']|clean_json }}{% else %}[]{% endif %} ;
+var data_PROC = {% if args['data_PROC'] %}{{ args['data_PROC']|clean_json }}{% else %}[]{% endif %} ;
 
 // fix bug between jquery 3.6.0 and select2
 $(document).on('select2:open', () => 
@@ -189,7 +189,7 @@ $("#tbody_PROC").append(tr_PROC) ;
 function save_item()
 {
 var id_user = {{ session['user_id']|safe}} ;
-var id_eqp  = {{ args['id_eqp']|safe }}    ;
+var id_eqp  = {{ args['id_eqp']|clean_json }}    ;
 var l_MANU  = [] ;
 var l_PROC  = [] ;
 var comment = JSON.stringify( $.trim( $("#comment").val() ) ) ;
@@ -292,10 +292,10 @@ let type   = 'JF' ;
 
     if ( data.eqd_ser > 0 )
     {
-    let tmp_tr = '<tr id="' + type_doc + '_0"><td hidden>' + data.eqd_ser + '</td><td>' + ico + '</td>' ;
+    let tmp_tr = '<tr id="' + escapeHtml(type_doc) + '_0"><td hidden>' + escapeHtml(data.eqd_ser) + '</td><td>' + ico + '</td>' ;
 
-    tmp_tr += '<td>' + data.title + '</td>' ;
-    tmp_tr += '<td class="action text-center"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + data.name + '\', \''+type_doc+'\', ' + data.id_file + ');"><span class="bi bi-download"></span></a><div></td>' ;
+    tmp_tr += '<td>' + escapeHtml(data.title) + '</td>' ;
+    tmp_tr += '<td class="action text-center"><div><a href="#" onclick="download_file(\'' + type + '\', \'' + escapeHtml(data.name) + '\', \''+escapeHtml(type_doc)+'\', ' + escapeHtml(data.id_file) + ');"><span class="bi bi-download"></span></a><div></td>' ;
     tmp_tr += '</tr>' ;
 
     tr_doc += tmp_tr ;

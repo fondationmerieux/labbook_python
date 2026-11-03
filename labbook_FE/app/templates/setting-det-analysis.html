@@ -92,10 +92,10 @@
                         <div class="form-group d-lg-flex align-items-start mt-3">
                             <span class="form-label col-6 text-end mt-2 me-3">{{ _("Export whonet") }}</span>
                             <label class="form-label text-end mt-2 me-3">
-                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
+                                <input type="radio" name="whonet" value="4" {% if args['details']['ana_whonet'] == 4 %} checked="checked" {% endif %} {% if not has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Oui") }}</input>
                             </label>
                             <label class="form-label text-end mt-2 me-3">
-                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Non") }}</input>
+                                <input type="radio" name="whonet" value="5" {% if not args['details'] or args['details']['ana_whonet'] == 5 %} checked="checked" {% endif %} {% if not has_permission("SETTING_46") %}disabled{% endif %}>&nbsp;{{ _("Non") }}</input>
                             </label>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                         </div>
                         <label for="var_code" class="form-label col-2 text-end mt-2 me-1">{{ _("Code var.") }}</label>
                         <div>					
-                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if has_permission("SETTING_47") %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
+                            <input type="text" name="var_code" id="var_code" value="{% if args['var'] %}{{ args['var'][0]['code_var'] }}{% endif %}" class="group-det-var form-control form-lbk" onChange="change_data(this);" {% if not has_permission("SETTING_47") %}readonly{% endif %} title="{{ _("Par défaut sera l'ID de la variable") }}" style="width:120px;">			
                         </div>
                         <label for="var_loinc" class="form-label col-1 text-end mt-2 me-1">{{ _("LOINC") }}</label>
                         <div>
@@ -254,10 +254,10 @@
                         </label>
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Export whonet") }}</label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" id="var_whonet_4" name="var_whonet" value="4" {% if args['var'] and args['var'][0]['var_whonet'] == 4 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
+                            <input type="radio" id="var_whonet_4" name="var_whonet" value="4" {% if args['var'] and args['var'][0]['var_whonet'] == 4 %} checked="checked" {% endif %} {% if not has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Oui") }}</input>
                         </label>
                         <label class="form-label text-end mt-2 me-3">
-                            <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
+                            <input type="radio" id="var_whonet_5" name="var_whonet" value="5" {% if not args['var'] or args['var'][0]['var_whonet'] == 5 %} checked="checked" {% endif %} {% if not has_permission("SETTING_46") %}disabled{% endif %} onChange="change_data(this);">&nbsp;{{ _("Non") }}</input>
                         </label>
                         <label class="form-label col-2 text-end mt-2 me-3">{{ _("Générer un code QR") }}</label>
                         <label class="form-label text-end mt-2 me-3">
@@ -353,7 +353,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_var  = {"id_data":0 ,"label":"", "code_var":"", "descr":"", "type_res":"", "min":"", "max":"", "var_show_minmax":"N", "var_highlight":"N", "var_in_report":"Y", "formula":"", "unit":0, "accu":0, "formula2":"", "unit2":0, "accu2":0, "comment":"", "oblig":5, "var_whonet":5, "var_qrcode":"N", "var_loinc":"", "num_var":0, "pos":0, "id_link":0, "unit_label":"", "id_item":0 } ;
-var data_vars   = {% if args['var'] %}{{ args['var']|safe }}{% else %}[]{% endif %} ;
+var data_vars   = {% if args['var'] %}{{ args['var']|clean_json }}{% else %}[]{% endif %} ;
 var ind_var     = 0 ;
 var ind_sel_var = {% if args['var'] %}1{% else %}0{% endif %} ;
 
@@ -657,12 +657,12 @@ let obj = data ;
     {
     let tmp_tr = '<tr class="row">' ;
 
-    let btn_del = '<img onclick="del_var(' + obj.id_item + ');load_data();" title="{{ _("Supprimer") }}" src="{{ url_for('static', filename='img/close.png') }}">' ;
-    let btn_edit= '<img onclick="edit_var(' + obj.id_item + ');" title="{{ _("Modifier") }}" src="{{ url_for('static', filename='img/edit.png') }}" class="me-3">' ;
+    let btn_del = '<img onclick="del_var(' + escapeHtml(obj.id_item) + ');load_data();" title="{{ _("Supprimer") }}" src="{{ url_for('static', filename='img/close.png') }}">' ;
+    let btn_edit= '<img onclick="edit_var(' + escapeHtml(obj.id_item) + ');" title="{{ _("Modifier") }}" src="{{ url_for('static', filename='img/edit.png') }}" class="me-3">' ;
 
-    tmp_tr += '<td id="' + obj.id_data + '" hidden><div>' + obj.id_data + '</div></td>' ;
+    tmp_tr += '<td id="' + escapeHtml(obj.id_data) + '" hidden><div>' + escapeHtml(obj.id_data) + '</div></td>' ;
     tmp_tr += '<td class="col-1"><span>' + btn_edit + btn_del + '</span></td>' ;
-    tmp_tr += '<td class="col-5 text-start"><div>' + obj.label + '</div></td>' ;
+    tmp_tr += '<td class="col-5 text-start"><div>' + escapeHtml(obj.label) + '</div></td>' ;
     tmp_tr += '<td class="col-2 text-center"><div>' + replaceUndefined(obj.unit_label, "") + '</div></td>' ;
     tmp_tr += '<td class="col-1 text-center"><div>' + replaceUndefined(obj.min, "") + '</div></td>' ;
     tmp_tr += '<td class="col-1 text-center"><div>' + replaceUndefined(obj.max, "") + '</div></td>' ;
@@ -971,7 +971,7 @@ load_data() ;
 function save_ana()
 {
 var id_owner  = {{ session['user_id']|safe}} ;
-var id_ana    = {{ args['analysis_id']|safe }} ;
+var id_ana    = {{ args['analysis_id']|clean_json }} ;
 var code      = $("#code").val()      ;
 var ana_loinc = $("#ana_loinc").val() ;
 var code_ori  = $("#code_ori").val()  ;

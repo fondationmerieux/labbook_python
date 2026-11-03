@@ -119,7 +119,7 @@ let compartment = document.getElementById("sbo_compartment").value;
         sbo_compartment: compartment
     };
     
-    fetch("{{ session['server_ext'] }}/services/quality/storage/box/det/" + {{ args['id_item']|safe}}, {
+    fetch("{{ session['server_ext'] }}/services/quality/storage/box/det/" + {{ args['id_item']|clean_json }}, {
         method: "POST",
         headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" },
         body: JSON.stringify(boxData)

@@ -11,6 +11,7 @@ from app.models.General import compose_ret
 from app.models.Constants import Constants
 from app.models.Audit import Audit
 from app.models.Logs import Logs
+from app.models.User import User
 from app.security.oauth_routes import require_oauth
 
 
@@ -51,6 +52,11 @@ class AuditList(Resource):
             200: draw, recordsTotal, recordsFiltered and data.
             500: database read failed.
         """
+        # Audit trail: audit log right only
+        if not User.hasRight(request.oauth_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         try:
             args = request.get_json(silent=True) or {}
 
@@ -143,6 +149,11 @@ class AuditDet(Resource):
             404: entry not found.
             500: database read failed.
         """
+        # Audit trail: audit log right only
+        if not User.hasRight(request.oauth_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         try:
             data = Audit.getAuditById(aud_ser)
         except Exception:
@@ -240,6 +251,11 @@ class AuditExportATNA(Resource):
             404: no entry over the period.
             500: database read or file write failed.
         """
+        # Audit trail: audit log right only
+        if not User.hasRight(request.oauth_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditExportATNA ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         data = request.get_json(silent=True) or {}
 
         date_beg = data.get('date_beg')
@@ -421,6 +437,11 @@ class AuditArchive(Resource):
             500: database read, file write or purge failed. A failed purge leaves the file written.
         """
         audit_user = request.oauth_user
+
+        # Audit trail: audit log right only
+        if not User.hasRight(audit_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditArchive ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         data = request.get_json(silent=True) or {}
 
         date_beg = (data.get('date_beg') or '').strip()
@@ -545,6 +566,11 @@ class AuditArchiveDownload(Resource):
             404: file not found.
             500: file could not be sent.
         """
+        # Audit trail: audit log right only
+        if not User.hasRight(request.oauth_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditArchiveDownload ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         base_path = Constants.cst_path_tmp
 
         # Basic filename hardening (no path traversal)

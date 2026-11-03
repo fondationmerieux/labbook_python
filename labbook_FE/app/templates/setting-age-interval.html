@@ -46,7 +46,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_val  = {"id_ihm":0, "ais_ser":0 ,"ais_lower_bound":"", "ais_upper_bound":"", "ais_rank":0} ;
-var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var data_values = {% if args['data_values'] %}{{ args['data_values']|clean_json }}{% else %}[]{% endif %} ;
 var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
 
 function add_value()
@@ -70,13 +70,13 @@ let obj = data ;
     {
     let tmp_tr = '<tr class="w-100">' ;
 
-    let btn = '<input type="button" onclick="del_value(' + obj.id_ihm + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
+    let btn = '<input type="button" onclick="del_value(' + escapeHtml(obj.id_ihm) + ');load_data();" value="' + '{{ _("Supprimer") }}' + '">' ;
 
-    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
+    tmp_tr += create_td(escapeHtml(obj.id_ihm), escapeHtml(obj.id_ihm), "col", "display:none;") ;
     tmp_tr += create_td("", btn, "text-center col-2", "") ; // actions
-    tmp_tr += create_td("", create_input("lower_"+obj.id_ihm, "number", obj.ais_lower_bound, 0, 100, ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("upper_"+obj.id_ihm, "number", obj.ais_upper_bound, 0, 100, ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("rank_"+obj.id_ihm, "number", obj.ais_rank, 0, 20, ""), "col-2", "") ;
+    tmp_tr += create_td("", create_input("lower_"+escapeHtml(obj.id_ihm), "number", obj.ais_lower_bound, 0, 100, ""), "col-3", "") ;
+    tmp_tr += create_td("", create_input("upper_"+escapeHtml(obj.id_ihm), "number", obj.ais_upper_bound, 0, 100, ""), "col-3", "") ;
+    tmp_tr += create_td("", create_input("rank_"+escapeHtml(obj.id_ihm), "number", obj.ais_rank, 0, 20, ""), "col-2", "") ;
     tmp_tr += '</tr>' ;
 
     tr_value += tmp_tr ;
@@ -130,7 +130,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + escapeHtml(val) + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;

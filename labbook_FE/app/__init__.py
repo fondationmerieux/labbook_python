@@ -53,6 +53,7 @@ import requests
 import tomli
 from flask import Flask, Response, current_app, jsonify, redirect, render_template, render_template_string, request, send_file, session, url_for
 from flask_babel import Babel
+from markupsafe import Markup
 from werkzeug.utils import secure_filename
 
 from app.models.Constants import Constants
@@ -648,26 +649,29 @@ def get_user_data(login, be_headers=None):
     - granted rights
     - linked analyze families (if applicable)
     """
-    if not login:
-        log.error(Logs.fileline() + ' : get_user_data ERROR no login')
-        return disconnect()  # redirect(session['server_ext'] + '/disconnect')
-
     call_headers = be_auth_headers()
 
     try:
         if 'server_int' not in session or not session['server_int']:
             index()
 
-        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/login/' + login
+        # Get the user from the token, not from the browser
+        url = session['server_int'] + '/' + session['redirect_name'] + '/services/user/token-owner'
         req = requests.get(url, timeout=10, headers=call_headers)
 
         redir = be_check_or_bounce(req)
         if redir:
             return redir
 
+        if req.status_code != 200:
+            log.error(Logs.fileline() + ' : get_user_data ERROR token owner status=' + str(req.status_code))
+            return disconnect()
+
         if req.status_code == 200:
             json_data = req.json()
 
+            session['login_ok']       = json_data['username']
+            session['login']          = json_data['username']
             session['user_id']        = json_data['id_data']
             session['user_role']      = json_data['role_type']
             session['user_id_role']   = json_data['role_pro']
@@ -772,6 +776,19 @@ def test_session():
     else:
         log.info(Logs.fileline() + ' : TRACE test_session OK')
         return True
+
+
+@app.template_filter('clean_json')
+def clean_json(data):
+    """Turn data into JSON that can be put in a <script> without running as code."""
+    if isinstance(data, str):
+        try:
+            data = json.loads(data)   # already JSON: do not encode it twice
+        except ValueError:
+            pass
+    text = json.dumps(data, default=str)   # dates and decimals become text
+    text = text.replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026').replace("'", '\\u0027')
+    return Markup(text)
 
 
 @app.template_filter('date_format')
@@ -929,55 +946,26 @@ def safe_build_download_path(base_dir: str, user_name: str) -> str | None:
 @app.route('/confirm-access', methods=['POST'])
 def confirm_access():
     """
-    Finalize pre-login: store minimal user identity in the server session
-    and return the next URL to navigate to. If a deferred redirect ('next')
-    exists in session (e.g., started an OAuth flow), use it; otherwise fall
-    back to the homepage with the provided login for display.
+    Clear the session and go to the homepage. Never take the user from the browser.
+    get_user_data loads it from the token.
     """
-    args = request.get_json()
-    login = args.get('login', '')
-    id_user = args.get('id_user', None)
-
-    if id_user is None:
-        return jsonify({'error': 'id_user missing'}), 400
-
     session.clear()
 
     session.permanent = True
-    session['login_ok'] = login
-    session['user_id'] = int(id_user)
     session.modified = True
 
-    redirect_url = session.pop('next', None)
-    if not redirect_url:
-        redirect_url = url_for('homepage', login=str(session['login_ok']), _external=True)
-
-    return jsonify({'redirect_url': redirect_url})
+    return jsonify({'redirect_url': url_for('homepage', _external=True)})
 
 
 @app.route('/oauth/bounce')
 def oauth_bounce():
     """
     Start the OAuth Authorization Code + PKCE dance.
-    Optionally push the BE to bind user_id (confirm-access).
     Generate PKCE verifier and CSRF state, persist in session.
     Build /authorize URL from server_ext + redirect_name, then redirect.
     """
 
     ensure_base_urls_in_session()
-
-    server_int = session.get('server_int')
-    redirect_name = (session.get('redirect_name') or '').strip('/')
-
-    # Optionally inform BE of the UI user
-    user_id = session.get('user_id')
-    if user_id:
-        try:
-            url_confirm = f"{server_int}/{redirect_name}/services/confirm-access" if redirect_name else f"{server_int}/services/confirm-access"
-            requests.post(url_confirm, json={'id_user': int(user_id)}, timeout=5)
-        except requests.RequestException as err:
-            # the BE does not need to know: the connection carries on, but the failure is traced
-            log.warning(Logs.fileline() + ' : confirm-access call failed, err=' + str(err))
 
     # Generate PKCE + state and persist in session
     verifier = base64.urlsafe_b64encode(secrets.token_bytes(32)).rstrip(b'=').decode('ascii')
@@ -1178,11 +1166,8 @@ def homepage(login=''):
     json_data = {}
     json_data['nb_emer'] = 0
 
-    if login:
-        session['login'] = login
-        session.modified = True
-    elif 'login' in session and session['login']:
-        login = session['login']
+    # Ignore the login in the URL. get_user_data reads the user from the token
+    login = session.get('login', '')
 
     # if 'server_ext' not in session or not session['server_ext']:
     resp = get_init_var()
@@ -1732,6 +1717,10 @@ def user_import():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_40'):
+        log.info(Logs.fileline() + ' : TRACE user-import => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'user-import'
     session.modified = True
 
@@ -1838,6 +1827,10 @@ def setting_det_dict(dict_name='', id_dict=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det dict => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_52'):
+        log.info(Logs.fileline() + ' : TRACE det dict => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-det-dict/' + str(dict_name)
 
@@ -2028,6 +2021,10 @@ def list_msg_analyzer():
         session.clear()
         return index()
 
+    if not has_permission('SETTING_48'):
+        log.info(Logs.fileline() + ' : TRACE list msg analyzer => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'list-msg-analyzer'
     session.modified = True
 
@@ -2182,6 +2179,10 @@ def setting_det_analysis(analysis_id=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det analysis => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_42'):
+        log.info(Logs.fileline() + ' : TRACE det analysis => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-det-analysis/' + str(analysis_id)
     session.modified = True
@@ -2736,6 +2737,10 @@ def det_template(id_tpl=0):
         session.clear()
         return index()
 
+    if not has_permission('SETTING_60' if id_tpl == 0 else 'SETTING_61'):
+        log.info(Logs.fileline() + ' : TRACE template det => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-template/' + str(id_tpl)
     session.modified = True
 
@@ -2825,6 +2830,10 @@ def det_sending_method(type='', id_item=0):
         session.clear()
         return index()
 
+    if not has_permission('SETTING_178'):
+        log.info(Logs.fileline() + ' : TRACE details sending method => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-sending-method/' + str(type) + '/' + str(id_item)
     session.modified = True
 
@@ -2874,6 +2883,10 @@ def det_sending_model(type='', id_item=0):
         log.info(Logs.fileline() + ' : TRACE Labbook details sending model => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_178'):
+        log.info(Logs.fileline() + ' : TRACE details sending model => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-sending-model/' + str(type) + '/' + str(id_item)
     session.modified = True
@@ -3142,6 +3155,10 @@ def setting_link_unit_user(id_unit):
         session.clear()
         return index()
 
+    if not has_permission('SETTING_58'):
+        log.info(Logs.fileline() + ' : TRACE setting link unit user => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'setting-link-unit-user'
     session.modified = True
 
@@ -3179,6 +3196,10 @@ def setting_link_unit_fam(id_unit):
         log.info(Logs.fileline() + ' : TRACE Labbook setting link unit => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('SETTING_58'):
+        log.info(Logs.fileline() + ' : TRACE setting link unit fam => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'setting-link-unit-fam'
     session.modified = True
@@ -3933,6 +3954,11 @@ def det_sample(id_prod=0):
         session.clear()
         return index()
 
+    # Role SP keeps access: its homepage is list-samples
+    if not has_permission('RECORD_13') and session.get('user_role') != 'SP':
+        log.info(Logs.fileline() + ' : TRACE det sample => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-sample/' + str(id_prod)
     session.modified = True
 
@@ -4271,6 +4297,10 @@ def det_req(req_type, entry='Y', ref=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det-req-ext => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('RECORD_12' if req_type == 'I' else 'RECORD_11'):
+        log.info(Logs.fileline() + ' : TRACE det-req-' + req_type + ' => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = f'det-req-{"int" if req_type == "I" else "ext"}/{entry}/{ref}'
     session.modified = True
@@ -5537,6 +5567,10 @@ def det_hist_patient(id_pat=0):
         session.clear()
         return index()
 
+    if not has_permission('REPORT_34'):
+        log.info(Logs.fileline() + ' : TRACE det hist patient => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-hist-patient/' + str(id_pat)
     session.modified = True
 
@@ -5612,6 +5646,10 @@ def det_hist_analysis(id_ana=0, date_beg='', date_end=''):
         log.info(Logs.fileline() + ' : TRACE Labbook det hist analysis => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('REPORT_35'):
+        log.info(Logs.fileline() + ' : TRACE det hist analysis => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-hist-analysis/' + str(id_ana) + '/' + date_beg + '/' + date_end
     session.modified = True
@@ -5749,6 +5787,11 @@ def quality_general():
         log.info(Logs.fileline() + ' : TRACE Labbook quality general => disconnect')
         session.clear()
         return index()
+
+    # Roles Q and L keep access: it is their homepage
+    if not has_permission('GEN_77') and session.get('user_role') not in ('Q', 'L'):
+        log.info(Logs.fileline() + ' : TRACE quality general => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'quality-general'
     session.modified = True
@@ -6214,6 +6257,12 @@ def eqp_operation(id_eqp, type_doc):
               'PREVENTIVE': 'eqp preventive maintenance',
               'FAILURE': 'eqp failure'}
 
+    # Same right as the "Ajouter" button of each list
+    rights = {'METROLOGY': 'EQP_118',
+              'CONTRACT': 'EQP_104',
+              'PREVENTIVE': 'EQP_108',
+              'FAILURE': 'EQP_113'}
+
     page  = pages[type_doc]
     label = labels[type_doc]
 
@@ -6223,6 +6272,10 @@ def eqp_operation(id_eqp, type_doc):
         log.info(Logs.fileline() + ' : TRACE Labbook ' + label + ' => disconnect')
         session.clear()
         return index()
+
+    if not has_permission(rights[type_doc]):
+        log.info(Logs.fileline() + ' : TRACE ' + label + ' => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = page + '/' + str(id_eqp)
     session.modified = True
@@ -6561,6 +6614,10 @@ def list_trace_download(type_trace=''):
         session.clear()
         return index()
 
+    if not has_permission('PROCEDURE_127'):
+        log.info(Logs.fileline() + ' : TRACE list trace download => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'list-trace-download/' + str(type_trace)
     session.modified = True
 
@@ -6695,6 +6752,10 @@ def res_control_int(ctq_ser, type_val='', cti_ser=0):
         session.clear()
         return index()
 
+    if not has_permission('CTRLINT_151'):
+        log.info(Logs.fileline() + ' : TRACE internal control res => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'res-control-int/' + str(ctq_ser) + '/' + type_val + '/' + str(cti_ser)
     session.modified = True
 
@@ -6764,6 +6825,10 @@ def res_control_ext(ctq_ser, type_val='', cte_ser=0):
         log.info(Logs.fileline() + ' : TRACE Labbook external control res => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('CTRLEXT_157'):
+        log.info(Logs.fileline() + ' : TRACE external control res => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'res-control-ext/' + str(ctq_ser) + '/' + type_val + '/' + str(cte_ser)
     session.modified = True
@@ -6859,6 +6924,10 @@ def move_stock_product():
         session.clear()
         return index()
 
+    if not has_permission('STOCK_133'):
+        log.info(Logs.fileline() + ' : TRACE move stock => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'move-stock-product'
     session.modified = True
 
@@ -6924,6 +6993,10 @@ def det_list_stock(prd_ser=0, prl_ser=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det list stock => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('STOCK_133'):
+        log.info(Logs.fileline() + ' : TRACE det list stock => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-list-stock/' + str(prd_ser) + '/' + str(prl_ser)
     session.modified = True
@@ -7007,6 +7080,10 @@ def det_new_product(prd_ser=0):
         log.info(Logs.fileline() + ' : TRACE Labbook det new product => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('STOCK_134' if prd_ser == 0 else 'STOCK_135'):
+        log.info(Logs.fileline() + ' : TRACE det new product => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-new-product/' + str(prd_ser)
     session.modified = True
@@ -7243,6 +7320,10 @@ def det_storage_room(id_item=0):
         session.clear()
         return index()
 
+    if not has_permission('ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+        log.info(Logs.fileline() + ' : TRACE det-storage-room => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-storage-room/' + str(id_item)
     session.modified = True
 
@@ -7294,6 +7375,10 @@ def det_storage_chamber(id_item=0):
         log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-chamber => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+        log.info(Logs.fileline() + ' : TRACE det-storage-chamber => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-storage-chamber/' + str(id_item)
     session.modified = True
@@ -7355,6 +7440,10 @@ def det_storage_compartment(id_item=0):
         session.clear()
         return index()
 
+    if not has_permission('ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+        log.info(Logs.fileline() + ' : TRACE det-storage-compartment => permission denied')
+        return redirect(url_for('homepage'))
+
     session['current_page'] = 'det-storage-compartment/' + str(id_item)
     session.modified = True
 
@@ -7414,6 +7503,10 @@ def det_storage_box(id_item=0):
         log.info(Logs.fileline() + ' : TRACE Labbook setting det-storage-box => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+        log.info(Logs.fileline() + ' : TRACE det-storage-box => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'det-storage-box/' + str(id_item)
     session.modified = True
@@ -7762,6 +7855,10 @@ def non_conformity(id_det=0):
         log.info(Logs.fileline() + ' : TRACE Labbook non-conformity => disconnect')
         session.clear()
         return index()
+
+    if not has_permission('NONCONF_144' if id_det == 0 else 'NONCONF_145'):
+        log.info(Logs.fileline() + ' : TRACE non-conformity => permission denied')
+        return redirect(url_for('homepage'))
 
     session['current_page'] = 'non-conformity/' + str(id_det)
     session.modified = True
@@ -8485,6 +8582,11 @@ def upload_logo():
 @app.route('/upload-dhis2', methods=['POST'])
 def upload_dhis2():
     log.info(Logs.fileline())
+
+    if not has_permission('SETTING_71'):
+        log.info(Logs.fileline() + ' : TRACE upload dhis2 => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
@@ -8558,6 +8660,10 @@ def upload_epidemio():
 @app.route('/upload-form/<string:type_form>', methods=['POST'])
 def upload_form(type_form):
     log.info(Logs.fileline())
+
+    if not has_permission('SETTING_69'):
+        log.info(Logs.fileline() + ' : TRACE upload form => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
@@ -8644,6 +8750,10 @@ def upload_indicator():
 def upload_tpl():
     log.info(Logs.fileline())
 
+    if not has_permission('SETTING_60'):
+        log.info(Logs.fileline() + ' : TRACE upload tpl => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
@@ -8729,6 +8839,10 @@ def upload_import():
 def upload_zipcity():
     log.info(Logs.fileline())
 
+    if not has_permission('SETTING_67'):
+        log.info(Logs.fileline() + ' : TRACE upload zipcity => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
@@ -8766,6 +8880,10 @@ def upload_zipcity():
 @app.route('/upload-connect/<string:type>', methods=['POST'])
 def upload_connect(type=''):
     log.info(Logs.fileline() + " : upload-connect called")
+
+    if not has_permission('SETTING_48'):
+        log.info(Logs.fileline() + ' : TRACE upload connect => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
@@ -8816,6 +8934,11 @@ def upload_connect(type=''):
 @app.route('/upload-printer', methods=['POST'])
 def upload_printer():
     log.info(Logs.fileline())
+
+    if not has_permission('PRINT_174'):
+        log.info(Logs.fileline() + ' : TRACE upload printer => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
+
     if request.method != 'POST':
         return json.dumps({'success': False}), 405, {'ContentType': 'application/json'}
 
@@ -8870,16 +8993,24 @@ def delete_file(type='', filename=''):
 
     if type == 'DH':
         base_dir = Constants.cst_dhis2
+        right = 'SETTING_71'
     elif type in ('FP', 'FPH'):
         base_dir = Constants.cst_form_pat
+        right = 'SETTING_69'
     elif type == 'TP':
         base_dir = Constants.cst_template
+        right = 'SETTING_63'
     elif type == 'PR':
         base_dir = Constants.cst_printer
+        right = 'PRINT_174'
     else:
         # type inconnu → on ne fait rien
         log.error(Logs.fileline() + ' : delete-file invalid file type')
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+
+    if not has_permission(right):
+        log.info(Logs.fileline() + ' : TRACE delete file ' + type + ' => permission denied')
+        return json.dumps({'success': False}), 403, {'ContentType': 'application/json'}
 
     try:
         # Sanitize filename

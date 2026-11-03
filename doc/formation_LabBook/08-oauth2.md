@@ -21,7 +21,7 @@ L'implémentation s'appuie sur **Authlib** (`labbook_BE/app/security/oauth_route
 | `authorization_code` | le front end LabBook | code d'autorisation, avec PKCE |
 | `client_credentials` | un logiciel tiers | authentification directe de machine à machine |
 
-Dans les deux cas, le jeton vit **2 heures** (`labbook_BE/app/__init__.py:123-125`), en dur.
+Dans les deux cas, le jeton vit **2 heures** (`labbook_BE/app/__init__.py:124-127`), en dur.
 
 Pour le front end, le renouvellement est transparent : il se fait au fil de la navigation.
 Un logiciel tiers, lui, doit redemander un jeton toutes les deux heures — c'est délibéré :
@@ -45,14 +45,24 @@ Le front end et le back end partagent un secret, `oauth_client_secret.py`, écri
 [00](00-architecture.md)). C'est ce secret commun qui leur permet de se reconnaître.
 
 ```
-1. L'utilisateur ouvre une page. Pas de jeton en session.
+1. L'utilisateur saisit son identifiant et son mot de passe.
+   → /services/user/access vérifie le mot de passe et ouvre la session du back end
 2. Le front end demande un CODE au back end (ils partagent le secret).
    → le code est valable 1 minute, à usage unique, stocké dans oauth2_code
+     avec l'id de l'utilisateur de la session
 3. Le front end présente immédiatement ce code et demande un JETON.
-   → le jeton est valable 2 heures, stocké dans oauth2_token
-4. Chaque appel à /services/... transporte ce jeton dans son en-tête.
-5. Jeton absent, expiré ou révoqué → 401 Unauthorized
+   → le jeton est valable 2 heures, stocké dans oauth2_token avec l'id de l'utilisateur
+4. Le front end demande à qui appartient le jeton (/services/user/token-owner).
+   → il range en session le login, le profil et les droits renvoyés
+5. Chaque appel à /services/... transporte ce jeton dans son en-tête.
+   → le back end lit l'utilisateur dans le jeton (request.oauth_user), jamais dans un cookie
+6. Jeton absent, expiré ou révoqué → 401 Unauthorized
 ```
+
+Le navigateur ne dit jamais lui-même qui il est. Un identifiant ou un login qu'il enverrait
+est ignoré : seule la vérification du mot de passe ouvre une session, et seul le jeton dit
+qui appelle un service. Un jeton de logiciel tiers (`client_credentials`) n'a pas
+d'utilisateur, l'audit le nomme alors par son client.
 
 L'échange se fait donc en **deux temps** — un code court, puis un jeton — plutôt qu'en
 délivrant directement un jeton.
@@ -80,16 +90,16 @@ par le commentaire `# no oauth required` dans `app/__init__.py` :
 - points d'entrée utilisés par les automates via LabBook Connect (`AnalyzerLab27`,
   `AnalyzerLab29`, …).
 
-Ces derniers ne sont pas protégés parce que **LabBook Connect ne gère pas encore OAuth2** :
-l'intégration a été demandée pour LabBook seul. Le jour où Connect saura présenter un jeton,
-ces exemptions disparaîtront et une ligne cliente lui sera créée dans `oauth2_client`.
+Ces derniers ne sont pas protégés parce que **les plugins d'analyseurs de LabBook Connect ne
+présentent pas de jeton**. La façade FHIR de Connect, elle, passe par OAuth2 avec son propre
+client, `labbook-connect-fhir` (`client_credentials`), créé par la migration de la 3.6.29.
 
 ## 8.6 Portées
 
 Un client se voit attribuer une liste de portées (*scopes*), qui limitent les services
-qu'il peut atteindre. Le client `labbook-api`, celui de la page Swagger, est par exemple
-restreint aux portées `external_analysis`, `external_patient`, `external_record`,
-`external_result`, `external_user`.
+qu'il peut atteindre. Le client `labbook-API`, celui de la page Swagger, est par exemple
+restreint aux portées `external/analysis`, `external/patient`, `external/record`,
+`external/result`, `external/user`.
 
 Portées et CORS sont deux protections distinctes et complémentaires : le CORS limite les
 **origines** autorisées à `/services/external/*` (chapitre [07](07-back-end.md)), les portées
@@ -97,12 +107,20 @@ limitent les **services** qu'un client donné peut appeler.
 
 ## 8.7 Déclarer un client
 
-Deux clients existent sur une base neuve :
+Trois clients existent sur une base neuve :
 
 | Client | Rôle |
 |---|---|
 | `labbook-FE` | le front end. Non supprimable depuis l'interface. |
-| `labbook-api` | la page Swagger `/sigl/api`. |
+| `labbook-API` | la page Swagger `/sigl/api`. |
+| `labbook-connect-fhir` | la façade FHIR de LabBook Connect. |
+
+La page **Configuration → Clients OAuth** et ses services sont réservés au profil
+Administrateur : la liste contient les secrets des clients.
+
+Le back end ne délivre une clé à un autre client que `labbook-FE` (Swagger compris) qu'à un
+utilisateur qui a le droit API_2 « Accéder à la page d'api ». En mode debug
+(`LABBOOK_DEBUG=1`), ce contrôle est levé, comme l'affichage de la page.
 
 Pour un logiciel tiers, passez par l'interface : **Configuration → Clients OAuth**, plus
 sûre qu'une insertion en base. Vous y définissez identifiant, secret, URLs de redirection et
@@ -111,7 +129,7 @@ portées.
 La case **actif** permet de couper l'accès d'un client sans supprimer sa configuration —
 pratique pour suspendre un prestataire et le rétablir ensuite.
 
-> **Piège — supprimer `labbook-api`.** L'interface permet de le supprimer. La page Swagger
+> **Piège — supprimer `labbook-API`.** L'interface permet de le supprimer. La page Swagger
 > cesse alors de fonctionner, et il faut le recréer **à l'identique** : elle recherche ce
 > client par son identifiant exact.
 

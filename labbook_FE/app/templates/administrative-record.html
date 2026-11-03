@@ -342,13 +342,13 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_analysis = {{ args['data_analysis']|safe }} ;
-var data_reports  = {% if args['data_reports'] %}{{ args['data_reports']|safe }}{% else %}[]{% endif %} ;
-var data_files    = {{ args['data_files']|safe }} ;
+var data_analysis = {{ args['data_analysis']|clean_json }} ;
+var data_reports  = {% if args['data_reports'] %}{{ args['data_reports']|clean_json }}{% else %}[]{% endif %} ;
+var data_files    = {{ args['data_files']|clean_json }} ;
 var num_rec_y = 0 ;
 var num_rec   = 0 ;
 var with_outsourced = 0 ;
-{% if type_req == 'E' %}var data_samples  = {{ args['data_samples']|safe }}  ;{% endif %}
+{% if type_req == 'E' %}var data_samples  = {{ args['data_samples']|clean_json }}  ;{% endif %}
 
 var SEND_HTML = `{% include "send_report_inline.html" %}`;
 
@@ -396,19 +396,19 @@ function load_analysis( data )
     else
         trans = "Non" ;
 
-    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
+    tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;") ;
     {# Can be deleted if not yet technically validated #}
     {% if args['record']['statut'] < 251 %}
-    ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + obj.id_data + ', '  + obj.ref_analyse + ', ' + obj.type_samp + ', ' + obj.prix + ');"/></i>' ;
+    ico_del = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_ana(' + escapeHtml(obj.id_data) + ', '  + escapeHtml(obj.ref_analyse) + ', ' + escapeHtml(obj.type_samp) + ', ' + escapeHtml(obj.prix) + ');"/></i>' ;
 
     tmp_tr += create_td("", ico_del, "text-center", "") ;
     {% endif %}
-    tmp_tr += create_td("", obj.code, "text-center", "") ;
-    tmp_tr += create_td("", obj.nom, "", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.nom), "", "") ;
     tmp_tr += create_td("", urg, "text-center", "") ;
     tmp_tr += create_td("", dem, "text-center", "") ;
     tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
-    tmp_tr += create_td("", obj.prix, "text-center", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.prix), "text-center", "") ;
     tmp_tr += create_td("", trans, "text-center", "") ;
 
     tmp_tr += '</tr>' ;
@@ -476,12 +476,12 @@ function load_sample( data )
         else
             dem = "Non" ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;") ;
-        tmp_tr += create_td("", obj.code, "text-center", "") ;
-        tmp_tr += create_td("", obj.nom, "", "") ;
+        tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;") ;
+        tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "") ;
+        tmp_tr += create_td("", escapeHtml(obj.nom), "", "") ;
         tmp_tr += create_td("", dem, "text-center", "") ;
         tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "") ;
-        tmp_tr += create_td("", obj.prix, "text-center", "") ;
+        tmp_tr += create_td("", escapeHtml(obj.prix), "text-center", "") ;
 
         tmp_tr += '</tr>' ;
 
@@ -507,25 +507,25 @@ function load_report( data )
 
         {% if args['record']['rec_num_lite'].startswith("LT-") %}
             {# LT-* : RLT download only, no duplicata #}
-            menu_act = '<a class="menu-act-item" onclick="download_file(\'RLT\', \'' + obj[i].file + '\', \'REC\', \'' + {{ args["record"]["rec_num_lite"]|tojson|safe }} + '\');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+            menu_act = '<a class="menu-act-item" onclick="download_file(\'RLT\', \'' + escapeHtml(obj[i].file) + '\', \'REC\', \'' + {{ args["record"]["rec_num_lite"]|tojson|safe }} + '\');">{{ _("Télécharger") }} (' + escapeHtml(obj[i].nb_download) + ')</a>' ;
 
         {% else %}
             {# non LT-* #}
             if ( obj[i].nb_download == 0 )
                 {# first download : RP only #}
-                menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+                menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + escapeHtml(obj[i].file) + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + escapeHtml(obj[i].nb_download) + ')</a>' ;
             else
             {
                 {% if has_permission("RECORD_23") %}
                     {# RECORD_23 : RP always, RPC only if report_pwd != Y #}
-                    menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + obj[i].nb_download + ')</a>' ;
+                    menu_act = '<a class="menu-act-item" onclick="download_file(\'RP\', \'' + escapeHtml(obj[i].file) + '\', \'REC\', ' + num_rec + ');">{{ _("Télécharger") }} (' + escapeHtml(obj[i].nb_download) + ')</a>' ;
                     {% if session.get('report_pwd') != 'Y' %}
-                    menu_act += ' - <a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
+                    menu_act += ' - <a class="menu-act-item" onclick="download_file(\'RPC\', \'' + escapeHtml(obj[i].file) + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + escapeHtml(obj[i].nb_download) + ')</a>' ;
                     {% endif %}
                 {% else %}
                     {# no RECORD_23 : RPC only if report_pwd == N #}
                     {% if session.get('report_pwd') != 'Y' %}
-                    menu_act = '<a class="menu-act-item" onclick="download_file(\'RPC\', \'' + obj[i].file + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + obj[i].nb_download + ')</a>' ;
+                    menu_act = '<a class="menu-act-item" onclick="download_file(\'RPC\', \'' + escapeHtml(obj[i].file) + '\', \'REC\', ' + num_rec + ');">{{ _("Duplicata") }} (' + escapeHtml(obj[i].nb_download) + ')</a>' ;
                     {% endif %}
                 {% endif %}
             }
@@ -538,7 +538,7 @@ function load_report( data )
             // reedit only for last report version
             if ( i == i_max )
             {
-                menu_act += '<br /><a class="menu-act-item mt-1" onclick="reedit_report({{ args['record']['id_data'] }},\'' + obj[i].file + '\')">{{ _("Ré-éditer") }}</a>' ;
+                menu_act += '<br /><a class="menu-act-item mt-1" onclick="reedit_report({{ args['record']['id_data'] }},\'' + escapeHtml(obj[i].file) + '\')">{{ _("Ré-éditer") }}</a>' ;
 
                 let disp_tpl = '' ;
 
@@ -554,10 +554,10 @@ function load_report( data )
 
             let tmp_tr = '<tr>' ;
 
-            tmp_tr += '<td hidden>' + obj[i].id_data + '</td>' ;
+            tmp_tr += '<td hidden>' + escapeHtml(obj[i].id_data) + '</td>' ;
             tmp_tr += '<td class="col-5 text-center align-items-stretch">' + menu_act + tpl + '</td>' ;
-            tmp_tr += '<td class="col-2 text-center">' + obj[i].date + '</td>' ;
-            tmp_tr += '<td class="col-5 text-center">' + obj[i].tpl_name + '</td>' ;
+            tmp_tr += '<td class="col-2 text-center">' + escapeHtml(obj[i].date) + '</td>' ;
+            tmp_tr += '<td class="col-5 text-center">' + escapeHtml(obj[i].tpl_name) + '</td>' ;
             tmp_tr += '</tr>' ;
 
             tr_report += tmp_tr ;
@@ -595,10 +595,10 @@ function load_file( data )
     {
         let tmp_tr = '<tr>' ;
 
-        tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-        tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'REC\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+        tmp_tr += '<td class="filename"><div>' + escapeHtml(obj.name) + '</div></td>' ;
+        tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + escapeHtml(obj.name) + '\', \'REC\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
         {% if has_permission("RECORD_25") %}
-        tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">Supprimer</a>' ;
+        tmp_tr += ' - <a href="#" onclick="delete_file(' + escapeHtml(obj.id_data) + ');">Supprimer</a>' ;
         {% endif %}
         tmp_tr += '</div></td></tr>' ;
 

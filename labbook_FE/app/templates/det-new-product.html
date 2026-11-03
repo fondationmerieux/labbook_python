@@ -145,7 +145,7 @@ let id_item = $(e.currentTarget).val();
 function save_item()
 {
 var id_owner     = {{ session['user_id']|safe}} ;
-var prd_ser      = {{ args['prd_ser']|safe }}   ;
+var prd_ser      = {{ args['prd_ser']|clean_json }}   ;
 var name         = $("#prd_name").val()         ;
 var type         = $("#prd_type").val()         ;
 var nb_by_pack   = $("#prd_nb_by_pack").val()   ;
@@ -176,7 +176,7 @@ var msg = "" ;
     if (prd_ser > 0)
     {
         if (supplier < 1)
-        supplier = {% if args['stock_product']['prd_supplier'] %}{{ args['stock_product']['prd_supplier']|safe }}{% else %}0{% endif %} ;
+        supplier = {% if args['stock_product']['prd_supplier'] %}{{ args['stock_product']['prd_supplier']|clean_json }}{% else %}0{% endif %} ;
     }
 
 var param = '{ "id_owner":' + id_owner + ', ' +

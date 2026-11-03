@@ -66,7 +66,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -109,27 +109,27 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
     
     {% if has_permission("EQP_98") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-equipment/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-equipment/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
 
     {% if has_permission("EQP_102") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/eqp-document/" + data_items[i].id_data + "\">{{ _("Document") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/eqp-document/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Document") }}</a>" ;
     {% endif %}
 
     {% if has_permission("EQP_103") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-maintenance/" + data_items[i].id_data + "\">{{ _("Maintenances") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-maintenance/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Maintenances") }}</a>" ;
     {% endif %}
 
     {% if has_permission("EQP_112") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-failure/" + data_items[i].id_data + "\">{{ _("Pannes et réparations") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-failure/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Pannes et réparations") }}</a>" ;
     {% endif %}
 
     {% if has_permission("EQP_117") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-metrology/" + data_items[i].id_data + "\">{{ _("Métrologie") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/list-eqp-metrology/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Métrologie") }}</a>" ;
     {% endif %}
 
     {% if has_permission("EQP_99") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_items[i].id_data) + ")\">{{ _("Supprimer") }}</a>" ;
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
@@ -137,18 +137,18 @@ $("#list_items_total").html( data_len ) ;
     let photo = '' ;
 
         if (data_items[i].photo_name)
-        photo = "<img style=\"max-width:64px;max-height:64px;\" src=\"{{ session['server_ext'] }}/" + data_items[i].photo_url + "\" alt=\"" + data_items[i].photo_name + "\" >" ;
+        photo = "<img style=\"max-width:64px;max-height:64px;\" src=\"{{ session['server_ext'] }}/" + escapeHtml(data_items[i].photo_url) + "\" alt=\"" + escapeHtml(data_items[i].photo_name) + "\" >" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_data) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
            "<td><div class=\"text-start\">" + photo + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].maker + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].model + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].location + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].section + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].funct + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].eqp_status + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].maker) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].model) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].location) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].section) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].funct) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].eqp_status) + "</div></td></tr>" ;
     }
 {% endif %}
 

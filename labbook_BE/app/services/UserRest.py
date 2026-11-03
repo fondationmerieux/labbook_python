@@ -15,7 +15,7 @@ from app.models.Constants import Constants
 from app.models.User import User
 from app.models.Logs import Logs
 from app.models.Various import Various
-from app.security.oauth_routes import require_oauth
+from app.security.oauth_routes import require_oauth, bind_session_user
 
 
 # Names exported when this module is imported with "*" (see app/__init__.py).
@@ -23,7 +23,7 @@ from app.security.oauth_routes import require_oauth
 # (Constants, datetime, logging...) and they leak into the caller.
 __all__ = [
     'UserAccess',
-    'UserByLogin',
+    'UserTokenOwner',
     'UserDet',
     'UserStaffDet',
     'UserList',
@@ -99,6 +99,9 @@ class UserAccess(Resource):
 
         # Successful login
         if ret is True:
+            # Open the BE session here, after the password check
+            bind_session_user(int(user["id_data"]))
+
             payload = {"id_user": int(user["id_data"]), "role_type": user["role_type"], "login": login}
             self.log.info(Logs.fileline() + ' : UserAccess authorized role=' + str(user['role_type']) + ' | login=' + str(login))
             try:
@@ -131,31 +134,28 @@ class UserAccess(Resource):
         return compose_ret('', Constants.cst_content_type_json, 500)
 
 
-class UserByLogin(Resource):
+class UserTokenOwner(Resource):
     log = logging.getLogger('log_services')
 
     @require_oauth()
-    def get(self, login):
+    def get(self):
         """
-        Return a user by login.
-
-        Args:
-            login (str): user login.
+        Return the user who owns the token. The FE uses it instead of a login sent by the browser.
 
         Returns:
             200: user fields, None replaced by ''.
-            404: user not found.
+            404: token of a calling program, or user not found.
         """
         audit_user = request.oauth_user
-        user = User.getUserByLogin(login)
+        user = User.getUserByLogin(audit_user.get('usr_login') or '') if audit_user.get('usr_id') else None
 
         if not user:
-            self.log.error(Logs.fileline() + ' : TRACE UserByLogin')
+            self.log.error(Logs.fileline() + ' : TRACE UserTokenOwner not found')
             try:
-                details = {"result": "ERROR", "reason": "NOT_FOUND", "login": str(login)}
-                Audit.insertAudit(audit_user, "UserByLogin", "USER", None, "ERROR", details, "R")
+                details = {"result": "ERROR", "reason": "NOT_FOUND"}
+                Audit.insertAudit(audit_user, "UserTokenOwner", "USER", None, "ERROR", details, "R")
             except Exception:
-                self.log.exception(Logs.fileline() + ' : UserByLogin ERROR audit not found')
+                self.log.exception(Logs.fileline() + ' : UserTokenOwner ERROR audit not found')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
         # Replace None by empty string
@@ -163,12 +163,12 @@ class UserByLogin(Resource):
             if user[key] is None:
                 user[key] = ''
 
-        self.log.info(Logs.fileline() + ' : TRACE UserByLogin')
+        self.log.info(Logs.fileline() + ' : TRACE UserTokenOwner')
         try:
-            details = {"result": "SUCCESS", "action": "VIEW", "login": login}
-            Audit.insertAudit(audit_user, "UserByLogin", "USER", int(user["id_data"]), "SUCCESS", details, "R")
+            details = {"result": "SUCCESS", "action": "VIEW"}
+            Audit.insertAudit(audit_user, "UserTokenOwner", "USER", int(user["id_data"]), "SUCCESS", details, "R")
         except Exception:
-            self.log.exception(Logs.fileline() + ' : UserByLogin ERROR audit success')
+            self.log.exception(Logs.fileline() + ' : UserTokenOwner ERROR audit success')
         return compose_ret(user, Constants.cst_content_type_json)
 
 
@@ -185,9 +185,17 @@ class UserDet(Resource):
 
         Returns:
             200: user fields, dates as YYYY-MM-DD, None replaced by ''.
+            403: not your own file and no right on users or staff.
             404: user not found.
         """
         audit_user = request.oauth_user
+
+        # Personal data: your own file, or a right on users or staff
+        if id_user != int(audit_user.get('usr_id') or 0) and \
+           not User.hasRight(audit_user, 'SETTING_39', 'SETTING_41', 'STAFF_82'):
+            self.log.error(Logs.fileline() + ' : UserDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         user = User.getUserDetails(id_user)
 
         if not user:
@@ -259,6 +267,27 @@ class UserDet(Resource):
             except Exception:
                 self.log.exception(Logs.fileline() + ' : UserDet ERROR audit args missing')
             return compose_ret('', Constants.cst_content_type_json, 400)
+
+        # SETTING_41 can change everything. Without it: only your own file, or a staff file
+        # without account with STAFF_83, and role, login, status and prescriber link stay as in database
+        if not User.hasRight(audit_user, 'SETTING_41'):
+            if id_user > 0:
+                current = User.getUserDetails(id_user)
+                own     = id_user == int(audit_user.get('usr_id') or 0)
+                staff   = bool(current) and current['role_type'] == 'Z' and User.hasRight(audit_user, 'STAFF_83')
+
+                if not current or not (own or staff):
+                    self.log.error(Logs.fileline() + ' : UserDet ERROR forbidden')
+                    return compose_ret('', Constants.cst_content_type_json, 403)
+
+                args['role_type'] = current['role_type']
+                args['role_pro']  = current['role_pro']
+                args['login']     = current['username']
+                args['stat']      = current['stat']
+                args['id_pres']   = current['side_account']
+            elif args['role_type'] != 'Z' or not User.hasRight(audit_user, 'STAFF_83'):
+                self.log.error(Logs.fileline() + ' : UserDet ERROR forbidden')
+                return compose_ret('', Constants.cst_content_type_json, 403)
 
         # update user
         if id_user > 0:
@@ -523,6 +552,11 @@ class UserList(Resource):
             200: list of users, section and role translated, dates as YYYY-MM-DD.
         """
         audit_user = request.oauth_user
+
+        # List of every user with contact details: users or staff managers only
+        if not User.hasRight(audit_user, 'SETTING_39', 'STAFF_82'):
+            self.log.error(Logs.fileline() + ' : UserList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if not args:
@@ -772,6 +806,11 @@ class UserRoleDet(Resource):
             500: role not found or database write failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to edit profile rights changes a profile
+        if not User.hasRight(audit_user, 'ADMIN_1'):
+            self.log.error(Logs.fileline() + ' : UserRoleDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'by_user' not in args or 'id_user' not in args or 'role_type' not in args or 'role_label' not in args or \
@@ -891,6 +930,11 @@ class UserRoleDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to edit profile rights changes a profile
+        if not User.hasRight(audit_user, 'ADMIN_1'):
+            self.log.error(Logs.fileline() + ' : UserRoleDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args:
@@ -1043,6 +1087,11 @@ class UserRightsList(Resource):
             404: no right.
         """
         audit_user = request.oauth_user
+
+        # Your own rights, or those of anyone for a profile rights editor
+        if id_user != int(audit_user.get('usr_id') or 0) and not User.hasRight(audit_user, 'ADMIN_1'):
+            self.log.error(Logs.fileline() + ' : UserRightsList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_rights = User.getUserListOfRights(id_user)
 
         if not l_rights:
@@ -1077,6 +1126,11 @@ class UserRightsList(Resource):
             404: no right.
         """
         audit_user = request.oauth_user
+
+        # Rights screen of a user or a profile: profile rights editors only
+        if not User.hasRight(audit_user, 'ADMIN_1'):
+            self.log.error(Logs.fileline() + ' : UserRightsList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_rights = User.getUserRightsList(args['id_user'], args['role_type'], args['role_id'])
@@ -1309,6 +1363,11 @@ class UserStatus(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user managing users activates or deactivates an account
+        if not User.hasRight(audit_user, 'SETTING_39'):
+            self.log.error(Logs.fileline() + ' : UserStatus ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'status' not in args:
@@ -1499,6 +1558,11 @@ class UserExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # The export carries the password hashes: users managers only
+        if not User.hasRight(audit_user, 'SETTING_39'):
+            self.log.error(Logs.fileline() + ' : UserExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['version', 'firstname', 'lastname', 'username', 'password', 'title', 'email', 'status', 'locale',
@@ -1721,6 +1785,11 @@ class UserImport(Resource):
             500: file empty or database write failed, the lines before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to import users runs an import
+        if not User.hasRight(audit_user, 'SETTING_40'):
+            self.log.error(Logs.fileline() + ' : UserImport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         if not filename or id_user <= 0:
             self.log.error(Logs.fileline() + ' : UserImport ERROR args missing')

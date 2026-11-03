@@ -14,6 +14,7 @@ from app.models.Constants import Constants
 from app.models.Product import Product
 from app.models.Setting import Setting
 from app.models.Logs import Logs
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -95,6 +96,11 @@ class ProductDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Same rule as the sample page: RECORD_13, or the sampler whose homepage is the sample list
+        if not User.hasRight(audit_user, 'RECORD_13') and audit_user.get('usr_role') != 'SP':
+            self.log.error(Logs.fileline() + ' : ProductDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'stat' not in args or 'type' not in args or 'storage' not in args or 'ana' not in args or \

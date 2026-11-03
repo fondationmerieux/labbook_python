@@ -198,9 +198,9 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'MSG\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(obj.name) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + escapeHtml(obj.name) + '\', \'MSG\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a></div></td>' ;
     tmp_tr += '</tr>' ;
 
     tr_file += tmp_tr ;

@@ -160,7 +160,7 @@
     function save_doctor()
 {
     var id_owner  = {{ session['user_id']|safe}} ;
-    var id_doctor = {{ args['id_doctor']|safe }} ;
+    var id_doctor = {{ args['id_doctor']|clean_json }} ;
     var code      = $("#code").val()      ;
     var title     = $("#title").val()     ;
     var lastname  = $("#lastname").val()  ;

@@ -83,15 +83,26 @@ class Result:
         return cursor.fetchall()
 
     @staticmethod
-    def getResultRecord(id_rec, empty=True, link_fam=None):
+    def getResultRecord(id_rec, empty=True, link_fam=None, validated=False):
         """
         Read the results of a record with analysis, variable and sample, ordered for display.
         empty=False leaves out the results without value. link_fam is joined into the SQL text
-        without parameters.
+        without parameters. validated=True keeps only the biologically validated results, not
+        cancelled, and brings back their validation date.
         """
         cursor = DB.cursor()
 
         cond = ''
+        vld_select = ''
+        vld_join = ''
+
+        # Biological validation, the same criteria as getPreviousResult. Grouped because a
+        # result may carry several validations, and the last one is the one that counts.
+        if validated:
+            vld_select = 'vld.date_validation as date_valid, '
+            vld_join = ('inner join (select id_resultat, max(date_validation) as date_validation '
+                        'from sigl_10_data where type_validation = 252 and motif_annulation is NULL '
+                        'group by id_resultat) as vld on vld.id_resultat = res.id_data ')
 
         # avoid empty result of this request
         if not empty:
@@ -112,8 +123,9 @@ class Result:
                 cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
+               'ref.code as ana_code, pat.code as patient_code, '
                'ref.nom as nom, ref.ana_loinc as ana_loinc, fam.label as famille, res.id_data as id_res, '
-               'res.valeur as valeur, ref_var.*, '
+               'res.valeur as valeur, ' + vld_select + 'ref_var.*, '
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
                'rec.date_prescription as date_prescr, rec.statut as stat, req.urgent as urgent, rec_modified, '
                'req.id_owner as id_owner, rec.id_patient as id_pat, req.req_outsourced as outsourced, '
@@ -124,11 +136,12 @@ class Result:
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
                'left join sigl_01_data as samp on samp.id_dos = req.id_dos and samp_id_ana = req.ref_analyse '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
+               'left join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '
                'inner join sigl_05_07_data as var_pos on ref_var.id_data = var_pos.id_refvariable '
-               'and ref.id_data = var_pos.id_refanalyse '
+               'and ref.id_data = var_pos.id_refanalyse ' + vld_join +
                'where req.id_dos=%s ' + cond +
                'order by nom asc, id_ana asc, position asc')
 

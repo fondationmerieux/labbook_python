@@ -111,7 +111,7 @@ var test_url = connect_url + "/connect/is_analyzer_loaded/" + analyzer_id ;
             }
             else if (response.status === "ERR") 
             {
-                $("#test_result").html('<span style="color: red;">{{ _("Erreur : ") }}' + response.message + '</span>');
+                $("#test_result").html('<span style="color: red;">{{ _("Erreur : ") }}' + escapeHtml(response.message) + '</span>');
             }
             else
             {
@@ -128,7 +128,7 @@ var test_url = connect_url + "/connect/is_analyzer_loaded/" + analyzer_id ;
 function save_item()
 {
 var id_user  = {{ session['user_id']|safe}} ;
-var id_item  = {{ args['id_analyzer']|safe }} ;
+var id_item  = {{ args['id_analyzer']|clean_json }} ;
 var name     = $("#name").val()     ;
 var key      = $("#id").val()       ;
 var rank     = $("#rank").val()     ;

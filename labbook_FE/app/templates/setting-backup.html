@@ -643,7 +643,7 @@ poll_count = poll_count + 1 ;
                             $("#list-media").empty() ;
                             for( i in data.media)
                             {
-                                $("#list-media").append('<option value="' + data.media[i] + '">' + data.media[i] + '</option>');
+                                $("#list-media").append('<option value="' + escapeHtml(data.media[i]) + '">' + escapeHtml(data.media[i]) + '</option>');
                             }
 
                             $( "#dial-list-media" ).modal( "show" ) ;
@@ -654,7 +654,7 @@ poll_count = poll_count + 1 ;
                             $("#list-archive").empty() ;
                             for( i in data.archive)
                             {
-                                $("#list-archive").append('<option value="' + data.archive[i] + '">' + data.archive[i] + '</option>');
+                                $("#list-archive").append('<option value="' + escapeHtml(data.archive[i]) + '">' + escapeHtml(data.archive[i]) + '</option>');
                             }
 
                             $( "#dial-list-archive" ).modal( "show" ) ; 

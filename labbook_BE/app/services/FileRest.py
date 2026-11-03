@@ -144,9 +144,33 @@ class FileDoc(Resource):
         Returns:
             200: empty body.
             400: a field is missing.
+            403: no right to change the item this file is attached to.
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Right to change the item the file goes to, other kinds of owner left as they were
+        add_rights = {'REC': ('RECORD_19',), 'MANU': ('MANUAL_121', 'MANUAL_122'), 'PROC': ('PROCEDURE_128', 'PROCEDURE_129'),
+                      'MEET': ('MEETING_164', 'MEETING_165'), 'LABO': ('LAB_80',),
+                      'EQPH': ('EQP_97', 'EQP_98'), 'EQBI': ('EQP_97', 'EQP_98'), 'EQBD': ('EQP_113',),
+                      'EQCC': ('EQP_118',), 'EQMC': ('EQP_104',), 'EQPM': ('EQP_108',)}
+        staff_types = ('STAFF', 'USCV', 'USDI', 'USTR', 'USEV')
+
+        if type_ref in add_rights:
+            allowed = User.hasRight(audit_user, *add_rights[type_ref])
+            # A prescriber only attaches files to his own records
+            id_pres = User.getCallerPrescriber(audit_user)
+            if allowed and type_ref == 'REC' and id_pres is not None:
+                allowed = Record.isRecordOfPrescriber(ref, id_pres)
+        elif type_ref in staff_types:
+            allowed = ref == int(audit_user.get('usr_id') or 0) or User.hasRight(audit_user, 'STAFF_83', 'STAFF_84', 'SETTING_41')
+        else:
+            allowed = True
+
+        if not allowed:
+            self.log.error(Logs.fileline() + ' : FileDoc post ERROR forbidden type_ref=' + Logs.clean(type_ref))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         # ref = id_rec
         args = request.get_json()
 
@@ -221,9 +245,21 @@ class FileDoc(Resource):
 
         Returns:
             200: empty body.
+            403: no right to delete a file of this kind of owner.
             500: deletion failed or unknown type_ref.
         """
         audit_user = request.oauth_user
+
+        # Same right as the "Supprimer" link of each screen, other kinds of owner left as they were
+        delete_rights = {'REC': 'RECORD_25', 'MANU': 'MANUAL_125', 'PROC': 'PROCEDURE_132', 'MEET': 'MEETING_168',
+                         'LABO': 'LAB_81', 'EQPH': 'EQP_101', 'EQBI': 'EQP_101', 'EQBD': 'EQP_116',
+                         'EQCC': 'EQP_119', 'EQMC': 'EQP_107', 'EQPM': 'EQP_111',
+                         'STAFF': 'STAFF_84', 'USCV': 'STAFF_84', 'USDI': 'STAFF_84', 'USTR': 'STAFF_84', 'USEV': 'STAFF_84'}
+
+        if type_ref in delete_rights and not User.hasRight(audit_user, delete_rights[type_ref]):
+            self.log.error(Logs.fileline() + ' : FileDoc delete ERROR forbidden type_ref=' + Logs.clean(type_ref))
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         # ref= id_file
         ret = File.deleteFileDoc(type_ref, ref)
 

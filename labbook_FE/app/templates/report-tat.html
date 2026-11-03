@@ -99,7 +99,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-    var data_tat = {% if args['tat'] %}{{ args['tat']|safe }}{% else %}[]{% endif %} ;
+    var data_tat = {% if args['tat'] %}{{ args['tat']|clean_json }}{% else %}[]{% endif %} ;
 
 {% include 'js/search_analysis.js' %}
 
@@ -248,7 +248,7 @@ function display_data()
                 '<ul class="navbar-nav">' +
                 '<li class="nav-item dropdown"><a class="dropdown-toggle menu-act" data-bs-toggle="dropdown"></a>' +
                 '<div class="dropdown-menu menu-act-drop nav-style" style="padding:0;">' +
-                '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + data_tat[i].rec_type + '/' + data_tat[i].rec_id + '">{{ _("Dossier administratif") }}</a>' ;
+                '<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/' + escapeHtml(data_tat[i].rec_type) + '/' + escapeHtml(data_tat[i].rec_id) + '">{{ _("Dossier administratif") }}</a>' ;
 
             menu_act += '</div></li></ul></nav>' ;
 
@@ -257,9 +257,9 @@ function display_data()
             num_int = '' ;
 
             if (data_tat[i].rec_num_int != "")
-                num_int = '<p style="color: black">' + data_tat[i].rec_num_int + '</p>' ;
+                num_int = '<p style="color: black">' + escapeHtml(data_tat[i].rec_num_int) + '</p>' ;
 
-            rec_num  = '<span class="rec-num" title="' + data_tat[i].rec_num_long + '">' + data_tat[i].rec_num + num_int + '</span>' ;
+            rec_num  = '<span class="rec-num" title="' + escapeHtml(data_tat[i].rec_num_long) + '">' + escapeHtml(data_tat[i].rec_num) + num_int + '</span>' ;
 
             patient = '' ;
 
@@ -288,7 +288,7 @@ function display_data()
             ana_code = data_tat[i].ana_code ;
 
             if (data_tat[i].ana_loinc != "")
-                ana_code += " / " + data_tat[i].ana_loinc ;
+                ana_code += " / " + escapeHtml(data_tat[i].ana_loinc) ;
 
             analysis = ana_code + ' ' + data_tat[i].ana_name ;
             tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }} ' + data_tat[i].tat_tech_secs + '{{ _("s") }}' ;
@@ -296,7 +296,7 @@ function display_data()
             tat      = data_tat[i].tat_days + '{{ _("j") }} ' + data_tat[i].tat_hours + '{{ _("h") }} ' + data_tat[i].tat_mins + '{{ _("min") }} ' + data_tat[i].tat_secs + '{{ _("s") }}' ;
 
             res += '<tr><td class="nav_cell">' + menu_act + '</td>' +
-                '<td class="text-center">' + rec_date + '</td>' +
+                '<td class="text-center">' + escapeHtml(rec_date) + '</td>' +
                 '<td class="text-center">' + rec_num + '</td>' +
                 '<td class="text-center">' + patient + code_pat + '</td>' +
                 '<td class="text-center">' + analysis + '</td>' +
@@ -333,7 +333,7 @@ function export_tat()
         rec_num  = data_tat[i].rec_num ;
 
         if (data_tat[i].rec_num_int != "")
-            rec_num += ' / ' + data_tat[i].rec_num_int ;
+            rec_num += ' / ' + escapeHtml(data_tat[i].rec_num_int) ;
 
         patient = '' ;
 
@@ -360,7 +360,7 @@ function export_tat()
         ana_code = data_tat[i].ana_code ;
 
         if (data_tat[i].ana_loinc != "")
-            ana_code += " / " + data_tat[i].ana_loinc ;
+            ana_code += " / " + escapeHtml(data_tat[i].ana_loinc) ;
 
         analysis = ana_code + ' ' + data_tat[i].ana_name ;
         tat_tech = data_tat[i].tat_tech_days + '{{ _("j") }} ' + data_tat[i].tat_tech_hours + '{{ _("h") }} ' + data_tat[i].tat_tech_mins + '{{ _("min") }}' ;

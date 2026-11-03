@@ -38,15 +38,15 @@
                     <a href="{{ session['server_ext'] }}/list-analyzers" class="list-group-item icon-module admin-connect">{{ _("Configuration des analyseurs") }}</a>
                     {% endif %}
                     {# Admin: configuration of document templates #}
-                    {% if has_permission("SETTING_38") %}
+                    {% if has_permission("SETTING_59") %}
                     <a href="{{ session['server_ext'] }}/list-template" class="list-group-item icon-module admin-conf-template">{{ _("Configuration des modèles de documents") }}</a>
                     {% endif %}
                     {# Admin: configuration of patient/other forms #}
-                    {% if has_permission("SETTING_38") %}
+                    {% if has_permission("SETTING_69") %}
                     <a href="{{ session['server_ext'] }}/setting-form" class="list-group-item icon-module admin-conf-form">{{ _("Configuration de formulaires") }}</a>
                     {% endif %}
                     {# Admin: configuration of sending methods #}
-                    {% if has_permission("SETTING_38") %}
+                    {% if has_permission("SETTING_178") %}
                     <a href="{{ session['server_ext'] }}/setting-sending-method" class="list-group-item icon-module admin-conf-sending-method">{{ _("Configuration des méthodes d'envoi") }}</a>
                     {% endif %}
                 </div>
@@ -160,7 +160,7 @@ new Chart(document.getElementById("chart").getContext("2d")).Pie(pieData) ;
     {% if session['user_role'] not in ('P','Q') %}
     if ( sessionStorage.getItem( "stock-alert" ) != "DONE" )
     {
-    var data_stock = {% if args["stock"] %}{{ args["stock"]|safe }}{% else %}[]{% endif %} ;
+    var data_stock = {% if args["stock"] %}{{ args["stock"]|clean_json }}{% else %}[]{% endif %} ;
 
     sessionStorage.setItem("stock-alert", "DONE") ;
 

@@ -410,6 +410,7 @@ api.add_resource(RecordDetFromExt,      '/services/external/record/det/<int:id_r
 api.add_resource(RecordLast,            '/services/record/last')
 api.add_resource(RecordList,            '/services/record/list/<int:id_pres>')
 api.add_resource(RecordListFromExt,     '/services/external/record/list/<int:id_pres>')
+api.add_resource(RecordListUpdatedFromExt, '/services/external/record/updated')
 api.add_resource(RecordListAna,         '/services/record/list/analysis/<int:id_rec>')
 api.add_resource(RecordNext,            '/services/record/next/<int:id_rec>')
 api.add_resource(RecordNbEmer,          '/services/record/count/emergency')
@@ -517,7 +518,7 @@ api.add_resource(TemplateList,          '/services/setting/template/list', '/ser
 api.add_resource(TraceDownload,         '/services/quality/trace/download')
 api.add_resource(TraceList,             '/services/quality/trace/list/<string:type_trace>')
 api.add_resource(UserAccess,            '/services/user/access')  # no oauth required
-api.add_resource(UserByLogin,           '/services/user/login/<string:login>')
+api.add_resource(UserTokenOwner,        '/services/user/token-owner')
 api.add_resource(UserConnExport,        '/services/user/connection/export')
 api.add_resource(UserCount,             '/services/user/count')
 api.add_resource(UserDet,               '/services/user/det/<int:id_user>')

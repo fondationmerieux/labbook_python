@@ -95,7 +95,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -177,31 +177,31 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
 
     {% if has_permission("MANUAL_122") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-manual/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-manual/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
 
     {% if has_permission("MANUAL_123") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_items[i].id_data + ")\">{{ _("Supprimer") }}</a>" ; 
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_items[i].id_data) + ")\">{{ _("Supprimer") }}</a>" ; 
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 
     if ( data_items[i].id_file > 0)
-    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + data_items[i].filename + "', 'MANU', " + data_items[i].id_file + ");\"><span class=\"bi bi-download\"></span></a>" ;
+    link_manual = "<a href=\"#\" onclick=\"download_file('JF', '" + escapeHtml(data_items[i].filename) + "', 'MANU', " + escapeHtml(data_items[i].id_file) + ");\"><span class=\"bi bi-download\"></span></a>" ;
     else
     link_manual = "" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_data) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].title + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].mas_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].reference + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].writer + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].auditor + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].approver + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_insert + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_apply + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].date_update + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].title) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].mas_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].reference) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].writer) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].auditor) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].approver) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].date_insert) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].date_apply) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].date_update) + "</div></td>" +
            "<td><div class=\"text-start\">" + link_manual + "</div></td></tr>" ;
     }
 {% endif %}

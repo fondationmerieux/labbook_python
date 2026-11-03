@@ -131,7 +131,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_doctors = {{ args|safe or [] }} ;
+var data_doctors = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_doctors.length / p_step ) ;
@@ -218,31 +218,31 @@ $("#list_doctors_total").html( data_len ) ;
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
                    {% if has_permission("DOCTOR_88") %}
-                   menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + data_doctors[i].id_data + "\">{{ _("Editer") }}</a>" ;
+                   menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-doctor/" + escapeHtml(data_doctors[i].id_data) + "\">{{ _("Editer") }}</a>" ;
                    {% endif %}
 
     {% if has_permission("DOCTOR_89") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_doctors[i].id_data + ")\">{{ _("Supprimer") }}</a>";
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_doctors[i].id_data) + ")\">{{ _("Supprimer") }}</a>";
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 
-    link_email = "<a href=\"mailto:" + data_doctors[i].email + "\">" + data_doctors[i].email + "</a>" ;
+    link_email = "<a href=\"mailto:" + escapeHtml(data_doctors[i].email) + "\">" + escapeHtml(data_doctors[i].email) + "</a>" ;
 
-    res += "<tr><td hidden><div>" + data_doctors[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_doctors[i].id_data) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].code + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].lastname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].firstname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].initial + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].facility + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].service + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].address + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].doc_zipcity + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].city + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].phone + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].mobile + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_doctors[i].fax + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].code) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].lastname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].firstname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].initial) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].facility) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].service) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].address) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].doc_zipcity) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].city) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].phone) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].mobile) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_doctors[i].fax) + "</div></td>" +
            "<td><div class=\"text-start\">" + link_email + "</div></td></tr>" ;
     }
 {% endif %}

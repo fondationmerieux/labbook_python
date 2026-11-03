@@ -403,6 +403,11 @@ class AnalysisHistoExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Results of every patient for an analysis: analysis history right
+        if not User.hasRight(audit_user, 'REPORT_35'):
+            self.log.error(Logs.fileline() + ' : AnalysisHistoExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['id_data', 'code', 'fam_name', 'name', 'nb_ana']]
@@ -512,6 +517,11 @@ class AnalysisHistoList(Resource):
             400: date_beg or date_end missing.
         """
         audit_user = request.oauth_user
+
+        # Results of every patient for an analysis: analysis history right
+        if not User.hasRight(audit_user, 'REPORT_35'):
+            self.log.error(Logs.fileline() + ' : AnalysisHistoList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'date_beg' not in args or 'date_end' not in args:
@@ -576,6 +586,11 @@ class AnalysisHistoDet(Resource):
             400: date_beg, date_end or id_ana missing.
         """
         audit_user = request.oauth_user
+
+        # Results of every patient for an analysis: analysis history right
+        if not User.hasRight(audit_user, 'REPORT_35'):
+            self.log.error(Logs.fileline() + ' : AnalysisHistoDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'date_beg' not in args or 'date_end' not in args or 'id_ana' not in args:
@@ -1267,6 +1282,11 @@ class AnalysisReq(Resource):
             500: insertion failed, the items before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Analyses added from a new request or with the add analyses right
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_17'):
+            self.log.error(Logs.fileline() + ' : AnalysisReq ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'list_ana' not in args:
@@ -1360,6 +1380,11 @@ class AnalysisReq(Resource):
             500: bill update or deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Analysis removed from the administrative record
+        if not User.hasRight(audit_user, 'RECORD_18'):
+            self.log.error(Logs.fileline() + ' : AnalysisReq ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_rec' not in args or 'id_ana' not in args or 'type_samp' not in args or 'price' not in args:
@@ -1422,6 +1447,11 @@ class AnalysisExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export of the analysis repository, same right as the page
+        if not User.hasRight(audit_user, 'SETTING_42'):
+            self.log.error(Logs.fileline() + ' : AnalysisExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['version', 'id_ana', 'id_owner', 'ana_code', 'ana_name', 'ana_abbr', 'ana_family', 'ana_unit_rating',
@@ -1755,6 +1785,11 @@ class AnalysisImport(Resource):
             500: database write failed, the rows before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Import of the analysis repository
+        if not User.hasRight(audit_user, 'SETTING_43'):
+            self.log.error(Logs.fileline() + ' : AnalysisImport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'filename' not in args or 'type' not in args or 'id_user' not in args or 'test' not in args:

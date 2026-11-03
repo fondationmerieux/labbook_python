@@ -169,6 +169,11 @@ class DefaultValue(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Default values belong to the preferences
+        if not User.hasRight(audit_user, 'SETTING_38'):
+            self.log.error(Logs.fileline() + ' : DefaultValue ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Various.updateDefaultValue(name, value)
 
         if ret is False:

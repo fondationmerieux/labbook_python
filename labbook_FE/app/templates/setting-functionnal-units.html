@@ -47,7 +47,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var struct_val  = {"id_ihm":0, "fun_ser":0, "fun_name":"", "nb_user":0, "nb_fam":0, "fun_rank":0} ;
-var data_values = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var data_values = {% if args['data_values'] %}{{ args['data_values']|clean_json }}{% else %}[]{% endif %} ;
 var ind_values  = {% if args['data_last_id'] %}{{ args['data_last_id'] }}{% else %}0{% endif %} ;
 
 function add_value()
@@ -78,21 +78,21 @@ let obj = data ;
 
         if ( obj.fun_ser > 0 )
         {
-        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-link-unit-user/" + obj.fun_ser + "\">{{ _("Affecter des utilisateurs") }}</a>" +
-                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-link-unit-fam/" + obj.fun_ser + "\">{{ _("Affecter des familles d'analyses") }}</a>" ;
+        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-link-unit-user/" + escapeHtml(obj.fun_ser) + "\">{{ _("Affecter des utilisateurs") }}</a>" +
+                    "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-link-unit-fam/" + escapeHtml(obj.fun_ser) + "\">{{ _("Affecter des familles d'analyses") }}</a>" ;
 
         }
 
-    menu_act += "<a class=\"dropdown-item menu-act-item\" onclick=\"del_value(" + obj.fun_ser + ");load_data();\">{{ _("Supprimer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" onclick=\"del_value(" + escapeHtml(obj.fun_ser) + ");load_data();\">{{ _("Supprimer") }}</a>" ;
                    
     menu_act += "</div></li></ul></nav>" ;
 
-    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "", "display:none;") ;
+    tmp_tr += create_td(escapeHtml(obj.id_ihm), escapeHtml(obj.id_ihm), "", "display:none;") ;
     tmp_tr += create_td("", menu_act, "text-center", "") ; // actions
-    tmp_tr += create_td("", create_input("name_"+obj.id_ihm, "text", obj.fun_name, 0, 100, ""), "", "") ;
-    tmp_tr += create_td("", obj.nb_user, "text-center", "padding-top:15px;") ;
-    tmp_tr += create_td("", obj.nb_fam, "text-center", "padding-top:15px;") ;
-    tmp_tr += create_td("", create_input("rank_"+obj.id_ihm, "number", obj.fun_rank, 0, 20, ""), "", "") ;
+    tmp_tr += create_td("", create_input("name_"+escapeHtml(obj.id_ihm), "text", obj.fun_name, 0, 100, ""), "", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.nb_user), "text-center", "padding-top:15px;") ;
+    tmp_tr += create_td("", escapeHtml(obj.nb_fam), "text-center", "padding-top:15px;") ;
+    tmp_tr += create_td("", create_input("rank_"+escapeHtml(obj.id_ihm), "number", obj.fun_rank, 0, 20, ""), "", "") ;
     tmp_tr += "</tr>" ;
 
     tr_value += tmp_tr ;
@@ -169,7 +169,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + escapeHtml(val) + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;

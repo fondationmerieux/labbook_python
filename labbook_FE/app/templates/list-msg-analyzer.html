@@ -64,7 +64,7 @@ function loadItemsTable()
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    let deleteAction = `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.anm_ser}); return false;">{{ _("Supprimer") }}</a>`;
+                    let deleteAction = `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${escapeHtml(row.anm_ser)}); return false;">{{ _("Supprimer") }}</a>`;
 
                     return `
                         <nav class="">
@@ -72,7 +72,7 @@ function loadItemsTable()
                                 <li class="nav-item dropdown">
                                     <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                                     <div class="dropdown-menu menu-act-drop nav-style">
-                                        {% if has_permission("ALIQUOT_173") %}
+                                        {% if has_permission("SETTING_51") %}
                                         ${deleteAction}
                                         {% endif %}
                                     </div>
@@ -88,7 +88,7 @@ function loadItemsTable()
                 "render": function(data, type, row) {
                     let displayText = row.analyzer_name;
                     if (row.analyzer_id) {
-                        displayText += `<br><small>ID: ${row.analyzer_id}</small>`;
+                        displayText += `<br><small>ID: ${escapeHtml(row.analyzer_id)}</small>`;
                     }
                     return displayText;
                 }
@@ -127,7 +127,7 @@ function loadItemsTable()
                         directionText = ' {{ _("Analyseur") }} <i class="bi bi-arrow-right"></i> {{ _("LabBook") }}';
                     }
             
-                    let anmTotText = row.anm_tot ? `<strong>${row.anm_tot}</strong> ${directionText}` : "";
+                    let anmTotText = row.anm_tot ? `<strong>${escapeHtml(row.anm_tot)}</strong> ${directionText}` : "";
             
                     return `${anmTotText}<br />${statusText}`;
                 }

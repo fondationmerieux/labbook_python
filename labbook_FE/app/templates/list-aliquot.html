@@ -175,7 +175,7 @@ let in_stock = showDestocked ? "N" : "Y";
                 "data": null,
                 "render": function(data, type, row) {
                     let actionLabel = row.sal_in_stock === "Y" ? "{{ _('Déstocker') }}" : "{{ _('Restocker') }}";
-                    let actionFunction = row.sal_in_stock === "Y" ? `destock_item(${row.sal_ser})` : `restock_item(${row.sal_ser})`;
+                    let actionFunction = row.sal_in_stock === "Y" ? `destock_item(${escapeHtml(row.sal_ser)})` : `restock_item(${escapeHtml(row.sal_ser)})`;
                     
                     let menu = `
                         <nav class="nav-item dropdown">
@@ -186,7 +186,7 @@ let in_stock = showDestocked ? "N" : "Y";
                     {% if has_permission("RECORD_18") %}
                     if (row.id_rec && row.rec_num_long) {
                         menu += `
-                            <a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/${row.rec_type}/${row.id_rec}">
+                            <a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/administrative-record/${escapeHtml(row.rec_type)}/${escapeHtml(row.id_rec)}">
                                 {{ _("Dossier administratif") }}
                             </a>
                         `;
@@ -194,7 +194,7 @@ let in_stock = showDestocked ? "N" : "Y";
                     {% endif %}
 
                     {% if has_permission("ALIQUOT_171") %}
-                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-aliquot/${row.sal_ser}">{{ _("Éditer") }}</a>`;
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-aliquot/${escapeHtml(row.sal_ser)}">{{ _("Éditer") }}</a>`;
                     {% endif %}
 
                     {% if has_permission("ALIQUOT_172") %}
@@ -206,7 +206,7 @@ let in_stock = showDestocked ? "N" : "Y";
                     {% endif %}
 
                     {% if has_permission("ALIQUOT_173") %}
-                    menu += `<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.sal_ser}); return false;">{{ _("Supprimer") }}</a>`;
+                    menu += `<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${escapeHtml(row.sal_ser)}); return false;">{{ _("Supprimer") }}</a>`;
                     {% endif %}
 
                     menu += `
@@ -224,18 +224,18 @@ let in_stock = showDestocked ? "N" : "Y";
                     let typeLabel = row.type_label ? row.type_label : "";
 
                     if (row.sal_in_stock === "Y" && row.sal_date) {
-                        typeLabel += `<br><span><small>{{ _("Stocké le") }} ${row.sal_date}</small></span>`;
+                        typeLabel += `<br><span><small>{{ _("Stocké le") }} ${escapeHtml(row.sal_date)}</small></span>`;
                     }
 
                     if (row.sal_in_stock === "N") {
-                        typeLabel += `<br><span class="text-danger"><strong>{{ _("Déstocké le") }} ${row.sad_destock_date}</strong></span>`;
+                        typeLabel += `<br><span class="text-danger"><strong>{{ _("Déstocké le") }} ${escapeHtml(row.sad_destock_date)}</strong></span>`;
 
                         if (row.sad_reason) {
-                            typeLabel += `<br><span class="text-muted">${row.sad_reason}</span>`;
+                            typeLabel += `<br><span class="text-muted">${escapeHtml(row.sad_reason)}</span>`;
                         }
 
                         if (row.sad_location) {
-                            typeLabel += `<br><span class="text-muted">${row.sad_location}</span>`;
+                            typeLabel += `<br><span class="text-muted">${escapeHtml(row.sad_location)}</span>`;
                         }
 
                         if (row.sad_external === "Y") {
@@ -255,9 +255,9 @@ let in_stock = showDestocked ? "N" : "Y";
             { 
                 "data": null,
                 "render": function(data, type, row) {
-                    let patientInfo = `${row.pat_name} ${row.pat_firstname}`;
-                    let patientCode = row.pat_code ? `${row.pat_code}` : "";
-                    let patientCodeLab = row.pat_code_lab ? ` / ${row.pat_code_lab}` : "";
+                    let patientInfo = `${escapeHtml(row.pat_name)} ${escapeHtml(row.pat_firstname)}`;
+                    let patientCode = row.pat_code ? `${escapeHtml(row.pat_code)}` : "";
+                    let patientCodeLab = row.pat_code_lab ? ` / ${escapeHtml(row.pat_code_lab)}` : "";
 
                     return `${patientInfo}<br>${patientCode}${patientCodeLab}`;
                 }
@@ -266,8 +266,8 @@ let in_stock = showDestocked ? "N" : "Y";
                 "data": null,
                 "render": function(data, type, row) {
                     let recordNumLong = row.rec_num_long ? row.rec_num_long : "";
-                    let recordNumInt = row.rec_num_int ? `<br>${row.rec_num_int}` : "";
-                    let recordDatePrescr = row.rec_date_prescr ? `<br>${row.rec_date_prescr}` : "";
+                    let recordNumInt = row.rec_num_int ? `<br>${escapeHtml(row.rec_num_int)}` : "";
+                    let recordDatePrescr = row.rec_date_prescr ? `<br>${escapeHtml(row.rec_date_prescr)}` : "";
 
                     return `${recordNumLong}${recordNumInt}${recordDatePrescr}`;
                 }
@@ -275,9 +275,9 @@ let in_stock = showDestocked ? "N" : "Y";
             { 
                 "data": null,
                 "render": function(data, type, row) {
-                    let analysisCode = row.ana_code ? `${row.ana_code}` : "";
-                    let loincCode = row.ana_loinc ? ` / ${row.ana_loinc}` : "";
-                    let analysisName = row.ana_name ? `<br>${row.ana_name}` : "";
+                    let analysisCode = row.ana_code ? `${escapeHtml(row.ana_code)}` : "";
+                    let loincCode = row.ana_loinc ? ` / ${escapeHtml(row.ana_loinc)}` : "";
+                    let analysisName = row.ana_name ? `<br>${escapeHtml(row.ana_name)}` : "";
 
                     return `${analysisCode}${loincCode}${analysisName}`;
                 }
@@ -286,18 +286,18 @@ let in_stock = showDestocked ? "N" : "Y";
                 "data": null,
                 "render": function(data, type, row) {
                     let storagePath = `
-                        <a href="{{ session['server_ext'] }}/det-storage-room/${row.sro_ser}" class="text-decoration-none">${row.sro_label}</a> 
+                        <a href="{{ session['server_ext'] }}/det-storage-room/${escapeHtml(row.sro_ser)}" class="text-decoration-none">${escapeHtml(row.sro_label)}</a> 
                         &gt; 
-                        <a href="{{ session['server_ext'] }}/det-storage-chamber/${row.sch_ser}" class="text-decoration-none">${row.sch_label}</a> 
+                        <a href="{{ session['server_ext'] }}/det-storage-chamber/${escapeHtml(row.sch_ser)}" class="text-decoration-none">${escapeHtml(row.sch_label)}</a> 
                         &gt; 
-                        <a href="{{ session['server_ext'] }}/det-storage-compartment/${row.sco_ser}" class="text-decoration-none">${row.sco_label}</a> 
+                        <a href="{{ session['server_ext'] }}/det-storage-compartment/${escapeHtml(row.sco_ser)}" class="text-decoration-none">${escapeHtml(row.sco_label)}</a> 
                         &gt; 
-                        <a href="{{ session['server_ext'] }}/det-storage-box/${row.sbo_ser}" class="text-decoration-none">
-                        ${row.sbo_label} <br> <strong>[ ${row.sbo_coordinates} ]</strong>
+                        <a href="{{ session['server_ext'] }}/det-storage-box/${escapeHtml(row.sbo_ser)}" class="text-decoration-none">
+                        ${escapeHtml(row.sbo_label)} <br> <strong>[ ${escapeHtml(row.sbo_coordinates)} ]</strong>
                         </a> 
                         &gt; 
-                        <a href="{{ session['server_ext'] }}/det-aliquot/${row.sal_ser}" class="text-decoration-none">
-                            <strong>[ ${row.sal_coordinates} ]</strong>
+                        <a href="{{ session['server_ext'] }}/det-aliquot/${escapeHtml(row.sal_ser)}" class="text-decoration-none">
+                            <strong>[ ${escapeHtml(row.sal_coordinates)} ]</strong>
                         </a>
                     `;
 

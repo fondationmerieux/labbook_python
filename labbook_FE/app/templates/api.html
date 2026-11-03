@@ -31,14 +31,6 @@
         <script>
             document.addEventListener('DOMContentLoaded', function ()
             {
-                // Ensure BE session is set before Swagger OAuth
-                fetch("{{ url_for('confirm_access', _external=True) }}", {
-                  method: "POST",
-                  headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" },
-                  credentials: "same-origin",
-                  body: JSON.stringify({ id_user: {{ session['user_id']|int }} })
-                }).catch(()=>{ /* no-op */ });
-
                 const ui = SwaggerUIBundle({
                     url: "{{ url_for('swagger_api') }}",
                     dom_id: '#swagger-ui',

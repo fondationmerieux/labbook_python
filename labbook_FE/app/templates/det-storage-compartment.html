@@ -117,7 +117,7 @@ let chamber = document.getElementById("sco_chamber").value;
         sco_chamber: chamber
     };
     
-    fetch("{{ session['server_ext'] }}/services/quality/storage/compartment/det/" + {{ args['id_item']|safe}}, {
+    fetch("{{ session['server_ext'] }}/services/quality/storage/compartment/det/" + {{ args['id_item']|clean_json }}, {
         method: "POST",
         headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" },
         body: JSON.stringify(compartmentData)

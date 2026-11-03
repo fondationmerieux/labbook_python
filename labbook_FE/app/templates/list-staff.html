@@ -75,7 +75,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -117,29 +117,29 @@ $("#list_items_total").html( data_len ) ;
                    "<ul class=\"navbar-nav\">" +
                    "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
-                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-staff/" + data_items[i].id_data + "\">{{ _("Editer") }}</a>" ;
+                   "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-staff/" + escapeHtml(data_items[i].id_data) + "\">{{ _("Editer") }}</a>" ;
         
     menu_act += "</div></ul></nav>" ;
     {% else %}
     let menu_act = "" ;
     {% endif %}
 
-    link_email = "<a href=\"mailto:" + data_items[i].email + "\">" + data_items[i].email + "</a>" ;
+    link_email = "<a href=\"mailto:" + escapeHtml(data_items[i].email) + "\">" + escapeHtml(data_items[i].email) + "</a>" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].id_data + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].id_data) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].lastname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].firstname + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].initial + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].birth + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].address + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].phone + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].lastname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].firstname) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].initial) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].birth) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].address) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].phone) + "</div></td>" +
            "<td><div class=\"text-start\">" + link_email + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].arrived + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].position + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].section + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].last_eval + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].username + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].arrived) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].position) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].section) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].last_eval) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].username) + "</div></td></tr>" ;
     }
 {% endif %}
 

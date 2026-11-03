@@ -319,6 +319,12 @@ class ConformityDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to declare, any right opening a part of the form to change it
+        rights = ('NONCONF_144',) if id_item == 0 else ('NONCONF_145', 'NONCONF_148', 'NONCONF_149', 'NONCONF_150')
+        if not User.hasRight(audit_user, *rights):
+            self.log.error(Logs.fileline() + ' : ConformityDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         orig_id_item = int(id_item)
@@ -536,6 +542,11 @@ class ConformityDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a non conformity
+        if not User.hasRight(audit_user, 'NONCONF_146'):
+            self.log.error(Logs.fileline() + ' : ConformityDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteNonConformity(id_item)
 
         if not ret:
@@ -575,6 +586,11 @@ class ConformityExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export non conformities
+        if not User.hasRight(audit_user, 'NONCONF_147'):
+            self.log.error(Logs.fileline() + ' : ConformityExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['id_data', 'date_create', 'name', 'impact_patient', 'impact_user',
@@ -776,6 +792,16 @@ class ControlDet(Resource):
 
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        # Add or edit right of the internal or external control module
+        if args['type_ctrl'] == 'EXT':
+            right = 'CTRLEXT_158' if id_item == 0 else 'CTRLEXT_159'
+        else:
+            right = 'CTRLINT_152' if id_item == 0 else 'CTRLINT_153'
+
+        if not User.hasRight(audit_user, right):
+            self.log.error(Logs.fileline() + ' : ControlDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         # Update item
         if id_item > 0:
             self.log.info(Logs.fileline() + ' : TRACE update controlDet')
@@ -840,6 +866,11 @@ class ControlIntExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export internal controls
+        if not User.hasRight(audit_user, 'CTRLINT_154'):
+            self.log.error(Logs.fileline() + ' : ControlIntExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('INT')
 
@@ -1006,6 +1037,11 @@ class ControlIntRes(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Internal control result, the screen shows its save button with CTRLINT_152
+        if not User.hasRight(audit_user, 'CTRLINT_155', 'CTRLINT_152'):
+            self.log.error(Logs.fileline() + ' : ControlIntRes ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         orig_id_item = int(id_item)
@@ -1090,6 +1126,11 @@ class ControlIntResExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export internal control results
+        if not User.hasRight(audit_user, 'CTRLINT_156'):
+            self.log.error(Logs.fileline() + ' : ControlIntResExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cti_date', 'cti_target', 'cti_result', 'cti_comment', ]]
         controlDet = Quality.getControlDet(id_ctrl)
 
@@ -1182,6 +1223,11 @@ class ControlExtExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export external controls
+        if not User.hasRight(audit_user, 'CTRLEXT_160'):
+            self.log.error(Logs.fileline() + ' : ControlExtExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_ctrl', 'ctq_type_val', 'eqp_name', ]]
         dict_data = Quality.getControlList('EXT')
 
@@ -1349,6 +1395,11 @@ class ControlExtRes(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # External control result
+        if not User.hasRight(audit_user, 'CTRLEXT_161'):
+            self.log.error(Logs.fileline() + ' : ControlExtRes ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         orig_id_item = int(id_item)
@@ -1434,6 +1485,11 @@ class ControlExtResExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export external control results
+        if not User.hasRight(audit_user, 'CTRLEXT_162'):
+            self.log.error(Logs.fileline() + ' : ControlExtResExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['ctq_ser', 'ctq_name', 'ctq_type_val', 'eqp_name', 'cte_date', 'cte_organizer', 'cte_contact', 'cte_conform', 'cte_comment', ]]
         controlDet = Quality.getControlDet(id_ctrl)
 
@@ -1661,6 +1717,11 @@ class EquipmentDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change an equipment
+        if not User.hasRight(audit_user, 'EQP_97' if id_item == 0 else 'EQP_98'):
+            self.log.error(Logs.fileline() + ' : EquipmentDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_owner' not in args or 'id_item' not in args or 'name' not in args or 'maker' not in args or \
@@ -1752,6 +1813,11 @@ class EquipmentDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete equipment deletes one
+        if not User.hasRight(audit_user, 'EQP_99'):
+            self.log.error(Logs.fileline() + ' : EquipmentDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteEquipment(id_item)
 
         if not ret:
@@ -1867,6 +1933,11 @@ class EquipmentComm(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Comment of the equipment documents: equipment document right
+        if not User.hasRight(audit_user, 'EQP_102'):
+            self.log.error(Logs.fileline() + ' : EquipmentComm ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'comm' not in args:
@@ -2061,6 +2132,11 @@ class EquipmentExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export equipment exports it
+        if not User.hasRight(audit_user, 'EQP_100'):
+            self.log.error(Logs.fileline() + ' : EquipmentExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['id_data', 'creation_date', 'name', 'maker', 'model', 'funct', 'location', 'status', 'section',
                    'supplier', 'serial_number', 'inventory_number', 'incharge', 'purchase_date', 'receipt_date',
                    'commissioning_date', 'withdrawal_date', 'critical', 'comments']]
@@ -2194,6 +2270,11 @@ class EqpFailureExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export failures
+        if not User.hasRight(audit_user, 'EQP_115'):
+            self.log.error(Logs.fileline() + ' : EqpFailureExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         eqp = Quality.getEquipment(id_eqp)
 
         l_data = [['serial', 'date', 'equipment', 'type', 'incharge', 'supplier', 'comments']]
@@ -2280,6 +2361,11 @@ class EqpFailureDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add or edit a failure
+        if not User.hasRight(audit_user, 'EQP_113'):
+            self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'id_eqp' not in args or 'date_fail' not in args or 'type' not in args or \
@@ -2333,6 +2419,11 @@ class EqpFailureDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a failure
+        if not User.hasRight(audit_user, 'EQP_114'):
+            self.log.error(Logs.fileline() + ' : EqpFailureDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteEqpFailure(id_item)
 
         if not ret:
@@ -2411,6 +2502,11 @@ class EqpMetrologyExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export metrology, same right as the screen
+        if not User.hasRight(audit_user, 'EQP_117'):
+            self.log.error(Logs.fileline() + ' : EqpMetrologyExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         eqp = Quality.getEquipment(id_eqp)
 
         l_data = [['serial', 'date', 'equipment', 'supplier', 'comments']]
@@ -2490,6 +2586,11 @@ class EqpMetrologyDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add or edit a metrology
+        if not User.hasRight(audit_user, 'EQP_118'):
+            self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'id_eqp' not in args or 'date_metr' not in args or 'supplier' not in args or \
@@ -2541,6 +2642,11 @@ class EqpMetrologyDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a metrology, same right as the screen
+        if not User.hasRight(audit_user, 'EQP_119'):
+            self.log.error(Logs.fileline() + ' : EqpMetrologyDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteEqpMetrology(id_item)
 
         if not ret:
@@ -2619,6 +2725,11 @@ class EqpPreventExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export preventive maintenances
+        if not User.hasRight(audit_user, 'EQP_110'):
+            self.log.error(Logs.fileline() + ' : EqpPreventExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         eqp = Quality.getEquipment(id_eqp)
 
         l_data = [['serial', 'date', 'equipment_name', 'operator', 'comments']]
@@ -2696,6 +2807,11 @@ class EqpPreventiveDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add or edit a preventive maintenance
+        if not User.hasRight(audit_user, 'EQP_108'):
+            self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'id_eqp' not in args or 'date_prevent' not in args or \
@@ -2747,6 +2863,11 @@ class EqpPreventiveDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a preventive maintenance
+        if not User.hasRight(audit_user, 'EQP_109'):
+            self.log.error(Logs.fileline() + ' : EqpPreventiveDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteEqpPreventive(id_item)
 
         if not ret:
@@ -2828,6 +2949,11 @@ class EqpContractExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export maintenances
+        if not User.hasRight(audit_user, 'EQP_106'):
+            self.log.error(Logs.fileline() + ' : EqpContractExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         eqp = Quality.getEquipment(id_eqp)
 
         l_data = [['serial', 'date', 'equipment', 'supplier', 'update', 'comments']]
@@ -2906,6 +3032,11 @@ class EqpContractDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add or edit a maintenance
+        if not User.hasRight(audit_user, 'EQP_104'):
+            self.log.error(Logs.fileline() + ' : EqpContractDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'id_eqp' not in args or 'date_contract' not in args or 'supplier' not in args or \
@@ -2957,6 +3088,11 @@ class EqpContractDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a maintenance
+        if not User.hasRight(audit_user, 'EQP_105'):
+            self.log.error(Logs.fileline() + ' : EqpContractDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteEqpContract(id_item)
 
         if not ret:
@@ -3196,6 +3332,11 @@ class ManualDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete manuals deletes one
+        if not User.hasRight(audit_user, 'MANUAL_123'):
+            self.log.error(Logs.fileline() + ' : ManualDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteManual(id_item)
 
         if not ret:
@@ -3230,6 +3371,11 @@ class ManualExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export manuals exports them
+        if not User.hasRight(audit_user, 'MANUAL_124'):
+            self.log.error(Logs.fileline() + ' : ManualExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if not args:
@@ -3521,6 +3667,11 @@ class MeetingDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete meetings deletes one
+        if not User.hasRight(audit_user, 'MEETING_166'):
+            self.log.error(Logs.fileline() + ' : MeetingDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteMeeting(id_item)
 
         if not ret:
@@ -3555,6 +3706,11 @@ class MeetingExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export meetings exports them
+        if not User.hasRight(audit_user, 'MEETING_167'):
+            self.log.error(Logs.fileline() + ' : MeetingExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['id_data', 'date_meeting', 'type', 'type_id', 'promoter', 'report', ]]
         dict_data = Quality.getMeetingList()
 
@@ -3820,6 +3976,11 @@ class ProcedureDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete procedures deletes one
+        if not User.hasRight(audit_user, 'PROCEDURE_130'):
+            self.log.error(Logs.fileline() + ' : ProcedureDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteProcedure(id_item)
 
         if not ret:
@@ -3854,6 +4015,11 @@ class ProcedureExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export procedures exports them
+        if not User.hasRight(audit_user, 'PROCEDURE_131'):
+            self.log.error(Logs.fileline() + ' : ProcedureExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['id_data', 'title', 'reference', 'writer', 'auditor', 'approver', 'date_insert',
                    'date_apply', 'date_update', 'section', ]]
         dict_data = Quality.getProcedureList()
@@ -3964,6 +4130,11 @@ class StaffExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export staff exports it
+        if not User.hasRight(audit_user, 'STAFF_85'):
+            self.log.error(Logs.fileline() + ' : StaffExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['id_data', 'lastname', 'firstname', 'initial', 'birth', 'address',
                    'phone', 'email', 'arrived', 'position', 'section', 'last_eval', 'username', ]]
         dict_data = Quality.getStaffList()
@@ -4051,6 +4222,11 @@ class StockCancelIO(Resource):
             500: update failed or unknown type_move.
         """
         audit_user = request.oauth_user
+
+        # Cancel a stock movement
+        if not User.hasRight(audit_user, 'STOCK_140'):
+            self.log.error(Logs.fileline() + ' : StockCancelIO ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if not args or 'id_stock' not in args or 'type_move' not in args or 'id_user' not in args:
@@ -4440,6 +4616,11 @@ class StockProductDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a product
+        if not User.hasRight(audit_user, 'STOCK_134' if id_item == 0 else 'STOCK_135'):
+            self.log.error(Logs.fileline() + ' : StockProductDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'prd_name' not in args or 'prd_type' not in args or 'prd_nb_by_pack' not in args or \
@@ -4514,6 +4695,11 @@ class StockProductDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a product
+        if not User.hasRight(audit_user, 'STOCK_136'):
+            self.log.error(Logs.fileline() + ' : StockProductDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStockProduct(id_item)
 
         if not ret:
@@ -4600,6 +4786,11 @@ class StockSupplyDet(Resource):
             500: insertion failed.
         """
         audit_user = request.oauth_user
+
+        # Supply a product, the screen shows the button with STOCK_139
+        if not User.hasRight(audit_user, 'STOCK_139'):
+            self.log.error(Logs.fileline() + ' : StockSupplyDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'prs_prd' not in args or 'prs_nb_pack' not in args or 'prs_user' not in args or \
@@ -4662,6 +4853,11 @@ class StockSupplyMove(Resource):
             500: database write failed, the items before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Move products, same right as the page
+        if not User.hasRight(audit_user, 'STOCK_133'):
+            self.log.error(Logs.fileline() + ' : StockSupplyMove ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'list_supply' not in args:
@@ -4775,6 +4971,11 @@ class StockSupplyRemove(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Remove an empty stock line
+        if not User.hasRight(audit_user, 'STOCK_141'):
+            self.log.error(Logs.fileline() + ' : StockSupplyRemove ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args:
@@ -4862,6 +5063,11 @@ class StockUse(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Used quantity
+        if not User.hasRight(audit_user, 'STOCK_139'):
+            self.log.error(Logs.fileline() + ' : StockUse ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'pru_user' not in args or 'pru_prs' not in args or 'pru_nb_pack' not in args:
@@ -4931,6 +5137,11 @@ class StockExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export stock
+        if not User.hasRight(audit_user, 'STOCK_137'):
+            self.log.error(Logs.fileline() + ' : StockExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if not args:
@@ -5438,6 +5649,11 @@ class StorageRoomDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'sro_user' not in args or 'sro_name' not in args or 'sro_abbrev' not in args or 'sro_label' not in args:
@@ -5505,6 +5721,11 @@ class StorageRoomDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_173'):
+            self.log.error(Logs.fileline() + ' : StorageRoomDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStorageRoom(id_item)
 
         if not ret:
@@ -5615,6 +5836,11 @@ class StorageChamberDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'sch_user' not in args or 'sch_name' not in args or 'sch_abbrev' not in args or 'sch_label' not in args or \
@@ -5686,6 +5912,11 @@ class StorageChamberDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_173'):
+            self.log.error(Logs.fileline() + ' : StorageChamberDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStorageChamber(id_item)
 
         if not ret:
@@ -5796,6 +6027,11 @@ class StorageCompDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'sco_user' not in args or 'sco_name' not in args or 'sco_abbrev' not in args or 'sco_label' not in args or \
@@ -5869,6 +6105,11 @@ class StorageCompDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_173'):
+            self.log.error(Logs.fileline() + ' : StorageCompDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStorageComp(id_item)
 
         if not ret:
@@ -5979,6 +6220,11 @@ class StorageBoxDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'sbo_user' not in args or 'sbo_name' not in args or 'sbo_label' not in args or 'sbo_compartment' not in args or \
@@ -6052,6 +6298,11 @@ class StorageBoxDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_173'):
+            self.log.error(Logs.fileline() + ' : StorageBoxDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStorageBox(id_item)
 
         if not ret:
@@ -6171,6 +6422,11 @@ class StorageAliquotDet(Resource):
             500: database write failed, the items before it are kept.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_170' if id_item == 0 else 'ALIQUOT_171'):
+            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'aliquots' not in args:
@@ -6257,6 +6513,11 @@ class StorageAliquotDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete a storage element
+        if not User.hasRight(audit_user, 'ALIQUOT_173'):
+            self.log.error(Logs.fileline() + ' : StorageAliquotDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteStorageAliquot(id_item)
 
         if not ret:
@@ -6299,6 +6560,11 @@ class StorageAliquotDestock(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Take a sample out of stock
+        if not User.hasRight(audit_user, 'ALIQUOT_172'):
+            self.log.error(Logs.fileline() + ' : StorageAliquotDestock ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'in_stock' not in args or 'reason' not in args or 'external' not in args or \
@@ -6357,6 +6623,11 @@ class StorageAliquotRestock(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Put a sample back in stock, same button right
+        if not User.hasRight(audit_user, 'ALIQUOT_172'):
+            self.log.error(Logs.fileline() + ' : StorageAliquotRestock ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'in_stock' not in args:
@@ -6596,6 +6867,11 @@ class SupplierDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete suppliers deletes one
+        if not User.hasRight(audit_user, 'SUPPLIER_94'):
+            self.log.error(Logs.fileline() + ' : SupplierDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteSupplier(id_item)
 
         if not ret:
@@ -6630,6 +6906,11 @@ class SupplierExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to export suppliers exports them
+        if not User.hasRight(audit_user, 'SUPPLIER_95'):
+            self.log.error(Logs.fileline() + ' : SupplierExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_data = [['id_data', 'id_owner', 'supplier', 'lastname', 'firstname', 'funct', 'address',
                    'phone', 'mobile', 'fax', 'email', 'comment', 'critical',
                    'date_create', 'date_update', 'id_user_upd', ]]
@@ -6853,6 +7134,11 @@ class MessageList(Resource):
             200: list of messages, dates as YYYY-MM-DD HH:MM, id_file and filename of the attachment.
         """
         audit_user = request.oauth_user
+
+        # Only your own inbox
+        if id_user != int(audit_user.get('usr_id') or 0):
+            self.log.error(Logs.fileline() + ' : MessageList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_items = Quality.getMessageList(id_user)
 
         if not l_items:
@@ -6916,6 +7202,11 @@ class MessageDet(Resource):
                 self.log.exception(Logs.fileline() + ' : MessageDet ERROR audit 404')
             return compose_ret('', Constants.cst_content_type_json, 404)
 
+        # Only the sender or the receiver reads a message
+        if int(audit_user.get('usr_id') or 0) not in (int(item['ime_sender'] or 0), int(item['ime_receiver'] or 0)):
+            self.log.error(Logs.fileline() + ' : MessageDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         # Replace None by empty string
         for key, value in list(item.items()):
             if item[key] is None:
@@ -6952,6 +7243,9 @@ class MessageDet(Resource):
         """
         audit_user = request.oauth_user
         args = request.get_json() or {}
+
+        # The sender is always the connected user, never an id sent by the browser
+        args['id_user'] = int(audit_user.get('usr_id') or 0)
 
         if 'id_user' not in args or 'id_item' not in args or 'receiver' not in args or 'title' not in args or \
            'message' not in args:
@@ -7005,6 +7299,11 @@ class MessageDel(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Only your own messages are deleted
+        if id_user != int(audit_user.get('usr_id') or 0):
+            self.log.error(Logs.fileline() + ' : MessageDel ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deleteMessage(id_item, id_user)
 
         if ret <= 0:
@@ -7043,6 +7342,12 @@ class MessageRead(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Only the receiver marks a message as read
+        item = Quality.getMessage(id_item)
+        if not item or int(item['ime_receiver'] or 0) != int(audit_user.get('usr_id') or 0):
+            self.log.error(Logs.fileline() + ' : MessageRead ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.messageRead(id_item)
 
         if ret is False:
@@ -7077,7 +7382,12 @@ class MessageUnread(Resource):
         Returns:
             200: count as a raw scalar.
         """
-        # audit_user = request.oauth_user
+        audit_user = request.oauth_user
+
+        # Only your own unread count
+        if id_user != int(audit_user.get('usr_id') or 0):
+            self.log.error(Logs.fileline() + ' : MessageUnread ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         res = Quality.countMessageUnread(id_user)
 
         if not res:
@@ -7182,6 +7492,11 @@ class PrinterDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Printer configuration right
+        if not User.hasRight(audit_user, 'PRINT_174'):
+            self.log.error(Logs.fileline() + ' : PrinterDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'name' not in args or 'script' not in args or 'rank' not in args or 'default' not in args:
@@ -7249,6 +7564,11 @@ class PrinterDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Printer configuration right
+        if not User.hasRight(audit_user, 'PRINT_174'):
+            self.log.error(Logs.fileline() + ' : PrinterDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Quality.deletePrinter(id_item)
 
         if not ret:

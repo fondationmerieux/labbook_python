@@ -45,7 +45,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var id_func_unit = {{ args['id_func_unit'] or 0 }} ; 
-var data_values  = {% if args['data_values'] %}{{ args['data_values']|safe }}{% else %}[]{% endif %} ;
+var data_values  = {% if args['data_values'] %}{{ args['data_values']|clean_json }}{% else %}[]{% endif %} ;
 var l_link_users = [] ;
 
 function load_value( data )
@@ -66,13 +66,13 @@ let checked_stat = false ;
         l_link_users.push( obj.id_user ) ;
         }
 
-    let btn = '<input id="cbx_' + obj.id_user + '" class="mt-2" type="checkbox" onChange="change_data(this);" value="' + obj.id_user + '">' ;
+    let btn = '<input id="cbx_' + escapeHtml(obj.id_user) + '" class="mt-2" type="checkbox" onChange="change_data(this);" value="' + escapeHtml(obj.id_user) + '">' ;
 
     tmp_tr += create_td("", btn, "text-center", "") ; // actions
-    tmp_tr += create_td("", obj.username, "mt-1", "") ;
-    tmp_tr += create_td("", obj.firstname, "mt-1", "") ;
-    tmp_tr += create_td("", obj.lastname, "mt-1", "") ;
-    tmp_tr += create_td("", obj.role, "mt-1", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.username), "mt-1", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.firstname), "mt-1", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.lastname), "mt-1", "") ;
+    tmp_tr += create_td("", escapeHtml(obj.role), "mt-1", "") ;
     tmp_tr += '</tr>' ;
 
     tr_value += tmp_tr ;

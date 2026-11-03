@@ -75,7 +75,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_samples = {{ args|safe or [] }} ;
+var data_samples = {{ (args or [])|clean_json }} ;
 var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( data_samples.length / p_step ) ;
@@ -118,12 +118,12 @@ $("#listing_prod_total").html( data_len ) ;
     const maidenname = sample.maidenname || '';
     const firstname  = sample.firstname || '';
 
-    res += '<tr><td hidden><div>' + sample.id_rec + '</div></td>' +
-           '<td><div class="text-center"><span class="rec-num">' + sample.rec_num + '</span></div></td>' +
-           '<td><div class="text-center">' + sample.rec_date + '</div></td>' +
+    res += '<tr><td hidden><div>' + escapeHtml(sample.id_rec) + '</div></td>' +
+           '<td><div class="text-center"><span class="rec-num">' + escapeHtml(sample.rec_num) + '</span></div></td>' +
+           '<td><div class="text-center">' + escapeHtml(sample.rec_date) + '</div></td>' +
            '<td><div class="text-center">' + pat_ident(lastname, maidenname, firstname) + '</div></td>' +
-           '<td><div class="text-center">' + sample.samp_code + '</div></td>' +
-           '<td><div class="text-center">' + sample.analysis_name + '</div></td>' +
+           '<td><div class="text-center">' + escapeHtml(sample.samp_code) + '</div></td>' +
+           '<td><div class="text-center">' + escapeHtml(sample.analysis_name) + '</div></td>' +
            '<td><div class="text-center">' + status_samp(sample.id_prod, sample.statut, sample.type_prel_label) + '</div></td></tr>' ;
 }
 {% endif %}

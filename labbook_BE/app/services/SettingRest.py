@@ -624,6 +624,11 @@ class SettingLinkUnit(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user configuring functional units changes their links
+        if not User.hasRight(audit_user, 'SETTING_58'):
+            self.log.error(Logs.fileline() + ' : SettingLinkUnit ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         # self.log.info(Logs.fileline() + ' : DEBUG-TRACE args=' + str(args))
@@ -1868,6 +1873,11 @@ class TemplateDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # A template runs code at each PDF: add or edit right needed
+        if not User.hasRight(audit_user, 'SETTING_60' if id_item == 0 else 'SETTING_61'):
+            self.log.error(Logs.fileline() + ' : TemplateDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_item' not in args or 'tpl_name' not in args or 'tpl_type' not in args or \
@@ -1942,6 +1952,11 @@ class TemplateDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete document templates deletes one
+        if not User.hasRight(audit_user, 'SETTING_63'):
+            self.log.error(Logs.fileline() + ' : TemplateDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Setting.deleteTemplate(id_item)
 
         if not ret:
@@ -2658,6 +2673,11 @@ class SettingDHIS2Det(Resource):
             404: DHIS2 server not found.
         """
         audit_user = request.oauth_user
+
+        # The DHIS2 server file carries its password: DHIS2 configuration right only
+        if not User.hasRight(audit_user, 'SETTING_71'):
+            self.log.error(Logs.fileline() + ' : SettingDHIS2Det ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         item = Setting.getDHIS2Det(id_item)
 
         if not item:
@@ -2698,6 +2718,11 @@ class SettingDHIS2Det(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add or edit right on DHIS2 servers
+        if not User.hasRight(audit_user, 'SETTING_72' if id_item == 0 else 'SETTING_73'):
+            self.log.error(Logs.fileline() + ' : SettingDHIS2Det ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'name' not in args or 'login' not in args or 'pwd' not in args or \
@@ -2783,6 +2808,11 @@ class SettingDHIS2Det(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Only a user allowed to delete DHIS2 servers deletes one
+        if not User.hasRight(audit_user, 'SETTING_74'):
+            self.log.error(Logs.fileline() + ' : SettingDHIS2Det ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         ret = Setting.deleteDHIS2Det(id_item)
 
         if not ret:
@@ -2855,6 +2885,11 @@ class SettingSendMethodDet(Resource):
             404: sending method not found.
         """
         audit_user = request.oauth_user
+
+        # The sending method file carries its secrets: sending methods configuration right only
+        if not User.hasRight(audit_user, 'SETTING_178'):
+            self.log.error(Logs.fileline() + ' : SettingSendMethodDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         item = Setting.getSendingMethodDet(type, id_item)
 
         if not item:
@@ -3397,6 +3432,11 @@ class SettingSendReport(Resource):
         """
         audit_user = request.oauth_user
 
+        # Only a user allowed to send reports sends one
+        if not User.hasRight(audit_user, 'RECORD_176'):
+            self.log.error(Logs.fileline() + ' : SettingSendReport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         data = request.get_json(silent=True) or {}
         method_id   = data.get("method_id") or 0
         method_type = data.get("method_type") or ''
@@ -3464,6 +3504,11 @@ class SettingSendList(Resource):
             200: list of sending events, date as YYYY-MM-DD HH:MM:SS.
         """
         audit_user = request.oauth_user
+
+        # Sending list with recipients: sending list right only
+        if not User.hasRight(audit_user, 'RECORD_177'):
+            self.log.error(Logs.fileline() + ' : SettingSendList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args  = request.get_json(silent=True) or {}
         limit = args.get('limit') or 1000
 
@@ -3510,6 +3555,11 @@ class SettingSendResend(Resource):
             502: sending failed, with its reason.
         """
         audit_user = request.oauth_user
+
+        # Resend from the sending list: sending list right only
+        if not User.hasRight(audit_user, 'RECORD_177'):
+            self.log.error(Logs.fileline() + ' : SettingSendResend ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         data = request.get_json(silent=True) or {}
 
         try:
@@ -3560,6 +3610,11 @@ class SettingOauthList(Resource):
             200: list of clients.
         """
         audit_user = request.oauth_user
+
+        # OAuth clients carry the secrets of the calling programs: administrator profile only, like the menu
+        if audit_user.get('usr_role') != 'A':
+            self.log.error(Logs.fileline() + ' : OAuth client ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_items = Setting.getSettingOauthList()
 
         if not l_items:
@@ -3596,6 +3651,11 @@ class SettingOauthDet(Resource):
             404: client not found.
         """
         audit_user = request.oauth_user
+
+        # OAuth clients carry the secrets of the calling programs: administrator profile only, like the menu
+        if audit_user.get('usr_role') != 'A':
+            self.log.error(Logs.fileline() + ' : OAuth client ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         item = Setting.getSettingOauth(id_item)
 
         if not item:
@@ -3641,6 +3701,11 @@ class SettingOauthDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # OAuth clients carry the secrets of the calling programs: administrator profile only, like the menu
+        if audit_user.get('usr_role') != 'A':
+            self.log.error(Logs.fileline() + ' : OAuth client ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         # STEP 1: basic shape validation
@@ -3751,6 +3816,11 @@ class SettingOauthDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # OAuth clients carry the secrets of the calling programs: administrator profile only, like the menu
+        if audit_user.get('usr_role') != 'A':
+            self.log.error(Logs.fileline() + ' : OAuth client ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         cur = Setting.getSettingOauth(id_item)
         if not cur:
             try:

@@ -3165,7 +3165,7 @@ class Quality:
         """
         cursor = DB.cursor()
 
-        req = ('select ime_ser, ime_date, ime_sender, ime_subject, ime_body, ime_is_read, '
+        req = ('select ime_ser, ime_date, ime_sender, ime_receiver, ime_subject, ime_body, ime_is_read, '
                'TRIM(CONCAT(u1.lastname," ",u1.firstname," - ",u1.username)) as sender, '
                'TRIM(CONCAT(u2.lastname," ",u2.firstname," - ",u2.username)) as receiver '
                'from internal_messaging '

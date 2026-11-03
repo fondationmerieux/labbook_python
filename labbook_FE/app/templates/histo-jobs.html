@@ -84,17 +84,6 @@ const LABEL_DOW_6 = "{{ _('Samedi') }}";
 const LABEL_DOW_7 = "{{ _('Dimanche') }}";
 
 // Escape HTML for safe tooltip content
-function escapeHtml(str) 
-{
-    if (!str) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
 function jsStringEscape(str)
 {
     if (!str) {
@@ -336,7 +325,7 @@ function loadRunTable() {
                         <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                         <div class="dropdown-menu nav-style menu-act-drop">
                         {% if has_permission("AUTO_181") %}
-                        <a class="dropdown-item menu-act-item" href="#" onclick="view_job(${jobId}); return false;">{{ _('Voir la tâche') }}</a>
+                        <a class="dropdown-item menu-act-item" href="#" onclick="view_job(${escapeHtml(jobId)}); return false;">{{ _('Voir la tâche') }}</a>
                         {% endif %}
                         </div>
                         </nav>`;

@@ -61,7 +61,7 @@
 
 {% block add_script %}
 <script>
-var data_items = {{ args|safe or [] }} ;
+var data_items = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_items.length / p_step ) ;
@@ -114,21 +114,21 @@ $("#list_items_total").html( data_len ) ;
                    "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" ;
 
     {% if has_permission("SETTING_50") %}
-    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-analyzer/" + data_items[i].ans_ser + "\">{{ _("Editer") }}</a>" ;
+    menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"{{ session["server_ext"] }}/det-analyzer/" + escapeHtml(data_items[i].ans_ser) + "\">{{ _("Editer") }}</a>" ;
     {% endif %}
 
     {% if has_permission("SETTING_51") %}
-    menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + data_items[i].ans_ser + ')">{{ _("Supprimer") }}</a>' ;
+    menu_act += '<a class="dropdown-item menu-act-item" href="#" onclick="delete_item(' + escapeHtml(data_items[i].ans_ser) + ')">{{ _("Supprimer") }}</a>' ;
     {% endif %}
         
     menu_act += "</div></ul></nav>" ;
 
-    res += "<tr><td hidden><div>" + data_items[i].ans_ser + "</div></td>" +
+    res += "<tr><td hidden><div>" + escapeHtml(data_items[i].ans_ser) + "</div></td>" +
            "<td><div>" + menu_act + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].ans_name + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].ans_id + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].ans_batch + "</div></td>" +
-           "<td><div class=\"text-start\">" + data_items[i].ans_rank + "</div></td></tr>" ;
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].ans_name) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].ans_id) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].ans_batch) + "</div></td>" +
+           "<td><div class=\"text-start\">" + escapeHtml(data_items[i].ans_rank) + "</div></td></tr>" ;
     }
 
     $("#tbody_items").append(res) ;

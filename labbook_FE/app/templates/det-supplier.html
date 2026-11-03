@@ -103,7 +103,7 @@
 function save_item()
 {
 var id_owner  = {{ session['user_id']|safe}} ;
-var id_item   = {{ args['id_supplier']|safe }} ;
+var id_item   = {{ args['id_supplier']|clean_json }} ;
 var supplier  = $("#supplier").val()  ;
 var lastname  = $("#lastname").val()  ;
 var firstname = $("#firstname").val() ;

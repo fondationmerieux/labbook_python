@@ -44,7 +44,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_audit_archives = {% if args['data_audit_archives'] %}{{ args['data_audit_archives']|safe }}{% else %}[]{% endif %} ;
+var data_audit_archives = {% if args['data_audit_archives'] %}{{ args['data_audit_archives']|clean_json }}{% else %}[]{% endif %} ;
 
 function load_data()
 {
@@ -67,8 +67,8 @@ let tr_file = '' ;
 
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'AA\', \'' + filename + '\', \'AUDIT\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(filename) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'AA\', \'' + escapeHtml(filename) + '\', \'AUDIT\', 0);">{{ _("Télécharger") }}</a>';
     tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;

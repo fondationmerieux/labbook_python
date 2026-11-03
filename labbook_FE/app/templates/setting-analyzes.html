@@ -128,7 +128,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_analyzes = {{ args|safe or [] }} ;
+var data_analyzes = {{ (args or [])|clean_json }} ;
 var p_step     = 20 ;
 var p_cur      = 1 ;
 var p_max      = Math.ceil( data_analyzes.length / p_step ) ;
@@ -209,16 +209,16 @@ let res = ""
                        "<ul class=\"navbar-nav\">" +
                        "<li class=\"nav-item dropdown\"><a class=\"dropdown-toggle menu-act\" data-bs-toggle=\"dropdown\"></a>" +
                        "<div class=\"dropdown-menu menu-act-drop nav-style\" style=\"padding:0;\">" +
-                       "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-det-analysis/" + data_analyzes[i].id_data + "\">{{ _("Editer") }}</a>" ;
+                       "<a class=\"dropdown-item menu-act-item\" href=\"{{ session['server_ext'] }}/setting-det-analysis/" + escapeHtml(data_analyzes[i].id_data) + "\">{{ _("Editer") }}</a>" ;
 
         {% if has_permission("SETTING_44") %}
             if ( data_analyzes[i].stat != 4 )
-            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"upd_status_item('E'," + data_analyzes[i].id_data + ")\">{{ _("Activer") }}</a>" ;
+            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"upd_status_item('E'," + escapeHtml(data_analyzes[i].id_data) + ")\">{{ _("Activer") }}</a>" ;
             else
-            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"upd_status_item('D'," + data_analyzes[i].id_data + ")\">{{ _("Désactiver") }}</a>" ;
+            menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"upd_status_item('D'," + escapeHtml(data_analyzes[i].id_data) + ")\">{{ _("Désactiver") }}</a>" ;
         {% endif %}
 
-        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + data_analyzes[i].id_data + ")\">{{ _("Supprimer") }}</a>";
+        menu_act += "<a class=\"dropdown-item menu-act-item\" href=\"#\" onclick=\"delete_item(" + escapeHtml(data_analyzes[i].id_data) + ")\">{{ _("Supprimer") }}</a>";
 
         menu_act += "</div></ul></nav>" ;
 
@@ -235,14 +235,14 @@ let res = ""
         let ana_code = data_analyzes[i].code ;
 
             if (data_analyzes[i].ana_loinc != "")
-            ana_code += "<br />" + data_analyzes[i].ana_loinc;
+            ana_code += "<br />" + escapeHtml(data_analyzes[i].ana_loinc);
 
         res += "<tr><td><div>" + menu_act + "</div></td>" +
-               "<td><div>" + data_analyzes[i].id_data + "</div></td>" +
+               "<td><div>" + escapeHtml(data_analyzes[i].id_data) + "</div></td>" +
                "<td><div class=\"text-start\">" + ana_code + "</div></td>" +
-               "<td><div class=\"text-start\">" + data_analyzes[i].name + "</div></td>" +
-               "<td><div class=\"text-start\">" + data_analyzes[i].abbr + "</div></td>" +
-               "<td><div class=\"text-start\">" + data_analyzes[i].type_ana + "</div></td>" +
+               "<td><div class=\"text-start\">" + escapeHtml(data_analyzes[i].name) + "</div></td>" +
+               "<td><div class=\"text-start\">" + escapeHtml(data_analyzes[i].abbr) + "</div></td>" +
+               "<td><div class=\"text-start\">" + escapeHtml(data_analyzes[i].type_ana) + "</div></td>" +
                "<td><div class=\"text-start\">" + analysis_stat + "</div></td>" +
                "<td><div class=\"text-start\">" + product + "</div></td></tr>" ;
         } 

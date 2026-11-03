@@ -2168,7 +2168,7 @@ msgid "EEQ"
 msgstr ""
 
 #: templates/det-job.html:192 templates/report-dhis2.html:55
-msgid "Pannes d'équipment"
+msgid "Pannes d'équipement"
 msgstr ""
 
 #: templates/det-job.html:193 templates/det-template.html:27
@@ -6551,7 +6551,7 @@ msgid "Paramétrage des liens entre unité et utilisateurs"
 msgstr ""
 
 #: templates/setting-lite.html:2 templates/setting-lite.html:12
-msgid "Paramètrage LabBook Lite"
+msgid "Paramétrage LabBook Lite"
 msgstr ""
 
 #: templates/setting-lite.html:21
@@ -6603,7 +6603,7 @@ msgid "Catégories de manuels"
 msgstr ""
 
 #: templates/setting-oauth-list.html:2 templates/setting-oauth-list.html:12
-msgid "Paramètrage OAuth client"
+msgid "Paramétrage OAuth client"
 msgstr ""
 
 #: templates/setting-oauth-list.html:92

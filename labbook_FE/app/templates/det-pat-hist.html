@@ -44,7 +44,7 @@
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var id_user = {{ session['user_id']|safe }} ;
-var id_pat  = {{ id_pat|safe }} ;
+var id_pat  = {{ id_pat|clean_json }} ;
 
 {{ args['history_js'] | safe }}
 

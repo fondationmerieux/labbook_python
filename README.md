@@ -88,7 +88,7 @@ Contents:
 - `LABBOOK_DB_PWD`: database user password
 - `LABBOOK_DB_NAME`: database name
 - `LABBOOK_DB_HOST`: database host as seen from the container
-- `LABBOOK_DEBUG`: if 1 runs gunicorn with reload option
+- `LABBOOK_DEBUG`: if 1 runs gunicorn with reload option and opens the API page (Swagger) to every user, never in production
 - `LABBOOK_TEST_OK`: backup.sh commands (com1,com2,...) to fake with OK status
 - `LABBOOK_TEST_KO`: backup.sh commands (com1,com2,...) to fake with ERROR status
 - `LABBOOK_URL_PREFIX`: set it to replace `sigl` in LabBook URLs in development mode

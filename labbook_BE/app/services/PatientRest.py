@@ -12,7 +12,6 @@ from app.models.Constants import Constants
 from app.models.General import compose_ret
 from app.models.Logs import Logs
 from app.models.Patient import Patient
-from app.models.Record import Record
 from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
@@ -53,6 +52,11 @@ class PatientList(Resource):
             200: list of patients, None replaced by ''.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : PatientList ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_patients = Patient.getPatientList(args)
@@ -154,6 +158,11 @@ class PatientListExport(Resource):
             500: CSV file could not be written.
         """
         audit_user = request.oauth_user
+
+        # Export of every patient: patient history right only
+        if not User.hasRight(audit_user, 'REPORT_34'):
+            self.log.error(Logs.fileline() + ' : PatientListExport ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         l_data = [['id_data', 'id_owner', 'code', 'code_lab', 'lastname', 'firstname', 'birth', 'sex']]
@@ -423,12 +432,7 @@ class PatientDet(Resource):
         """
         audit_user = request.oauth_user
 
-        # a prescriber only reads his own patients
-        id_pres = User.getCallerPrescriber(audit_user)
-        if id_pres is not None and not Record.isPatientOfPrescriber(id_pat, id_pres):
-            self.log.error(Logs.fileline() + ' : PatientDet ERROR patient of another prescriber id_pat=' + str(id_pat))
-            return compose_ret('', Constants.cst_content_type_json, 403)
-
+        # Every user reads any patient: a prescriber may file a request for a patient another one created
         patient = Patient.getPatient(id_pat)
 
         if not patient:
@@ -478,6 +482,11 @@ class PatientDet(Resource):
             500: patient not found on update, or database write failed.
         """
         audit_user = request.oauth_user
+
+        # Patient created or changed from a request, a record, a sample or the patient management
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_18', 'ALIQUOT_170', 'SETTING_70'):
+            self.log.error(Logs.fileline() + ' : PatientDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args:
@@ -900,6 +909,11 @@ class PatientHistFormItem(Resource):
             400: id_pat invalid, or id_user, block_id or fields missing.
         """
         audit_user = request.oauth_user
+
+        # Same rights as the patient file
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_18', 'ALIQUOT_170', 'SETTING_70'):
+            self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json(silent=True) or {}
 
         id_user  = args.get('id_user')
@@ -950,6 +964,11 @@ class PatientHistFormItem(Resource):
         """
         audit_user = request.oauth_user
 
+        # Same rights as the patient file
+        if not User.hasRight(audit_user, 'RECORD_11', 'RECORD_12', 'RECORD_18', 'ALIQUOT_170', 'SETTING_70'):
+            self.log.error(Logs.fileline() + ' : PatientHistFormItem ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         if not evt_id:
             self.log.error(Logs.fileline() + ' : PatientHistFormItem DELETE missing evt_id')
             try:
@@ -995,6 +1014,16 @@ class PatientHistoric(Resource):
             404: patient not found.
         """
         audit_user = request.oauth_user
+
+        # Laboratory screen: a prescriber never reads it
+        if User.getCallerPrescriber(audit_user) is not None:
+            self.log.error(Logs.fileline() + ' : PatientHistoric ERROR forbidden to a prescriber')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
+        # Whole analysis history of a patient: patient history right only
+        if not User.hasRight(audit_user, 'REPORT_34'):
+            self.log.error(Logs.fileline() + ' : PatientHistoric ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
 
         l_datas = {}
         no_analyzes = False

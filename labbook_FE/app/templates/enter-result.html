@@ -111,8 +111,8 @@
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
 var lbl_histo = "{{ _('Historique') }}" ;
 var user_role    = "{{ session['user_role']|safe }}" ;
-var data_res     = {% if args['list_res'] %}{{ args['list_res']|safe }}{% else %}[]{% endif %} ;
-{#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|safe }}{% else %}[]{% endif %} ;#}
+var data_res     = {% if args['list_res'] %}{{ args['list_res']|clean_json }}{% else %}[]{% endif %} ;
+{#var tech_list    = {% if ihm['tech_list'] %}{{ ihm['tech_list']|clean_json }}{% else %}[]{% endif %} ;#}
 var list_id_ana  = [] ;
 var num_dos      = 0  ;
 var num_rec      = "" ;
@@ -416,8 +416,8 @@ let disp_valid = "d-none" ;
 
 let name      = '' ;
 let id_user   = "{{ session['user_id']|safe}}"        ;
-let firstname = "{{ session['user_firstname']|safe}}" ;
-let lastname  = "{{ session['user_lastname']|safe}}"  ;
+let firstname = {{ session['user_firstname']|tojson }} ;
+let lastname  = {{ session['user_lastname']|tojson }}  ;
 
 let btn_aliquot = "" ;
 
@@ -445,18 +445,18 @@ let btn_aliquot = "" ;
                "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" ;
 
         {% if has_permission("RECORD_15") %}
-        res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} btn_save_" + id_rec +"_"+ ref_ana_p + " me-2 mb-1\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
+        res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} btn_save_" + escapeHtml(id_rec) +"_"+ ref_ana_p + " me-2 mb-1\" id=\"anchor_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + escapeHtml(id_rec) +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>" ;
         {% endif %}
 
         {% if has_permission("RECORD_9") %}
-        res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+        res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\">" +
                "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>" +
                "<div class=\"d-lg-flex align-items-start\">" +
-               "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
+               "<input id=\"date_tech_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\" style=\"\">" +
                "</div>" +
-               "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
-               "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk bg-readonly ms-1\" value=\"" + name + "\" readonly />" +
-               "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
+               "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\">{{ _("Technicien") }}</label>" +
+               "<input type=\"text\" name=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" id=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk bg-readonly ms-1\" value=\"" + name + "\" readonly />" +
+               "<input type=\"hidden\" id=\"id_validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
         {#
         // fill technical choice
@@ -473,7 +473,7 @@ let btn_aliquot = "" ;
             selected = "selected" ;
             }
             
-        res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
+        res += "<option value=\"" + escapeHtml(tech_list[k].id_user) + "\" " + selected + ">" + tech_ident + "</option>" ;
         }
         #}
 
@@ -485,7 +485,7 @@ let btn_aliquot = "" ;
             {% endif %}
 
         res += "</select>" +
-               "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +
+               "<button name=\"validate_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" id=\"validate_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + escapeHtml(id_rec) +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +
                "</span>" ;
         {% endif %}
 
@@ -499,7 +499,7 @@ let btn_aliquot = "" ;
         if ( ref_ana != ref_ana_p )
         {
         let res_name = data[i].nom ;
-        let res_fam  = " [" + data[i].famille + "]" ;
+        let res_fam  = " [" + escapeHtml(data[i].famille) + "]" ;
 
             if (res_fam.length < 4) res_fam = "" ;
 
@@ -519,7 +519,7 @@ let btn_aliquot = "" ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
-               "<legend class=\"legend-lbk\">" + res_name + res_fam + "</legend>" +
+               "<legend class=\"legend-lbk\">" + escapeHtml(res_name) + res_fam + "</legend>" +
                "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + rec_num_int + "</b>&nbsp;" + per_rec + res_analyzer +
                "<table class=\"table table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
@@ -587,11 +587,11 @@ let btn_aliquot = "" ;
                     ico_limit = "show" ;
 
                     if (data[i].normal_max == "")
-                        res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>" + data[i].normal_min + "&nbsp;]\"></span>" + minmax +"<div>" ;
+                        res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;>" + escapeHtml(data[i].normal_min) + "&nbsp;]\"></span>" + minmax +"<div>" ;
                     else if (data[i].normal_min == "")
-                    res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<" + data[i].normal_max + "&nbsp;]\"></span></span>" + minmax +"<div>" ;
+                    res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;<" + escapeHtml(data[i].normal_max) + "&nbsp;]\"></span></span>" + minmax +"<div>" ;
                     else
-                    res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + id_res + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + data[i].normal_min + "&nbsp;-&nbsp;" + data[i].normal_max + "&nbsp;]\"></span></span>" + minmax +"<div>" ;
+                    res_limit = "<div class=\"d-flex flex-column\"><span id=\"limit_" + escapeHtml(id_res) + "\" class=\"warning " + ico_limit + "\" title=\"[&nbsp;" + escapeHtml(data[i].normal_min) + "&nbsp;-&nbsp;" + escapeHtml(data[i].normal_max) + "&nbsp;]\"></span></span>" + minmax +"<div>" ;
                 }
 
                 // outsourced icon
@@ -630,7 +630,7 @@ let btn_aliquot = "" ;
                     if (res_valid != 250)
                     change = "disabled" ;
 
-                res += "<select id=\"res_" + id_res + "\" class=\"form-select form-lbk saved res-" + id_rec +"-"+ ref_ana + "\" onfocus=\"enabled_save(" + id_rec +","+ ref_ana + ")\"" + change + " >" +
+                res += "<select id=\"res_" + escapeHtml(id_res) + "\" class=\"form-select form-lbk saved res-" + escapeHtml(id_rec) +"-"+ escapeHtml(ref_ana) + "\" onfocus=\"enabled_save(" + escapeHtml(id_rec) +","+ escapeHtml(ref_ana) + ")\"" + change + " >" +
                        "<option value=\"\"> </option>" ;
 
                 value = "" ;
@@ -654,13 +654,13 @@ let btn_aliquot = "" ;
                         value    = res_answer[j].id_data ;
                         }
 
-                    res += "<option value=\"" + res_answer[j].id_data + "\" " + selected + ">" + res_answer[j].label + "</option>" ;
+                    res += "<option value=\"" + escapeHtml(res_answer[j].id_data) + "\" " + selected + ">" + escapeHtml(res_answer[j].label) + "</option>" ;
                     }
 
                 res += "</select>" ;
-                res += "<input type=\"hidden\" id=\"old_res_" + id_res + "\" value=\"" + value + "\">" ;
-                res += "<input type=\"hidden\" id=\"type_res_" + id_res + "\" value=\"S\">" ;
-                res += "<input type=\"hidden\" id=\"oblig_res_" + id_res + "\" value=\"" + data[i].oblig + "\"></span>&nbsp;" ;
+                res += "<input type=\"hidden\" id=\"old_res_" + escapeHtml(id_res) + "\" value=\"" + value + "\">" ;
+                res += "<input type=\"hidden\" id=\"type_res_" + escapeHtml(id_res) + "\" value=\"S\">" ;
+                res += "<input type=\"hidden\" id=\"oblig_res_" + escapeHtml(id_res) + "\" value=\"" + escapeHtml(data[i].oblig) + "\"></span>&nbsp;" ;
                 }
                 // WRITE RESULT
                 else if ( data[i].type_resultat != 229 && res_type != 265 ) // not calc and not label
@@ -686,14 +686,14 @@ let btn_aliquot = "" ;
                     {
                     change += 'calc(' + id_rec + ', ' + ref_ana + ', ' + id_res + ', ' + data[i].num_var + ');"' ;
 
-                    res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                    res += '<input type="hidden" class="num_var-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '-' + escapeHtml(data[i].num_var) + '" id="' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].num_var) + '">' ;
 
                         // Convert with formule_unite2
                         if (data[i].formule_unite2 != "")
                         {
-                        res += '<input type="hidden" class="formula2-' + id_rec + '-' + ref_ana + '" id="formula2_' + id_res + '" value="' + data[i].formule_unite2 + '">' ;
-                        res += '<input type="hidden" id="unit2_' + id_res + '" value="' + data[i].unit2 + '">' ;
-                        res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
+                        res += '<input type="hidden" class="formula2-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '" id="formula2_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].formule_unite2) + '">' ;
+                        res += '<input type="hidden" id="unit2_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unit2) + '">' ;
+                        res += '<input type="hidden" id="accu2_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu2) + '">' ;
                         }
                     }
                     else
@@ -730,14 +730,14 @@ let btn_aliquot = "" ;
                     }
                     */
 
-                res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" ' + type_input +  ' value="' + value + '" class="form-control form-lbk saved res-' + id_rec +'-'+ ref_ana + '" onfocus="enabled_save(' + id_rec +','+ ref_ana + ')" ' + change + ' size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
-                res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
-                res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
-                res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '">' ;
-                res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
-                res += '<input type="hidden" id="accu2_' + id_res + '" value="' + res_accu2 + '">' ;
-                res += '<input type="hidden" id="type_res_' + id_res + '" value="W">' ;
-                res += '<input type="hidden" id="oblig_res_' + id_res + '" value="' + data[i].oblig + '"></span>&nbsp;' ;
+                res += '<div class="d-flex flex-column"><input id="res_' + escapeHtml(id_res) + '" ' + type_input +  ' value="' + value + '" class="form-control form-lbk saved res-' + escapeHtml(id_rec) +'-'+ escapeHtml(ref_ana) + '" onfocus="enabled_save(' + escapeHtml(id_rec) +','+ escapeHtml(ref_ana) + ')" ' + change + ' size="6"><span id="conv2_' + escapeHtml(id_res) + '" class="mt-1">' + conv2_val + '</span></div>' ;
+                res += '<input type="hidden" id="unit_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unite) + '">' ;
+                res += '<input type="hidden" id="old_res_' + escapeHtml(id_res) + '" value="' + value + '">' ;
+                res += '<input type="hidden" id="res_type_' + escapeHtml(id_res) + '" value="' + res_type + '">' ;
+                res += '<input type="hidden" id="accu_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu) + '">' ;
+                res += '<input type="hidden" id="accu2_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu2) + '">' ;
+                res += '<input type="hidden" id="type_res_' + escapeHtml(id_res) + '" value="W">' ;
+                res += '<input type="hidden" id="oblig_res_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].oblig) + '"></span>&nbsp;' ;
                 }
                 // READONLY RESULT
                 else
@@ -749,11 +749,11 @@ let btn_aliquot = "" ;
                     {
                         // Num var
                         if (data[i].num_var > 0)
-                        res += '<input type="hidden" class="num_var-' + id_rec + '-' + ref_ana + '-' + data[i].num_var + '" id="' + id_res + '" value="' + data[i].num_var + '">' ;
+                        res += '<input type="hidden" class="num_var-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '-' + escapeHtml(data[i].num_var) + '" id="' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].num_var) + '">' ;
 
                         // Formula
                         if (data[i].formule != "")
-                        res += '<input type="hidden" class="formula-' + id_rec + '-' + ref_ana + '" id="formula_' + id_res + '" value="' + data[i].formule + '">' ;
+                        res += '<input type="hidden" class="formula-' + escapeHtml(id_rec) + '-' + escapeHtml(ref_ana) + '" id="formula_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].formule) + '">' ;
 
                         // Convert formula
                         if (data[i].formule_unite2 != "")
@@ -764,17 +764,17 @@ let btn_aliquot = "" ;
                             conv2_val = conv2_val + ' ' + data[i].unit2 ;
                         }
 
-                    res += '<div class="d-flex flex-column"><input id="res_' + id_res + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + id_rec +'-'+ ref_ana + '" readonly size="6"><span id="conv2_' + id_res + '" class="mt-1">' + conv2_val + '</span></div>' ;
-                    res += '<input type="hidden" id="unit_' + id_res + '" value="' + data[i].unite + '">' ;
-                    res += '<input type="hidden" id="accu_' + id_res + '" value="' + res_accu + '">' ;
-                    res += '<input type="hidden" id="old_res_' + id_res + '" value="' + value + '">' ;
-                    res += '<input type="hidden" id="res_type_' + id_res + '" value="' + res_type + '"></span>&nbsp;' ;
+                    res += '<div class="d-flex flex-column"><input id="res_' + escapeHtml(id_res) + '" type="text" value="' + value + '" class="form-control form-lbk bg-readonly saved res-' + escapeHtml(id_rec) +'-'+ escapeHtml(ref_ana) + '" readonly size="6"><span id="conv2_' + escapeHtml(id_res) + '" class="mt-1">' + conv2_val + '</span></div>' ;
+                    res += '<input type="hidden" id="unit_' + escapeHtml(id_res) + '" value="' + escapeHtml(data[i].unite) + '">' ;
+                    res += '<input type="hidden" id="accu_' + escapeHtml(id_res) + '" value="' + escapeHtml(res_accu) + '">' ;
+                    res += '<input type="hidden" id="old_res_' + escapeHtml(id_res) + '" value="' + value + '">' ;
+                    res += '<input type="hidden" id="res_type_' + escapeHtml(id_res) + '" value="' + res_type + '"></span>&nbsp;' ;
                     }
                     else
                     res += '</span>&nbsp;' ;
                 }
 
-            res += '<span class="unit mt-2 show">' + res_unit + '</span></td></tr>' ;
+            res += '<span class="unit mt-2 show">' + escapeHtml(res_unit) + '</span></td></tr>' ;
             }
         }
 
@@ -792,18 +792,18 @@ let btn_aliquot = "" ;
            "<div class=\"form-group d-lg-flex align-items-start mt-1\" style=\"vld-block;\">" ;
 
     {% if has_permission("RECORD_15") %}
-    res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} mb-1 btn_save_" + id_rec +"_"+ ref_ana_p + "\" id=\"anchor_" + id_rec +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + id_rec +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
+    res += "<button type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} mb-1 btn_save_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" id=\"anchor_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" disabled onclick=\"save_res(" + escapeHtml(id_rec) +","+ ref_ana_p + ");\">{{ _("Enregistrer") }}</button>&nbsp;&nbsp;" ;
     {% endif %}
 
     {% if has_permission("RECORD_9") %}
-    res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + id_rec +"_"+ ref_ana_p  + "\">" +
+    res += "<span class=\"align-items-start " + disp_valid + "\" id=\"span_valid_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\">" +
            "<label class=\"form-label text-end me-1\">{{ _("Date de validation") }} </label>&nbsp;" +
            "<div class=\"d-lg-flex align-items-start\">" +
-           "<input id=\"date_tech_" + id_rec +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\">" +
+           "<input id=\"date_tech_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" class=\"form-control form-lbk\" type=\"datetime-local\" maxlength=\"10\" size=\"10\" value=\"{{ now|datetime_now }}\" placeholder=\"\">" +
            "</div>" +
-           "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + id_rec +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
-           "<input type=\"text\" name=\"validator_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validator_" + id_rec +"_"+ ref_ana_p + "\" class=\"form-control form-lbk bg-readonly\" value=\"" + name + "\" readonly />" +
-           "<input type=\"hidden\" id=\"id_validator_" + id_rec +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
+           "<label class=\"form-label text-end ms-lg-3 mt-2 me-1\" for=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\">{{ _("Technicien") }}</label>&nbsp;" +
+           "<input type=\"text\" name=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" id=\"validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" class=\"form-control form-lbk bg-readonly\" value=\"" + name + "\" readonly />" +
+           "<input type=\"hidden\" id=\"id_validator_" + escapeHtml(id_rec) +"_"+ ref_ana_p + "\" value=\"" + id_user + "\" />" ;
 
     {#
     // fill technical choice
@@ -820,7 +820,7 @@ let btn_aliquot = "" ;
         selected = "selected" ;
         }
         
-    res += "<option value=\"" + tech_list[k].id_user + "\" " + selected + ">" + tech_ident + "</option>" ;
+    res += "<option value=\"" + escapeHtml(tech_list[k].id_user) + "\" " + selected + ">" + tech_ident + "</option>" ;
     }
     #}
 
@@ -834,7 +834,7 @@ let btn_aliquot = "" ;
         {% endif %}
 
     res += "</select>&nbsp;" +
-           "<button name=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" id=\"validate_" + id_rec +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + id_rec +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +
+           "<button name=\"validate_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" id=\"validate_" + escapeHtml(id_rec) +"_"+ ref_ana_p  + "\" type=\"button\" class=\"btn btn-lbk btn-{{ session["user_role"]|safe }} ms-3\" onclick=\"save_valid(" + escapeHtml(id_rec) +","+ ref_ana_p + ");\">{{ _("Valider") }}</button>" + btn_aliquot +
            "</span>" ;
     {% endif %}
 
@@ -878,7 +878,7 @@ $("#div_add_analysis").show() ;
         headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data_ana)
             {
-            let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + data_ana.nom + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
+            let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + escapeHtml(data_ana.nom) + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
 
             let prev_new_ana = $("#new_analysis").html() ;
 
@@ -1125,7 +1125,7 @@ function prefill_from_analyzer()
 {% if has_permission("RECORD_14") %}
 $( document ).ready( function()
 {
-data_res  = {% if args['list_res'] %}{{ args['list_res']|safe }}{% elif args['record'] %}[{{ args['record']|safe }}]{% else %}[]{% endif %}
+data_res  = {% if args['list_res'] %}{{ args['list_res']|clean_json }}{% elif args['record'] %}[{{ args['record']|clean_json }}]{% else %}[]{% endif %}
 
 {% if session['record_period'] == 1070 %} // Month period
 num_dos = data_res[0].num_dos_mois ;

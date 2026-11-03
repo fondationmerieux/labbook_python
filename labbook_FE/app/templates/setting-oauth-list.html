@@ -1,5 +1,5 @@
 {% extends "skeleton.html" %}
-{% block title %}{{ _("Paramètrage OAuth client") }}{% endblock %}
+{% block title %}{{ _("Paramétrage OAuth client") }}{% endblock %}
 
 {% block head %}
 {{ super() }}
@@ -9,7 +9,7 @@
 <div id="content">
     <div class="inner">
         <div id="main">
-            <h2 class="page-title page-title-color"><span>{{ _("Paramètrage OAuth client") }}</span></h2>
+            <h2 class="page-title page-title-color"><span>{{ _("Paramétrage OAuth client") }}</span></h2>
 
             {% if session['user_role'] in ('A') %}
             <table id="itemsTable" class="display table table-striped" style="width:100%">
@@ -78,12 +78,12 @@ function loadItemsTable()
                         <a class="dropdown-toggle menu-act" data-bs-toggle="dropdown" aria-expanded="false"></a>
                         <div class="dropdown-menu nav-style menu-act-drop">`;
 
-                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-oauth-client/${row.oacl_ser}">{{ _("Éditer") }}</a>`;
+                    menu += `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-oauth-client/${escapeHtml(row.oacl_ser)}">{{ _("Éditer") }}</a>`;
                     // Do not allow deletion of the protected FE client
                     if (row.oacl_client_id !== 'labbook-FE') 
                     {
                         menu += `
-                            <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${row.oacl_ser}); return false;">
+                            <a class="dropdown-item menu-act-item" href="#" onclick="delete_item(${escapeHtml(row.oacl_ser)}); return false;">
                             {{ _("Supprimer") }}
                             </a>`;
                     }

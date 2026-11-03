@@ -47,7 +47,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_epidemio = {% if args['data_epidemio'] %}{{ args['data_epidemio']|safe }}{% else %}[]{% endif %} ;
+var data_epidemio = {% if args['data_epidemio'] %}{{ args['data_epidemio']|clean_json }}{% else %}[]{% endif %} ;
 
 function upload_epidemio()
 {
@@ -102,8 +102,8 @@ let tr_file = '' ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + filename + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'EP\', \'' + filename + '\', \'EPIDEMIO\', 0);">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(filename) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'EP\', \'' + escapeHtml(filename) + '\', \'EPIDEMIO\', 0);">{{ _("Télécharger") }}</a>';
     tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;

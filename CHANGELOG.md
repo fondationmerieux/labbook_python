@@ -8,6 +8,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - clean async process for import analysis repository
 - edit user able to upload file like CV, diploma ... as for edit staff GUI
 
+## [3.6.31] - 2026-11-03
+### Added
+- Read a record and its requested analyses from an outside system
+- List the records of an outside system changed since a date
+- Code of the analysis and code of the patient in the external result service
+- Reference of the patient resource of an external system kept next to its patient number
+- Reference range and interpretation of each result in the external result service
+
+### Changed
+- The external result service can return the biologically validated results only
+
+### Fixed
+- Homepage links shown with the preferences right instead of the right of their page
+- WHONET export and code var of an analysis locked for users who have the right to change them
+- Metrology saved with the right to view equipment metrology instead of the right to add one
+- Monthly automation not saved when the day of the month is set
+
+### Security
+- Files uploaded or deleted without being logged in
+- Pages opened by URL without the matching right
+- Login as another user without their password
+- User able to change their own role or another user's file
+- OAuth clients and their secrets readable and editable by any user
+- Script injection (XSS) through text entered in forms
+
 ## [3.6.30] - 2026-10-29
 ### Security
 - Password of another account changed by a non administrator, own password changed without the current one

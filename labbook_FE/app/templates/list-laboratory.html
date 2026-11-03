@@ -129,17 +129,17 @@ let obj = data ;
     let tmp_tr = "<tr style=\"\">" ;
 
     {% if has_permission("LAB_81") %}
-    let btn = "<input type=\"button\" onclick=\"del_value(" + obj.id_ihm + ");load_data();\" value=\"" + "{{ _("Supprimer") }}" + "\">" ;
+    let btn = "<input type=\"button\" onclick=\"del_value(" + escapeHtml(obj.id_ihm) + ");load_data();\" value=\"" + "{{ _("Supprimer") }}" + "\">" ;
     {% else %}
     let btn = "" ;
     {% endif %}
 
-    tmp_tr += create_td(obj.id_ihm, obj.id_ihm, "col", "display:none;") ;
+    tmp_tr += create_td(escapeHtml(obj.id_ihm), escapeHtml(obj.id_ihm), "col", "display:none;") ;
     tmp_tr += create_td("", btn, " text-start col-2", "") ; // actions
-    tmp_tr += create_td("", create_input("label_"+obj.id_ihm, "text", obj.label, "","", ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("code_"+obj.id_ihm, "text", obj.code, "", 10, ""), "col-2", "") ;
-    tmp_tr += create_td("", create_input("short_"+obj.id_ihm, "text", obj.short_label, "", 20, ""), "col-3", "") ;
-    tmp_tr += create_td("", create_input("pos_"+obj.id_ihm, "number", obj.position, 0, 10, ""), "col-2", "") ;
+    tmp_tr += create_td("", create_input("label_"+escapeHtml(obj.id_ihm), "text", obj.label, "","", ""), "col-3", "") ;
+    tmp_tr += create_td("", create_input("code_"+escapeHtml(obj.id_ihm), "text", obj.code, "", 10, ""), "col-2", "") ;
+    tmp_tr += create_td("", create_input("short_"+escapeHtml(obj.id_ihm), "text", obj.short_label, "", 20, ""), "col-3", "") ;
+    tmp_tr += create_td("", create_input("pos_"+escapeHtml(obj.id_ihm), "number", obj.position, 0, 10, ""), "col-2", "") ;
     tmp_tr += "</tr>" ;
 
     tr_value += tmp_tr ;
@@ -206,7 +206,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);" ' ;
 
-let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + escapeHtml(val) + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="max-width:75px;text-align:right;"' ;
@@ -322,10 +322,10 @@ let obj = data ;
     {
     let tmp_tr = '<tr style="">' ;
     
-    tmp_tr += '<td class="filename"><div>' + obj.name + '</div></td>' ;
-    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + obj.name + '\', \'LABO\', ' + obj.id_data + ');">{{ _("Télécharger") }}</a>';
+    tmp_tr += '<td class="filename"><div>' + escapeHtml(obj.name) + '</div></td>' ;
+    tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + escapeHtml(obj.name) + '\', \'LABO\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
     {% if has_permission("LAB_81") %}
-    tmp_tr += ' - <a href="#" onclick="delete_file(' + obj.id_data + ');">{{ _("Supprimer") }}</a>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
     tmp_tr += '</div></td></tr>' ;
 

@@ -68,9 +68,9 @@ function loadItemsTable()
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-box/${row.id}">{{ _("Éditer") }}</a>`;
+                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-box/${escapeHtml(row.id)}">{{ _("Éditer") }}</a>`;
                     let deleteAction = row.nb_box == 0 
-                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`
+                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${escapeHtml(row.id)}); return false;">{{ _("Supprimer") }}</a>`
                         : ''; // display delete only if not associated with a box 
 
                     return `
@@ -99,13 +99,13 @@ function loadItemsTable()
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    return `${row.compartment_abbrev} - ${row.compartment_label}`;
+                    return `${escapeHtml(row.compartment_abbrev)} - ${escapeHtml(row.compartment_label)}`;
                 }
             },
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    return `${row.dim_x},${row.dim_y}`;
+                    return `${escapeHtml(row.dim_x)},${escapeHtml(row.dim_y)}`;
                 }
             },
             {
@@ -113,7 +113,7 @@ function loadItemsTable()
                 "className": "text-end",
                 "render": function(data, type, row) {
                     let maxCapacity = row.dim_x * row.dim_y;
-                    return `${row.nb_box} / ${maxCapacity}`;
+                    return `${escapeHtml(row.nb_box)} / ${maxCapacity}`;
                 }
             },
             {

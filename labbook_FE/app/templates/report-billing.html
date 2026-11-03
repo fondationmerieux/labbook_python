@@ -116,7 +116,7 @@
 
 {% block add_script %}
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-var data_bills = {{ args['bills']|safe }} ;
+var data_bills = {{ args['bills']|clean_json }} ;
 var p_step       = 20 ;
 var p_cur        = 1 ;
 var p_max        = Math.ceil( data_bills.length / p_step ) ;
@@ -252,9 +252,9 @@ let total_remain = 0 ;
         {
         total_remain += data_bills[i].bill_price - data_bills[i].bill_remain ;
 
-        res += '<tr><td hidden><div>' + data_bills[i].id_data + '</div></td>' +
-               '<td><div class="text-center"><span class="rec-num">' + data_bills[i].rec_num + '</span></div></td>' +
-               '<td><div class="text-center">' + data_bills[i].bill_num + '</div></td>' +
+        res += '<tr><td hidden><div>' + escapeHtml(data_bills[i].id_data) + '</div></td>' +
+               '<td><div class="text-center"><span class="rec-num">' + escapeHtml(data_bills[i].rec_num) + '</span></div></td>' +
+               '<td><div class="text-center">' + escapeHtml(data_bills[i].bill_num) + '</div></td>' +
                '<td><div class="text-center">' + Number(data_bills[i].bill_price).toFixed(2) + '</div></td>' +
                '<td><div class="text-center">' + Number(data_bills[i].bill_remain).toFixed(2) + '</div></td></tr>' ;
         }

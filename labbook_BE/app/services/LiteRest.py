@@ -22,6 +22,7 @@ from app.models.Patient import Patient
 from app.models.Product import Product
 from app.models.Record import Record
 from app.models.Result import Result
+from app.models.User import User
 from app.models.Various import Various
 from app.security.oauth_routes import require_oauth
 
@@ -57,6 +58,11 @@ class LiteSetupList(Resource):
             200: data, list of setups.
         """
         audit_user = request.oauth_user
+
+        # LabBook Lite setup carries the report password: Lite configuration right only
+        if not User.hasRight(audit_user, 'LITE_175'):
+            self.log.error(Logs.fileline() + ' : LiteSetupList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         l_setup = Lite.getLiteSetupList()
 
         if not l_setup:
@@ -93,6 +99,11 @@ class LiteSetupDet(Resource):
             404: setup not found.
         """
         audit_user = request.oauth_user
+
+        # LabBook Lite setup carries the report password: Lite configuration right only
+        if not User.hasRight(audit_user, 'LITE_175'):
+            self.log.error(Logs.fileline() + ' : LiteSetupDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         item = Lite.getLiteSetup(id_item)
 
         if not item:
@@ -141,6 +152,11 @@ class LiteSetupDet(Resource):
             500: hashing or database write failed.
         """
         audit_user = request.oauth_user
+
+        # LabBook Lite setup carries the report password: Lite configuration right only
+        if not User.hasRight(audit_user, 'LITE_175'):
+            self.log.error(Logs.fileline() + ' : LiteSetupDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'name' not in args or 'login' not in args or 'pwd' not in args or 'users' not in args or \

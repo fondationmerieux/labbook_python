@@ -208,22 +208,6 @@ class Record:
         return cursor.fetchone() is not None
 
     @staticmethod
-    def isPatientOfPrescriber(id_pat, id_pres):
-        """
-        True when the patient has at least one record of this prescriber, always False without a prescriber.
-        """
-        if not id_pres or id_pres <= 0:
-            return False
-
-        cursor = DB.cursor()
-
-        req = 'select id_data from sigl_02_data where id_patient=%s and med_prescripteur=%s limit 1'
-
-        cursor.execute(req, (id_pat, id_pres))
-
-        return cursor.fetchone() is not None
-
-    @staticmethod
     def getRecord(id_rec):
         """
         Read one record with its prescriber, discount label and number as set in record_setting.
@@ -248,6 +232,118 @@ class Record:
         cursor.execute(req, (id_rec,))
 
         return cursor.fetchone()
+
+    @staticmethod
+    def getRecordForExchange(id_rec):
+        """
+        Read one record for third-party applications, with its patient code and its prescriber.
+        Copy of getRecord kept apart, so the interface keeps its own.
+        """
+        cursor = DB.cursor()
+
+        req = ('select rec.id_data, rec.id_patient, rec.type, rec.statut, rec.num_dos_an, rec.num_dos_mois, '
+               'rec.rec_date_receipt, rec.date_prescription, rec.rec_date_vld, rec.rec_modified, '
+               'rec.med_prescripteur, rec.rec_num_int, '
+               'pat.code as patient_code, pat.code_patient as patient_code_lab, '
+               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
+               'from sigl_02_data as rec '
+               'left join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
+               'where rec.id_data=%s')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def getReqAnalysisListForExchange(l_id_rec):
+        """
+        Read the requested analyses of several records at once, for third-party applications.
+        Sampling acts are left out, the outside system did not ask for them.
+
+        Args:
+            l_id_rec (list): record ids, never empty.
+
+        Returns:
+            list: analyses, each one carrying the id of its record.
+        """
+        cursor = DB.cursor()
+
+        places = []
+        params = {}
+
+        for rank, id_rec in enumerate(l_id_rec):
+            places.append('%(rec_' + str(rank) + ')s')
+            params['rec_' + str(rank)] = id_rec
+
+        req = ('select req.id_dos as id_rec, req.id_data as id_req, ref.code as ana_code, '
+               'ref.nom as ana_name, ifnull(ref.ana_loinc, "") as ana_loinc, req.urgent as urgent, '
+               'req.req_outsourced as outsourced '
+               'from sigl_04_data as req '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'where req.id_dos in (' + ','.join(places) + ') '
+               'and (ref.cote_unite != "PB" or ref.cote_unite is null) '
+               'order by req.id_dos, ref.code')
+
+        cursor.execute(req, params)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getRecordListForExchange(date_from, system, limit):
+        """
+        Read the records of an outside system changed since date_from, oldest first. Only the records
+        carrying an external reference are read, a record keyed in at the laboratory is none of its
+        business. system empty keeps every outside system.
+
+        Returns:
+            list: records with the same fields as getRecordForExchange, analyses left out.
+        """
+        cursor = DB.cursor()
+
+        cond   = ''
+        params = {'date_from': date_from, 'limit': int(limit)}
+
+        if system:
+            cond = ' and exr.exr_type_ext=%(system)s '
+            params['system'] = system
+
+        req = ('select distinct rec.id_data, rec.id_patient, rec.type, rec.statut, rec.num_dos_an, '
+               'rec.num_dos_mois, rec.rec_date_receipt, rec.date_prescription, rec.rec_date_vld, '
+               'rec.rec_modified, rec.med_prescripteur, rec.rec_num_int, '
+               'pat.code as patient_code, pat.code_patient as patient_code_lab, '
+               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
+               'from sigl_02_data as rec '
+               'inner join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
+               'left join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
+               'where rec.rec_date_vld >= %(date_from)s ' + cond +
+               'order by rec.rec_date_vld asc '
+               'limit %(limit)s')
+
+        cursor.execute(req, params)
+
+        return cursor.fetchall()
+
+    @staticmethod
+    def getReqAnalysisForExchange(id_rec):
+        """
+        Read the requested analyses of a record for third-party applications, with their codes.
+        Sampling acts are left out, the outside system did not ask for them.
+        """
+        cursor = DB.cursor()
+
+        req = ('select req.id_data as id_req, ref.code as ana_code, ref.nom as ana_name, '
+               'ifnull(ref.ana_loinc, "") as ana_loinc, req.urgent as urgent, req.req_outsourced as outsourced '
+               'from sigl_04_data as req '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'where req.id_dos=%s '
+               'and (ref.cote_unite != "PB" or ref.cote_unite is null) '
+               'order by ref.code')
+
+        cursor.execute(req, (id_rec,))
+
+        return cursor.fetchall()
 
     @staticmethod
     def getLastRecord():

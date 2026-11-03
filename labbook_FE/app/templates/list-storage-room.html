@@ -65,9 +65,9 @@ function loadItemsTable()
             {
                 "data": null,
                 "render": function(data, type, row) {
-                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-room/${row.id}">{{ _("Éditer") }}</a>`;
+                    let editAction = `<a class="dropdown-item menu-act-item" href="{{ session['server_ext'] }}/det-storage-room/${escapeHtml(row.id)}">{{ _("Éditer") }}</a>`;
                     let deleteAction = row.nb_chamber == 0 
-                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${row.id}); return false;">{{ _("Supprimer") }}</a>`
+                        ? `<a class="dropdown-item menu-act-item" href="#" onclick="deleteItem(${escapeHtml(row.id)}); return false;">{{ _("Supprimer") }}</a>`
                         : ''; // display delete only if not associated with a chamber 
 
                     return `

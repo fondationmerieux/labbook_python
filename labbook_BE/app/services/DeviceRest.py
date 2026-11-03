@@ -14,7 +14,7 @@ from app.models.Audit import Audit
 from app.models.Analyzer import Analyzer
 from app.models.Record import Record
 from app.models.Product import Product
-# from app.models.User import User
+from app.models.User import User
 # from app.models.DB import DB
 from app.models.Logs import Logs
 from app.security.oauth_routes import require_oauth
@@ -82,6 +82,11 @@ class ConnectSetting(Resource):
             500: update failed.
         """
         audit_user = request.oauth_user
+
+        # Connect settings, same right as the page
+        if not User.hasRight(audit_user, 'SETTING_48'):
+            self.log.error(Logs.fileline() + ' : ConnectSetting ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json() or {}
 
         if 'id_user' not in args or 'url' not in args:
@@ -201,6 +206,11 @@ class AnalyzerDet(Resource):
             500: database write failed.
         """
         audit_user = request.oauth_user
+
+        # Add right to create, edit right to change an analyzer
+        if not User.hasRight(audit_user, 'SETTING_49' if id_analyzer == 0 else 'SETTING_50'):
+            self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'id_user' not in args or 'rank' not in args or 'name' not in args or 'key' not in args or \
@@ -279,6 +289,11 @@ class AnalyzerDet(Resource):
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        # Delete an analyzer
+        if not User.hasRight(audit_user, 'SETTING_51'):
+            self.log.error(Logs.fileline() + ' : AnalyzerDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if args and 'id_user' in args:
@@ -640,6 +655,11 @@ class AnalyzerMsgList(Resource):
         """
         audit_user = request.oauth_user
 
+        # Analyzer messages carry patient data, same right as the page
+        if not User.hasRight(audit_user, 'SETTING_48'):
+            self.log.error(Logs.fileline() + ' : AnalyzerMsgList ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         l_msg = Analyzer.getAnalyzerMsgList()
 
         if not l_msg:
@@ -682,9 +702,15 @@ class AnalyzerMsgDet(Resource):
 
         Returns:
             200: empty body.
+            403: caller lacks the right to delete an analyzer.
             500: deletion failed.
         """
         audit_user = request.oauth_user
+
+        if not User.hasRight(audit_user, 'SETTING_51'):
+            self.log.error(Logs.fileline() + ' : AnalyzerMsgDet ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
         ret = Analyzer.deleteMsgAnalyzer(id_msg)
 
         if not ret:

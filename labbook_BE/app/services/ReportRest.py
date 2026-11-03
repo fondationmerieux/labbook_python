@@ -55,6 +55,11 @@ class ReportEpidemio(Resource):
             400: date_beg or date_end missing.
         """
         audit_user = request.oauth_user
+
+        # Epidemiological report
+        if not User.hasRight(audit_user, 'REPORT_27'):
+            self.log.error(Logs.fileline() + ' : ReportEpidemio ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args:
@@ -237,6 +242,11 @@ class ReportIndicator(Resource):
             400: date_beg or date_end missing.
         """
         audit_user = request.oauth_user
+
+        # Indicator report
+        if not User.hasRight(audit_user, 'REPORT_28'):
+            self.log.error(Logs.fileline() + ' : ReportIndicator ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if 'date_beg' not in args or 'date_end' not in args:
@@ -1076,6 +1086,11 @@ class ReportRegister(Resource):
             400: date_beg or date_end missing.
         """
         audit_user = request.oauth_user
+
+        # Register, view right
+        if not User.hasRight(audit_user, 'REGISTER_184'):
+            self.log.error(Logs.fileline() + ' : ReportRegister ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
         args = request.get_json()
 
         if not args or 'date_beg' not in args or 'date_end' not in args:

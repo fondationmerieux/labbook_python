@@ -163,21 +163,32 @@ def query_client(client_id):
     return Client()
 
 
+def _request_user_id(req):
+    """Return the user id of the request, or 0 if there is no user."""
+    user = getattr(req, 'user', None)
+    try:
+        return int(getattr(user, 'id', 0) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
 def save_token(token, req):
     """
     Persist an issued OAuth token pair to DB.
-    Stores access/refresh, scope, issued_at (epoch), and expires_in (seconds).
+    Stores the owner user id (0 for a calling program), access/refresh, scope,
+    issued_at (epoch), and expires_in (seconds).
     Marks token as not revoked ('N') on insert.
     Note: do not log token values; treat as secrets.
     """
     cur = DB.cursor(ecr=True)
     cur.execute("""
         INSERT INTO oauth2_token
-        (oato_client_id, oato_token_type, oato_access_token, oato_refresh_token,
+        (oato_client_id, oato_user_id, oato_token_type, oato_access_token, oato_refresh_token,
          oato_scope, oato_revoked, oato_issued_at, oato_expires_in)
-        VALUES (%s,%s,%s,%s,%s,'N',%s,%s)
+        VALUES (%s,%s,%s,%s,%s,%s,'N',%s,%s)
     """, (
         req.client.client_id,
+        _request_user_id(req),
         token.get('token_type', 'Bearer'),
         token['access_token'],
         token.get('refresh_token'),
@@ -262,12 +273,13 @@ class AuthorizationCodeGrantPKCE(grants.AuthorizationCodeGrant):
         cur = DB.cursor(ecr=True)
         cur.execute("""
             INSERT INTO oauth2_code
-            (oaco_code, oaco_client_id, oaco_redirect_uri, oaco_scope, oaco_auth_time,
+            (oaco_code, oaco_client_id, oaco_user_id, oaco_redirect_uri, oaco_scope, oaco_auth_time,
              oaco_nonce, oaco_code_challenge, oaco_code_challenge_method, oaco_expires_at)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (
             code,
             req.client.client_id,
+            _request_user_id(req),
             req.payload.redirect_uri or '',
             scope_to_save,
             int(time.time()),
@@ -305,12 +317,12 @@ class AuthorizationCodeGrantPKCE(grants.AuthorizationCodeGrant):
     def authenticate_user(self, code_obj):
         """
         Provide the user principal for the token exchange.
-        Here we map the session user_id into a minimal object with .id.
+        Read the user saved with the code. The FE server sends this request without the browser cookie.
         """
         class U:
             pass
         u = U()
-        u.id = session.get('user_id', 0)
+        u.id = int(code_obj.row.get('oaco_user_id') or 0)
         return u
 
     def validate_code_challenge(self, code_verifier, code_obj):
@@ -412,7 +424,7 @@ class MyBearerTokenValidator(BearerTokenValidator):
         """
         Look up a non-revoked access token and reject if expired.
         Returns a lightweight wrapper or None when invalid.
-        Also populates request.oauth_user from BE session for audit trail.
+        Also populates request.oauth_user from the token owner for rights and audit trail.
         """
         cur = DB.cursor()
         cur.execute("""
@@ -428,21 +440,28 @@ class MyBearerTokenValidator(BearerTokenValidator):
         if now > (tok['oato_issued_at'] + tok['oato_expires_in']):
             return None
 
-        # Build audit user from BE session when available
+        # Read the user from the token, not from the session cookie.
+        # Calls from the FE server have no cookie.
         try:
-            login = session.get('user_login') or ''
-            display = session.get('user_display') or login
-            role = session.get('user_role')
-            user_id = session.get('user_id')
+            user_id = int(tok.get('oato_user_id') or 0)
+            user    = User.getUserDetails(user_id) if user_id > 0 else None
 
-            if not login:
-                # A calling program has no session, the audit trail then names the
+            if user:
+                firstname = (user.get('firstname') or '').strip()
+                lastname  = (user.get('lastname') or '').strip()
+                login     = user.get('username') or ''
+                display   = (firstname + ' ' + lastname).strip() or login
+                role      = user.get('role_type')
+            else:
+                # A calling program has no user, the audit trail then names the
                 # OAuth client it connects with instead of leaving the author empty
                 client_id = tok.get('oato_client_id') or ''
                 client    = _load_client(client_id) if client_id else None
 
+                user_id = None
                 login   = client_id
                 display = (client.get('oacl_client_name') if client else '') or client_id
+                role    = None
 
             request.oauth_user = {
                 "usr_login": login,
@@ -451,7 +470,7 @@ class MyBearerTokenValidator(BearerTokenValidator):
                 "usr_id": user_id,
             }
         except Exception:
-            log.exception(Logs.fileline() + ' : MyBearerTokenValidator ERROR building oauth_user from session')
+            log.exception(Logs.fileline() + ' : MyBearerTokenValidator ERROR building oauth_user from token')
             request.oauth_user = {
                 "usr_login": '',
                 "usr_display": '',
@@ -534,6 +553,13 @@ def oauth_authorize():
         # a debug trace must never break the authorization flow
         pass
 
+    # A token for another client than the FE (Swagger) opens the external services: API_2 needed,
+    # except in debug mode where the API page is shown to everyone
+    debug = os.environ.get('LABBOOK_DEBUG') == '1'
+    if client_id != FE_CLIENT_ID and not debug and not User.hasRight({'usr_id': session['user_id']}, 'API_2'):
+        log.error(Logs.fileline() + f" : OAUTH /authorize ERROR client {client_id!r} refused, no right API_2")
+        return jsonify({'error': 'access_denied', 'detail': 'Right API_2 required'}), 403
+
     # Authlib handles response building (validations, state, etc.)
     return authorization.create_authorization_response(grant_user=type('U', (), {'id': session['user_id']}))
 
@@ -569,22 +595,16 @@ def oauth_token():
     return resp
 
 
-@bp_oauth.route('/services/confirm-access', methods=['POST'])
-def confirm_access():
+def bind_session_user(id_user_int):
     """
-    Bind the BE session to a user id so /authorize can grant.
+    Open the BE session for the user after the password check.
     Also store minimal user identity in session for later audit use.
-    Returns any paused /authorize URL from session for the FE to resume.
+    Clear the old session but keep the waiting /authorize URL.
     """
-    args = request.get_json() or {}
-    id_user = args.get('id_user', None)
-    if id_user is None:
-        return jsonify({'error': 'id_user missing'}), 400
-
-    try:
-        id_user_int = int(id_user)
-    except (TypeError, ValueError):
-        return jsonify({'error': 'id_user invalid'}), 400
+    next_url = session.get('next')
+    session.clear()
+    if next_url:
+        session['next'] = next_url
 
     # Store user id in session (used by /services/oauth/authorize)
     session['user_id'] = id_user_int
@@ -593,7 +613,7 @@ def confirm_access():
     try:
         user = User.getUserDetails(id_user_int)
     except Exception:
-        log.exception(Logs.fileline() + ' : confirm_access ERROR getUserDetails')
+        log.exception(Logs.fileline() + ' : bind_session_user ERROR getUserDetails')
         user = None
 
     if user:
@@ -610,6 +630,19 @@ def confirm_access():
 
     session.modified = True
 
+
+@bp_oauth.route('/services/confirm-access', methods=['POST'])
+def confirm_access():
+    """
+    Continue the login after the password check. Never take the user id from the browser.
+    Return 401 if the password was not checked.
+    Returns any paused /authorize URL from session for the FE to resume.
+    """
+    if 'user_id' not in session:
+        log.error(Logs.fileline() + ' : confirm_access ERROR no checked user in session')
+        return jsonify({'error': 'login_required'}), 401
+
     # Only return the paused OAuth authorize URL if present
     redirect_url = session.pop('next', None)
+    session.modified = True
     return jsonify({'redirect_url': redirect_url})

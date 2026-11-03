@@ -447,9 +447,9 @@
 var struct_ana    = {"id_data":0 ,"code":"", "name":"", "emer":0, "req":4, "rate":"", "price":0, "outsourced":"N"} ;
 var struct_samp   = {"id_data":0 ,"code":"", "name":"", "req":4, "rate":"", "price":0, "outsourced":"N"} ;
 var struct_prod   = {"id_data":0 ,"code":"","type":0, "stat":0, "dateSamp":"{{ now|datetime_now }}", "dateReceipt":"", "sampler":"", "ana":0, "comm":""} ;
-var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|safe }}{% else %}[]{% endif %} ;
-var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|safe }}{% else %}[]{% endif %}   ;
-var data_products = {% if args['data_products'] %}{{ args['data_products']|safe }}{% else %}[]{% endif %} ;
+var data_analysis = {% if args['data_analysis'] %}{{ args['data_analysis']|clean_json }}{% else %}[]{% endif %} ;
+var data_samples  = {% if args['data_samples'] %}{{ args['data_samples']|clean_json }}{% else %}[]{% endif %}   ;
+var data_products = {% if args['data_products'] %}{{ args['data_products']|clean_json }}{% else %}[]{% endif %} ;
 var ind_products  = 0 ;
 var old_value     = 0 ;
 {% if session['pref_bill'] == '1' %}
@@ -459,7 +459,7 @@ var bill_price    = 0 ;
 var bill_remain   = {% if entry == 'Y' %}0{% else %}{{ args['record']['a_payer'] }}{% endif %} ;
 {% endif %}
 var act_price     = {% if ihm['act_price']['value'] %}{{ ihm['act_price']['value'] }}{% else %}0{% endif %} ;
-var opt_yorn      = {{ ihm['yorn']|safe }} ;
+var opt_yorn      = {{ ihm['yorn']|clean_json }} ;
 var new_opt_yorn  = [{'value': 'Y', 'label': '{{ _("Oui") }}'}, {'value': 'N', 'label': '{{ _("Non") }}'}] ;
 var opt_ana       = [] ;
 
@@ -567,7 +567,7 @@ var cat = "" ;
 var display = $(
     "<div class='select2-result-repository clearfix'>" +
         "<div class='select2-result-repository__meta'>" +
-            "<div class='select2-result-repository__code'><b>" + code + "</b></div>" +
+            "<div class='select2-result-repository__code'><b>" + escapeHtml(code) + "</b></div>" +
             "<div class='select2-result-repository__name'>" + name + "</div>" +
             "<div class='select2-result-repository__category'>" + cat + "</div>" +
         "</div>" +
@@ -723,17 +723,17 @@ let tr_analysis = '' ;
     let tmp_tr = '<tr style="">' ;
 
     {% if entry == 'Y' %}
-    let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_analysis(' + obj.id_data + ');load_data(0);refresh_bill();" >' ;
+    let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_analysis(' + escapeHtml(obj.id_data) + ');load_data(0);refresh_bill();" >' ;
 
-    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+    tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
     tmp_tr += create_td("", btn, "text-center", "", 0) ;
-    tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-    tmp_tr += create_td("", obj.name, "", "", 0) ;
-    tmp_tr += create_td("", create_select("ana_emer_"+obj.id_data, opt_yorn, obj.emer, true), "text-center", "", 0) ;
-    tmp_tr += create_td("", create_select("ana_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "", 0) ;
+    tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+    tmp_tr += create_td("", escapeHtml(obj.name), "", "", 0) ;
+    tmp_tr += create_td("", create_select("ana_emer_"+escapeHtml(obj.id_data), opt_yorn, obj.emer, true), "text-center", "", 0) ;
+    tmp_tr += create_td("", create_select("ana_req_"+escapeHtml(obj.id_data), opt_yorn, obj.req, false), "text-center", "", 0) ;
     tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "", 0) ;
-    tmp_tr += create_td("", create_input("ana_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
-    tmp_tr += create_td("", select_yorn("ana_outsourced_"+obj.id_data, new_opt_yorn, obj.outsourced), "text-center", "", 0) ;
+    tmp_tr += create_td("", create_input("ana_price_"+escapeHtml(obj.id_data), "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
+    tmp_tr += create_td("", select_yorn("ana_outsourced_"+escapeHtml(obj.id_data), new_opt_yorn, obj.outsourced), "text-center", "", 0) ;
     {% else %}
     let urg   = obj.urgent ;
     let dem   = obj.demande ;
@@ -755,13 +755,13 @@ let tr_analysis = '' ;
         else
         outsourced = "{{ _("Non") }}" ;
 
-    tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
-    tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-    tmp_tr += create_td("", obj.nom, "", "", 0) ;
+    tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
+    tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+    tmp_tr += create_td("", escapeHtml(obj.nom), "", "", 0) ;
     tmp_tr += create_td("", urg, "text-center", "", 0) ;
     tmp_tr += create_td("", dem, "text-center", "", 0) ;
     tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "", 0) ;
-    tmp_tr += create_td("", obj.prix, "text-center", "", 0) ;
+    tmp_tr += create_td("", escapeHtml(obj.prix), "text-center", "", 0) ;
     tmp_tr += create_td("", outsourced, "text-center", "", 0) ;
     {% endif %}
 
@@ -845,15 +845,15 @@ let tr_sample = '' ;
         let tmp_tr = '<tr style="">' ;
 
         {% if entry == 'Y' %}
-        let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_sample(' + obj.id_data + ');load_data(0);refresh_bill();" >' ;
+        let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_sample(' + escapeHtml(obj.id_data) + ');load_data(0);refresh_bill();" >' ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
         tmp_tr += create_td("", btn, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.name, "", "", 0) ;
-        tmp_tr += create_td("", create_select("samp_req_"+obj.id_data, opt_yorn, obj.req, false), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.name), "", "", 0) ;
+        tmp_tr += create_td("", create_select("samp_req_"+escapeHtml(obj.id_data), opt_yorn, obj.req, false), "text-center", "", 0) ;
         tmp_tr += create_td("", format_rate(obj.rate, obj.price), "text-center", "", 0) ;
-        tmp_tr += create_td("", create_input("samp_price_"+obj.id_data, "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
+        tmp_tr += create_td("", create_input("samp_price_"+escapeHtml(obj.id_data), "number", obj.price, 0, 999999, "change_price"), "text-center", "", 0) ;
         {% else %}
         let dem  = obj.demande ;
         let rate = obj.cote_unite + obj.cote_valeur ;
@@ -863,12 +863,12 @@ let tr_sample = '' ;
             else
             dem = "{{ _("Non") }}" ;
 
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
-        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.nom, "", "", 0) ;
+        tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.nom), "", "", 0) ;
         tmp_tr += create_td("", dem, "text-center", "", 0) ;
         tmp_tr += create_td("", format_rate(rate, obj.prix), "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.prix, "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.prix), "text-center", "", 0) ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
@@ -930,31 +930,31 @@ let tr_product = '' ;
         let tmp_tr = '<tr style="vertical-align:middle;">' ;
 
         {% if entry == 'Y' %}
-        let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_product(' + obj.id_data + ');load_data(0);" >' ;
+        let btn = '<i class="bi bi-x-circle-fill text-danger" title="{{ _("Supprimer") }}" onclick="del_product(' + escapeHtml(obj.id_data) + ');load_data(0);" >' ;
 
         // displayed on 2 lines
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
+        tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
         tmp_tr += create_td("", btn, "text-center", "", 0) ; // actions
-        tmp_tr += create_td("", create_input("prod_dateSamp_"+obj.id_data, "datetime-local", obj.dateSamp, 0, 0, ""), "text-center", "", 0) ; // input date prel
-        tmp_tr += create_td("", create_select("prod_type_"+obj.id_data, {{ ihm['products']|safe }}, obj.type, true), "text-center", "", 0) ; // select product
-        tmp_tr += create_td("", create_input("prod_code_"+obj.id_data, "text", obj.code, 0, 0, ""), "text-center", "", 0) ; // input code product
-        tmp_tr += create_td("", create_input("prod_sampler_"+obj.id_data, "text", obj.sampler, 0, 0, ""), "text-center", "", 0) ; // input text preleveur 
+        tmp_tr += create_td("", create_input("prod_dateSamp_"+escapeHtml(obj.id_data), "datetime-local", obj.dateSamp, 0, 0, ""), "text-center", "", 0) ; // input date prel
+        tmp_tr += create_td("", create_select("prod_type_"+escapeHtml(obj.id_data), {{ ihm['products']|clean_json }}, obj.type, true), "text-center", "", 0) ; // select product
+        tmp_tr += create_td("", create_input("prod_code_"+escapeHtml(obj.id_data), "text", obj.code, 0, 0, ""), "text-center", "", 0) ; // input code product
+        tmp_tr += create_td("", create_input("prod_sampler_"+escapeHtml(obj.id_data), "text", obj.sampler, 0, 0, ""), "text-center", "", 0) ; // input text preleveur 
         tmp_tr += '</tr><tr style="vertical-align:middle;">' ;
-        tmp_tr += create_td("", create_select("prod_ana_"+obj.id_data, opt_ana, obj.ana, true), "text-center", "", 0) ;
-        tmp_tr += create_td("", create_input("prod_dateReceipt_"+obj.id_data, "datetime-local", obj.dateReceipt, 0, 0, "", 0), "text-center", "") ; // input date recept
-        tmp_tr += create_td("", create_select("prod_stat_"+obj.id_data, {{ ihm['products_statut']|safe }}, obj.stat, true), "text-center", "", 0) ; // select statut
-        tmp_tr += create_td("", create_input("prod_comm_"+obj.id_data, "text", obj.comm, 0, 0, ""), "text-center", "", 2) ; // input text comm
+        tmp_tr += create_td("", create_select("prod_ana_"+escapeHtml(obj.id_data), opt_ana, obj.ana, true), "text-center", "", 0) ;
+        tmp_tr += create_td("", create_input("prod_dateReceipt_"+escapeHtml(obj.id_data), "datetime-local", obj.dateReceipt, 0, 0, "", 0), "text-center", "") ; // input date recept
+        tmp_tr += create_td("", create_select("prod_stat_"+escapeHtml(obj.id_data), {{ ihm['products_statut']|clean_json }}, obj.stat, true), "text-center", "", 0) ; // select statut
+        tmp_tr += create_td("", create_input("prod_comm_"+escapeHtml(obj.id_data), "text", obj.comm, 0, 0, ""), "text-center", "", 2) ; // input text comm
         {% else %}
-        tmp_tr += create_td(obj.id_data, obj.id_data, "", "display:none;", 0) ;
-        tmp_tr += create_td("", obj.samp_date, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.type_prod, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.preleveur, "text-center", "", 0) ;
+        tmp_tr += create_td(escapeHtml(obj.id_data), escapeHtml(obj.id_data), "", "display:none;", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.samp_date), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.type_prod), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.preleveur), "text-center", "", 0) ;
         tmp_tr += '</tr><tr style="vertical-align:middle;">' ;
-        tmp_tr += create_td("", obj.code, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.samp_receipt_date, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.stat_prod, "text-center", "", 0) ;
-        tmp_tr += create_td("", obj.commentaire, "text-center", "", 2) ;
+        tmp_tr += create_td("", escapeHtml(obj.code), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.samp_receipt_date), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.stat_prod), "text-center", "", 0) ;
+        tmp_tr += create_td("", escapeHtml(obj.commentaire), "text-center", "", 2) ;
         {% endif %}
 
         tmp_tr += '</tr>' ;
@@ -1020,7 +1020,7 @@ let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id
         if (l_options[i].id_data == val_select)
         selected = "selected" ;
 
-    tmp_select += '<option value="' + l_options[i].id_data + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    tmp_select += '<option value="' + escapeHtml(l_options[i].id_data) + '" ' + selected + ' >' + escapeHtml(l_options[i].label) + '</option>' ;
     }
 
 tmp_select += '</select>' ;
@@ -1039,7 +1039,7 @@ let tmp_select = '<select class="form-select" style="font-size:14px;" id="' + id
         if (l_options[i].value == val_select)
         selected = "selected" ;
 
-    tmp_select += '<option value="' + l_options[i].value + '" ' + selected + ' >' + l_options[i].label + '</option>' ;
+    tmp_select += '<option value="' + escapeHtml(l_options[i].value) + '" ' + selected + ' >' + escapeHtml(l_options[i].label) + '</option>' ;
     }
 
 tmp_select += '</select>' ;
@@ -1055,7 +1055,7 @@ let other_fct = '' ;
     if ( fct != "" )
     other_fct += fct + '(this);' ;
 
-let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + val + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
+let tmp_input = '<input class="form-control form-lbk" id="' + id + '" type="' + type + '" value="' + escapeHtml(val) + '" onfocus="old_value=this.value;" onChange="change_data(this);' + other_fct + '"' ;
 
     if (type == "number")
     tmp_input += 'min="' + min + '" max="' + max + '" style="font-size:14px;min-width:50px;max-width:100px;text-align:right;"' ;
@@ -1323,7 +1323,7 @@ function save_requests_next()
 {
 var id_user       = {{ session['user_id']|safe}} ;
 var user_role     = "{{ session['user_role']|safe }}"  ;
-var id_patient    = {{ args['patient']['id_data']|safe }} ;
+var id_patient    = {{ args['patient']['id_data']|clean_json }} ;
 var type          = {% if req_type == "I" %}184{% else %}183{% endif %} ; // EXTERNAL = 183, INTERNAL = 184
 var date_record   = $("#date_record").val() ;
 var id_med        = $("#search_doctor").val() ;
