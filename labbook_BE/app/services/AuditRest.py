@@ -7,6 +7,7 @@ import re
 from datetime import datetime
 from flask import request, send_file
 from flask_restful import Resource
+from werkzeug.utils import secure_filename
 
 from app.models.General import compose_ret
 from app.models.Constants import Constants
@@ -414,6 +415,7 @@ class AuditDownloadATNA(Resource):
             self.log.error(Logs.fileline() + " : AuditDownloadATNA ERROR invalid filename=" + str(filename))
             return compose_ret('', Constants.cst_content_type_json, 400)
 
+        filename = secure_filename(filename)
         base_path = Constants.cst_path_tmp
         fullpath = os.path.join(base_path, filename)
 
