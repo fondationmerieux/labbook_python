@@ -108,11 +108,10 @@ var param = {"id_owner": Number(id_owner),
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/record/number",
+       url: "{{ session['server_ext'] }}/ajax/setting/record/number",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: JSON.stringify(param),
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;

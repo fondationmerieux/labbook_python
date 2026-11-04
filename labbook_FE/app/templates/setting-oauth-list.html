@@ -55,7 +55,7 @@ function loadItemsTable()
         "pageLength": 25,
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-            "url": "{{ session['server_ext'] }}/services/setting/oauth/list",
+            "url": "{{ session['server_ext'] }}/ajax/setting/oauth/list",
             "type": "GET",
             "dataSrc": "",
             error: function (xhr) {
@@ -63,9 +63,6 @@ function loadItemsTable()
                 if (xhr.status === 401 || xhr.status === 403) {
                     window.location.reload();
                 }
-            },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
             },
         },
         "columns": [
@@ -119,10 +116,10 @@ function delete_item(id_item)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/setting/oauth/det/${id_item}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/setting/oauth/det/${id_item}`, 
             {
                 method: 'DELETE',
-                headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-Requested-With': 'XMLHttpRequest' }
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             })
             .then(response => 
                 {

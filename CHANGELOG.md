@@ -6,20 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 - Use `code_var` instead of `id_data` for `sigl_07_data` (variable of analysis)
 - clean async process for import analysis repository
-- edit user able to upload file like CV, diploma ... as for edit staff GUI
 
-## [3.6.31] - 2026-11-03
+## [3.6.31] - 2026-11-04
 ### Added
 - Read a record and its requested analyses from an outside system
 - List the records of an outside system changed since a date
 - Code of the analysis and code of the patient in the external result service
 - Reference of the patient resource of an external system kept next to its patient number
+- Reference of each analysis of an external request kept, so a later message finds it again
+- Cancellation of one analysis asked by an external system, bill and record updated with it
 - Reference range and interpretation of each result in the external result service
+- Files (CV, diploma, training, evaluation, signature) attached on the user page, as on the staff page
 
 ### Changed
 - The external result service can return the biologically validated results only
 
 ### Fixed
+- Import of the analysis repository stopped on variables, LOINC code of the variable added (v7)
 - Homepage links shown with the preferences right instead of the right of their page
 - WHONET export and code var of an analysis locked for users who have the right to change them
 - Metrology saved with the right to view equipment metrology instead of the right to add one
@@ -32,6 +35,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - User able to change their own role or another user's file
 - OAuth clients and their secrets readable and editable by any user
 - Script injection (XSS) through text entered in forms
+- Exported files downloadable without being logged in
+- Access token no longer written in the pages
 
 ## [3.6.30] - 2026-10-29
 ### Security

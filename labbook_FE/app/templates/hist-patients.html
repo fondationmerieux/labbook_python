@@ -156,11 +156,10 @@ let param = '{ "code":"' + code + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/list",
+        url: "{{ session['server_ext'] }}/ajax/patient/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_patients = data ;
@@ -274,11 +273,10 @@ let param = '{ "code":"' + code + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/list/export",
+        url: "{{ session['server_ext'] }}/ajax/patient/list/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

@@ -192,11 +192,10 @@ var param = JSON.stringify( { "html": html_report,
     $.ajax(
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/generic",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
         $("#dial-wait").modal("hide") ;

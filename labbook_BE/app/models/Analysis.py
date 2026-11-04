@@ -429,6 +429,49 @@ class Analysis:
             return 0
 
     @staticmethod
+    def getAnalysisReqForExchange(id_req):
+        """
+        Read one requested analysis of a record by its id, with its record, its price, the analysis
+        it refers to, and how many of its results already carry a value.
+
+        Returns:
+            dict or None: id_req, id_rec, id_ana, price, ana_code, rec_status, nb_value.
+        """
+        cursor = DB.cursor()
+
+        req = ('select req.id_data as id_req, req.id_dos as id_rec, req.ref_analyse as id_ana, '
+               'req.prix as price, ref.code as ana_code, rec.statut as rec_status, '
+               '(select count(*) from sigl_09_data as res '
+               'where res.id_analyse = req.id_data '
+               'and res.valeur is not NULL and res.valeur != "" and res.valeur != 1013) as nb_value '
+               'from sigl_04_data as req '
+               'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+               'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'where req.id_data=%s')
+
+        cursor.execute(req, (id_req,))
+
+        return cursor.fetchone()
+
+    @staticmethod
+    def countAnalysisOfRecord(id_rec):
+        """
+        Count the analyses left in a record, sampling acts left out.
+
+        Returns:
+            int: how many analyses the record still holds.
+        """
+        cursor = DB.cursor()
+
+        cursor.execute('select count(*) as nb from sigl_04_data as req '
+                       'inner join sigl_05_data as ref on ref.id_data = req.ref_analyse '
+                       'where req.id_dos=%s and (ref.cote_unite != "PB" or ref.cote_unite is null)', (id_rec,))
+
+        row = cursor.fetchone()
+
+        return row['nb'] if row else 0
+
+    @staticmethod
     def deleteAnalysisReq(id_req, id_rec, id_ana, type_samp):
         """
         Remove an analysis from a record with its pathological products (sigl_01_data), and the

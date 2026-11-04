@@ -195,11 +195,11 @@ param_list_answer += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/list/value" ,
+        url: "{{ session['server_ext'] }}/ajax/result/list/value" ,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_answer,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
         {
             $("#dial-wait").modal("hide") ;
@@ -382,11 +382,11 @@ param_list_valid += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
+        url: "{{ session['server_ext'] }}/ajax/result/valid/T/" + id_rec,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_valid,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
         {
             $("#dial-wait").modal("hide") ;
@@ -874,8 +874,7 @@ $("#div_add_analysis").show() ;
     $.ajax( 
         {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/analysis/det/" + id_ana,
         success: function(data_ana)
             {
             let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + escapeHtml(data_ana.nom) + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
@@ -916,11 +915,11 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/generic",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

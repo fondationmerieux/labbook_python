@@ -68,11 +68,10 @@ var param = '{ "by_user":' + by_user + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/user/rights/" + id_user,
+       url: "{{ session['server_ext'] }}/ajax/user/rights/" + id_user,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            window.location = "{{ session['server_ext'] }}/setting-users" ;

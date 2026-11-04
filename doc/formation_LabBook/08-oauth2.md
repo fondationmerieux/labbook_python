@@ -56,6 +56,7 @@ Le front end et le back end partagent un secret, `oauth_client_secret.py`, écri
    → il range en session le login, le profil et les droits renvoyés
 5. Chaque appel à /services/... transporte ce jeton dans son en-tête.
    → le back end lit l'utilisateur dans le jeton (request.oauth_user), jamais dans un cookie
+   → les pages passent par /ajax/... : le front end ajoute le jeton, le navigateur ne le voit jamais
 6. Jeton absent, expiré ou révoqué → 401 Unauthorized
 ```
 

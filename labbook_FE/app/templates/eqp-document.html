@@ -102,12 +102,11 @@ $("#search_manual").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/manual/search",
+        url: "{{ session['server_ext'] }}/ajax/quality/manual/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_manual").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -148,12 +147,11 @@ $("#search_procedure").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/procedure/search",
+        url: "{{ session['server_ext'] }}/ajax/quality/procedure/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_procedure").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -220,22 +218,20 @@ let param = '{ "id_user":' + id_user + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/equipment/doc/" + id_eqp,
+       url: "{{ session['server_ext'] }}/ajax/quality/equipment/doc/" + id_eqp,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            let param = '{ "comm":' + comment + '}' ; // No quotes with stringify
 
                $.ajax( {
                    type: "POST",
-                   url: "{{ session['server_ext'] }}/services/quality/equipment/comm/DOC/" + id_eqp,
+                   url: "{{ session['server_ext'] }}/ajax/quality/equipment/comm/DOC/" + id_eqp,
                    dataType: 'json',
                    contentType: "application/json; charset=utf-8",
                    data: param,
-                   headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                    success: function(data)
                        {
                            $("#dial-wait").modal("hide") ;

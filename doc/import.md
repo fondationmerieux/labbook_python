@@ -3,13 +3,14 @@
 ## Analysis repository
 List of columns and their data types
 
-version : v3, v4, v5, v6
+version : v3, v4, v5, v6, v7
 
 - v4 adds: var_formula_conv, var_unit_conv, var_accu_conv, ana_ast
 - v5 adds: ana_lite, ana_loinc
 - v6 adds: var_in_report
+- v7 adds: var_loinc
 
-version          : string, one of v3/v4/v5/v6 (first column)
+version          : string, one of v3/v4/v5/v6/v7 (first column)
 id_ana           : integer, 0 for a new analysis (only in add mode) else if > 0 update analysis (in update mode) or insert analysis (in add mode if this id is not already taken by another analysis)
 id_owner         : integer, 0 or id of user
 ana_code         : string, unique code per analysis, (max 7 characters)
@@ -58,6 +59,9 @@ ana_loinc        : string
 
 Added in v6 (additional columns)
 var_in_report    : Y or N
+
+Added in v7 (additional columns)
+var_loinc        : string, LOINC code of the variable (max 20 characters)
 
 ### In the "Update analyses (with identical code)" mode
 

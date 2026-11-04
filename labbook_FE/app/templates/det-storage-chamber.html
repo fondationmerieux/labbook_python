@@ -84,9 +84,9 @@ let room  = document.getElementById("sch_room").value;
         sch_room: document.getElementById("sch_room").value
     };
     
-    fetch("{{ session['server_ext'] }}/services/quality/storage/chamber/det/" + {{ args['id_item']|clean_json }}, {
+    fetch("{{ session['server_ext'] }}/ajax/quality/storage/chamber/det/" + {{ args['id_item']|clean_json }}, {
         method: "POST",
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" },
+        headers: { "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json" },
         body: JSON.stringify(chamberData)
     })
     .then(response => response.json())

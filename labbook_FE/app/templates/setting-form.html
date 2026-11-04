@@ -128,11 +128,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/form/det",
+       url: "{{ session['server_ext'] }}/ajax/setting/form/det",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", ref_elem) ;
@@ -192,7 +191,6 @@ function upload_form_pat()
         contentType: false,
         processData: false,
         data: param_form,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success : function(response) {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload-pat");
             console.log("success upload form pat");
@@ -226,7 +224,6 @@ function upload_form_pat_hist()
         contentType: false,
         processData: false,
         data: param_form,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success : function(response) {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload-hist");
             console.log("success upload form pat-hist");
@@ -328,7 +325,6 @@ function delete_file_pat( filename )
         {
             type: "GET",
             url: "{{ session['server_ext'] }}/delete-file/FP/" + filename,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -358,7 +354,6 @@ function delete_file_hist( filename )
         {
             type: "GET",
             url: "{{ session['server_ext'] }}/delete-file/FPH/" + filename,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

@@ -164,11 +164,10 @@ let param = '{ "login":"' + login + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/user/list",
+        url: "{{ session['server_ext'] }}/ajax/user/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_users = data ;
@@ -287,11 +286,10 @@ var id_owner = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/user/status",
+            url: "{{ session['server_ext'] }}/ajax/user/status",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             location.reload() ;
@@ -328,11 +326,10 @@ var param    = '{"id_user":' + id_user + '}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/user/export",
+        url: "{{ session['server_ext'] }}/ajax/user/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

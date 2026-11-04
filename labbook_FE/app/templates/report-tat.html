@@ -202,11 +202,10 @@ let lite_user_id = 0 ;
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/report/tat",
+        url: "{{ session['server_ext'] }}/ajax/report/tat",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
             data_tat = data ;
@@ -398,11 +397,10 @@ function export_tat()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/export/csv",
+            url: "{{ session['server_ext'] }}/ajax/export/csv",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -444,11 +442,10 @@ function download_report()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+            url: "{{ session['server_ext'] }}/ajax/pdf/report/generic",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;

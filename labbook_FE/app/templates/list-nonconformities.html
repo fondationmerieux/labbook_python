@@ -111,11 +111,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/nonconformity/list",
+        url: "{{ session['server_ext'] }}/ajax/quality/nonconformity/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_items = data ;
@@ -254,11 +253,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/nonconformity/export",
+        url: "{{ session['server_ext'] }}/ajax/quality/nonconformity/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -306,11 +304,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/nonconformity/det/" + id_item,
+            url: "{{ session['server_ext'] }}/ajax/quality/nonconformity/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

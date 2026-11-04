@@ -488,12 +488,11 @@ $("#search_doctor").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/doctor/search",
+        url: "{{ session['server_ext'] }}/ajax/doctor/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_doctor").text(),
-        headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
         data: function (params) {
 
             return JSON.stringify({
@@ -521,12 +520,11 @@ $("#search_analysis").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/search/A",
+        url: "{{ session['server_ext'] }}/ajax/analysis/search/A",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_analysis").text(),
-        headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
         data: function (params) {
             return JSON.stringify(
             {
@@ -592,8 +590,7 @@ let data_exist = false ;
         // ADD det analysis
         $.ajax( {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/analysis/det/" + id_item,
-            headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
+            url: "{{ session['server_ext'] }}/ajax/analysis/det/" + id_item,
             success: function(data_ana)
                 {
                 let tmp_struct_ana = JSON.parse(JSON.stringify(struct_ana)) ; // copy structure
@@ -625,8 +622,7 @@ let data_exist = false ;
                             // ADD det sampling act
                             $.ajax( {
                                 type: "GET",
-                                url: "{{ session['server_ext'] }}/services/analysis/det/" +  data_ana.produit_biologique,
-                                headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
+                                url: "{{ session['server_ext'] }}/ajax/analysis/det/" +  data_ana.produit_biologique,
                                 success: function(data_samp)
                                     {
                                     let tmp_struct_samp = JSON.parse(JSON.stringify(struct_samp)) ;
@@ -662,8 +658,7 @@ let data_exist = false ;
                         // ADD type product
                         $.ajax( {
                             type: "GET",
-                            url: "{{ session['server_ext'] }}/services/analysis/type/product/" +  id_type_prod,
-                            headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
+                            url: "{{ session['server_ext'] }}/ajax/analysis/type/product/" +  id_type_prod,
                             success: function(data_prod)
                                 {
                                 let tmp_struct_prod = JSON.parse(JSON.stringify(struct_prod)) ;
@@ -1296,8 +1291,8 @@ var rec_num_int = $("#rec_num_int").val() ;
         $.ajax( 
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/record/search/num/int/" + rec_num_int,
-            headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+            url: "{{ session['server_ext'] }}/ajax/record/search/num/int/" + rec_num_int,
+            headers: with_audit_headers({}),
             success: function(ret)
             {
                 if ( ret > 0 )
@@ -1450,11 +1445,10 @@ var codesToCheck    = [] ;
 
         $.ajax({
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/product/code/check",
+            url: "{{ session['server_ext'] }}/ajax/product/code/check",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ codes: codesToCheck }),
-            headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
             async: false,
             success: function(data) {
                 if (data && data.existing_codes)
@@ -1529,11 +1523,11 @@ var codesToCheck    = [] ;
         {
             // CREATE Record
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/record/det/0",
+            url: "{{ session['server_ext'] }}/ajax/record/det/0",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+            headers: with_audit_headers({}),
             success: function(ret_rec)
             {
             var id_rec = ret_rec.id_rec ;
@@ -1590,11 +1584,11 @@ var codesToCheck    = [] ;
                 {
                     // INSERT ANALYSIS REQUESTED
                     type: "POST",
-                    url: "{{ session['server_ext'] }}/services/analysis/list/req",
+                    url: "{{ session['server_ext'] }}/ajax/analysis/list/req",
                     dataType: 'json',
                     contentType: "application/json; charset=utf-8",
                     data: param_list_ana,
-                    headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+                    headers: with_audit_headers({}),
                     success: function(ret_ana)
                     {
                     var param_list_prod = '{ "list_prod":[ ';
@@ -1634,11 +1628,11 @@ var codesToCheck    = [] ;
                         {
                             // INSERT SAMPLES REQUESTED
                             type: "POST",
-                            url: "{{ session['server_ext'] }}/services/product/list/req",
+                            url: "{{ session['server_ext'] }}/ajax/product/list/req",
                             dataType: 'json',
                             contentType: "application/json; charset=utf-8",
                             data: param_list_prod,
-                            headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+                            headers: with_audit_headers({}),
                             success: function(ret_prod)
                             {
                             let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}' ;
@@ -1649,11 +1643,11 @@ var codesToCheck    = [] ;
                                 $.ajax(
                                 {
                                     type : "POST",
-                                    url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
+                                    url : "{{ session['server_ext'] }}/ajax/result/create/" + id_rec,
                                     dataType: 'json',
                                     contentType: "application/json; charset=utf-8",
                                     data: param_res,
-                                    headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+                                    headers: with_audit_headers({}),
                                     success : function(response)
                                     {
                                     let param_stat = '{ "stat":182 }' ;
@@ -1664,11 +1658,11 @@ var codesToCheck    = [] ;
                                         $.ajax(
                                         {
                                             type : 'POST',
-                                            url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
+                                            url : "{{ session['server_ext'] }}/ajax/record/stat/" + id_rec,
                                             dataType: 'json',
                                             contentType: "application/json; charset=utf-8",
                                             data: param_stat,
-                                            headers: with_audit_headers({ 'Authorization': 'Bearer ' + BE_TOKEN }),
+                                            headers: with_audit_headers({}),
                                             success : function(response)
                                             {
                                                 $("#dial-wait").modal("hide") ;
@@ -1741,11 +1735,10 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/services/result/create/" + {{ args['record']['id_data'] }},
+        url : "{{ session['server_ext'] }}/ajax/result/create/" + {{ args['record']['id_data'] }},
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_res,
-        headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
         success : function(response)
         {
         let param_stat = '{ "stat":182 }' ; 
@@ -1754,11 +1747,10 @@ let param_res = '{ "id_owner":' + id_user + ', "user_role":"' + user_role + '"}'
             $.ajax(
             {
                 type : 'POST',
-                url : "{{ session['server_ext'] }}/services/record/stat/" + {{ args['record']['id_data'] }},
+                url : "{{ session['server_ext'] }}/ajax/record/stat/" + {{ args['record']['id_data'] }},
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param_stat,
-                headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
                 success : function(response)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -1922,8 +1914,7 @@ $( document ).ready( function()
 
     $.ajax({
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/product/last/code",
-        headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
+        url: "{{ session['server_ext'] }}/ajax/product/last/code",
         success: function(data) {
             const lastCodeFromApi = (data && data.last_code) ? String(data.last_code).trim() : '';
 

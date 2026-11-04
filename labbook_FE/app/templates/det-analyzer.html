@@ -102,7 +102,6 @@ var test_url = connect_url + "/connect/is_analyzer_loaded/" + analyzer_id ;
         url: test_url,
         type: "GET",
         dataType: "json",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(response) 
         {
             if (response.status === "OK") 
@@ -164,11 +163,10 @@ var param = JSON.stringify({
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/device/analyzer/det/" + id_item,
+       url: "{{ session['server_ext'] }}/ajax/device/analyzer/det/" + id_item,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            window.location = document.referrer ;

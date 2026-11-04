@@ -53,11 +53,11 @@ function add_analysis()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/analysis/list/req",
+            url: "{{ session['server_ext'] }}/ajax/analysis/list/req",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_list_ana,
-            headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+            headers: with_audit_headers({}),
             success: function(ret_ana)
             {
                 set_audit_context("{{ _('Analyse complémentaire') }}");
@@ -65,11 +65,11 @@ function add_analysis()
                 $.ajax(
                     {
                         type : 'POST',
-                        url : "{{ session['server_ext'] }}/services/result/create/" + id_rec,
+                        url : "{{ session['server_ext'] }}/ajax/result/create/" + id_rec,
                         dataType: 'json',
                         contentType: "application/json; charset=utf-8",
                         data: param_list_res,
-                        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+                        headers: with_audit_headers({}),
                         success : function(response)
                         {
                             let param_stat = '{ "stat":182 }' ; 
@@ -80,11 +80,11 @@ function add_analysis()
                             $.ajax(
                                 {
                                     type : 'POST',
-                                    url : "{{ session['server_ext'] }}/services/record/stat/" + id_rec,
+                                    url : "{{ session['server_ext'] }}/ajax/record/stat/" + id_rec,
                                     dataType: 'json',
                                     contentType: "application/json; charset=utf-8",
                                     data: param_stat,
-                                    headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+                                    headers: with_audit_headers({}),
                                     success : function(response)
                                     {
                                         $("#dial-wait").modal("hide") ;

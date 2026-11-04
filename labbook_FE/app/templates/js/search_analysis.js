@@ -10,12 +10,11 @@ $("#search_analysis").select2(
         tokenSeparators: [','],
         minimumInputLength: 2,
         ajax: {
-            url: "{{ session['server_ext'] }}/services/analysis/search/A",
+            url: "{{ session['server_ext'] }}/ajax/analysis/search/A",
             type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             term: $("#search_analysis").text(),
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             data: function (params) {
                 return JSON.stringify(
                     {

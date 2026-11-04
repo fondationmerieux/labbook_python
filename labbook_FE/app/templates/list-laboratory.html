@@ -296,11 +296,10 @@ param += tmp_value + ' ] }';
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/dict/det/" + dict_name,
+       url: "{{ session['server_ext'] }}/ajax/dict/det/" + dict_name,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;
@@ -349,7 +348,6 @@ param_form.append('file', $('input[type=file]')[0].files[0]) ;
         contentType: false,
         processData: false,
         data: param_form,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success : function(response)
         {
         location.reload() ;
@@ -373,8 +371,7 @@ function delete_file( id_file )
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/file/document/LABO/" + id_file,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/file/document/LABO/" + id_file,
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

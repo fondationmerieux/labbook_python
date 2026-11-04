@@ -209,6 +209,20 @@ class Result:
             return 0
 
     @staticmethod
+    def getResultOfAnalysis(id_req):
+        """
+        Read the results of one requested analysis of a record.
+
+        Returns:
+            list: results, each one with its id_res.
+        """
+        cursor = DB.cursor()
+
+        cursor.execute('select id_data as id_res from sigl_09_data where id_analyse=%s', (id_req,))
+
+        return cursor.fetchall()
+
+    @staticmethod
     def deleteResult(id_res):
         """
         Move a result to sigl_09_deleted.

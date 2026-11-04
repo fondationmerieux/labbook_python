@@ -142,11 +142,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/report/today",
+        url: "{{ session['server_ext'] }}/ajax/report/today",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_today = data ;
@@ -248,11 +247,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/report/today/export",
+        url: "{{ session['server_ext'] }}/ajax/report/today/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -309,11 +307,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/today",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/today",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

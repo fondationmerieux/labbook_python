@@ -56,12 +56,9 @@ function loadItemsTable()
         "pageLength": 25,
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-          url: "{{ session['server_ext'] }}/services/quality/storage/chamber/list",
+          url: "{{ session['server_ext'] }}/ajax/quality/storage/chamber/list",
           type: "GET",
           dataSrc: function (json) { return json.data || []; },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
-          }
         },
         "columns": [
             {
@@ -110,10 +107,10 @@ function deleteItem(chamberId)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/storage/chamber/det/${chamberId}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/quality/storage/chamber/det/${chamberId}`, 
         {
             method: 'DELETE',
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}', 'X-Requested-With': 'XMLHttpRequest' }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => 
         {

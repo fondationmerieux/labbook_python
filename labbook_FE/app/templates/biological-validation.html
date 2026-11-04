@@ -317,11 +317,11 @@ function save_valid( id_rec )
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/record/valid/" + id_rec,
+            url: "{{ session['server_ext'] }}/ajax/record/valid/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_rec_valid,
-            headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+            headers: with_audit_headers({}),
             success: function(data)
             {
                 set_audit_context("{{ _('Validation biologique') }}");
@@ -329,11 +329,11 @@ function save_valid( id_rec )
                 $.ajax( 
                     {
                         type: "POST",
-                        url: "{{ session['server_ext'] }}/services/result/valid/B/" + id_rec,
+                        url: "{{ session['server_ext'] }}/ajax/result/valid/B/" + id_rec,
                         dataType: 'json',
                         contentType: "application/json; charset=utf-8",
                         data: param_list_valid,
-                        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+                        headers: with_audit_headers({}),
                         success: function(data)
                         {
                             $("#dial-wait").modal("hide") ;
@@ -665,8 +665,7 @@ $("#search_analysis").on("select2:select", function (e)
         $.ajax( 
             {
                 type: "GET",
-                url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+                url: "{{ session['server_ext'] }}/ajax/analysis/det/" + id_ana,
                 success: function(data_ana)
                 {
                     let new_ana  = '<div id="new-analysis-' + id_ana + '" class="new-analysis">' + escapeHtml(data_ana.nom) + '<input type="hidden" name="new-analysis[]" value="' + id_ana + '"></div>' ;
@@ -743,11 +742,10 @@ function print_grp_rec()
         $.ajax( 
             {
                 type: "POST",
-                url: "{{ session['server_ext'] }}/services/pdf/report/grouped",
+                url: "{{ session['server_ext'] }}/ajax/pdf/report/grouped",
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                 success: function(ret)
                 {
                     $("#dial-wait").modal("hide") ;

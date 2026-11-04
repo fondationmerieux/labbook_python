@@ -12,8 +12,7 @@ let tr_histo = "<tr class=\"row\"><td class=\" col-1 icon\"><span class=\"icon s
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/result/history/" + data_res[i].id_res,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/result/history/" + data_res[i].id_res,
         success: function(data_histo)
         {
             for( i in data_histo )

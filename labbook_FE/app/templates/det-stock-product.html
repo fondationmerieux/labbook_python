@@ -113,12 +113,11 @@ $("#search_product").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/quality/stock/product/search",
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/product/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_product").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -145,8 +144,7 @@ let id_item = $(e.currentTarget).val() ;
     // GET det product for
     $.ajax( {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/quality/stock/product/det/" +  id_item,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/product/det/" +  id_item,
         success: function(data_prod)
             {
             expir_oblig = data_prod.prd_expir_oblig ;
@@ -233,11 +231,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/stock/supply/det/" + prs_ser,
+       url: "{{ session['server_ext'] }}/ajax/quality/stock/supply/det/" + prs_ser,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
                if ('referrer' in document) 

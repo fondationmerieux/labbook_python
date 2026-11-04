@@ -71,11 +71,10 @@ var param = '{"filename": "' + filename + '", "exclu":"' + exclu + '", "date_beg
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/global",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/global",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

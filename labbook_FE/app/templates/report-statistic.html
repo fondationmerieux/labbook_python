@@ -168,11 +168,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/report/stat",
+        url: "{{ session['server_ext'] }}/ajax/report/stat",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_stats = data ;
@@ -607,11 +606,10 @@ var param = '{ "html": ' + html_report + ', ' + // No quotes with stringify
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/generic",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

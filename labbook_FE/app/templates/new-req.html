@@ -59,12 +59,11 @@ $("#search_patient").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/patient/search",
+        url: "{{ session['server_ext'] }}/ajax/patient/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_patient").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify({
                 term: params.term

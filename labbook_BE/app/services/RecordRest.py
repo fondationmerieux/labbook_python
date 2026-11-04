@@ -43,6 +43,7 @@ __all__ = [
     'RecordValid',
     'RecordNumInt',
     'RecordListUpdatedFromExt',
+    'RecordAnaCancelFromExt',
 ]
 
 # Record status as the letters already used by RecordListFromExt
@@ -54,7 +55,7 @@ def analysis_for_exchange(analysis):
     Build one requested analysis for a third-party application.
     """
     return {
-        "ana_req":   analysis['id_req'],
+        "ana_id":    analysis['id_req'],
         "ana_code":  analysis['ana_code'],
         "ana_name":  analysis['ana_name'],
         "ana_loinc": analysis['ana_loinc'],
@@ -709,6 +710,7 @@ class RecordDetFromExt(Resource):
             samp_list (list): samples with samp_ana, samp_type, samp_code, samp_status...
             external (dict, optional): system, record, patient and patient_resource references, kept in
                 external_ref. patient is the business number, patient_resource the id of the resource.
+                Each analysis of ana_list may carry its own ana_ref_ext, kept the same way.
 
         Returns:
             200: id of the new record.
@@ -1317,6 +1319,12 @@ class RecordDetFromExt(Resource):
                                                 demande=ana['ana_req'],
                                                 outsourced=ana['ana_out'])
 
+            # Reference of this analysis in the calling system, so a later message naming it finds it again
+            if ext_system and ana.get('ana_ref_ext') and id_req > 0:
+                if External.insertRef(user=0, system=ext_system, ref=ana['ana_ref_ext'],
+                                      object='ANALYSIS', id=id_req) <= 0:
+                    self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertRef analysis')
+
             if id_req <= 0:
                 self.log.error(Logs.alert() + ' : RecordDetFromExt ERROR insertAnalysisReq')
                 err = {"error": "insertAnalysisReq SQL error"}
@@ -1664,6 +1672,116 @@ class RecordListUpdatedFromExt(Resource):
             Audit.insertAudit(audit_user, "RecordListUpdatedFromExt", "RECORD", None, "SUCCESS", details, "R")
         except Exception as err:
             self.log.error(Logs.fileline() + ' : RecordListUpdatedFromExt ERROR audit success err=' + str(err))
+        return compose_ret(l_res, Constants.cst_content_type_json, 200)
+
+
+class RecordAnaCancelFromExt(Resource):
+    log = logging.getLogger('log_services')
+
+    @require_oauth('external/record')
+    def post(self):
+        """
+        Cancel one analysis of a record on behalf of the system that asked for it (scope
+        external/record). The analysis is named by the reference that system gave at creation.
+        It is removed as the laboratory would remove it, bill included, and the record itself
+        goes to sigl_02_deleted when its last analysis leaves.
+
+        Body:
+            system (str): short name of the calling system, required.
+            analysis (str): reference of the analysis in that system, required.
+
+        Returns:
+            200: id_rec, ana_code, and record_deleted saying whether the record went away with it.
+            400: system or analysis missing.
+            404: no analysis of this system carries this reference.
+            409: a result already carries a value, the analysis was run and stays billed.
+            500: bill update or deletion failed.
+        """
+        audit_user = request.oauth_user
+        args = request.get_json() or {}
+
+        self.log.info(Logs.fileline() + ' : RecordAnaCancelFromExt API access authorized')
+
+        if 'system' not in args or not args['system'] or 'analysis' not in args or not args['analysis']:
+            self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR args missing')
+            err = {"error": "missing system or analysis"}
+            return compose_ret(err, Constants.cst_content_type_json, 400)
+
+        id_req = External.getIdByRef(args['system'], 'ANALYSIS', args['analysis'])
+
+        if id_req <= 0:
+            self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR reference not found : '
+                           + Logs.clean(str(args['analysis'])))
+            err = {"error": "analysis not found with reference = " + str(args['analysis'])}
+            try:
+                details = {"result": "ERROR", "reason": "REFERENCE_NOT_FOUND",
+                           "system": str(args['system']), "ref": str(args['analysis'])}
+                Audit.insertAudit(audit_user, "RecordAnaCancelFromExt", "RECORD", None, "ERROR", details, "D")
+            except Exception as err2:
+                self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR audit not found err=' + str(err2))
+            return compose_ret(err, Constants.cst_content_type_json, 404)
+
+        ana = Analysis.getAnalysisReqForExchange(id_req)
+
+        if not ana:
+            self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR analysis already gone id_req=' + str(id_req))
+            err = {"error": "analysis no longer in a record"}
+            return compose_ret(err, Constants.cst_content_type_json, 404)
+
+        # A result with a value means the analysis was run, so it is neither removed nor unbilled
+        if ana['nb_value'] > 0:
+            self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR result already entered id_req='
+                           + str(id_req))
+            err = {"error": "a result is already entered for this analysis"}
+            try:
+                details = {"result": "ERROR", "reason": "RESULT_ALREADY_ENTERED", "id_req": int(id_req),
+                           "id_rec": int(ana['id_rec']), "system": str(args['system'])}
+                Audit.insertAudit(audit_user, "RecordAnaCancelFromExt", "RECORD", int(ana['id_rec']),
+                                  "ERROR", details, "D")
+            except Exception as err2:
+                self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR audit result err=' + str(err2))
+            return compose_ret(err, Constants.cst_content_type_json, 409)
+
+        id_rec = ana['id_rec']
+
+        # Bill of the record first, as the laboratory screen does
+        if ana['price'] and ana['price'] > 0:
+            if not Record.removeRecordBill(id_rec, ana['price']):
+                self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR removeRecordBill')
+                err = {"error": "removeRecordBill SQL error"}
+                return compose_ret(err, Constants.cst_content_type_json, 500)
+
+        if not Analysis.deleteAnalysisReq(id_req, id_rec, ana['id_ana'], ''):
+            self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR deleteAnalysisReq')
+            err = {"error": "deleteAnalysisReq SQL error"}
+            return compose_ret(err, Constants.cst_content_type_json, 500)
+
+        # The empty results of this analysis leave with it
+        for res in Result.getResultOfAnalysis(id_req):
+            Result.deleteResult(res['id_res'])
+
+        deleted = False
+
+        # Nothing left to do in the laboratory, the record joins the deleted ones
+        if Analysis.countAnalysisOfRecord(id_rec) == 0:
+            if not Analysis.deleteAnalysisByRecord(id_rec) or not Record.deleteRecord(id_rec):
+                self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR deleteRecord id_rec=' + str(id_rec))
+                err = {"error": "deleteRecord SQL error"}
+                return compose_ret(err, Constants.cst_content_type_json, 500)
+
+            deleted = True
+
+        l_res = {"id_rec": id_rec, "ana_code": ana['ana_code'], "record_deleted": 'Y' if deleted else 'N'}
+
+        self.log.info(Logs.fileline() + ' : RecordAnaCancelFromExt id_req=' + str(id_req)
+                      + ' id_rec=' + str(id_rec) + ' record_deleted=' + str(deleted))
+        try:
+            details = {"result": "SUCCESS", "id_req": int(id_req), "id_rec": int(id_rec),
+                       "ana_code": str(ana['ana_code']), "system": str(args['system']),
+                       "ref": str(args['analysis']), "record_deleted": 'Y' if deleted else 'N'}
+            Audit.insertAudit(audit_user, "RecordAnaCancelFromExt", "RECORD", int(id_rec), "SUCCESS", details, "D")
+        except Exception as err2:
+            self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR audit success err=' + str(err2))
         return compose_ret(l_res, Constants.cst_content_type_json, 200)
 
 

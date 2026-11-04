@@ -141,11 +141,10 @@ var param = '{}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/control/ext/export",
+        url: "{{ session['server_ext'] }}/ajax/quality/control/ext/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

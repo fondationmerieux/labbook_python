@@ -118,11 +118,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/setting/zipcity/delete/all",
+            url: "{{ session['server_ext'] }}/ajax/setting/zipcity/delete/all",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -177,7 +176,6 @@ filename = $('input[type=file]')[0].files[0].name ;
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-add") ;
@@ -186,11 +184,10 @@ filename = $('input[type=file]')[0].files[0].name ;
                 $.ajax( 
                 {
                     type: "POST",
-                    url: "{{ session['server_ext'] }}/services/setting/zipcity/add/" + filename,
+                    url: "{{ session['server_ext'] }}/ajax/setting/zipcity/add/" + filename,
                     dataType: 'json',
                     contentType: "application/json; charset=utf-8",
                     data: param,
-                    headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                     success: function(ret)
                     {
                     $("#dial-wait").modal("hide") ;

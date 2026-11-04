@@ -296,12 +296,11 @@ function loadRunTable() {
     {% include 'js/datatables_lang.js' %}
 
         ajax: {
-            url: "{{ session['server_ext'] }}/services/automation/run/list",
+            url: "{{ session['server_ext'] }}/ajax/automation/run/list",
             type: "POST",
             contentType: "application/json",
             data: () => JSON.stringify({}),
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get('be_access_token','') }}');
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             },
             dataSrc: function (json) {

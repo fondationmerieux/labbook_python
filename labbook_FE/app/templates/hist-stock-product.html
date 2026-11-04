@@ -107,11 +107,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/stock/product/history/{{ args['prd_ser'] }}/{{ args['prl_ser'] }}" ,
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/product/history/{{ args['prd_ser'] }}/{{ args['prl_ser'] }}" ,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_items = data ;
@@ -218,8 +217,7 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
             {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/quality/stock/use/" + id_stock,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/quality/stock/use/" + id_stock,
             success: function(ret)
                 {
                     if (ret > 0)
@@ -238,11 +236,10 @@ var id_user = {{ session['user_id']|safe}} ;
                             $.ajax( 
                                 {
                                 type: "POST",
-                                url: "{{ session['server_ext'] }}/services/quality/stock/cancel/io" ,
+                                url: "{{ session['server_ext'] }}/ajax/quality/stock/cancel/io" ,
                                 dataType: 'json',
                                 contentType: "application/json; charset=utf-8",
                                 data: param,
-                                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                                 success: function(ret)
                                     {
                                     location.reload() ;
@@ -276,11 +273,10 @@ var id_user = {{ session['user_id']|safe}} ;
             $.ajax( 
                 {
                 type: "POST",
-                url: "{{ session['server_ext'] }}/services/quality/stock/cancel/io" ,
+                url: "{{ session['server_ext'] }}/ajax/quality/stock/cancel/io" ,
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                 success: function(ret)
                     {
                     location.reload() ;

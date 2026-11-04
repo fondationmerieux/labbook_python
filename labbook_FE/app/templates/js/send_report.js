@@ -253,7 +253,7 @@ function send_last_report(file) {
 
     $.ajax({
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/sending/report",
+        url: "{{ session['server_ext'] }}/ajax/setting/sending/report",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
@@ -267,7 +267,6 @@ function send_last_report(file) {
             pat_amicare: PAT_AMICARE,
             id_user: id_user
         }),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
 
         success: function() {
             $("#dial-wait").modal("hide");

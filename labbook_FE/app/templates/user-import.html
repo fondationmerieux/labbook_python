@@ -71,7 +71,6 @@ filename = $('input[type=file]')[0].files[0].name ;
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
@@ -96,8 +95,7 @@ function import_users()
         $.ajax( 
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/user/import/" + filename + "/{{ session['user_id'] }}",
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/user/import/" + filename + "/{{ session['user_id'] }}",
             success: function(ret)
             {
             tempAlert("{{ _("Traitement réussi") }}", "import-users") ;

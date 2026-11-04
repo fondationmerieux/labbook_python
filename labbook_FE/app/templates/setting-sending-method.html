@@ -100,11 +100,8 @@ function loadMethodTable()
 
     methodTable = $('#methodTable').DataTable({
         ajax: { 
-            url: "{{ session['server_ext'] }}/services/setting/sending/method/list", 
+            url: "{{ session['server_ext'] }}/ajax/setting/sending/method/list", 
             type: 'GET',
-            headers: {
-                'Authorization': 'Bearer {{ session.get("be_access_token","") }}'
-            },
             dataSrc: '' 
         },
         pageLength: 25,
@@ -176,11 +173,11 @@ function test_method(type, id)
     const to = prompt(label, placeholder);
     if (!to) return;
 
-    const url = "{{ session['server_ext'] }}/services/setting/sending/method/test/" + type + "/" + id;
+    const url = "{{ session['server_ext'] }}/ajax/setting/sending/method/test/" + type + "/" + id;
 
     fetch(url, {
         method: 'POST',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}",
+        headers: { "X-Requested-With": "XMLHttpRequest",
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'X-CSRF-Token': "{{ session.get('csrf_token','') }}"
@@ -202,11 +199,11 @@ function delete_method(type, id)
 {
     if (!confirm("{{ _('Confirmer la suppression ?') }}")) return;
 
-    const url = "{{ session['server_ext'] }}/services/setting/sending/method/det/" + type + "/" + id;
+    const url = "{{ session['server_ext'] }}/ajax/setting/sending/method/det/" + type + "/" + id;
 
     fetch(url, {
         method: 'DELETE',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-CSRF-Token': "{{ session.get('csrf_token','') }}" }
+        headers: { "X-Requested-With": "XMLHttpRequest", 'X-CSRF-Token': "{{ session.get('csrf_token','') }}" }
     })
         .then(r => {
             if (r.ok) {
@@ -237,10 +234,9 @@ function loadModelTable() {
 
     modelTable = $('#modelTable').DataTable({
         ajax: { 
-            url: "{{ session['server_ext'] }}/services/setting/sending/model/list", 
+            url: "{{ session['server_ext'] }}/ajax/setting/sending/model/list", 
             type: 'GET', 
             dataSrc: '',
-            beforeSend: function (xhr) { xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}'); }
         },
         pageLength: 25,
         order: [[2, 'asc'], [3, 'asc']], // Type, puis Nom
@@ -287,11 +283,11 @@ function test_model(type, id) {
     const to = prompt(label, placeholder);
     if (!to) return;
 
-    const url = "{{ session['server_ext'] }}/services/setting/sending/model/test/" + type + "/" + id;
+    const url = "{{ session['server_ext'] }}/ajax/setting/sending/model/test/" + type + "/" + id;
 
     fetch(url, {
         method: 'POST',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}",
+        headers: { "X-Requested-With": "XMLHttpRequest",
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'X-CSRF-Token': "{{ session.get('csrf_token','') }}"
@@ -307,10 +303,10 @@ function test_model(type, id) {
 function delete_model(type, id) {
     if (!confirm("{{ _('Confirmer la suppression ?') }}")) return;
 
-    const url = "{{ session['server_ext'] }}/services/setting/sending/model/det/" + type + "/" + id;
+    const url = "{{ session['server_ext'] }}/ajax/setting/sending/model/det/" + type + "/" + id;
     fetch(url, {
         method: 'DELETE',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-CSRF-Token': "{{ session.get('csrf_token','') }}" }
+        headers: { "X-Requested-With": "XMLHttpRequest", 'X-CSRF-Token': "{{ session.get('csrf_token','') }}" }
     })
         .then(r => {
             if (r.ok) { modelTable?.ajax.reload(null, false); }

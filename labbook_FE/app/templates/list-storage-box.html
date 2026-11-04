@@ -57,12 +57,9 @@ function loadItemsTable()
         "pageLength": 25,
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-          url: "{{ session['server_ext'] }}/services/quality/storage/box/list",
+          url: "{{ session['server_ext'] }}/ajax/quality/storage/box/list",
           type: "GET",
           "dataSrc": function (json) { return json.data || json || []; },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
-          }
         },
         "columns": [
             {
@@ -131,10 +128,10 @@ function deleteItem(boxId)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/storage/box/det/${boxId}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/quality/storage/box/det/${boxId}`, 
         {
             method: 'DELETE',
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-Requested-With': 'XMLHttpRequest' }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => 
         {

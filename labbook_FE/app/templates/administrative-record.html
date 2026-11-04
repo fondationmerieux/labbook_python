@@ -437,11 +437,11 @@ function del_ana(id_req, id_ana, type_samp, price)
         $.ajax(
             {
                 type: "DELETE",
-                url: "{{ session['server_ext'] }}/services/analysis/delete/req/" + id_req,
+                url: "{{ session['server_ext'] }}/ajax/analysis/delete/req/" + id_req,
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
-                headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+                headers: with_audit_headers({}),
                 success: function(ret)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -696,8 +696,8 @@ function reedit_report( id_rec, filename )
         $.ajax(
             {
                 type : 'GET',
-                url : "{{ session['server_ext'] }}/services/pdf/report/" + id_rec + "/" + filename + "/" + template + "/Y/{{ session['user_id'] }}",
-                headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+                url : "{{ session['server_ext'] }}/ajax/pdf/report/" + id_rec + "/" + filename + "/" + template + "/Y/{{ session['user_id'] }}",
+                headers: with_audit_headers({}),
                 success : function(response)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -729,11 +729,10 @@ function save_comm()
         {
             // CREATE Record
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/record/comm/" + id_rec,
+            url: "{{ session['server_ext'] }}/ajax/record/comm/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret_rec)
             {
                 $("#dial-wait").modal("hide") ;
@@ -766,7 +765,6 @@ function upload_file( id_rec )
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
                 $("#dial-wait").modal("hide") ;
@@ -793,8 +791,7 @@ function delete_file( id_file )
         $.ajax( 
             {
                 type: "DELETE",
-                url: "{{ session['server_ext'] }}/services/file/document/REC/" + id_file,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+                url: "{{ session['server_ext'] }}/ajax/file/document/REC/" + id_file,
                 success: function(ret)
                 {
                     $("#dial-wait").modal("hide") ;
@@ -823,8 +820,7 @@ function print_outsourced( id_rec )
     $.ajax( 
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/pdf/outsourced/" + id_rec + "/" + template + "/" + filename,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/pdf/outsourced/" + id_rec + "/" + template + "/" + filename,
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -852,8 +848,7 @@ function print_invoice( id_rec )
     $.ajax( 
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/pdf/invoice/" + id_rec + "/" + template + "/" + filename,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/pdf/invoice/" + id_rec + "/" + template + "/" + filename,
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -886,11 +881,10 @@ function print_sticker()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/pdf/sticker/" + template,
+            url: "{{ session['server_ext'] }}/ajax/pdf/sticker/" + template,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;

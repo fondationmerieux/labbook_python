@@ -203,7 +203,7 @@ paths:
                     items:
                       type: object
                       properties:
-                        ana_req:
+                        ana_id:
                           type: integer
                           description: ID of the requested analysis in this record
                         ana_code:
@@ -673,6 +673,9 @@ paths:
                         - Y
                         - N
                         default: Y
+                      ana_ref_ext:
+                        type: string
+                        description: reference of this analysis in the calling system, kept in external_ref
                       ana_out:
                         type: string
                         description: outsourced analysis states, Yes / No.

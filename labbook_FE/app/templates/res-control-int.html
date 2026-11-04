@@ -109,10 +109,9 @@ var param = '{ "id_item":' + id_item + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/control/int/res/" + id_item,
+       url: "{{ session['server_ext'] }}/ajax/quality/control/int/res/" + id_item,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        data: param,
        success: function(data)
            {

@@ -201,11 +201,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/product/det/" + id_prod,
+       url: "{{ session['server_ext'] }}/ajax/product/det/" + id_prod,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            window.location = "{{ session['server_ext'] }}/list-samples" ;

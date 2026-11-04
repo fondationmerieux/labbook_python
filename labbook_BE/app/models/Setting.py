@@ -142,46 +142,6 @@ class Setting:
             return False
 
     @staticmethod
-    def getStickerSetting():
-        """
-        Read the sticker setting.
-        """
-        cursor = DB.cursor()
-
-        req = ('select sts_ser, sts_width, sts_height, sts_margin_top, sts_margin_bottom, '
-               'sts_margin_left, sts_margin_right '
-               'from sticker_setting '
-               'order by sts_ser desc limit 1')
-
-        cursor.execute(req)
-
-        return cursor.fetchone()
-
-    @staticmethod
-    def updateStickerSetting(**params):
-        """
-        Update the sticker setting.
-
-        Returns:
-            bool: True on success, False on SQL error.
-        """
-        try:
-            cursor = DB.cursor()
-
-            cursor.execute('update sticker_setting '
-                           'set sts_width=%(sts_width)s, sts_height=%(sts_height)s, '
-                           'sts_margin_top=%(sts_margin_top)s, sts_margin_bottom=%(sts_margin_bottom)s, '
-                           'sts_margin_left=%(sts_margin_left)s, sts_margin_right=%(sts_margin_right)s '
-                           'where sts_ser=%(sts_ser)s', params)
-
-            Setting.log.info(Logs.fileline())
-
-            return True
-        except mysql.connector.Error as e:
-            Setting.log.error(Logs.fileline() + ' : ERROR SQL = ' + str(e))
-            return False
-
-    @staticmethod
     def getAgeInterval():
         """
         Read every age interval of age_interval_setting.

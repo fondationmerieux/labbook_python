@@ -271,7 +271,7 @@ function loadAuditTable() {
         {% include 'js/datatables_lang.js' %}
 
         ajax: {
-            url: "{{ session['server_ext'] }}/services/audit/list",
+            url: "{{ session['server_ext'] }}/ajax/audit/list",
             type: "POST",
             contentType: "application/json",
             data: function (d) {
@@ -285,7 +285,6 @@ function loadAuditTable() {
                 return JSON.stringify(d);
             },
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get('be_access_token','') }}');
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             },
             dataSrc: function (json) {
@@ -394,19 +393,19 @@ function audit_manage(do_purge)
     if (do_purge) set_audit_context("{{ _('Archivage audit + purge') }}") ;
 
     $.ajax({
-        url: "{{ session['server_ext'] }}/services/audit/archive",
+        url: "{{ session['server_ext'] }}/ajax/audit/archive",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         data: JSON.stringify(payload),
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(resp)
         {
             $("#dial-wait").modal("hide");
             $("#dial-wait").modal("hide");
 
             if (resp && resp.filename) {
-                download_archive_file(resp.filename);
+                download_audit_file('archive-download', resp.filename);
             } else {
                 alert("{{ _('Archivage terminé mais aucun fichier retourné.') }}");
             }
@@ -419,16 +418,15 @@ function audit_manage(do_purge)
     });
 }
 
-function download_archive_file(filename)
+// service: archive-download or export-atna-download
+function download_audit_file(service, filename)
 {
-    var downloadUrl = "{{ session['server_ext'] }}/services/audit/archive-download/" + encodeURIComponent(filename);
-    var accessToken = "{{ session.get('be_access_token','') }}";
+    var downloadUrl = "{{ session['server_ext'] }}/ajax/audit/" + service + "/" + encodeURIComponent(filename);
 
     var httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", downloadUrl, true);
     httpRequest.responseType = "blob";
 
-    httpRequest.setRequestHeader("Authorization", "Bearer " + accessToken);
     httpRequest.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
     httpRequest.onload = function ()
@@ -487,16 +485,15 @@ function export_atna()
     set_audit_context("{{ _('Export audit') }}") ;
 
     $.ajax({
-        url: "{{ session['server_ext'] }}/services/audit/export-atna",
+        url: "{{ session['server_ext'] }}/ajax/audit/export-atna",
         type: "POST",
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify(payload),
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function (resp) {
             if (resp && resp.filename) {
-                var url = "{{ session['server_ext'] }}/services/audit/export-atna-download/" + encodeURIComponent(resp.filename);
-                window.open(url, '_blank');
+                download_audit_file('export-atna-download', resp.filename);
             } else {
                 alert("Export ATNA terminé mais aucun fichier retourné.");
             }

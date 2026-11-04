@@ -317,11 +317,10 @@ var param = '{ "start_time":"' + start_time + '", ' +
     $.ajax( 
     {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/script/progbackup",
+       url: "{{ session['server_ext'] }}/ajax/setting/script/progbackup",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
        {
        $("#dial-wait").modal("hide") ;
@@ -364,8 +363,7 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
-        url: "{{ session['server_ext'] }}/services/setting/script/listmedia/" + type,
+        url: "{{ session['server_ext'] }}/ajax/setting/script/listmedia/" + type,
         success: function(data)
         {
         // POLL WS status media
@@ -388,8 +386,7 @@ function run_keyexist()
     $.ajax( 
     {
        type: "GET",
-       url: "{{ session['server_ext'] }}/services/setting/script/keyexist",
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+       url: "{{ session['server_ext'] }}/ajax/setting/script/keyexist",
        success: function(data)
        {
        console.log("keyexist ret="+JSON.stringify(data)) ;
@@ -432,8 +429,7 @@ function initmedia(media)
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/initmedia/" + media,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/setting/script/initmedia/" + media,
         success: function(data)
         {
             $("#dial-wait").modal("hide") ;
@@ -467,11 +463,10 @@ var param = '{ "pwd_key":"' + pwd_key + '"}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/genkey",
+        url: "{{ session['server_ext'] }}/ajax/setting/script/genkey",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         tempAlert("{{ _("Génération réussie") }}", "btn-run_keygen") ;
@@ -494,8 +489,7 @@ function backup(media)
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/backup/" + media,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/setting/script/backup/" + media,
         success: function(data)
         {
         // POLL WS status backup
@@ -528,11 +522,10 @@ var param = '{ "user_pwd":"' + pwd_user + '"}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/setting/script/listarchive/" + media,
+        url: "{{ session['server_ext'] }}/ajax/setting/script/listarchive/" + media,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         // POLL WS status archive
@@ -574,11 +567,10 @@ console.log("restore param=" + param) ;
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/setting/script/restore",
+            url: "{{ session['server_ext'] }}/ajax/setting/script/restore",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(data)
             {
             // POLL WS status restore
@@ -616,8 +608,7 @@ poll_count = poll_count + 1 ;
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/setting/script/status/" + mode,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/setting/script/status/" + mode,
         success: function(data)
         {
         console.log("status data="+JSON.stringify(data)) ;
@@ -766,11 +757,10 @@ poll_count = poll_count + 1 ;
                             $.ajax( 
                             {
                                 type: "POST",
-                                url: "{{ session['server_ext'] }}/services/setting/script/restart",
+                                url: "{{ session['server_ext'] }}/ajax/setting/script/restart",
                                 dataType: 'json',
                                 contentType: "application/json; charset=utf-8",
                                 data: param,
-                                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                                 success: function(data)
                                 {
                                 // Never go through this

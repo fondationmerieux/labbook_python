@@ -231,11 +231,11 @@ param_list_answer += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/list/value" ,
+        url: "{{ session['server_ext'] }}/ajax/result/list/value" ,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_answer,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
         {
         filter_result() ; // refresh page with filter parameters
@@ -411,11 +411,11 @@ param_list_valid += ' ] }' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/valid/T/" + id_rec,
+        url: "{{ session['server_ext'] }}/ajax/result/valid/T/" + id_rec,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_list_valid,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
         {
             $("#dial-wait").modal("hide") ;
@@ -919,11 +919,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/list",
+        url: "{{ session['server_ext'] }}/ajax/result/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_res = data ;
@@ -962,11 +961,11 @@ var param = JSON.stringify({ html: html_report, filename: "benchsheet" });
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/report/generic",
+        url: "{{ session['server_ext'] }}/ajax/pdf/report/generic",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(ret)
         {
             // STEP 5: Hide dialog and trigger download

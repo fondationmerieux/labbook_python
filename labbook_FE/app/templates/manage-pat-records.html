@@ -99,12 +99,11 @@ $("#search_patient1").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/patient/search",
+        url: "{{ session['server_ext'] }}/ajax/patient/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_patient1").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify({
                 term: params.term
@@ -128,12 +127,11 @@ $("#search_patient2").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/patient/search",
+        url: "{{ session['server_ext'] }}/ajax/patient/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_patient2").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify({
                 term: params.term
@@ -205,11 +203,10 @@ var id_owner = id_user;
 
     $.ajax({
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat1,
+        url: "{{ session['server_ext'] }}/ajax/patient/det/" + id_pat1,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(param),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data) {
             tempAlert("{{ _("Enregistrement réussi") }}", "btn-save");
         },
@@ -288,8 +285,7 @@ function save_request()
         $.ajax( 
         {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/combine/" + id_pat1 + "/" + id_pat2,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/patient/combine/" + id_pat1 + "/" + id_pat2,
         success: function(data_pat2)
             {
                 $("#dial-wait").modal("hide") ;
@@ -354,13 +350,11 @@ function fetch_patient_full(id_pat, okCb, errCb)
 {
     $.ajax({
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/patient/det/" + id_pat,
         success: function(det) {
             $.ajax({
                 type: "GET",
-                url: "{{ session['server_ext'] }}/services/patient/form/item/" + id_pat,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+                url: "{{ session['server_ext'] }}/ajax/patient/form/item/" + id_pat,
                 success: function(items) {
                     okCb(Object.assign({}, det || {}, items || {}));
                 },

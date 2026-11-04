@@ -15,11 +15,11 @@ function reset_res( id_rec, id_res )
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/result/reset/" + id_rec,
+            url: "{{ session['server_ext'] }}/ajax/result/reset/" + id_rec,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param_res,
-            headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+            headers: with_audit_headers({}),
             success: function(data)
                 {
                 window.location.href = "{{ session['server_ext'] }}/{{ result_return_page }}/{{ ihm['mode'] }}/" + id_rec ;
@@ -67,11 +67,11 @@ let param_res = '{ "id_owner": {{ session['user_id']}}, ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/result/cancel/" + id_rec_tmp,
+        url: "{{ session['server_ext'] }}/ajax/result/cancel/" + id_rec_tmp,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param_res,
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
             {
             window.location.href = "{{ session['server_ext'] }}/{{ result_return_page }}/{{ ihm['mode'] }}/" + id_rec_tmp ;

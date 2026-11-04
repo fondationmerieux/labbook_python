@@ -12,8 +12,7 @@ function delete_file( type_ref, id_file )
         $.ajax(
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/file/document/" + type_ref + "/" + id_file,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/file/document/" + type_ref + "/" + id_file,
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

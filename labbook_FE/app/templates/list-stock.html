@@ -156,11 +156,10 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/stock/list",
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_items = data ;
@@ -289,11 +288,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/quality/stock/supply/remove/" + id_item + "/" + id_local,
+            url: "{{ session['server_ext'] }}/ajax/quality/stock/supply/remove/" + id_item + "/" + id_local,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -326,11 +324,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/quality/stock/product/det/" + id_item,
+            url: "{{ session['server_ext'] }}/ajax/quality/stock/product/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -389,11 +386,10 @@ let param = '{ "prod_name":"' + prod_name + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export",
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -435,8 +431,7 @@ function export_products()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export/products",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/export/products",
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -478,8 +473,7 @@ function export_supplies()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export/supplies",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/export/supplies",
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -521,8 +515,7 @@ function export_uses()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/quality/stock/export/uses",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/quality/stock/export/uses",
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

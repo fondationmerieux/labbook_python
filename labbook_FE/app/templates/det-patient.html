@@ -117,8 +117,8 @@ function save_pat_and_open_hist(id_pat)
         $.ajax(
         {
             type: "GET",
-            url: "{{ session['server_ext'] }}/services/patient/search/code/lab/" + code_lab,
-            headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+            url: "{{ session['server_ext'] }}/ajax/patient/search/code/lab/" + code_lab,
+            headers: with_audit_headers({}),
             success: function(ret)
             {
                 if (ret > 0 && (id_pat == 0 || (id_pat > 0 && code_lab_ori != code_lab)))
@@ -168,11 +168,11 @@ param.pat_agreement = $("#pat_agreement").is(":checked") ? "Y" : "N";
     $.ajax(
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/patient/det/" + id_pat,
+        url: "{{ session['server_ext'] }}/ajax/patient/det/" + id_pat,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(param),
-        headers: with_audit_headers({ 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' }),
+        headers: with_audit_headers({}),
         success: function(data)
         {
             $("#dial-wait").modal("hide");

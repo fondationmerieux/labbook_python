@@ -286,7 +286,7 @@ class AuthorizationCodeGrantPKCE(grants.AuthorizationCodeGrant):
             req.payload.data.get('nonce', ''),
             req.payload.data.get('code_challenge', ''),
             req.payload.data.get('code_challenge_method', ''),
-            int(time.time()) + 600
+            int(time.time()) + 60
         ))
         return code
 

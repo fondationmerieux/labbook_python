@@ -754,14 +754,13 @@ function save_job() {
 
     const isUpdate = IDITEM > 0;
     const url = isUpdate
-        ? (SERVER + '/services/automation/job/' + IDITEM)
-        : (SERVER + '/services/automation/job');
+        ? (SERVER + '/ajax/automation/job/' + IDITEM)
+        : (SERVER + '/ajax/automation/job');
     const method = isUpdate ? 'PUT' : 'POST';
 
     fetch(url, {
         method,
         headers: {
-            "Authorization": "Bearer {{ session.get('be_access_token','') }}",
             "Content-Type": "application/json",
             "X-Requested-With": "XMLHttpRequest"
         },
@@ -796,12 +795,10 @@ function initRecipientSelect2()
             tokenSeparators: [','],
             minimumInputLength: 2,
             ajax: {
-                url: "{{ session['server_ext'] }}/services/user/search",
+                url: "{{ session['server_ext'] }}/ajax/user/search",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                // we send Bearer like in message page
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                 data: function (params) {
                     return JSON.stringify({
                         term: params.term

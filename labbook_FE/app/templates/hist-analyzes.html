@@ -138,11 +138,10 @@ let param = '{ "date_beg":"' + date_beg + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/analysis/historic/list",
+        url: "{{ session['server_ext'] }}/ajax/analysis/historic/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_analyzes = data ;
@@ -260,11 +259,10 @@ let param = '{ "date_beg":"' + date_beg + ' 00:00", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/analysis/historic/export",
+        url: "{{ session['server_ext'] }}/ajax/analysis/historic/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

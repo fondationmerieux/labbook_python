@@ -122,13 +122,10 @@ function loadItemsTable()
         "pageLength": 25,
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-            "url": "{{ session['server_ext'] }}/services/quality/printer/list",
+            "url": "{{ session['server_ext'] }}/ajax/quality/printer/list",
             "type": "POST",
             "contentType": "application/json",
             "dataSrc": function (json) { return json.data || json || []; },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
-            }
         },
         "columns": [
             {
@@ -175,10 +172,10 @@ function delete_item(id_item)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/printer/det/${id_item}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/quality/printer/det/${id_item}`, 
         {
             method: 'DELETE',
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-Requested-With': 'XMLHttpRequest' }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => 
         {
@@ -207,7 +204,6 @@ function deletePrinterScript(name)
     }
 
     fetch("{{ session['server_ext'] }}/delete-file/PR/" + encodeURIComponent(name), {
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}" }
     })
     .then(response => response.json().then(data => ({ status: response.status, data: data })))
     .then(result => {
@@ -248,7 +244,6 @@ let fileInput = document.getElementById("upload-printer");
 
     fetch(url, {
         method: 'POST',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}" },
         body: formData
     })
     .then(response => response.json())

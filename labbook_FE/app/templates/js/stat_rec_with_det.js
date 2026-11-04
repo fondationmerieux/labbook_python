@@ -27,8 +27,7 @@ let tr_det_rec = '' ;
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/record/list/analysis/" + id_rec,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/record/list/analysis/" + id_rec,
         success: function(data_rec)
         {
             for( i in data_rec )

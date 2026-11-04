@@ -26,7 +26,6 @@ let input_file = $('#' + type_ref)[0] ;
                 contentType: false,
                 processData: false,
                 data: param_form,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                 success : function(response)
                 {
                 console.log( "success upload ") ;

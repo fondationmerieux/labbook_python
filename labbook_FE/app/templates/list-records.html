@@ -234,11 +234,10 @@ let param = '{ "num_rec":"' + num_rec + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/record/list/" + {{ ihm['id_pres']|clean_json }},
+        url: "{{ session['server_ext'] }}/ajax/record/list/" + {{ ihm['id_pres']|clean_json }},
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_records = data ;
@@ -366,8 +365,7 @@ function del_record( id_rec )
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/record/det/" + id_rec,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/record/det/" + id_rec,
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

@@ -60,9 +60,9 @@ let aliquots = [];
 {% if aliquot_audit %}
     set_audit_context("{{ _('Enregistrement aliquot') }}");
 {% endif %}
-    fetch("{{ session['server_ext'] }}/services/quality/storage/aliquot/det/0", {
+    fetch("{{ session['server_ext'] }}/ajax/quality/storage/aliquot/det/0", {
         method: "POST",
-        headers: {% if aliquot_audit %}with_audit_headers({ "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" }){% else %}{ "Authorization": "Bearer {{ session.get('be_access_token','') }}", "Content-Type": "application/json" }{% endif %},
+        headers: {% if aliquot_audit %}with_audit_headers({ "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json" }){% else %}{ "X-Requested-With": "XMLHttpRequest", "Content-Type": "application/json" }{% endif %},
         body: JSON.stringify({ aliquots: aliquots })
     })
     .then(response => {
@@ -129,10 +129,10 @@ let aliquotForm = boxSelect.closest(".aliquot_form");
 let boxCoordSpan = aliquotForm.querySelector(".box_coord");
 
     if (boxId) {
-        let url = `{{ session['server_ext'] }}/services/quality/storage/box/coord/${boxId}`;
+        let url = `{{ session['server_ext'] }}/ajax/quality/storage/box/coord/${boxId}`;
 
         fetch(url, {
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}" }
+            headers: { "X-Requested-With": "XMLHttpRequest" }
             })
             .then(response => response.json())
             .then(data => {

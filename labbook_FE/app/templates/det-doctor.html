@@ -210,11 +210,10 @@
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/doctor/det/" + id_doctor,
+        url: "{{ session['server_ext'] }}/ajax/doctor/det/" + id_doctor,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
             window.location = "{{ session['server_ext'] }}/list-doctors" ;

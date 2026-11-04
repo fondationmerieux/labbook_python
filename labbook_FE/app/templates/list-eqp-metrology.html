@@ -166,11 +166,10 @@ var param = '{}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/equipment/metrology/export/{{ args['id_eqp'] }}",
+        url: "{{ session['server_ext'] }}/ajax/quality/equipment/metrology/export/{{ args['id_eqp'] }}",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

@@ -157,11 +157,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/setting/template/det/" + id_item,
+            url: "{{ session['server_ext'] }}/ajax/setting/template/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -188,8 +187,7 @@ function print_test(id_item)
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/pdf/template/test/" + id_item,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/pdf/template/test/" + id_item,
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

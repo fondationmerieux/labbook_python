@@ -86,7 +86,6 @@ filename = $('input[type=file]')[0].files[0].name ;
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
@@ -124,11 +123,10 @@ var param = '{ "id_user":{{ session["user_id"] }}, ' +
             type: "POST",
             //async: false, // 19/04/2023 : dial wait doesnt display
             timeout: 6000000,
-            url: "{{ session['server_ext'] }}/services/analysis/import",
+            url: "{{ session['server_ext'] }}/ajax/analysis/import",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -163,8 +161,7 @@ function check_stat_db()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/db/stat/last/ANA",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/db/stat/last/ANA",
         success: function(ret)
         {
         data = ret.split(";") ;

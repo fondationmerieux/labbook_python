@@ -292,11 +292,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/user/staff/det/" + id_user,
+       url: "{{ session['server_ext'] }}/ajax/user/staff/det/" + id_user,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            upload_file("USCV", id_user)
@@ -372,9 +371,9 @@ let obj = data ;
     tmp_tr += '<td class="action"><div><a href="#" onclick="download_file(\'JF\', \'' + escapeHtml(obj.name) + '\', \'' + escapeHtml(type_ref) + '\', ' + escapeHtml(obj.id_data) + ');">{{ _("Télécharger") }}</a>';
 
     {% if has_permission("STAFF_84") %}
-    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + escapeHtml(type_ref) + '\',' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a></div></td>' ;
+    tmp_tr += ' - <a href="#" onclick="delete_file(\'' + escapeHtml(type_ref) + '\',' + escapeHtml(obj.id_data) + ');">{{ _("Supprimer") }}</a>' ;
     {% endif %}
-    tmp_tr += '</tr>' ;
+    tmp_tr += '</div></td></tr>' ;
 
     tr_file += tmp_tr ;
     }
@@ -404,7 +403,6 @@ let input_file = $('#' + type_ref)[0] ;
                 contentType: false,
                 processData: false,
                 data: param_form,
-                headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                 success : function(response)
                 {
                 console.log( "success upload ") ;

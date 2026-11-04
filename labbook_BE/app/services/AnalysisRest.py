@@ -1464,7 +1464,9 @@ class AnalysisExport(Resource):
                    # v5
                    'ana_lite', 'ana_loinc',
                    # v6
-                   'var_in_report']]
+                   'var_in_report',
+                   # v7
+                   'var_loinc']]
 
         if 'id_user' not in args:
             self.log.error(Logs.fileline() + ' : AnalysisExport ERROR args missing')
@@ -1483,7 +1485,7 @@ class AnalysisExport(Resource):
             for d in dict_data:
                 data = []
 
-                data.append('v6')
+                data.append('v7')
 
                 # ANALYSIS
                 if d['id_data']:
@@ -1723,6 +1725,12 @@ class AnalysisExport(Resource):
                 else:
                     data.append('Y')
 
+                # --- added in v7 ---
+                if d['var_loinc']:
+                    data.append(d['var_loinc'])
+                else:
+                    data.append('')
+
                 l_data.append(data)
 
         # if no result to export
@@ -1923,7 +1931,7 @@ class AnalysisImport(Resource):
         version = l_rows[0][0]
 
         # check version
-        if version not in ('v3', 'v4', 'v5', 'v6'):
+        if version not in ('v3', 'v4', 'v5', 'v6', 'v7'):
             self.log.error(Logs.fileline() + ' : TRACE AnalysisImport ERROR wrong version : ' + str(version))
             DB.insertDbStatus(stat='ERR;AnalysisImport ERROR wrong version', type='ANA')
             try:
@@ -1940,14 +1948,17 @@ class AnalysisImport(Resource):
                      'id_var', 'var_label', 'var_descr', 'var_unit', 'var_min', 'var_max', 'var_comment', 'var_res_type',
                      'var_formula', 'var_accu', 'var_code', 'var_whonet', 'var_qrcode', 'var_highlight', 'var_show_minmax']
 
-        if version in ('v4', 'v5', 'v6'):
+        if version in ('v4', 'v5', 'v6', 'v7'):
             head_list += ['var_formula_conv', 'var_unit_conv', 'var_accu_conv', 'ana_ast']
 
-        if version in ('v5', 'v6'):
+        if version in ('v5', 'v6', 'v7'):
             head_list += ['ana_lite', 'ana_loinc']
 
-        if version == 'v6':
+        if version in ('v6', 'v7'):
             head_list += ['var_in_report']
+
+        if version == 'v7':
+            head_list += ['var_loinc']
 
         i = 0
         for head in head_line:
@@ -2034,7 +2045,7 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if (version == 'v4' or version == 'v5' or version == 'v6') and len(row) > 39:
+                    if version in ('v4', 'v5', 'v6', 'v7') and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
@@ -2045,17 +2056,22 @@ class AnalysisImport(Resource):
                         var_accu_conv = 0
                         ana_ast = 'N'
 
-                    if (version == 'v5' or version == 'v6') and len(row) > 40:
+                    if version in ('v5', 'v6', 'v7') and len(row) > 41:
                         ana_lite = row[40]
                         ana_loinc = row[41]
                     else:
                         ana_lite  = 'N'
                         ana_loinc = ''
 
-                    if version == 'v6' and len(row) > 41:
+                    if version in ('v6', 'v7') and len(row) > 42:
                         var_in_report = row[42]
                     else:
                         var_in_report  = 'Y'
+
+                    if version == 'v7' and len(row) > 43:
+                        var_loinc = row[43]
+                    else:
+                        var_loinc = ''
 
                     ret = Analysis.exist(code, test)
 
@@ -2165,6 +2181,7 @@ class AnalysisImport(Resource):
                                                                  oblig=obligatoire,
                                                                  var_whonet=var_whonet,
                                                                  var_qrcode=var_qrcode,
+                                                                 var_loinc=var_loinc,
                                                                  test=test)
 
                                 if ret is False:
@@ -2255,7 +2272,7 @@ class AnalysisImport(Resource):
                         var_show_minmax = 'N'
 
                     # re-add formula2, unit2, accu2
-                    if (version == 'v4' or version == 'v5' or version == 'v6') and len(row) > 39:
+                    if version in ('v4', 'v5', 'v6', 'v7') and len(row) > 39:
                         var_formula_conv = row[36]
                         var_unit_conv = row[37]
                         var_accu_conv = row[38]
@@ -2266,17 +2283,22 @@ class AnalysisImport(Resource):
                         var_accu_conv = 0
                         ana_ast = 'N'
 
-                    if (version == 'v5' or version == 'v6') and len(row) > 40:
+                    if version in ('v5', 'v6', 'v7') and len(row) > 41:
                         ana_lite = row[40]
                         ana_loinc = row[41]
                     else:
                         ana_lite  = 'N'
                         ana_loinc = ''
 
-                    if version == 'v6' and len(row) > 41:
+                    if version in ('v6', 'v7') and len(row) > 42:
                         var_in_report = row[42]
                     else:
                         var_in_report = 'Y'
+
+                    if version == 'v7' and len(row) > 43:
+                        var_loinc = row[43]
+                    else:
+                        var_loinc = ''
 
                     ret = Analysis.exist(code, test)
 
@@ -2419,6 +2441,7 @@ class AnalysisImport(Resource):
                                                              oblig=obligatoire,
                                                              var_whonet=var_whonet,
                                                              var_qrcode=var_qrcode,
+                                                             var_loinc=var_loinc,
                                                              test=test)
 
                             if ret <= 0:

@@ -365,12 +365,11 @@ $("#search_var").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/variable/search",
+        url: "{{ session['server_ext'] }}/ajax/analysis/variable/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_var").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify(
             {
@@ -397,8 +396,7 @@ let id_var = $(e.currentTarget).val();
     // GET details of var
     $.ajax( {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/analysis/variable/det/" +  id_var,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/analysis/variable/det/" +  id_var,
         success: function(data_var)
             {
             let data_exist     = false ;
@@ -482,12 +480,11 @@ $("#search_analysis").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/search/" + {{ session['user_id']}},
+        url: "{{ session['server_ext'] }}/ajax/analysis/search/" + {{ session['user_id']}},
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_analysis").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify(
             {
@@ -551,12 +548,11 @@ $("#search_prod").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/analysis/search/P",
+        url: "{{ session['server_ext'] }}/ajax/analysis/search/P",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_prod").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
             return JSON.stringify(
             {
@@ -1019,8 +1015,7 @@ var msg = "" ;
     // Check if code is not already existing
     $.ajax( {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/analysis/code/check/" + code,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/analysis/code/check/" + code,
         success: function(ret)
         {
             if ( ret > 0 && (id_ana == 0 || (id_ana > 0 && code_ori != code)) )
@@ -1125,11 +1120,10 @@ var msg = "" ;
 
                 $.ajax( {
                    type: "POST",
-                   url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
+                   url: "{{ session['server_ext'] }}/ajax/analysis/det/" + id_ana,
                    dataType: 'json',
                    contentType: "application/json; charset=utf-8",
                    data: param,
-                   headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
                    success: function(data)
                        {
                        $("#dial-wait").modal("hide") ;

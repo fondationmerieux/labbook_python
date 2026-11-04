@@ -183,11 +183,10 @@ param += tmp_value + ' ] }';
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/requesting/services",
+       url: "{{ session['server_ext'] }}/ajax/setting/requesting/services",
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;

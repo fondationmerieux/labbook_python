@@ -118,11 +118,10 @@ let param = '{ "name":"' + name + '", ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/dict/list" ,
+       url: "{{ session['server_ext'] }}/ajax/dict/list" ,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
        {
        data_dicts = data ;
@@ -212,11 +211,10 @@ var id_owner = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/dict/det/" + dict_name,
+            url: "{{ session['server_ext'] }}/ajax/dict/det/" + dict_name,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             location.reload() ;
@@ -253,11 +251,10 @@ var param    = '{"id_user":' + id_user + ', "dico_name":"' + dico_name +'"}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/dict/export",
+        url: "{{ session['server_ext'] }}/ajax/dict/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

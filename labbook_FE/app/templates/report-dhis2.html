@@ -159,11 +159,10 @@ function export_dhis2()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/export/dhis2",
+            url: "{{ session['server_ext'] }}/ajax/export/dhis2",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -237,11 +236,10 @@ function send_dhis2()
     $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/export/dhis2/api",
+            url: "{{ session['server_ext'] }}/ajax/export/dhis2/api",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;

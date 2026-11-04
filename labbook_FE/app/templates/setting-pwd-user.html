@@ -77,11 +77,10 @@ var pwd2     = $("#renew-pwd").val() ;
 
         $.ajax( {
            type: "POST",
-           url: "{{ session['server_ext'] }}/services/user/password",
+           url: "{{ session['server_ext'] }}/ajax/user/password",
            dataType: 'json',
            contentType: "application/json; charset=utf-8",
            data: param,
-           headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
            success: function(data)
                {
                {% if ihm['return_page'] %}

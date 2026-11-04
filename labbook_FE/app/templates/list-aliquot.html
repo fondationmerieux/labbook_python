@@ -159,16 +159,13 @@ let in_stock = showDestocked ? "N" : "Y";
         "order": [[1, "desc"]],
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-            "url": "{{ session['server_ext'] }}/services/quality/storage/list",
+            "url": "{{ session['server_ext'] }}/ajax/quality/storage/list",
             "type": "POST",
             "contentType": "application/json",
             "data": function(d) {
                     return JSON.stringify({ "in_stock": in_stock });
                 },
             "dataSrc": function (json) { return json.data || json || []; },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
-            }
         },
         "columns": [
             {
@@ -332,11 +329,10 @@ let external = document.getElementById("externalDestock").checked ? "Y" : "N";
         return;
     }
 
-    fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/destock/${id_item}`, 
+    fetch(`{{ session['server_ext'] }}/ajax/quality/storage/aliquot/destock/${id_item}`, 
     {
         method: 'POST',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}",
-            'X-Requested-With': 'XMLHttpRequest',
+        headers: { 'X-Requested-With': 'XMLHttpRequest',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
@@ -368,11 +364,10 @@ function restock_item(id_item)
 {
     if ("{{ _('Êtes-vous sûr de vouloir restocker ?') }}")
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/restock/${id_item}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/quality/storage/aliquot/restock/${id_item}`, 
         {
             method: 'POST',
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}",
-                'X-Requested-With': 'XMLHttpRequest',
+            headers: { 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -439,11 +434,11 @@ function directPrint(printerId, salSer)
     }
 
     $.ajax({
-        url: `{{ session['server_ext'] }}/services/pdf/print/script/${scriptName}`,
+        url: `{{ session['server_ext'] }}/ajax/pdf/print/script/${scriptName}`,
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-Requested-With': 'XMLHttpRequest' },
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
         data: JSON.stringify({
             sal_ser: salSer
         }),
@@ -475,10 +470,10 @@ function delete_item(id_item)
 {
     if (confirm("{{ _("Êtes-vous sûr de vouloir supprimer ?") }}"))
     {
-        fetch(`{{ session['server_ext'] }}/services/quality/storage/aliquot/det/${id_item}`, 
+        fetch(`{{ session['server_ext'] }}/ajax/quality/storage/aliquot/det/${id_item}`, 
         {
             method: 'DELETE',
-            headers: { "Authorization": "Bearer {{ session.get('be_access_token','') }}", 'X-Requested-With': 'XMLHttpRequest' }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => 
         {

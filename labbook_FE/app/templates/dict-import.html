@@ -76,7 +76,6 @@ filename = $('input[type=file]')[0].files[0].name ;
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
             tempAlert("{{ _("Dépôt réussi") }}", "btn-upload") ;
@@ -109,8 +108,7 @@ var type = $("input:radio[name=type_import]:checked").val() ;
             type: "GET",
             async: false,
             timeout: 6000000,
-            url: "{{ session['server_ext'] }}/services/dict/import/" + filename + "/{{ session['user_id'] }}",
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/dict/import/" + filename + "/{{ session['user_id'] }}",
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -136,8 +134,7 @@ function check_stat_db()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/db/stat/last/DIC",
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/db/stat/last/DIC",
         success: function(ret)
         {
         data = ret.split(";") ;

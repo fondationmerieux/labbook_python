@@ -126,12 +126,11 @@ $("#search_writer").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/user/search",
+        url: "{{ session['server_ext'] }}/ajax/user/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_writer").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -170,12 +169,11 @@ $("#search_auditor").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/user/search",
+        url: "{{ session['server_ext'] }}/ajax/user/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_auditor").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -208,12 +206,11 @@ $("#search_approver").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/user/search",
+        url: "{{ session['server_ext'] }}/ajax/user/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_approver").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -295,11 +292,10 @@ var param = '{ "id_owner":' + id_owner + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/manual/det/" + id_manual,
+       url: "{{ session['server_ext'] }}/ajax/quality/manual/det/" + id_manual,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            let ref = JSON.stringify(data) ;
@@ -367,7 +363,6 @@ let input_file = $("#MANU")[0] ;
             contentType: false,
             processData: false,
             data: param_form,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success : function(response)
             {
             console.log( "success upload ") ;
@@ -420,8 +415,7 @@ function delete_file( id_file )
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/file/document/MANU/" + id_file,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+            url: "{{ session['server_ext'] }}/ajax/file/document/MANU/" + id_file,
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;

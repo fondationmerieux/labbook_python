@@ -110,14 +110,11 @@ function loadItemsTable() {
         "order": [[1, "desc"]], // tri sur ID (col 1, cachée), inchangé
 {% include 'js/datatables_lang.js' %}
         "ajax": {
-            "url": "{{ session['server_ext'] }}/services/setting/sending/list",
+            "url": "{{ session['server_ext'] }}/ajax/setting/sending/list",
             "type": "POST",
             "contentType": "application/json; charset=utf-8",
             "data": function () { return JSON.stringify({}); },
             "dataSrc": "",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer {{ session.get("be_access_token","") }}');
-            }
         },
         "columns": [
             { 
@@ -171,12 +168,11 @@ function resend_sending(sde_ser, el)
 
     $.ajax({
         type: 'POST',
-        url: '{{ session["server_ext"] }}/services/setting/sending/resend/' + sde_ser,
+        url: '{{ session["server_ext"] }}/ajax/setting/sending/resend/' + sde_ser,
         data: JSON.stringify(payload),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         timeout: 30000,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(resp){
             $('#sendingTable').DataTable().ajax.reload(null, false);
             const msg = (resp && resp.message) ? String(resp.message) : "{{ _('Ré-envoi déclenché.')|e }}";

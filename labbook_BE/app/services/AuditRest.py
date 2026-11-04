@@ -2,6 +2,7 @@
 import logging
 import json
 import os
+import re
 
 from datetime import datetime
 from flask import request, send_file
@@ -388,22 +389,35 @@ class AuditExportATNA(Resource):
 class AuditDownloadATNA(Resource):
     log = logging.getLogger('log_services')
 
+    @require_oauth()
     def get(self, filename):
         """
         Send a file written by AuditExportATNA.
 
         Args:
-            filename (str): file name in the tmp directory.
+            filename (str): file name in the tmp directory, audit-atna_YYYYMMDD_YYYYMMDD.xml.
 
         Returns:
             200: XML file as an attachment.
+            400: not an ATNA export file name.
+            403: no audit log right.
             404: file not found.
             500: file could not be sent.
         """
+        # Audit trail: audit log right only
+        if not User.hasRight(request.oauth_user, 'ADMIN_183'):
+            self.log.error(Logs.fileline() + ' : AuditDownloadATNA ERROR forbidden')
+            return compose_ret('', Constants.cst_content_type_json, 403)
+
+        # Only the files written by AuditExportATNA, the tmp directory also holds other exports
+        if not re.fullmatch(r'audit-atna_\d{8}_\d{8}\.xml', filename or ''):
+            self.log.error(Logs.fileline() + " : AuditDownloadATNA ERROR invalid filename=" + str(filename))
+            return compose_ret('', Constants.cst_content_type_json, 400)
+
         base_path = Constants.cst_path_tmp
         fullpath = os.path.join(base_path, filename)
 
-        if not filename or not os.path.isfile(fullpath):
+        if not os.path.isfile(fullpath):
             self.log.error(Logs.fileline() + " : AuditDownloadATNA ERROR file not found filename=" + str(filename))
             return compose_ret('', Constants.cst_content_type_json, 404)
 

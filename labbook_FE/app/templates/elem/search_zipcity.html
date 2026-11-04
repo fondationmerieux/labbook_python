@@ -9,12 +9,11 @@ $("#search_zipcity").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/setting/zipcity/search",
+        url: "{{ session['server_ext'] }}/ajax/setting/zipcity/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_zipcity").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -42,8 +41,7 @@ let id_item = $(e.currentTarget).val();
     $.ajax( 
         {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/setting/zipcity/det/" + id_item,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
+        url: "{{ session['server_ext'] }}/ajax/setting/zipcity/det/" + id_item,
         success: function(data_zipcity)
             {
             $("#pat_zipcode").val(data_zipcity.zic_zip) ;

@@ -1064,6 +1064,54 @@ def oauth_callback():
 
 # --- ENDS OAUTH ROUTES ---
 
+# --- STARTS AJAX FORWARD TO BE ---
+
+AJAX_SKIP_HEADERS = {'content-encoding', 'content-length', 'transfer-encoding', 'connection'}
+
+
+@app.route('/ajax/<path:be_path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def ajax_forward_to_be(be_path):
+    """
+    Forward an AJAX call of a page to /services/<be_path> on the BE, with the session token,
+    so the token is never written in the HTML.
+    """
+    # jQuery adds this header on same-origin calls only, a cross-site form cannot set it
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR not an AJAX call, path=%s', be_path)
+        return '', 403
+
+    if '..' in be_path.split('/'):
+        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR invalid path=%s', be_path)
+        return '', 400
+
+    if not session.get('be_access_token') or not session.get('server_int'):
+        return '', 401
+
+    url = session['server_int'] + '/' + session['redirect_name'] + '/services/' + be_path
+
+    headers = be_auth_headers()
+    if request.content_type:
+        headers['Content-Type'] = request.content_type
+
+    # The BE audits the workstation IP and the reason typed by the user, both come in headers
+    headers['X-Forwarded-For'] = request.headers.get('X-Forwarded-For') or request.remote_addr or ''
+    for name in ('X-Real-IP', 'X-LabBook-Audit-Context', 'Accept'):
+        if request.headers.get(name):
+            headers[name] = request.headers[name]
+
+    try:
+        resp = requests.request(request.method, url, params=request.args, data=request.get_data(),
+                                headers=headers, timeout=60, allow_redirects=False)
+    except requests.exceptions.RequestException:
+        log.exception(Logs.fileline() + ' : ajax_forward_to_be failed, url=%s', url)
+        return '', 502
+
+    out_headers = [(k, v) for k, v in resp.headers.items() if k.lower() not in AJAX_SKIP_HEADERS]
+
+    return Response(resp.content, resp.status_code, out_headers)
+
+# --- ENDS AJAX FORWARD TO BE ---
+
 
 @app.route("/")
 def index():
@@ -1681,6 +1729,17 @@ def setting_det_user(user_id=0, ctx='', role_type=''):
             return redir
         if data is not None:
             json_data = data
+
+        # Load user files, same kinds as the staff file
+        file_types = {'USCV': 'User CV files', 'USDI': 'User Diploma files', 'USTR': 'User Training files',
+                      'USEV': 'User Evaluation files', 'SIGN': 'User signature files'}
+
+        for type_ref, label in file_types.items():
+            data, redir = be_get('/services/file/document/list/' + type_ref + '/' + str(user_id), label)
+            if redir:
+                return redir
+            if data is not None:
+                json_data['data_' + type_ref] = data
 
     json_data['user_id'] = user_id
 

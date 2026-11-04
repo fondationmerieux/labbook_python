@@ -138,11 +138,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/report/activity",
+        url: "{{ session['server_ext'] }}/ajax/report/activity",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_stats = data ;
@@ -650,11 +649,10 @@ var param = '{ "filename":"' + filename + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/export/csv",
+        url: "{{ session['server_ext'] }}/ajax/export/csv",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -703,11 +701,10 @@ var param = '{ "filename":"' + filename + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/export/csv",
+        url: "{{ session['server_ext'] }}/ajax/export/csv",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -778,11 +775,10 @@ function download_report()
     $.ajax(
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/pdf/activity/report",
+        url: "{{ session['server_ext'] }}/ajax/pdf/activity/report",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(payload),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide");

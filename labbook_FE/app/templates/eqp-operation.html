@@ -15,25 +15,25 @@
         'service': 'metrology', 'list_page': 'list-eqp-metrology',
         'perm_save': 'EQP_118', 'perm_del': 'EQP_119',
         'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
-        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+        'person_url': '/ajax/quality/supplier/search', 'person_param': 'supplier'},
     'CONTRACT': {
         'title': _("Maintenance"), 'date_field': 'date_contract', 'file_code': 'EQMC',
         'service': 'contract', 'list_page': 'list-eqp-maintenance',
         'perm_save': 'EQP_104', 'perm_del': 'EQP_107',
         'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
-        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+        'person_url': '/ajax/quality/supplier/search', 'person_param': 'supplier'},
     'PREVENTIVE': {
         'title': _("Maintenance préventive"), 'date_field': 'date_prevent', 'file_code': 'EQPM',
         'service': 'preventive', 'list_page': 'list-eqp-maintenance',
         'perm_save': 'EQP_108', 'perm_del': 'EQP_111',
         'person_id': 'search_operator', 'person_label': _("Intervenant"),
-        'person_url': '/services/user/search', 'person_param': 'operator'},
+        'person_url': '/ajax/user/search', 'person_param': 'operator'},
     'FAILURE': {
         'title': _("Panne et réparation"), 'date_field': 'date_fail', 'file_code': 'EQBD',
         'service': 'failure', 'list_page': 'list-eqp-failure',
         'perm_save': 'EQP_113', 'perm_del': 'EQP_116',
         'person_id': 'search_supplier', 'person_label': _("Fournisseur"),
-        'person_url': '/services/quality/supplier/search', 'person_param': 'supplier'},
+        'person_url': '/ajax/quality/supplier/search', 'person_param': 'supplier'},
 } %}
 {% set conf = doc_conf[type_doc] %}
 
@@ -158,7 +158,6 @@ $("#{{ person_id }}").select2(
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#{{ person_id }}").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -192,12 +191,11 @@ $("#search_incharge").select2(
     tokenSeparators: [','],
     minimumInputLength: 2,
     ajax: {
-        url: "{{ session['server_ext'] }}/services/user/search",
+        url: "{{ session['server_ext'] }}/ajax/user/search",
         type: "POST",
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         term: $("#search_incharge").text(),
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         data: function (params) {
 
             return JSON.stringify({
@@ -276,11 +274,10 @@ var param = '{ "id_user":' + id_user + ', ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/quality/equipment/{{ service }}/det/" + id_item,
+       url: "{{ session['server_ext'] }}/ajax/quality/equipment/{{ service }}/det/" + id_item,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            let ref = JSON.stringify(data) ;

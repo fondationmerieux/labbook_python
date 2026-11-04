@@ -75,7 +75,6 @@
 {% endblock %}
 
 <script type="text/javascript" nonce="{{ session['nonce'] }}">
-window.BE_TOKEN = {{ session.get('be_access_token','')|tojson }};
 var username = {{ session['user_name']|tojson }} ;
 
 function load_username()
@@ -106,11 +105,10 @@ function download_file( type, filename, type_ref, ref)
             $.ajax( 
             {
                 type: "POST",
-                url: "{{ session['server_ext'] }}/services/quality/trace/download",
+                url: "{{ session['server_ext'] }}/ajax/quality/trace/download",
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
                 data: param,
-                headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
                 error: function(ret)
                 {
                 console.log("ERROR POST trace download") ;
@@ -131,8 +129,7 @@ function nb_msg_unread()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/services/quality/message/unread/{{ session['user_id']|safe}}",
-        headers: { 'Authorization': 'Bearer ' + BE_TOKEN },
+        url: "{{ session['server_ext'] }}/ajax/quality/message/unread/{{ session['user_id']|safe}}",
         success: function(ret)
         {
             if (ret == 0) $("#nb_msg_unread").text("");

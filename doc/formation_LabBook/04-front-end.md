@@ -232,8 +232,19 @@ et la page API. Il définit :
 - le pied de page (numéro de version, lien contributeurs) ;
 - les fenêtres modales communes (« veuillez patienter », succès, erreur) ;
 - le JavaScript commun : déconnexion sur inactivité, téléchargement de fichier, relève des
-  messages non lus toutes les 30 secondes ;
-- le jeton OAuth, pour que les appels Ajax puissent s'authentifier.
+  messages non lus toutes les 30 secondes.
+
+Le jeton OAuth n'est jamais écrit dans une page. Un appel Ajax vise `/ajax/...` au lieu de
+`/services/...` : la route `ajax_forward_to_be` du front end ajoute le jeton de la session et
+transmet au back end. Elle n'accepte que les appels qui portent l'en-tête
+`X-Requested-With: XMLHttpRequest` : jQuery l'ajoute tout seul, un `fetch` doit le déclarer.
+
+```javascript
+$.ajax({ url: "{{ session['server_ext'] }}/ajax/doctor/list", type: "POST", ... });
+
+fetch("{{ session['server_ext'] }}/ajax/quality/printer/det/" + id,
+      { headers: { "X-Requested-With": "XMLHttpRequest" } });
+```
 
 `select2`, plus lourde, n'est chargée que par les pages qui en ont besoin.
 

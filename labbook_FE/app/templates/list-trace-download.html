@@ -95,11 +95,10 @@ let param = '{ "doc_name":"' + doc_name + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/quality/trace/list/{{ ihm['type_trace'] }}",
+        url: "{{ session['server_ext'] }}/ajax/quality/trace/list/{{ ihm['type_trace'] }}",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
         {
         data_items = data ;

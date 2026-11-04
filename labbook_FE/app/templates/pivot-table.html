@@ -135,11 +135,10 @@ let param = '{ "date_beg":"' + date_beg  + '", ' +
     $.ajax(
     {
         type : 'POST',
-        url : "{{ session['server_ext'] }}/services/dataset/name/" + dataset_name,
+        url : "{{ session['server_ext'] }}/ajax/dataset/name/" + dataset_name,
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success : function(data)
         {
         console.log( "success dataset " + dataset_name) ;

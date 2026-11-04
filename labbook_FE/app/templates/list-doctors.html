@@ -156,11 +156,10 @@ let param = '{ "code":"' + code + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/doctor/list",
+        url: "{{ session['server_ext'] }}/ajax/doctor/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_doctors = data ;
@@ -269,11 +268,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/doctor/det/" + id_item,
+            url: "{{ session['server_ext'] }}/ajax/doctor/det/" + id_item,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -317,11 +315,10 @@ let param = '{ "code":"' + code + '", ' +
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/doctor/export",
+        url: "{{ session['server_ext'] }}/ajax/doctor/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;

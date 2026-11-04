@@ -133,11 +133,10 @@ function load_audit_detail() {
     $("#audit-messages").html("");
 
     $.ajax({
-        url: "{{ session['server_ext'] }}/services/audit/det/{{ aud_ser }}",
+        url: "{{ session['server_ext'] }}/ajax/audit/det/{{ aud_ser }}",
         type: "GET",
         dataType: "json",
         beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Bearer {{ session.get('be_access_token','') }}");
             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         },
         success: function (data) {

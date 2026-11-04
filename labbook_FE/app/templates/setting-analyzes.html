@@ -151,11 +151,10 @@ let param = '{ "name":"' + name + '", ' +
 
     $.ajax( {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/analysis/list",
+        url: "{{ session['server_ext'] }}/ajax/analysis/list",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(data)
             {
             data_analyzes = data ;
@@ -276,11 +275,10 @@ var id_user = {{ session['user_id']|safe}} ;
         $.ajax( 
         {
             type: "DELETE",
-            url: "{{ session['server_ext'] }}/services/analysis/det/" + id_ana,
+            url: "{{ session['server_ext'] }}/ajax/analysis/det/" + id_ana,
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
             $("#dial-wait").modal("hide") ;
@@ -323,11 +321,10 @@ var param    = '{"id_user":' + id_user + '}' ;
     $.ajax( 
     {
         type: "POST",
-        url: "{{ session['server_ext'] }}/services/analysis/export",
+        url: "{{ session['server_ext'] }}/ajax/analysis/export",
         dataType: 'json',
         contentType: "application/json; charset=utf-8",
         data: param,
-        headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
         success: function(ret)
         {
             $("#dial-wait").modal("hide") ;
@@ -381,11 +378,10 @@ var msg_confirm = "{{ _("Veuillez confirmer la désactivation de toutes les anal
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/analysis/status",
+            url: "{{ session['server_ext'] }}/ajax/analysis/status",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;
@@ -421,11 +417,10 @@ var msg_confirm = "{{ _("Veuillez confirmer la désactivation de cette analyse")
         $.ajax( 
         {
             type: "POST",
-            url: "{{ session['server_ext'] }}/services/analysis/status",
+            url: "{{ session['server_ext'] }}/ajax/analysis/status",
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
             data: param,
-            headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
             success: function(ret)
             {
                 $("#dial-wait").modal("hide") ;

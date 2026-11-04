@@ -245,11 +245,10 @@ var param = '{ "prix_acte":"' + deed_price + '", ' +
 
     $.ajax( {
        type: "POST",
-       url: "{{ session['server_ext'] }}/services/setting/pref/list/" + id_owner,
+       url: "{{ session['server_ext'] }}/ajax/setting/pref/list/" + id_owner,
        dataType: 'json',
        contentType: "application/json; charset=utf-8",
        data: param,
-       headers: { 'Authorization': 'Bearer {{ session.get("be_access_token","") }}' },
        success: function(data)
            {
            tempAlert("{{ _("Enregistrement réussi") }}", "btn_save") ;

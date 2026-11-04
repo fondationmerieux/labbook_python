@@ -251,12 +251,13 @@ class FileDoc(Resource):
         audit_user = request.oauth_user
 
         # Same right as the "Supprimer" link of each screen, other kinds of owner left as they were
-        delete_rights = {'REC': 'RECORD_25', 'MANU': 'MANUAL_125', 'PROC': 'PROCEDURE_132', 'MEET': 'MEETING_168',
-                         'LABO': 'LAB_81', 'EQPH': 'EQP_101', 'EQBI': 'EQP_101', 'EQBD': 'EQP_116',
-                         'EQCC': 'EQP_119', 'EQMC': 'EQP_107', 'EQPM': 'EQP_111',
-                         'STAFF': 'STAFF_84', 'USCV': 'STAFF_84', 'USDI': 'STAFF_84', 'USTR': 'STAFF_84', 'USEV': 'STAFF_84'}
+        delete_rights = {'REC': ('RECORD_25',), 'MANU': ('MANUAL_125',), 'PROC': ('PROCEDURE_132',), 'MEET': ('MEETING_168',),
+                         'LABO': ('LAB_81',), 'EQPH': ('EQP_101',), 'EQBI': ('EQP_101',), 'EQBD': ('EQP_116',),
+                         'EQCC': ('EQP_119',), 'EQMC': ('EQP_107',), 'EQPM': ('EQP_111',), 'STAFF': ('STAFF_84',),
+                         'USCV': ('STAFF_84', 'SETTING_41'), 'USDI': ('STAFF_84', 'SETTING_41'),
+                         'USTR': ('STAFF_84', 'SETTING_41'), 'USEV': ('STAFF_84', 'SETTING_41')}
 
-        if type_ref in delete_rights and not User.hasRight(audit_user, delete_rights[type_ref]):
+        if type_ref in delete_rights and not User.hasRight(audit_user, *delete_rights[type_ref]):
             self.log.error(Logs.fileline() + ' : FileDoc delete ERROR forbidden type_ref=' + Logs.clean(type_ref))
             return compose_ret('', Constants.cst_content_type_json, 403)
 
