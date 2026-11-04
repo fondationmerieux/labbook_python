@@ -129,7 +129,7 @@ function nb_msg_unread()
     $.ajax( 
     {
         type: "GET",
-        url: "{{ session['server_ext'] }}/ajax/quality/message/unread/{{ session['user_id']|safe}}",
+        url: "{{ session['server_ext'] }}/ajax/quality/message/unread/{{ session['user_id'] }}",
         success: function(ret)
         {
             if (ret == 0) $("#nb_msg_unread").text("");

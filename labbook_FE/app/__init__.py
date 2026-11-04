@@ -1077,17 +1077,18 @@ def ajax_forward_to_be(be_path):
     """
     # jQuery adds this header on same-origin calls only, a cross-site form cannot set it
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
-        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR not an AJAX call, path=%s', be_path)
+        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR not an AJAX call')
         return '', 403
 
     if '..' in be_path.split('/'):
-        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR invalid path=%s', be_path)
+        log.error(Logs.fileline() + ' : ajax_forward_to_be ERROR invalid path')
         return '', 400
 
     if not session.get('be_access_token') or not session.get('server_int'):
         return '', 401
 
-    url = session['server_int'] + '/' + session['redirect_name'] + '/services/' + be_path
+    safe_path = '/'.join(quote(segment, safe='') for segment in be_path.split('/'))
+    url = session['server_int'] + '/' + session['redirect_name'] + '/services/' + safe_path
 
     headers = be_auth_headers()
     if request.content_type:
@@ -1096,14 +1097,15 @@ def ajax_forward_to_be(be_path):
     # The BE audits the workstation IP and the reason typed by the user, both come in headers
     headers['X-Forwarded-For'] = request.headers.get('X-Forwarded-For') or request.remote_addr or ''
     for name in ('X-Real-IP', 'X-LabBook-Audit-Context', 'Accept'):
-        if request.headers.get(name):
-            headers[name] = request.headers[name]
+        value = request.headers.get(name)
+        if value:
+            headers[name] = value
 
     try:
         resp = requests.request(request.method, url, params=request.args, data=request.get_data(),
                                 headers=headers, timeout=60, allow_redirects=False)
     except requests.exceptions.RequestException:
-        log.exception(Logs.fileline() + ' : ajax_forward_to_be failed, url=%s', url)
+        log.exception(Logs.fileline() + ' : ajax_forward_to_be failed')
         return '', 502
 
     out_headers = [(k, v) for k, v in resp.headers.items() if k.lower() not in AJAX_SKIP_HEADERS]
