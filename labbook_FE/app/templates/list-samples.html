@@ -118,8 +118,11 @@ $("#listing_prod_total").html( data_len ) ;
     const maidenname = sample.maidenname || '';
     const firstname  = sample.firstname || '';
 
+// Outside software the record comes from
+let ext_icon = ext_system_icon(sample.ext_system, '{{ _("Demande reçue de") }}') ;
+
     res += '<tr><td hidden><div>' + escapeHtml(sample.id_rec) + '</div></td>' +
-           '<td><div class="text-center"><span class="rec-num">' + escapeHtml(sample.rec_num) + '</span></div></td>' +
+           '<td><div class="text-center"><span class="rec-num">' + escapeHtml(sample.rec_num) + '</span>' + ext_icon + '</div></td>' +
            '<td><div class="text-center">' + escapeHtml(sample.rec_date) + '</div></td>' +
            '<td><div class="text-center">' + pat_ident(lastname, maidenname, firstname) + '</div></td>' +
            '<td><div class="text-center">' + escapeHtml(sample.samp_code) + '</div></td>' +

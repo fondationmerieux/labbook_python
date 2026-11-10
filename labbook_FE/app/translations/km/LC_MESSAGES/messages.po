@@ -7170,8 +7170,8 @@ msgid "prête"
 msgstr "រួចរាល់"
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
-msgstr "មិនទាន់បានកំណត់រចនាសម្ព័ន្ធ គ្មានឯកសារ fhir.toml នៅក្នុង Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
+msgstr "មិនទាន់បានកំណត់រចនាសម្ព័ន្ធ គ្មានឯកសារ connect.toml នៅក្នុង Connect"
 
 #: templates/connect-management.html:27
 msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"

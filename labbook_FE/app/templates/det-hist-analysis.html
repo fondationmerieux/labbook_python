@@ -112,9 +112,12 @@ $("#list_datas_total").html( data_len ) ;
     let menu_act = '';
     {% endif %}
 
+// Outside software the record comes from
+let ext_icon = ext_system_icon(data_details[i].ext_system, '{{ _("Demande reçue de") }}') ;
+
     res += '<tr><td hidden><div>' + escapeHtml(data_details[i].id_rec) + '</div></td>' +
            '<td><div>' + menu_act + '</div></td>' +
-           '<td><div class="text-start"><span class="rec-num">' + escapeHtml(data_details[i].rec_num) + '</span></div></td>' +
+           '<td><div class="text-start"><span class="rec-num">' + escapeHtml(data_details[i].rec_num) + '</span>' + ext_icon + '</div></td>' +
            '<td><div class="text-start">' + escapeHtml(data_details[i].date_prescr) + '</div></td>' +
            '<td><div class="text-start">' + escapeHtml(data_details[i].variable) + '</div></td>' +
            '<td><div class="text-start">' + escapeHtml(data_details[i].result) + '</div></td></tr>' ;

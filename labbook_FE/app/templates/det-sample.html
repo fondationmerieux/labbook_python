@@ -17,6 +17,7 @@
                 <div class="form-group form-inline">
                     <span>{{ _("Dossier") }} :</span>
                     <span class="rec-num ms-1" id="rec_num"></span>
+                    {% if args['product'] and args['product']['ext_system'] %}<span class="text-success ms-1"><i class="bi bi-box-arrow-in-left" aria-hidden="true" title="{{ _("Demande reçue de") }} {{ args['product']['ext_system'] }}"></i></span>{% endif %}
                 </div>
                 <fieldset class="d-lg-flex flex-lg-wrap border px-3 py-2">
                     <legend class="w-auto legend-lbk">{{ _("Identité") }}</legend>

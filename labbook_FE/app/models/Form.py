@@ -520,11 +520,10 @@ class Form:
                 # POST history item to backend
                 lines.append('    $.ajax({')
                 lines.append("        type: 'POST',")
-                lines.append("        url: '{{ session['server_ext'] }}/services/patient/history/form/item/' + id_pat,")
+                lines.append("        url: '{{ session['server_ext'] }}/ajax/patient/history/form/item/' + id_pat,")
                 lines.append("        dataType: 'json',")
                 lines.append("        contentType: 'application/json; charset=utf-8',")
                 lines.append("        data: JSON.stringify(param),")
-                lines.append("        headers: { 'Authorization': 'Bearer {{ session.get('be_access_token', '') }}' },")
                 lines.append("        success: function(data) {")
                 lines.append("            $('#toast-msg').text(\"{{ _('Enregistrement effectué') }}\");")
                 lines.append("            $('.toast').toast('show');")
@@ -672,9 +671,8 @@ class Form:
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ session["server_ext"] }}/services/patient/history/form/item/' + id_pat,
+                    url: '{{ session["server_ext"] }}/ajax/patient/history/form/item/' + id_pat,
                     dataType: 'json',
-                    headers: { 'Authorization': 'Bearer {{ session.get("be_access_token", "") }}' },
                     success: function(data) {
                         patHistData = data || [];
 
@@ -804,9 +802,8 @@ class Form:
                 }
                 $.ajax({
                     type: 'DELETE',
-                    url: '{{ session["server_ext"] }}/services/patient/history/form/item/' + id_pat + '/' + evt_id,
+                    url: '{{ session["server_ext"] }}/ajax/patient/history/form/item/' + id_pat + '/' + evt_id,
                     dataType: 'json',
-                    headers: { 'Authorization': 'Bearer {{ session.get("be_access_token", "") }}' },
                     success: function(data) {
                         $('#toast-msg').text("{{ _("Suppression effectuée") }}");
                         $('.toast').toast('show');

@@ -3617,7 +3617,7 @@ msgstr "Plazo incumplido"
 
 #: templates/non-conformity.html:589
 msgid "Erreur / oubli examen"
-msgstr " Error u omisión de examen "
+msgstr "Error u omisión de examen"
 
 #: templates/non-conformity.html:595
 msgid "Mauvaise conservation lors du transport"
@@ -7170,8 +7170,8 @@ msgid "prête"
 msgstr "lista"
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
-msgstr "no configurada, falta el archivo fhir.toml en Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
+msgstr "no configurada, falta el archivo connect.toml en Connect"
 
 #: templates/connect-management.html:27
 msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"

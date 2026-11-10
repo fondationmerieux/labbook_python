@@ -133,11 +133,13 @@ class Record:
                'rec.num_dos_mois), if(rec_setting.rstg_format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) '
                'as num_dos, if(rec_setting.rstg_period=1070, rec.num_dos_mois, rec.num_dos_an) as num_dos_long, '
                'rec.id_data as id_data, date_format(rec.rec_date_receipt, %s) as rec_date_receipt, pat.code as code, pat.nom as nom, '
-               'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab, rec.rec_num_lite '
+               'pat.prenom as prenom, pat.id_data as id_pat, pat.code_patient as code_lab, rec.rec_num_lite, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
                'from sigl_02_data as rec '
                'inner join sigl_03_data as pat on rec.id_patient=pat.id_data '
                'inner join sigl_04_data as req on req.id_dos=rec.id_data '
-               'left join record_setting as rec_setting on rec_setting.rstg_ser=1 ' + table_cond +
+               'left join record_setting as rec_setting on rec_setting.rstg_ser=1 '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data ' + table_cond +
                'where ' + filter_cond +
                'group by rec.id_data order by rec.id_data desc ' + limit)
 
@@ -221,12 +223,14 @@ class Record:
                'rec.num_dos_mois, rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, '
                'if(rec_setting.rstg_period=1070, rec.num_dos_mois, rec.num_dos_an) as num_rec, rec.rec_date_save, '
                'd_doc_title.label as prescriber_title, d_remise.label as remise, rec_num_lite, '
-               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber '
+               'TRIM(CONCAT((COALESCE(pres.nom, ""))," ",TRIM(COALESCE(pres.prenom, "")))) as prescriber, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
                'from sigl_02_data as rec '
                'left join sigl_08_data as pres on pres.id_data = rec.med_prescripteur '
                'left join record_setting as rec_setting on rec_setting.rstg_ser=1 '
                'left join sigl_dico_data as d_doc_title on d_doc_title.id_data=pres.titre '
                'left join sigl_dico_data as d_remise on d_remise.id_data=rec.remise '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'where rec.id_data=%s')
 
         cursor.execute(req, (id_rec,))
@@ -352,12 +356,15 @@ class Record:
         """
         cursor = DB.cursor()
 
-        req = ('select id_data, id_owner, id_patient, type, rec_date_receipt, num_dos_jour, num_dos_an, med_prescripteur, '
-               'date_prescription, service_interne, num_lit, id_colis, rec_parcel_date, rc, colis, prix, remise, '
-               'remise_pourcent, assu_pourcent, a_payer, num_quittance, num_fact, statut, num_dos_mois, date_hosp, '
-               'rec_custody, rec_num_int, rec_modified, rec_hosp_num, rec_date_save '
-               'from sigl_02_data '
-               'order by id_data desc limit 1')
+        req = ('select rec.id_data, rec.id_owner, rec.id_patient, rec.type, rec.rec_date_receipt, rec.num_dos_jour, '
+               'rec.num_dos_an, rec.med_prescripteur, rec.date_prescription, rec.service_interne, rec.num_lit, '
+               'rec.id_colis, rec.rec_parcel_date, rec.rc, rec.colis, rec.prix, rec.remise, rec.remise_pourcent, '
+               'rec.assu_pourcent, rec.a_payer, rec.num_quittance, rec.num_fact, rec.statut, rec.num_dos_mois, '
+               'rec.date_hosp, rec.rec_custody, rec.rec_num_int, rec.rec_modified, rec.rec_hosp_num, rec.rec_date_save, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
+               'from sigl_02_data as rec '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
+               'order by rec.id_data desc limit 1')
 
         cursor.execute(req)
 

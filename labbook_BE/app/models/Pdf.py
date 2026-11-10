@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import logging
 import os
+import re
 import shutil
 import subprocess  # nosec B404
 from contextlib import ExitStack
@@ -1859,8 +1860,10 @@ class Pdf:
                                     res['precision2'] = 2
 
                                 try:
-                                    # the formula comes from the referential, written by the laboratory
-                                    tmp_res['valueConv'] = round(eval(res['formule_unite2'].replace('$', str(val))), res['precision2'])  # pylint: disable=eval-used
+                                    # only figures and arithmetic signs are computed, anything else is not a formula
+                                    formula2 = res['formule_unite2'].replace('$', str(val))
+                                    if re.fullmatch(r'[0-9.\s_+\-*/()]+', formula2):
+                                        tmp_res['valueConv'] = round(eval(formula2, {'__builtins__': {}}, {}), res['precision2'])  # pylint: disable=eval-used  # nosec B307
                                 except Exception:
                                     Pdf.log.error(Logs.fileline() + ' : ERROR convert to formula2, valueConv=' + str(tmp_res['valueConv']))
                                     tmp_res['valueConv'] = ''

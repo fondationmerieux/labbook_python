@@ -250,8 +250,11 @@ let total_remain = 0 ;
         {
         total_remain += data_bills[i].bill_price - data_bills[i].bill_remain ;
 
+// Outside software the record comes from
+let ext_icon = ext_system_icon(data_bills[i].ext_system, '{{ _("Demande reçue de") }}') ;
+
         res += '<tr><td hidden><div>' + escapeHtml(data_bills[i].id_data) + '</div></td>' +
-               '<td><div class="text-center"><span class="rec-num">' + escapeHtml(data_bills[i].rec_num) + '</span></div></td>' +
+               '<td><div class="text-center"><span class="rec-num">' + escapeHtml(data_bills[i].rec_num) + '</span>' + ext_icon + '</div></td>' +
                '<td><div class="text-center">' + escapeHtml(data_bills[i].bill_num) + '</div></td>' +
                '<td><div class="text-center">' + Number(data_bills[i].bill_price).toFixed(2) + '</div></td>' +
                '<td><div class="text-center">' + Number(data_bills[i].bill_remain).toFixed(2) + '</div></td></tr>' ;

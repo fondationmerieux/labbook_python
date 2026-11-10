@@ -123,7 +123,7 @@ class Result:
                 cond += ' and ref.famille in ' + cond_link_fam + ' '
 
         req = ('select req.ref_analyse as ref_ana, req.id_data as id_ana, rec.id_data as id_dos, '
-               'ref.code as ana_code, pat.code as patient_code, '
+               'ref.code as ana_code, pat.code as patient_code, ifnull(exr.exr_type_ext, "") as ext_system, '
                'ref.nom as nom, ref.ana_loinc as ana_loinc, fam.label as famille, res.id_data as id_res, '
                'res.valeur as valeur, ' + vld_select + 'ref_var.*, '
                'rec.num_dos_mois as num_dos_mois, rec.num_dos_an as num_dos_an, rec.rec_date_receipt, '
@@ -137,6 +137,7 @@ class Result:
                'left join sigl_01_data as samp on samp.id_dos = req.id_dos and samp_id_ana = req.ref_analyse '
                'inner join sigl_05_data as ref on req.ref_analyse = ref.id_data '
                'left join sigl_03_data as pat on pat.id_data = rec.id_patient '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'left join sigl_dico_data as fam on fam.id_data = ref.famille '
                'inner join sigl_09_data as res on req.id_data = res.id_analyse '
                'inner join sigl_07_data as ref_var on ref_var.id_data = res.ref_variable '

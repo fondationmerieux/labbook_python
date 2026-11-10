@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use `code_var` instead of `id_data` for `sigl_07_data` (variable of analysis)
 - clean async process for import analysis repository
 
-## [3.6.31] - 2026-11-04
+## [3.6.31] - 2026-11-10
 ### Added
 - Read a record and its requested analyses from an outside system
 - List the records of an outside system changed since a date

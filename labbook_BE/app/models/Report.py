@@ -534,8 +534,10 @@ class Report:
             cond = ' and rec.id_owner=' + str(id_user) + ' '
 
         req = ('select rec.id_data, rec.num_dos_jour as rec_num, rec.num_fact as bill_num, '
-               'rec.prix as bill_price, rec.a_payer as bill_remain, rec.num_quittance as receipt_num '
+               'rec.prix as bill_price, rec.a_payer as bill_remain, rec.num_quittance as receipt_num, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
                'from sigl_02_data as rec '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'where (rec.rec_date_receipt between %s and %s) ' + cond +
                ' order by rec.id_data asc limit 7000')
 
@@ -562,7 +564,8 @@ class Report:
                'if(rec_setting.rstg_period=1070, if(rec_setting.rstg_format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(rec_setting.rstg_format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
-               'group_concat(distinct dict.label order by dict.position asc separator ", ") as vld_type '
+               'group_concat(distinct dict.label order by dict.position asc separator ", ") as vld_type, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
                'from `sigl_10_data` as vld '
                'inner join sigl_dico_data as dict on dict.id_data=vld.type_validation '
                'inner join sigl_09_data as res on res.id_data=vld.id_resultat '
@@ -571,6 +574,7 @@ class Report:
                'inner join sigl_02_data as rec on rec.id_data=req.id_dos '
                'left join record_setting as rec_setting on rec_setting.rstg_ser=1 '
                'left join sigl_dico_data as dict_fam on dict_fam.id_data=ref.famille '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'where (rec.rec_date_receipt between %s and %s) ' + cond +
                ' group by req.id_data order by rec.id_data asc limit 7000')
 
@@ -1084,9 +1088,10 @@ class Report:
                'as rec_num, if(rec_setting.rstg_period=1070, rec.num_dos_mois, rec.num_dos_an) as rec_num_long, '
                'rec.rec_date_receipt as rec_date, pat.nom as pat_name, pat.prenom as pat_firstname, pat.code as pat_code, '
                'pat.code_patient as pat_code_lab, ana.nom as ana_name, ana.code as ana_code, ana.ana_loinc, '
-               'req.id_data as id_req '
+               'req.id_data as id_req, ifnull(exr.exr_type_ext, "") as ext_system '
                'from sigl_04_data as req '
                'inner join sigl_02_data as rec on rec.id_data = req.id_dos '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'inner join sigl_03_data as pat on pat.id_data = rec.id_patient '
                'inner join sigl_05_data as ana on ana.id_data = req.ref_analyse '
                'left join sigl_dico_data as fam on fam.id_data = ana.famille '

@@ -7169,8 +7169,8 @@ msgid "prête"
 msgstr "ພ້ອມແລ້ວ"
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
-msgstr "ຍັງບໍ່ໄດ້ຕັ້ງຄ່າ, ບໍ່ມີໄຟລ໌ fhir.toml ໃນ Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
+msgstr "ຍັງບໍ່ໄດ້ຕັ້ງຄ່າ, ບໍ່ມີໄຟລ໌ connect.toml ໃນ Connect"
 
 #: templates/connect-management.html:27
 msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"

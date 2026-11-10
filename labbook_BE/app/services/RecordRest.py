@@ -1710,8 +1710,8 @@ class RecordAnaCancelFromExt(Resource):
         id_req = External.getIdByRef(args['system'], 'ANALYSIS', args['analysis'])
 
         if id_req <= 0:
-            self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR reference not found : '
-                           + Logs.clean(str(args['analysis'])))
+            self.log.error(Logs.alert() + ' : RecordAnaCancelFromExt ERROR reference not found : ' +
+                           Logs.clean(str(args['analysis'])))
             err = {"error": "analysis not found with reference = " + str(args['analysis'])}
             try:
                 details = {"result": "ERROR", "reason": "REFERENCE_NOT_FOUND",
@@ -1730,8 +1730,8 @@ class RecordAnaCancelFromExt(Resource):
 
         # A result with a value means the analysis was run, so it is neither removed nor unbilled
         if ana['nb_value'] > 0:
-            self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR result already entered id_req='
-                           + str(id_req))
+            self.log.error(Logs.fileline() + ' : RecordAnaCancelFromExt ERROR result already entered id_req=' +
+                           str(id_req))
             err = {"error": "a result is already entered for this analysis"}
             try:
                 details = {"result": "ERROR", "reason": "RESULT_ALREADY_ENTERED", "id_req": int(id_req),
@@ -1773,8 +1773,8 @@ class RecordAnaCancelFromExt(Resource):
 
         l_res = {"id_rec": id_rec, "ana_code": ana['ana_code'], "record_deleted": 'Y' if deleted else 'N'}
 
-        self.log.info(Logs.fileline() + ' : RecordAnaCancelFromExt id_req=' + str(id_req)
-                      + ' id_rec=' + str(id_rec) + ' record_deleted=' + str(deleted))
+        self.log.info(Logs.fileline() + ' : RecordAnaCancelFromExt id_req=' + str(id_req) +
+                      ' id_rec=' + str(id_rec) + ' record_deleted=' + str(deleted))
         try:
             details = {"result": "SUCCESS", "id_req": int(id_req), "id_rec": int(id_rec),
                        "ana_code": str(ana['ana_code']), "system": str(args['system']),

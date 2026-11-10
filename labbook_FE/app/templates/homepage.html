@@ -103,7 +103,7 @@
                 <div class="home-activity col-lg-6 text-start">
                     <h5 id="label-activity">{{ _("Activité du laboratoire") }}</h5>
                     <ul>
-                        <li>{{ _("Dernier numéro utilisé") }} : <strong><span class="rec-num" id="num_rec"></span></strong></li>
+                        <li>{{ _("Dernier numéro utilisé") }} : <strong><span class="rec-num" id="num_rec"></span></strong>{% if args['record'] and args['record']['ext_system'] %}<span class="text-success ms-1"><i class="bi bi-box-arrow-in-left" aria-hidden="true" title="{{ _("Demande reçue de") }} {{ args['record']['ext_system'] }}"></i></span>{% endif %}</li>
                         <li>{{ _("Nombre de dossiers validés aujourd'hui") }} : <strong>{{ args['nb_rec_today'] }}</strong></li>
                         <li>{{ _("Nombre de dossiers enregistrés") }} : <strong>{{ args['nb_rec'] }}</strong></li>
                     </ul>

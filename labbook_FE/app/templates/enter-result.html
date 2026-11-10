@@ -20,6 +20,7 @@
                 <div class="d-md-flex align-items-start ms-3 mt-1">
                     <span>{{ _("Dossier") }} :&nbsp;</span> 
                     <span class="rec-num" id="num_rec"></span>
+                    {% if args['ext_system'] %}<span class="text-success ms-1"><i class="bi bi-box-arrow-in-left" aria-hidden="true" title="{{ _("Demande reçue de") }} {{ args['ext_system'] }}"></i></span>{% endif %}
                     <div class="ms-2" id="rec_stat"></div>
                     <div class="ms-3 mt-1 d-none" id="div-num_rec_int">
                         <span>{{ _("Numéro de dossier interne au laboratoire") }} :&nbsp;</span> 

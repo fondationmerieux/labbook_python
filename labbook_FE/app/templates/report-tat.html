@@ -258,7 +258,9 @@ function display_data()
             if (data_tat[i].rec_num_int != "")
                 num_int = '<p style="color: black">' + escapeHtml(data_tat[i].rec_num_int) + '</p>' ;
 
-            rec_num  = '<span class="rec-num" title="' + escapeHtml(data_tat[i].rec_num_long) + '">' + escapeHtml(data_tat[i].rec_num) + num_int + '</span>' ;
+            // Outside software the record comes from
+            rec_num  = '<span class="rec-num" title="' + escapeHtml(data_tat[i].rec_num_long) + '">' + escapeHtml(data_tat[i].rec_num) + num_int + '</span>'
+                     + ext_system_icon(data_tat[i].ext_system, '{{ _("Demande reçue de") }}') ;
 
             patient = '' ;
 

@@ -7170,8 +7170,8 @@ msgid "prête"
 msgstr "جاهزة"
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
-msgstr "غير مُهيّأة، ملف fhir.toml غير موجود في Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
+msgstr "غير مُهيّأة، ملف connect.toml غير موجود في Connect"
 
 #: templates/connect-management.html:27
 msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"

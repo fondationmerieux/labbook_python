@@ -1069,7 +1069,7 @@ msgid "prête"
 msgstr ""
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
 msgstr ""
 
 #: templates/connect-management.html:27

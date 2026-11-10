@@ -7169,8 +7169,8 @@ msgid "prête"
 msgstr "vonona"
 
 #: templates/connect-management.html:25
-msgid "non paramétrée, fichier fhir.toml absent dans Connect"
-msgstr "tsy voarindra, tsy misy ny rakitra fhir.toml ao amin'ny Connect"
+msgid "non paramétrée, fichier connect.toml absent dans Connect"
+msgstr "tsy voarindra, tsy misy ny rakitra connect.toml ao amin'ny Connect"
 
 #: templates/connect-management.html:27
 msgid "LabBook ne délivre pas de jeton, voir le journal de Connect"

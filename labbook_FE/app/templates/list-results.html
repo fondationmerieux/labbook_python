@@ -540,12 +540,15 @@ let lastname  = {{ session['user_lastname']|tojson }}  ;
         let per_rec = per_num_rec(data_res[0].rec_date_receipt, "{{ session['lang_select'] }}" ) ;
         let rec_num_int = data[i].rec_num_int ;
 
+// Outside software the record comes from
+let ext_icon = ext_system_icon(data[i].ext_system, '{{ _("Demande reçue de") }}') ;
+
             if (res_fam.length < 4) res_fam = "" ;
 
         res += "<form autocomplete=\"off\">" +
                "<fieldset class=\"d-lg-flex flex-wrap border px-1 px-lg-3 py-2 mt-2\">" +
                "<legend class=\"legend-lbk\">" + escapeHtml(res_name) + res_fam + "</legend>" +
-               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span> <b>" + escapeHtml(rec_num_int) + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + escapeHtml(data[i].patient) +
+               "<span class=\"rec-num me-2 mb-2\">" + num_rec + "</span>" + ext_icon + " <b>" + escapeHtml(rec_num_int) + "</b>&nbsp;" + per_rec + "&nbsp;<b>{{ _("Patient") }}:</b>&nbsp;" + escapeHtml(data[i].patient) +
                "<table class=\"table table-responsive table-striped table-hover table-lbk\">" +
                "<tbody class=\"mx-1\">" ;
         }

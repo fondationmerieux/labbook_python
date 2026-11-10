@@ -330,11 +330,14 @@ let res = ''
             if ( data_records[i].rec_num_lite )
             num_dos_long = data_records[i].rec_num_lite ;
 
+        // Outside software the record comes from
+        ext_icon = ext_system_icon(data_records[i].ext_system, '{{ _("Demande reçue de") }}') ;
+
         res += '<tr ' + tr_style + '><td><div class="text-start">' + menu_act + '</div></td>' +
                '<td><div>' + escapeHtml(data_records[i].id_data) + '</div></td>' +
                '<td><div class="text-start">' + status_rec_with_det( data_records[i].stat, data_records[i].id_data, data_records[i].num_dos_long ) + '</div></td>' +
                '<td><div class="text-start">' + emer( data_records[i].urgent ) + '</div></td>' +
-               '<td><div class="text-start"><span class="rec-num" title="' + escapeHtml(num_dos_long) + ' / ' + escapeHtml(data_records[i].rec_num_int) + '">' + escapeHtml(data_records[i].num_dos) + num_int + '</span></div></td>' +
+               '<td><div class="text-start"><span class="rec-num" title="' + escapeHtml(num_dos_long) + ' / ' + escapeHtml(data_records[i].rec_num_int) + '">' + escapeHtml(data_records[i].num_dos) + num_int + '</span>' + ext_icon + '</div></td>' +
                '<td><div class="text-start">' + escapeHtml(data_records[i].rec_date_receipt) + '</div></td>' +
                '<td><div class="text-start">' + escapeHtml(data_records[i].code) + '</div></td>' +
                '<td><div class="text-start">' + escapeHtml(data_records[i].code_lab) + '</div></td>' +

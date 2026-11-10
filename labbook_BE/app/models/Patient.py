@@ -613,7 +613,7 @@ class Patient:
                'if(rec_setting.rstg_period=1070, if(rec_setting.rstg_format=1072,substring(rec.num_dos_mois from 7), '
                'rec.num_dos_mois), '
                'if(rec_setting.rstg_format=1072, substring(rec.num_dos_an from 7), rec.num_dos_an)) as rec_num, '
-               'ref_var.libelle as variable, '
+               'ref_var.libelle as variable, ifnull(exr.exr_type_ext, "") as ext_system, '
                'IF("dico_" = substring(dict_type.short_label, 1, 5), dict_res.label, res.valeur) as result '
                'from sigl_03_data as pat '
                'inner join sigl_02_data as rec on rec.id_patient=pat.id_data '
@@ -625,6 +625,7 @@ class Patient:
                'left join sigl_dico_data as dict_type on dict_type.id_data=ref_var.type_resultat '
                'left join sigl_dico_data as dict_res on dict_res.id_data=res.valeur '
                'left join record_setting as rec_setting on rec_setting.rstg_ser = 1 '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=rec.id_data '
                'where pat.id_data=%s '
                'order by rec.num_dos_an desc, ref.id_data asc limit 7000')
 

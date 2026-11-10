@@ -21,9 +21,11 @@ class Product:
                'samp.samp_id_ana, samp.statut as stat, samp.id_dos as id_rec, samp.preleveur as sampler, '
                'samp.samp_receipt_date as receipt_date, '
                'samp.commentaire as comment, samp.lieu_prel as prod_location, samp.lieu_prel_plus as prod_location_accu, '
-               'samp.localisation as storage, samp.code, ana.code as code_ana '
+               'samp.localisation as storage, samp.code, ana.code as code_ana, '
+               'ifnull(exr.exr_type_ext, "") as ext_system '
                'from sigl_01_data as samp '
                'left join sigl_05_data as ana on ana.id_data=samp_id_ana '
+               'left join external_ref as exr on exr.exr_type_int="RECORD" and exr.exr_ref_int=samp.id_dos '
                'where samp.id_data=%s')
 
         cursor.execute(req, (id_prod,))
@@ -126,9 +128,11 @@ class Product:
               DATE_FORMAT(rec.rec_date_receipt, %s) AS rec_date,
               pat.nom AS lastname, pat.nom_jf AS maidenname, pat.prenom AS firstname,
               ana.nom AS analysis_name, prod.type_prel AS type_prel, prod.statut AS statut, prod.id_data AS id_prod,
-              rec.id_data AS id_rec, dico.label AS type_prel_label, prod.code as samp_code
+              rec.id_data AS id_rec, dico.label AS type_prel_label, prod.code as samp_code,
+              IFNULL(exr.exr_type_ext, "") AS ext_system
               FROM sigl_01_data AS prod
               inner join sigl_02_data AS rec ON prod.id_dos = rec.id_data
+              left join external_ref AS exr ON exr.exr_type_int="RECORD" AND exr.exr_ref_int = rec.id_data
               inner join sigl_03_data AS pat ON rec.id_patient = pat.id_data
               inner join record_setting AS rec_setting ON rec_setting.rstg_ser = 1
               LEFT JOIN sigl_05_data AS ana ON prod.samp_id_ana = ana.id_data

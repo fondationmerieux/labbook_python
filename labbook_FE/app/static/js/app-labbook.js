@@ -249,6 +249,10 @@ console.log("####################### DEBUG-TRACE CONV_VAL ###################");
 // search formula for this var
 formula2 = formula2.replace("$", val) ;
 
+// only figures and arithmetic signs are computed, anything else is not a formula
+if ( ! /^[0-9.\s_+\-*\/()]+$/.test(formula2) )
+return "" ;
+
 console.log("DEBUG-TRACE conv formula2 = " + formula2 ) ;
 
 let total = eval(formula2) ;
@@ -324,4 +328,14 @@ return String(str)
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;') ;
+}
+
+// Return the icon of a record asked by an outside software, empty when there is none.
+// The label comes from the caller, this file does not go through the translations.
+function ext_system_icon(system, label)
+{
+if ( ! system ) return '' ;
+
+return ' <span class="text-success"><i class="bi bi-box-arrow-in-left" aria-hidden="true" title="'
+     + escapeHtml(label) + ' ' + escapeHtml(system) + '"></i></span>' ;
 }

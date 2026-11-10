@@ -139,6 +139,14 @@ app.config['SESSION_COOKIE_PATH'] = '/'                 # cookie valid everywher
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'           # required for OAuth redirect (Strict, None needs HTTPS)
 app.config['SESSION_COOKIE_SECURE'] = False             # must stay False because some sites still use HTTP
 
+
+@app.after_request
+def set_frame_options(response):
+    # LabBook pages cannot be shown inside another site
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    return response
+
+
 app.config.setdefault('OAUTH_CLIENT_ID', 'labbook-FE')
 
 # Prefer LOCAL_SETTINGS; fallback to env LABBOOK_OAUTH_FE_SECRET; never log the value.
@@ -2683,6 +2691,9 @@ def preview_form(type_form='', filename=''):
         ret_build_form = Form.build_form(type_form, filename)
         json_data['form_html'] = ret_build_form['form_html']
 
+        # Render the Jinja of the form alone, the page itself is rendered once
+        json_data['form_html'] = render_template_string(json_data['form_html'], ihm=json_ihm, args=json_data)
+
         page_content = ('<!DOCTYPE html>'
                         '<html lang="{{ locale }}" {% if locale == "ar" %}dir="rtl"{% else %}dir="ltr"{% endif %}>'
                         '<head>'
@@ -2703,9 +2714,6 @@ def preview_form(type_form='', filename=''):
                             '</div>'
                         '</body>'
                         '</html>')
-
-        # pre-render the page
-        page_content = render_template_string(page_content, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
         return render_template_string(page_content, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -2733,6 +2741,9 @@ def preview_form(type_form='', filename=''):
     ret_build_form = Form.build_form(type_form, filename)
     json_data['form_html'] = ret_build_form['form_html']
 
+    # Render the Jinja of the form alone, the page itself is rendered once
+    json_data['form_html'] = render_template_string(json_data['form_html'], ihm=json_ihm, args=json_data)
+
     page_content = ('<!DOCTYPE html>'
                     '<html lang="{{ locale }}" {% if locale == "ar" %}dir="rtl"{% else %}dir="ltr"{% endif %}>'
                     '<head>'
@@ -2753,9 +2764,6 @@ def preview_form(type_form='', filename=''):
                         '</div>'
                     '</body>'
                     '</html>')
-
-    # pre-render the page
-    page_content = render_template_string(page_content, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
     return render_template_string(page_content, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
@@ -3597,6 +3605,8 @@ def list_results():
 
     json_ihm  = {}
     json_data = {}
+    # Outside software the record comes from
+    json_data['ext_system'] = ''
 
     dt_start_req = datetime.now()
 
@@ -3668,6 +3678,8 @@ def enter_result(id_rec=0, anchor=''):
 
     json_ihm  = {}
     json_data = {}
+    # Outside software the record comes from
+    json_data['ext_system'] = ''
 
     id_pat = 0
 
@@ -3773,6 +3785,9 @@ def enter_result(id_rec=0, anchor=''):
                         log.exception(Logs.fileline() + ' : requests results list failed, url=%s', url)
 
             # Load data patient
+            if res and res.get('ext_system'):
+                json_data['ext_system'] = res['ext_system']
+
             if res and res['id_pat']:
                 id_pat = res['id_pat']
 
@@ -3793,6 +3808,7 @@ def enter_result(id_rec=0, anchor=''):
                 return redir
             if data is not None:
                 json_data['record'] = data
+                json_data['ext_system'] = data.get('ext_system', '') if data else ''
 
                 # Load data patient
                 if json_data['record']:
@@ -4288,6 +4304,10 @@ def det_patient(type_req='E', id_pat=0):
     json_data['json_save'] = ret_build_form['json_save']
     json_data['has_pat_hist_form'] = has_pat_hist_form
 
+    # Render the Jinja of the form alone, the page itself is rendered once (no user input rendered twice)
+    json_data['form_html'] = render_template_string(json_data['form_html'], ihm=json_ihm, args=json_data)
+    json_data['json_save'] = render_template_string(json_data['json_save'], ihm=json_ihm, args=json_data)
+
     tpl_html = render_template('det-patient.html', type_req=type_req, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
 
     dt_stop_req = datetime.now()
@@ -4295,7 +4315,7 @@ def det_patient(type_req='E', id_pat=0):
 
     log.info(Logs.fileline() + ' : TRACE det-patient processing time = ' + str(dt_time_req))
 
-    return render_template_string(tpl_html, type_req=type_req, ihm=json_ihm, args=json_data, rand=secrets.randbelow(1000))
+    return tpl_html
 
 
 # Page : patient history (form-based)
@@ -4335,15 +4355,12 @@ def det_pat_hist(id_pat=0):
     json_data['form_html'] = ret_build_form['form_html']
     json_data['history_js'] = ret_build_form.get('history_js', '')
 
-    tpl_html = render_template(
-        'det-pat-hist.html',
-        id_pat=id_pat,
-        args=json_data,
-        rand=secrets.randbelow(1000)
-    )
+    # Render the Jinja of the form alone, the page itself is rendered once (no user input rendered twice)
+    json_data['form_html'] = render_template_string(json_data['form_html'], id_pat=id_pat, args=json_data)
+    json_data['history_js'] = render_template_string(json_data['history_js'], id_pat=id_pat, args=json_data)
 
-    return render_template_string(
-        tpl_html,
+    return render_template(
+        'det-pat-hist.html',
         id_pat=id_pat,
         args=json_data,
         rand=secrets.randbelow(1000)
@@ -4647,6 +4664,8 @@ def technical_validation(id_rec=0, anchor=''):
 
     json_ihm  = {}
     json_data = {}
+    # Outside software the record comes from
+    json_data['ext_system'] = ''
 
     id_pat = 0
 
@@ -4756,6 +4775,9 @@ def technical_validation(id_rec=0, anchor=''):
                         log.exception(Logs.fileline() + ' : requests previous result failed, url=%s', url)
 
             # Load data patient
+            if res and res.get('ext_system'):
+                json_data['ext_system'] = res['ext_system']
+
             if res and res['id_pat']:
                 id_pat = res['id_pat']
 
@@ -4775,6 +4797,7 @@ def technical_validation(id_rec=0, anchor=''):
                 return redir
             if data is not None:
                 json_data['record'] = data
+                json_data['ext_system'] = data.get('ext_system', '') if data else ''
 
         # If no ResultRecord found we're looking for record information
         else:
@@ -4783,6 +4806,7 @@ def technical_validation(id_rec=0, anchor=''):
                 return redir
             if data is not None:
                 json_data['record'] = data
+                json_data['ext_system'] = data.get('ext_system', '') if data else ''
 
                 # Load data patient
                 if json_data['record']:
@@ -4838,6 +4862,8 @@ def biological_validation(mode='', id_rec=0):
 
     json_ihm  = {}
     json_data = {}
+    # Outside software the record comes from
+    json_data['ext_system'] = ''
 
     json_data['data_reports'] = []
 
@@ -4878,6 +4904,7 @@ def biological_validation(mode='', id_rec=0):
         return redir
     if data is not None:
         json_data['record'] = data
+        json_data['ext_system'] = data.get('ext_system', '') if data else ''
 
         # Get last record_validation
         valid, redir = be_get('/services/record/valid/' + str(id_rec), 'record validation')
@@ -4993,6 +5020,9 @@ def biological_validation(mode='', id_rec=0):
                         log.exception(Logs.fileline() + ' : requests previous result failed, url=%s', url)
 
             # Load data patient
+            if res and res.get('ext_system'):
+                json_data['ext_system'] = res['ext_system']
+
             if res and res['id_pat']:
                 id_pat = res['id_pat']
 
@@ -5013,6 +5043,7 @@ def biological_validation(mode='', id_rec=0):
                 return redir
             if data is not None:
                 json_data['record'] = data
+                json_data['ext_system'] = data.get('ext_system', '') if data else ''
 
                 # Load data patient
                 if json_data['record']:
