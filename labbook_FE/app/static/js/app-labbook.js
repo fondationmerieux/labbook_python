@@ -246,8 +246,8 @@ console.log("####################### DEBUG-TRACE CONV_VAL ###################");
     if ( val == null || val == "" )
     return "" ;
 
-// search formula for this var
-formula2 = formula2.replace("$", val) ;
+// search formula for this var, a formula may use it more than once
+formula2 = formula2.replaceAll("$", val) ;
 
 // only figures and arithmetic signs are computed, anything else is not a formula
 if ( ! /^[0-9.\s_+\-*\/()]+$/.test(formula2) )

@@ -29,7 +29,7 @@ unoserver = "~=3.4"
 pylint = "~=4.0.8"
 Flask-Cors = "~=6.0.5"
 mailjet-rest = "~=1.8.0"
-authlib = "~=1.7.2"
+authlib = ">=1.9.1"
 
 [dev-packages]
 
