@@ -86,7 +86,9 @@ def record_for_exchange(record):
             "pat_id":       record['id_patient'],
             "pat_code":     record['patient_code'] if record['patient_code'] else '',
             "pat_code_lab": record['patient_code_lab'] if record['patient_code_lab'] else '',
-            "external":     External.getRefsById('PATIENT', record['id_patient']) if record['id_patient'] else []
+            "external":     External.getRefsById('PATIENT', record['id_patient']) if record['id_patient'] else [],
+            "pat_resource": External.getRefsById('PATIENT_RESOURCE', record['id_patient'])
+                            if record['id_patient'] else []
         },
         "prescriber": {
             "prescr_id":   record['med_prescripteur'] if record['med_prescripteur'] else 0,
@@ -1286,8 +1288,8 @@ class RecordDetFromExt(Resource):
             # The analysis was resolved before the record was created
             tmp_ana = d_ana_found[ana['ana_code']]
 
-            # calc price
-            ana_price = price_act * tmp_ana['cote_valeur']
+            # calc price, an analysis with no rating counts as free
+            ana_price = price_act * (tmp_ana['cote_valeur'] or 0)
 
             # No bill if internal record and hosp bill pref set to 0 (rec_type already turned into 184)
             if record['rec_type'] == 184 and not hosp_bill:
@@ -1344,8 +1346,8 @@ class RecordDetFromExt(Resource):
                     err = {"error": "sampling act associated to analysis not found with code = " + str(ana['ana_code'])}
                     return compose_ret(err, Constants.cst_content_type_json, 404)
 
-                # calc price of this act
-                ana_act_price = price_act * tmp_act['cote_valeur']
+                # calc price of this act, an act with no rating counts as free
+                ana_act_price = price_act * (tmp_act['cote_valeur'] or 0)
 
                 # No bill if internal record and hosp bill pref set to 0 (rec_type already turned into 184)
                 if record['rec_type'] == 184 and not hosp_bill:

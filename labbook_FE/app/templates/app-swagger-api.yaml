@@ -189,6 +189,18 @@ paths:
                             ref:
                               type: string
                               description: Reference of the patient in that system
+                      pat_resource:
+                        type: array
+                        description: References of the patient resource in the outside systems
+                        items:
+                          type: object
+                          properties:
+                            system:
+                              type: string
+                              description: Short name of the outside system
+                            ref:
+                              type: string
+                              description: Reference of the patient resource in that system
                   prescriber:
                     type: object
                     properties:

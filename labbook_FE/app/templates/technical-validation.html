@@ -329,7 +329,7 @@ let lastname  = {{ session['user_lastname']|tojson }}  ;
             if ( res_type == 265 )
             res_label = '<b>' + res_label + '</b>' ;
 
-            if ( show_minmax == 'Y' )
+            if ( show_minmax == 'Y' && (data[i].normal_min != "" || data[i].normal_max != "") )
             {
             let val_min = "" ;
             let val_max = "" ;

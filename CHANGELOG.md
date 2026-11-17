@@ -7,6 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Use `code_var` instead of `id_data` for `sigl_07_data` (variable of analysis)
 - clean async process for import analysis repository
 
+## [3.6.32] - 2026-11-16
+### Added
+- LOINC analyses from the French official list of the ANS
+- New field `var_descr` for the ODT report template
+
+### Changed
+- Code of dictionaries up to 32 characters
+- Analysis repository cleaned
+
 ## [3.6.31] - 2026-11-10
 ### Added
 - Read a record and its requested analyses from an outside system

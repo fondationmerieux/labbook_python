@@ -280,7 +280,7 @@ class Pdf:
 
         for data in l_data:
             html_part += ('<tr><td><div class="text-start">' + str(data['rec_date']) + '</div></td>'
-                          '<td><div class="text-start">' + str( data['rec_num']) + '</div></td>'
+                          '<td><div class="text-start">' + str(data['rec_num']) + '</div></td>'
                           '<td><div class="text-start">' + str(data['family']) + '</div></td>'
                           '<td><div class="text-start">' + str(data['analysis']) + '</div></td>'
                           '<td><div class="text-start">' + str(data['vld_type']) + '</div></td></tr>')
@@ -1552,7 +1552,8 @@ class Pdf:
                           "tech_validate": ""}
         result         = {"label": "", "value": "", "unit": "", "references": "", "prev_date": "", "prev_val": "",
                           "prev_unit": "", "comm": "", "var_comm": "", "bold_value": "N", "highlight": "N",
-                          "in_report": "Y", "formatting": "N", "valueConv": "", "unitConv": "", "var_loinc": ""}
+                          "in_report": "Y", "formatting": "N", "valueConv": "", "unitConv": "", "var_loinc": "",
+                          "var_descr": ""}
 
         # [{'analysis': {'fam_name': FAMILY, 'ana_name': NAME, 'ana_code': CODE, 'ana_loinc': LOINC_CODE,
         #                'ana_comm': COMMENT, "ana_outsourced": Y/N, 'ana_ast': Y/N,
@@ -1570,7 +1571,8 @@ class Pdf:
         #                           'formatting': formatting,
         #                           'valueConv': RESULT_VALUE_CONVERTED,
         #                           'unitConv': UNIT_RESULT_VALUE_CONVERTED,
-        #                           'var_loinc': LOINC_CODE_OF_THE_VARIABLE,}] }
+        #                           'var_loinc': LOINC_CODE_OF_THE_VARIABLE,
+        #                           'var_descr': DESCRIPTION_OF_THE_VARIABLE,}] }
         # }]
 
         # temp var for build l_data
@@ -1743,7 +1745,7 @@ class Pdf:
                         tmp_res = {"label": "", "value": "", "unit": "", "value_ast": "", "references": "",
                                    "prev_date": "", "prev_val": "", "prev_unit": "", "comm": "", "bold_value": "N",
                                    "highlight": "N", "in_report": "Y", "formatting": "N", "valueConv": "", "unitConv": "",
-                                   "var_loinc": ""}
+                                   "var_loinc": "", "var_descr": ""}
 
                         # Start to get previous result if exist
                         prev_date = ''
@@ -1899,6 +1901,7 @@ class Pdf:
                         tmp_res['value'] = str(val)
                         tmp_res['formatting'] = str(formatting)
                         tmp_res['var_loinc'] = res['var_loinc'] if res.get('var_loinc') else ''
+                        tmp_res['var_descr'] = res['description'] if res.get('description') else ''
                         Various.useLangPDF()
 
                         if res['commentaire'] and not res['commentaire'].startswith('Project-Id-Version'):

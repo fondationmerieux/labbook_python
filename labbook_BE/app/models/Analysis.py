@@ -917,7 +917,7 @@ class Analysis:
     @staticmethod
     def getAnalyzesList(args):
         """
-        Read the analyses for the list screen, active ones by default, limited to 2000.
+        Read the analyses for the list screen, active ones by default, limited to 5000.
         args: status, name (name, code, LOINC or abbreviation, translated name outside fr_FR), type_ana, type_prod.
         """
         cursor = DB.cursor()
@@ -927,11 +927,11 @@ class Analysis:
         params      = []
 
         if not args:
-            limit = 'LIMIT 2000'
+            limit = 'LIMIT 5000'
 
             filter_cond += ' ana.actif=4 '  # remove deleted analyzes by default
         else:
-            limit = 'LIMIT 2000'
+            limit = 'LIMIT 5000'
 
             filter_cond += ' '  # remove deleted analyzes by default
             # filter conditions
